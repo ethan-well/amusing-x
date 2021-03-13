@@ -1,4 +1,4 @@
-package configcontainer
+package basicmatter
 
 import (
 	"testing"

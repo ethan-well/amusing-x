@@ -1,19 +1,28 @@
 package main
 
 import (
-	"amusingx.fit/amusingx/services/amusingapiserv/api/pong"
 	"amusingx.fit/amusingx/services/amusingapiserv/conf"
+	"amusingx.fit/amusingx/services/amusingapiserv/router"
 	"amusingx.fit/amusingx/superfactory/powertrain"
+	"log"
 	"net/http"
+	"time"
 )
 
+var timeOut = time.Second * 30
 
 func main() {
-	powertrain.Run(conf.Conf)
+	powertrain.Run(conf.Conf, func(o *powertrain.Options) {
+		o.InitFunc = InitFunc
+		o.RegisterRouter = func(mux *http.ServeMux) {
+			router.Register(mux)
+		}
+	})
 
 	conf.Conf.Print()
-
-	http.HandleFunc("/v1/pong", pong.Pong)
-
-	http.ListenAndServe(conf.Conf.Port, nil)
 }
+
+func InitFunc () {
+	log.Println("amusing api sever listen: ", conf.Conf.Addr)
+}
+

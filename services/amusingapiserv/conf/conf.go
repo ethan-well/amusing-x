@@ -12,6 +12,10 @@ type Config struct {
 	Port string `config:"base:http.port"`
 }
 
+func (c *Config) GetAddr() string {
+	return c.Addr
+}
+
 func (c *Config) Print() {
 	rv := reflect.ValueOf(*c)
 	rt := reflect.TypeOf(*c)
