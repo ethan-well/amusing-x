@@ -1,4 +1,4 @@
-package configcentor
+package configcontainer
 
 import (
 	"testing"
@@ -21,6 +21,7 @@ type confObjectTest struct {
 	Int16 int16 `config:"base:int16.test"`
 	SpecialV1 string `config:"special:special1"`
 }
+
 func TestConfig_Parse(t *testing.T) {
 	config := New()
 	obj := confObjectTest{Port: ":8081"}

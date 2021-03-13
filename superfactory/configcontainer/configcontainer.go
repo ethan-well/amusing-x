@@ -1,11 +1,10 @@
-package configcentor
+package configcontainer
 
 import (
 	"bufio"
 	"errors"
 	"flag"
 	"fmt"
-	"log"
 	"os"
 	"reflect"
 	"strconv"
@@ -13,7 +12,6 @@ import (
 )
 
 const (
-	CRLF = '\n'
 	Comment = "#"
 	SectionS = "["
 	sectionE = "]"
@@ -21,11 +19,13 @@ const (
 	tagSep = ":"
 )
 
-type ConfigObject interface {
+type ConfigContainer struct {
+	data map[string]*Section
 }
 
-type Config struct {
-	data map[string]*Section
+type Section struct {
+	// config key:value map
+	data map[string]*ConfigValueItem
 }
 
 type ConfigValueItem struct {
@@ -34,24 +34,17 @@ type ConfigValueItem struct {
 	Line int64
 }
 
-type Section struct {
-	// config key:value map
-	data map[string]*ConfigValueItem
+func New() *ConfigContainer {
+	return &ConfigContainer{}
 }
 
-func New() *Config {
-	return &Config{}
-}
-
-
-
-func (c *Config) Unmarshal(configObject interface{}, fileName string) error {
+func (c *ConfigContainer) Unmarshal(configObject interface{}, fileName string) error {
 	var configFile string
+	flag.StringVar(&configFile, "cf", "test.conf", "-cf is expected")
+	flag.Parse()
 
 	if len(fileName) != 0{
 		configFile = fileName
-	} else {
-		flag.StringVar(&configFile, "cf", "test.conf", "-cf is expected")
 	}
 
 	err :=  c.parseFile(configFile)
@@ -59,15 +52,15 @@ func (c *Config) Unmarshal(configObject interface{}, fileName string) error {
 		return err
 	}
 
- 	err = c.Parse(configObject)
- 	if err != nil {
- 		return err
+	err = c.parse(configObject)
+	if err != nil {
+		return err
 	}
 
 	return nil
 }
 
-func (c *Config) Parse(configObject  interface{}) error {
+func (c *ConfigContainer) parse(configObject  interface{}) error {
 	if c.data == nil {
 		return nil
 	}
@@ -79,7 +72,6 @@ func (c *Config) Parse(configObject  interface{}) error {
 	sv := reflect.ValueOf(configObject).Elem()
 	st := reflect.TypeOf(configObject).Elem()
 
-	log.Println(sv.NumField())
 	for i := 0; i < sv.NumField(); i ++ {
 		tag := st.Field(i).Tag.Get("config")
 		tagArr := strings.Split(tag, tagSep)
@@ -140,13 +132,13 @@ func (c *Config) Parse(configObject  interface{}) error {
 			}
 			sv.Field(i).SetFloat(cv)
 		}
- 	}
+	}
 
 	return nil
 }
 
 // 解析文件，将解析结果存放到 conf.data 种
-func (c *Config) parseFile(file string) error {
+func (c *ConfigContainer) parseFile(file string) error {
 	fi, err := os.Open(file)
 	if err != nil {
 		return err
