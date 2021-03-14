@@ -3,7 +3,7 @@ package main
 import (
 	"amusingx.fit/amusingx/services/amusingapiserv/conf"
 	"amusingx.fit/amusingx/services/amusingapiserv/router"
-	"amusingx.fit/amusingx/superfactory/powertrain"
+	"github.com/ItsWewin/superfactory/powertrain"
 	"log"
 	"net/http"
 	"time"
