@@ -5,6 +5,7 @@ import (
 	"context"
 )
 
+// 通过 id 查询用户
 func QueryUserByIdContext(ctx context.Context, id int64) (*amusinguser.User, error) {
 	user := &amusinguser.User{}
 
