@@ -20,6 +20,10 @@ type Config struct {
 	MysqlAmusinguserConnMaxLifetime int64  `config:"base:mysql.amusinguser.connMaxLifetime"`
 	MysqlAmusinguserMaxIdleConns    int    `config:"base:mysql.amusinguser.maxIdleConns"`
 	MysqlAmusinguserMaxOpenConns    int    `config:"base:mysql.amusinguser.maxOpenConns"`
+
+	RedisAddr     string `config:"base:redis.addr"`
+	RedisPassword string `config:"base:redis.password"`
+	RedisDB       int    `config:"base:redis.db"`
 }
 
 func (c *Config) GetAddr() string {

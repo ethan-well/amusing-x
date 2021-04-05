@@ -21,3 +21,15 @@ func TestQueryUserByIdContext(t *testing.T) {
 		t.Logf("succced, user id: %d", user.ID)
 	}
 }
+
+func TestQueryUserByNicknameOrPhone(t *testing.T) {
+	conf.Mock()
+	Mock()
+
+	u, err := QueryUserByNicknameOrPhone(context.Background(), "wei.wei", "18710565589")
+	if err != nil {
+		t.Fatalf("err: %s", err)
+	}
+
+	t.Logf("u: %v", u)
+}

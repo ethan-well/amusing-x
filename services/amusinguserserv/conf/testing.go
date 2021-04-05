@@ -13,5 +13,8 @@ func Mock() {
 		MysqlAmusinguserConnMaxLifetime: 2 * 60,
 		MysqlAmusinguserMaxIdleConns:    10,
 		MysqlAmusinguserMaxOpenConns:    10,
+		RedisAddr:                       "localhost:6379",
+		RedisPassword:                   "",
+		RedisDB:                         0,
 	}
 }

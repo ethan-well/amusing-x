@@ -4,6 +4,7 @@ import (
 	"amusingx.fit/amusingx/services/amusinguserserv/conf"
 	"amusingx.fit/amusingx/services/amusinguserserv/mysql/amusinguser"
 	"amusingx.fit/amusingx/services/amusinguserserv/router"
+	"amusingx.fit/amusingx/services/amusinguserserv/xredis"
 	"github.com/ItsWewin/superfactory/powertrain"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
@@ -26,9 +27,13 @@ func main() {
 func InitFunc() {
 	log.Println("amusing api sever listen: ", conf.Conf.Addr)
 	amusinguser.InitMySQL()
+
+	xredis.InitRedis(conf.Conf.RedisAddr, conf.Conf.RedisPassword, conf.Conf.RedisDB)
 }
 
 // 服务执行完毕时候执行
 func DeferFunc() {
 	amusinguser.MysqlDisConnect()
+
+	xredis.CloseRedis()
 }
