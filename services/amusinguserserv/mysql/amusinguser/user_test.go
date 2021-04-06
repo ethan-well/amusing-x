@@ -1,8 +1,10 @@
 package amusinguser
 
 import (
+	"amusingx.fit/amusingx/mysqlstruct/amusinguser"
 	"amusingx.fit/amusingx/services/amusinguserserv/conf"
 	"context"
+	"github.com/ItsWewin/superfactory/logger"
 	"testing"
 )
 
@@ -32,4 +34,23 @@ func TestQueryUserByNicknameOrPhone(t *testing.T) {
 	}
 
 	t.Logf("u: %v", u)
+}
+
+func TestInsert(t *testing.T) {
+	conf.Mock()
+	Mock()
+
+	u := &amusinguser.User{
+		Nickname:       "wei.wei3",
+		Phone:          "18710565582",
+		PasswordDigest: "password digest test",
+		Salt:           "salt test",
+	}
+
+	u, err := Insert(context.TODO(), u)
+	if err != nil {
+		t.Fatalf("some error: %s", err)
+	}
+
+	t.Logf("user: %s", logger.ToJson(u))
 }

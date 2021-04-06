@@ -7,4 +7,5 @@ type User struct {
 	PasswordDigest string `db:"password_digest"`
 	CreateTime     string `db:"create_time"`
 	UpdateTime     string `db:"update_time"`
+	Salt           string `db:"salt"`
 }

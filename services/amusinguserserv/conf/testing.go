@@ -16,5 +16,6 @@ func Mock() {
 		RedisAddr:                       "localhost:6379",
 		RedisPassword:                   "",
 		RedisDB:                         0,
+		SecretPasswordSalt:              "adjlajdfanasf23efaofadfadfjfa",
 	}
 }

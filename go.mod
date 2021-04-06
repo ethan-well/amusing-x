@@ -8,6 +8,7 @@ require (
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/gorilla/mux v1.8.0
 	github.com/jmoiron/sqlx v1.3.1
+	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
 )
 
 replace github.com/ItsWewin/superfactory => /Users/klook/workspace/src/github.com/ItsWewin/superfactory

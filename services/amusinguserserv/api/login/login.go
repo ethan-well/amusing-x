@@ -7,6 +7,7 @@ import (
 	"context"
 	"github.com/ItsWewin/superfactory/httputil"
 	"github.com/ItsWewin/superfactory/httputil/rest"
+	"github.com/ItsWewin/superfactory/logger"
 	"net/http"
 )
 
@@ -15,8 +16,9 @@ func HandlerLogin(w http.ResponseWriter, r *http.Request) {
 
 	_, err := getAndValidParams(r)
 	if err != nil {
-		rest.FailJsonResponse(w, xerror.Code.ParamsError, xerror.Message.ParamsError)
+		logger.Errorf("get and valid params failed, err: %s", err.Error())
 
+		rest.FailJsonResponse(w, xerror.Code.CParamsError, xerror.Message.ParamsError)
 		return
 	}
 
@@ -30,9 +32,18 @@ func HandlerLogin(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-func getAndValidParams(r *http.Request) (*amusinguserserv.LoginRequest, error) {
+func getAndValidParams(r *http.Request) (*amusinguserserv.LoginRequest, *xerror.Error) {
 	login := &amusinguserserv.LoginRequest{}
 
 	err := httputil.DecodeJsonBody(r, login)
-	return login, err
+	if err != nil {
+		return nil, xerror.NewError(err, xerror.Code.SUnexpectedErr, "Unexpect error. ")
+	}
+
+	xErr := login.Valid()
+	if err != nil {
+		return nil, xErr
+	}
+
+	return login, nil
 }

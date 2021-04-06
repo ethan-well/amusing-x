@@ -24,6 +24,8 @@ type Config struct {
 	RedisAddr     string `config:"base:redis.addr"`
 	RedisPassword string `config:"base:redis.password"`
 	RedisDB       int    `config:"base:redis.db"`
+
+	SecretPasswordSalt string `config:"base:secret.password.salt"`
 }
 
 func (c *Config) GetAddr() string {

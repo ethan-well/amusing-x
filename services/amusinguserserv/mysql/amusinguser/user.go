@@ -2,35 +2,57 @@ package amusinguser
 
 import (
 	"amusingx.fit/amusingx/mysqlstruct/amusinguser"
+	"amusingx.fit/amusingx/xerror"
 	"context"
 	"database/sql"
 )
 
 // 通过 id 查询用户
-func QueryUserByIdContext(ctx context.Context, id int64) (*amusinguser.User, error) {
+func QueryUserByIdContext(ctx context.Context, id int64) (*amusinguser.User, *xerror.Error) {
 	user := &amusinguser.User{}
 
 	query := `SELECT  id, nickname, phone, password_digest, create_time, update_time FROM user WHERE id= ?`
 	err := AmusingUserDB.GetContext(ctx, user, query, id)
 	if err != nil {
-		return nil, err
+		return nil, xerror.NewError(err, xerror.Code.SSqlExecuteErr, "Query user failed. ")
 	}
 
-	return user, err
+	return user, nil
 }
 
-func QueryUserByNicknameOrPhone(ctx context.Context, nickName, phone string) (*amusinguser.User, error) {
+func QueryUserByNicknameOrPhone(ctx context.Context, nickName, phone string) (*amusinguser.User, *xerror.Error) {
 	user := &amusinguser.User{}
 
-	query := `SELECT id, nickname, phone, password_digest FROM user where nickname = ? or phone = ?`
+	query := `SELECT id, nickname, phone, password_digest FROM user WHERE nickname = ? OR phone = ?`
 	err := AmusingUserDB.GetContext(ctx, user, query, nickName, phone)
 
 	switch {
 	case err == sql.ErrNoRows:
 		return nil, nil
 	case err != nil:
-		return nil, err
+		return nil, xerror.NewError(err, xerror.Code.SSqlExecuteErr, "sql execute error")
 	}
 
-	return user, err
+	return user, nil
+}
+
+func Insert(ctx context.Context, user *amusinguser.User) (*amusinguser.User, *xerror.Error) {
+	query := `INSERT INTO user (nickname, phone, password_digest, salt) VALUES (:nickname,:phone,:password_digest, :salt)`
+	result, err := AmusingUserDB.NamedExecContext(ctx, query, user)
+	if err != nil {
+		return nil, xerror.NewError(err, xerror.Code.SSqlExecuteErr, "Unexpected error. ")
+	}
+	defer clearPasswordDigest(user)
+
+	id, err := result.LastInsertId()
+	if err != nil {
+		return nil, xerror.NewError(err, xerror.Code.SSqlExecuteErr, "Unexpected error. ")
+	}
+	user.ID = id
+
+	return user, nil
+}
+
+func clearPasswordDigest(user *amusinguser.User) {
+	user.PasswordDigest = ""
 }

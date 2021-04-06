@@ -25,7 +25,7 @@ func main() {
 
 // 服务初始化时候执行
 func InitFunc() {
-	log.Println("amusing api sever listen: ", conf.Conf.Addr)
+	log.Println("amusing api sever listen:", conf.Conf.Addr)
 	amusinguser.InitMySQL()
 
 	xredis.InitRedis(conf.Conf.RedisAddr, conf.Conf.RedisPassword, conf.Conf.RedisDB)
