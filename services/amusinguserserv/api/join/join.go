@@ -3,11 +3,11 @@ package join
 import (
 	"amusingx.fit/amusingx/apistruct/amusinguserserv"
 	joinapp "amusingx.fit/amusingx/services/amusinguserserv/app/joinapp"
-	"amusingx.fit/amusingx/xerror"
 	"context"
 	"github.com/ItsWewin/superfactory/httputil"
 	"github.com/ItsWewin/superfactory/httputil/rest"
 	"github.com/ItsWewin/superfactory/logger"
+	"github.com/ItsWewin/superfactory/xerror"
 	"net/http"
 )
 

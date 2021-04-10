@@ -2,9 +2,9 @@ package amusinguser
 
 import (
 	"amusingx.fit/amusingx/mysqlstruct/amusinguser"
-	"amusingx.fit/amusingx/xerror"
 	"context"
 	"database/sql"
+	"github.com/ItsWewin/superfactory/xerror"
 )
 
 // 通过 id 查询用户
@@ -15,6 +15,22 @@ func QueryUserByIdContext(ctx context.Context, id int64) (*amusinguser.User, *xe
 	err := AmusingUserDB.GetContext(ctx, user, query, id)
 	if err != nil {
 		return nil, xerror.NewError(err, xerror.Code.SSqlExecuteErr, "Query user failed. ")
+	}
+
+	return user, nil
+}
+
+func QueryUserByPhone(ctx context.Context, phone string) (*amusinguser.User, *xerror.Error) {
+	user := &amusinguser.User{}
+
+	query := `SELECT id, nickname, phone, password_digest FROM user WHERE phone = ?`
+	err := AmusingUserDB.GetContext(ctx, user, query, phone)
+
+	switch {
+	case err == sql.ErrNoRows:
+		return nil, nil
+	case err != nil:
+		return nil, xerror.NewError(err, xerror.Code.SSqlExecuteErr, "sql execute error")
 	}
 
 	return user, nil

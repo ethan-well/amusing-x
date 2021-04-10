@@ -1,13 +1,13 @@
-package modle
+package model
 
 import (
 	"amusingx.fit/amusingx/mysqlstruct/amusinguser"
 	amusinguser2 "amusingx.fit/amusingx/services/amusinguserserv/mysql/amusinguser"
-	"amusingx.fit/amusingx/xerror"
 	"context"
 	"crypto/rand"
 	"crypto/subtle"
 	"encoding/base64"
+	"github.com/ItsWewin/superfactory/xerror"
 	"golang.org/x/crypto/argon2"
 )
 
@@ -120,6 +120,25 @@ func FindUserByID(ctx context.Context, id int64) (*User, *xerror.Error) {
 		PasswordDigest: user.PasswordDigest,
 		CreateTime:     user.CreateTime,
 		UpdateTime:     user.UpdateTime,
+	}
+
+	return u, nil
+}
+
+func FindUserByPhone(ctx context.Context, areaCode, phone string) (*User, *xerror.Error) {
+	user, err := amusinguser2.QueryUserByPhone(ctx, areaCode+"-"+phone)
+	if err != nil {
+		return nil, err
+	}
+
+	u := &User{
+		ID:             user.ID,
+		Nickname:       user.Nickname,
+		Phone:          user.Phone,
+		PasswordDigest: user.PasswordDigest,
+		CreateTime:     user.CreateTime,
+		UpdateTime:     user.UpdateTime,
+		Salt:           user.Salt,
 	}
 
 	return u, nil

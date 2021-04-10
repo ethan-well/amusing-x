@@ -54,3 +54,15 @@ func TestInsert(t *testing.T) {
 
 	t.Logf("user: %s", logger.ToJson(u))
 }
+
+func TestQueryUserByPhone(t *testing.T) {
+	conf.Mock()
+	Mock()
+
+	user, err := QueryUserByPhone(context.TODO(), "86-18710565585")
+	if err != nil {
+		t.Fatalf("some error: %s", err)
+	}
+
+	t.Logf("user: %s", logger.ToJson(user))
+}

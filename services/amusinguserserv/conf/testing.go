@@ -17,5 +17,9 @@ func Mock() {
 		RedisPassword:                   "",
 		RedisDB:                         0,
 		SecretPasswordSalt:              "adjlajdfanasf23efaofadfadfjfa",
+		SessionStore:                    "redis",
+		SessionStoreRedisAddr:           "localhost:6379",
+		SessionStoreRedisPassword:       "",
+		SessionStoreRedisDB:             2,
 	}
 }

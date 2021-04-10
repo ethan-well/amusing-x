@@ -1,8 +1,8 @@
 package regex
 
 import (
-	"amusingx.fit/amusingx/xerror"
 	"fmt"
+	"github.com/ItsWewin/superfactory/xerror"
 	"regexp"
 	"unicode"
 )

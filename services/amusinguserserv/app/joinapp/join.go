@@ -2,18 +2,18 @@ package joinapp
 
 import (
 	"amusingx.fit/amusingx/apistruct/amusinguserserv"
-	"amusingx.fit/amusingx/services/amusinguserserv/modle"
+	"amusingx.fit/amusingx/services/amusinguserserv/model"
 	"amusingx.fit/amusingx/services/amusinguserserv/xredis/lock"
-	"amusingx.fit/amusingx/xerror"
 	"context"
 	"fmt"
 	"github.com/ItsWewin/superfactory/logger"
+	"github.com/ItsWewin/superfactory/xerror"
 )
 
-func CreateUser(ctx context.Context, u *amusinguserserv.JoinRequest) (*modle.User, *xerror.Error) {
+func CreateUser(ctx context.Context, u *amusinguserserv.JoinRequest) (*model.User, *xerror.Error) {
 	var (
 		err  *xerror.Error
-		user = &modle.User{
+		user = &model.User{
 			Nickname: u.Nickname,
 			Phone:    fmt.Sprintf("%s-%s", u.AreaCode, u.Phone),
 			Password: u.Password,
@@ -42,7 +42,7 @@ func CreateUser(ctx context.Context, u *amusinguserserv.JoinRequest) (*modle.Use
 		return nil, xerror.NewError(err, xerror.Code.BDataIsNotAllow, "Phone or nickname is taken. ")
 	}
 
-	user, err = modle.Create(ctx, user)
+	user, err = model.Create(ctx, user)
 	if err != nil {
 		return user, err
 	}
@@ -50,7 +50,7 @@ func CreateUser(ctx context.Context, u *amusinguserserv.JoinRequest) (*modle.Use
 	return user, nil
 }
 
-func clearPassword(r *amusinguserserv.JoinRequest, u *modle.User) {
+func clearPassword(r *amusinguserserv.JoinRequest, u *model.User) {
 	r.Password = ""
 	u.Password = ""
 	u.PasswordDigest = ""
