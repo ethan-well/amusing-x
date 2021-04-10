@@ -10,12 +10,12 @@ import (
 func TestNewManager(t *testing.T) {
 	conf.Mock()
 
-	manager, err := NewManager("redis", "uid", 60)
+	err := InitSessionManager("redis", "uid", 60)
 	if err != nil {
 		t.Fatalf("some err: %s", err)
 	}
 
-	session, err := manager.store.SessionInit(context.TODO(), uuid.NewV4().String())
+	session, err := GlobalSessionManager.Store.SessionInit(context.TODO(), uuid.NewV4().String())
 	if err != nil {
 		t.Fatalf("some error: %s", err)
 	}
@@ -53,4 +53,16 @@ func TestNewManager(t *testing.T) {
 	if err != nil {
 		t.Fatalf("some error occured when session.Set: %s", err)
 	}
+
+	session2, err := GlobalSessionManager.Store.SessionInit(context.TODO(), uuid.NewV4().String())
+	if err != nil {
+		t.Fatalf("some error: %s", err)
+	}
+
+	name, err := session2.Get(context.TODO(), "name")
+	if err != nil {
+		t.Fatalf("some err: %s", err)
+	}
+
+	t.Fatalf("name: %s", name)
 }

@@ -7,29 +7,31 @@ import (
 )
 
 type Manager struct {
-	cookieName  string
+	CookieName  string
 	lock        sync.Mutex
-	store       Store
-	maxLifeTime int64
+	Store       Store
+	MaxLifeTime int
 }
 
-func NewManager(storeName, cookieName string, maxLiftTTime int64) (*Manager, error) {
-	manager := &Manager{}
+var GlobalSessionManager *Manager
+
+func InitSessionManager(storeName, cookieName string, maxLiftTTime int) error {
+	GlobalSessionManager = &Manager{}
 	var err error
 
 	switch storeName {
 	case "redis":
-		manager.store, err = InitRedisStore(conf.Conf.SessionStoreRedisAddr, conf.Conf.SessionStoreRedisPassword,
+		GlobalSessionManager.Store, err = InitRedisStore(conf.Conf.SessionStoreRedisAddr, conf.Conf.SessionStoreRedisPassword,
 			conf.Conf.SessionStoreRedisDB, cookieName, maxLiftTTime)
 		if err != nil {
-			return nil, err
+			return err
 		}
 	default:
-		return nil, errors.New("session store type is invalid. ")
+		return errors.New("session store type is invalid. ")
 	}
 
-	manager.cookieName = cookieName
-	manager.maxLifeTime = maxLiftTTime
+	GlobalSessionManager.CookieName = cookieName
+	GlobalSessionManager.MaxLifeTime = maxLiftTTime
 
-	return manager, nil
+	return nil
 }

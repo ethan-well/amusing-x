@@ -131,6 +131,10 @@ func FindUserByPhone(ctx context.Context, areaCode, phone string) (*User, *xerro
 		return nil, err
 	}
 
+	if user == nil {
+		return nil, nil
+	}
+
 	u := &User{
 		ID:             user.ID,
 		Nickname:       user.Nickname,

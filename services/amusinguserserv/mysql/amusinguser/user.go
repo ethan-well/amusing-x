@@ -23,7 +23,7 @@ func QueryUserByIdContext(ctx context.Context, id int64) (*amusinguser.User, *xe
 func QueryUserByPhone(ctx context.Context, phone string) (*amusinguser.User, *xerror.Error) {
 	user := &amusinguser.User{}
 
-	query := `SELECT id, nickname, phone, password_digest FROM user WHERE phone = ?`
+	query := `SELECT id, nickname, phone, password_digest, salt FROM user WHERE phone = ?`
 	err := AmusingUserDB.GetContext(ctx, user, query, phone)
 
 	switch {

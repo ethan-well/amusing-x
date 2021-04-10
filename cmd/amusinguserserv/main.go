@@ -4,6 +4,7 @@ import (
 	"amusingx.fit/amusingx/services/amusinguserserv/conf"
 	"amusingx.fit/amusingx/services/amusinguserserv/mysql/amusinguser"
 	"amusingx.fit/amusingx/services/amusinguserserv/router"
+	"amusingx.fit/amusingx/services/amusinguserserv/session"
 	"amusingx.fit/amusingx/services/amusinguserserv/xredis"
 	"github.com/ItsWewin/superfactory/powertrain"
 	_ "github.com/go-sql-driver/mysql"
@@ -29,6 +30,11 @@ func InitFunc() {
 	amusinguser.InitMySQL()
 
 	xredis.InitRedis(conf.Conf.RedisAddr, conf.Conf.RedisPassword, conf.Conf.RedisDB)
+
+	err := session.InitSessionManager("redis", "sid", 24*60*60)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // 服务执行完毕时候执行

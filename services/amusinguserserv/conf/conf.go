@@ -25,13 +25,11 @@ type Config struct {
 	RedisPassword string `config:"base:redis.password"`
 	RedisDB       int    `config:"base:redis.db"`
 
-	SecretPasswordSalt string `config:"base:secret.password.salt"`
-
 	SessionStore               string `config:"session:store"`
-	SessionStoreRedisAddr      string `json:"session:store.redis.addr"`
-	SessionStoreRedisPassword  string `json:"session:store.redis.password"`
-	SessionStoreRedisDB        int    `json:"session:store.redis.db"`
-	SessionStoreRedisKeyPrefix string `json:"session:store.redis.key.prefix"`
+	SessionStoreRedisAddr      string `config:"session:store.redis.addr"`
+	SessionStoreRedisPassword  string `config:"session:store.redis.password"`
+	SessionStoreRedisDB        int    `config:"session:store.redis.db"`
+	SessionStoreRedisKeyPrefix string `config:"session:store.redis.key.prefix"`
 }
 
 func (c *Config) GetAddr() string {

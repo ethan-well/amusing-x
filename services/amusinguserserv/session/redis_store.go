@@ -12,10 +12,10 @@ import (
 type RedisStore struct {
 	Client        *redis.Client
 	KeyPrefix     string
-	MaxLifeSecond int64
+	MaxLifeSecond int
 }
 
-func InitRedisStore(addr, password string, db int, prefix string, maxLifeSecond int64) (Store, error) {
+func InitRedisStore(addr, password string, db int, prefix string, maxLifeSecond int) (Store, error) {
 	if len(addr) == 0 {
 		return nil, xerror.NewError(nil, xerror.Code.BUnexpectedBlankVariable, "addr is blank")
 	}
