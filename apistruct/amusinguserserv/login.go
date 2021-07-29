@@ -1,7 +1,7 @@
 package amusinguserserv
 
 import (
-	"amusingx.fit/amusingx/services/amusinguserserv/regex"
+	"amusingx.fit/amusingx/services/amusinguserserv/regexp"
 	"github.com/ItsWewin/superfactory/xerror"
 	"strings"
 )
@@ -22,15 +22,15 @@ func (r *LoginRequest) Valid() *xerror.Error {
 		return xerror.NewError(nil, xerror.Code.CParamsError, "Type is invalid. ")
 	}
 
-	if err := regex.PhoneNumberValid(r.Phone); err != nil {
+	if err := regexp.PhoneNumberValid(r.Phone); err != nil {
 		return err
 	}
 
-	if err := regex.AreaCodeValid(r.AreaCode); err != nil {
+	if err := regexp.AreaCodeValid(r.AreaCode); err != nil {
 		return err
 	}
 
-	if err := regex.PasswordValid(r.Password); err != nil {
+	if err := regexp.PasswordValid(r.Password); err != nil {
 		return err
 	}
 

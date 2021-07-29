@@ -24,9 +24,7 @@ func HandleJoin(w http.ResponseWriter, r *http.Request) {
 
 	u, err := joinapp.CreateUser(ctx, params)
 	if err != nil {
-
 		logger.Errorf("create user failed, params: %s, err: %s", logger.ToJson(params), err.Error())
-
 		rest.FailJsonResponse(w, xerror.Code.CreateUserError, err.Message)
 		return
 	}
@@ -48,7 +46,7 @@ func getAndValidParams(r *http.Request) (*amusinguserserv.JoinRequest, *xerror.E
 	}
 
 	xErr := joinRequest.Valid()
-	if err != nil {
+	if xErr != nil {
 		return nil, xErr
 	}
 

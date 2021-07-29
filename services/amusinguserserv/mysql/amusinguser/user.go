@@ -53,12 +53,12 @@ func QueryUserByNicknameOrPhone(ctx context.Context, nickName, phone string) (*a
 }
 
 func Insert(ctx context.Context, user *amusinguser.User) (*amusinguser.User, *xerror.Error) {
+	defer clearPasswordDigest(user)
 	query := `INSERT INTO user (nickname, phone, password_digest, salt) VALUES (:nickname,:phone,:password_digest, :salt)`
 	result, err := AmusingUserDB.NamedExecContext(ctx, query, user)
 	if err != nil {
 		return nil, xerror.NewError(err, xerror.Code.SSqlExecuteErr, "Unexpected error. ")
 	}
-	defer clearPasswordDigest(user)
 
 	id, err := result.LastInsertId()
 	if err != nil {
@@ -71,4 +71,16 @@ func Insert(ctx context.Context, user *amusinguser.User) (*amusinguser.User, *xe
 
 func clearPasswordDigest(user *amusinguser.User) {
 	user.PasswordDigest = ""
+}
+
+func UpdatePassword(ctx context.Context, user *amusinguser.User) (*amusinguser.User, *xerror.Error) {
+	defer clearPasswordDigest(user)
+
+	query := `UPDATE user set password_digest = :password_digest, salt = :salt WHERE phone = :phone`
+	_, err := AmusingUserDB.NamedExecContext(ctx, query, user)
+	if err != nil {
+		return nil, xerror.NewError(err, xerror.Code.SSqlExecuteErr, "reset password failed. ")
+	}
+
+	return user, nil
 }

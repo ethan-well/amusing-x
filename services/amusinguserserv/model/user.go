@@ -51,11 +51,11 @@ func (u *User) ExistedWithNicknameOrPhone(ctx context.Context) (bool, *xerror.Er
 	case udb == nil:
 		return false, nil
 	case udb.Nickname == u.Nickname:
-		return true, xerror.NewError(nil, xerror.Code.BDataIsNotAllow, "Nickname is taken. Try another. ")
+		return true, xerror.NewError(nil, xerror.Code.BDataIsNotAllow, "该昵称已经被占用")
 	case udb.Phone == u.Phone:
-		return true, xerror.NewError(nil, xerror.Code.BDataIsNotAllow, "Phone number is taken. Try another. ")
+		return true, xerror.NewError(nil, xerror.Code.BDataIsNotAllow, "此手机号已经被占用")
 	default:
-		return true, xerror.NewError(nil, xerror.Code.BDataIsNotAllow, "User is existed. ")
+		return true, xerror.NewError(nil, xerror.Code.BDataIsNotAllow, "该用户已经存在")
 	}
 }
 
@@ -65,7 +65,7 @@ func (u *User) ComparePassword(password string) (bool, *xerror.Error) {
 		len(u.PasswordDigest) == 0 ||
 		passwordConfig == nil {
 
-		return false, xerror.NewError(nil, xerror.Code.BDataIsNotAllow, "Password or password_digest is blank. ")
+		return false, xerror.NewError(nil, xerror.Code.BDataIsNotAllow, "密码不符合要求")
 	}
 
 	salt, err := base64.RawStdEncoding.DecodeString(u.Salt)
@@ -86,8 +86,28 @@ func (u *User) ComparePassword(password string) (bool, *xerror.Error) {
 	return subtle.ConstantTimeCompare(decodedHash, comparisonHash) == 1, nil
 }
 
-func (u *User) GeneratePassword() *xerror.Error {
+func (u *User) ResetPassword(ctx context.Context, password string) *xerror.Error {
+	u.Password = password
+	err := u.GeneratePassword()
+	if err != nil {
+		return err
+	}
+	defer clearPassword(u)
 
+	udb := &amusinguser.User{
+		Phone:          u.Phone,
+		PasswordDigest: u.PasswordDigest,
+		Salt:           u.Salt,
+	}
+	_, err = amusinguser2.UpdatePassword(ctx, udb)
+	if err != nil {
+		return xerror.NewError(err, err.Code, err.Message)
+	}
+
+	return nil
+}
+
+func (u *User) GeneratePassword() *xerror.Error {
 	if len(u.Password) == 0 || passwordConfig == nil {
 		return xerror.NewError(nil, xerror.Code.BDataIsNotAllow, "Password is blank")
 	}
@@ -170,4 +190,9 @@ func Create(ctx context.Context, user *User) (*User, *xerror.Error) {
 	user.ID = udb.ID
 
 	return user, nil
+}
+
+func clearPassword(u *User) {
+	u.Password = ""
+	u.PasswordDigest = ""
 }

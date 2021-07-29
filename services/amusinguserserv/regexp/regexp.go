@@ -1,4 +1,4 @@
-package regex
+package regexp
 
 import (
 	"fmt"
@@ -8,12 +8,58 @@ import (
 )
 
 const (
-	PhoneRegex    = `^\d{5,11}$`
-	AreaRegex     = `^[0-9a-zA-Z]{3,10}$`
-	NicknameRegex = `\w{5,20}`
-
-	VerificationCodeRegex = `^[0-9a-zA-Z]{6}$`
+	PhoneRegex            = `^\d{5,11}$`
+	AreaRegex             = `^[0-9a-zA-Z]{2,10}$`
+	NicknameRegex         = `\w{5,20}`
+	PasswordRegexpForWeb  = "(?=.*([a-zA-Z].*))(?=.*[0-9].*)[a-zA-Z0-9-*/+.~!@#$%^&*]{6,18}$"
+	VerificationCodeRegex = `^[0-9a-zA-Z]{4,6}$`
 )
+
+type Regexps struct {
+	Regexp Regexp
+}
+
+type Regexp struct {
+	ID    int    `json:"id"`
+	Name  string `json:"name"`
+	Rules string `json:"rules"`
+	Desc  string `json:"desc"`
+}
+
+func AllRegexps() []Regexp {
+	return []Regexp{
+		{
+			ID:    0,
+			Name:  "phone",
+			Rules: PhoneRegex,
+			Desc:  "手机号码是 5 - 11 位数字",
+		},
+		{
+			ID:    1,
+			Name:  "area_code",
+			Rules: AreaRegex,
+			Desc:  "区号为 3 - 10 位数组或者字母",
+		},
+		{
+			ID:    2,
+			Name:  "nickname",
+			Rules: NicknameRegex,
+			Desc:  "昵称为 5 - 20 位字母或者数字",
+		},
+		{
+			ID:    3,
+			Name:  "verification_code",
+			Rules: VerificationCodeRegex,
+			Desc:  "昵称为 4 - 6 位字母或者数字",
+		},
+		{
+			ID:    4,
+			Name:  "password",
+			Rules: PasswordRegexpForWeb,
+			Desc:  "6-16 位字母、数字、特殊字符(~!@#$%^&*)组成，至少包含一个数字和字母",
+		},
+	}
+}
 
 func PhoneNumberValid(phone string) *xerror.Error {
 	matched, err := regexp.MatchString(PhoneRegex, phone)
@@ -79,7 +125,7 @@ func PasswordValid(str string) *xerror.Error {
 
 	if len(str) < 6 || len(str) > 16 {
 		return xerror.NewError(nil, xerror.Code.CParamsError,
-			"The password must contain uppercase and lowercase letters, numbers or punctuation, and must be 6-16 digits long. ")
+			"密码由 6-16 位字母、数字、特殊字符(~!@#$%^&*)组成，至少包含一个数字和字母")
 	}
 
 	for _, s := range str {
@@ -96,10 +142,10 @@ func PasswordValid(str string) *xerror.Error {
 		}
 	}
 
-	if (isUpper && isLower) && (isNumber || isSpecial) {
+	if (isUpper || isLower) && (isNumber || isSpecial) {
 		return nil
 	}
 
 	return xerror.NewError(nil, xerror.Code.CParamsError,
-		"The password must contain uppercase and lowercase letters, numbers or punctuation, and must be 6-16 digits long. ")
+		"密码由 6-16 位字母、数字、特殊字符(~!@#$%^&*)组成，至少包含一个数字和字母")
 }

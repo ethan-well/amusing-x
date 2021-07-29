@@ -1,4 +1,4 @@
-package regex
+package regexp
 
 import "testing"
 
@@ -29,7 +29,7 @@ func TestNicknameValid(t *testing.T) {
 }
 
 func TestVerificationCodeValid(t *testing.T) {
-	if err := VerificationCodeValid("xxxxx1"); err != nil {
+	if err := VerificationCodeValid("3333"); err != nil {
 		t.Fatalf("some error: %s", err)
 	}
 }

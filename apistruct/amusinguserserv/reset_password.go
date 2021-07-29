@@ -7,28 +7,23 @@ import (
 	"strings"
 )
 
-type JoinRequest struct {
-	Nickname         string `json:"nickname"`
+type ResetPasswordRequest struct {
 	Password         string `json:"password,omitempty"`
 	AreaCode         string `json:"area_code"`
 	Phone            string `json:"phone"`
 	VerificationCode string `json:"verification_code"`
 }
 
-type JoinResponse struct {
-	Nickname string `json:"nickname"`
-	AreaCode string `json:"area_code"`
-	Phone    string `json:"phone"`
-}
-
-func (r *JoinRequest) Valid() *xerror.Error {
-	r.Nickname = strings.TrimSpace(r.Nickname)
-	r.Password = strings.TrimSpace(r.Password)
-	r.AreaCode = strings.TrimSpace(r.AreaCode)
+func (r *ResetPasswordRequest) Valid() *xerror.Error {
 	r.Phone = strings.TrimSpace(r.Phone)
-	r.VerificationCode = strings.TrimSpace(r.VerificationCode)
+	r.AreaCode = strings.TrimSpace(r.AreaCode)
+	r.Password = strings.TrimSpace(r.Password)
 
-	if err := regexp.NicknameValid(r.Nickname); err != nil {
+	if err := regexp.PhoneNumberValid(r.Phone); err != nil {
+		return err
+	}
+
+	if err := regexp.AreaCodeValid(r.AreaCode); err != nil {
 		return err
 	}
 
