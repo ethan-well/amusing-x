@@ -5,6 +5,7 @@ import (
 	"amusingx.fit/amusingx/services/amusinguserserv/model"
 	"amusingx.fit/amusingx/services/amusinguserserv/session"
 	"context"
+	"github.com/ItsWewin/superfactory/verificationcode/randomcode"
 	"github.com/ItsWewin/superfactory/xerror"
 	uuid "github.com/satori/go.uuid"
 )
@@ -48,6 +49,27 @@ func (d *Domain) SetUserModelInfo(ctx context.Context) *xerror.Error {
 	}
 
 	d.UserModelInfo = user
+
+	return nil
+}
+
+func (d *Domain) LoginAuthentication(ctx context.Context) *xerror.Error {
+	if d.LoginInfo.LoginByPassword() {
+		return d.ValidPassword(ctx)
+	}
+
+	return d.ValidVerificationCode(ctx)
+}
+
+func (d *Domain) ValidVerificationCode(ctx context.Context) *xerror.Error {
+	if d.UserModelInfo == nil || d.LoginInfo == nil {
+		return xerror.NewError(nil, xerror.Code.BUnexpectedBlankVariable, "user_model_info or log_info is nil")
+	}
+
+	codeStore := randomcode.RandomCodeStoreInit()
+	if !codeStore.Check(d.LoginInfo.VerificationCode) {
+		return xerror.NewError(nil, xerror.Code.CParamsError, "验证码错误")
+	}
 
 	return nil
 }

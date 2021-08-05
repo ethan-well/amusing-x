@@ -50,7 +50,7 @@ func AllRegexps() []Regexp {
 			ID:    3,
 			Name:  "verification_code",
 			Rules: VerificationCodeRegex,
-			Desc:  "昵称为 4 - 6 位字母或者数字",
+			Desc:  "验证码为 4 - 6 位字母或者数字",
 		},
 		{
 			ID:    4,

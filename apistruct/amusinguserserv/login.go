@@ -7,10 +7,19 @@ import (
 )
 
 type LoginRequest struct {
-	Type     int    `json:"type"`
-	AreaCode string `json:"area_code"`
-	Phone    string `json:"phone"`
-	Password string `json:"password"`
+	Type             int    `json:"type"`
+	AreaCode         string `json:"area_code"`
+	Phone            string `json:"phone"`
+	Password         string `json:"password"`
+	VerificationCode string `json:"verification_code"`
+}
+
+func (r *LoginRequest) LoginByPassword() bool {
+	return r.Type == 0
+}
+
+func (r *LoginRequest) LoginByVerificationCode() bool {
+	return r.Type == 1
 }
 
 func (r *LoginRequest) Valid() *xerror.Error {
@@ -30,8 +39,14 @@ func (r *LoginRequest) Valid() *xerror.Error {
 		return err
 	}
 
-	if err := regexp.PasswordValid(r.Password); err != nil {
-		return err
+	if r.Type == 0 {
+		if err := regexp.PasswordValid(r.Password); err != nil {
+			return err
+		}
+	} else {
+		if err := regexp.VerificationCodeValid(r.VerificationCode); err != nil {
+			return err
+		}
 	}
 
 	return nil
