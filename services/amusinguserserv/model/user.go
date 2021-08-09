@@ -21,6 +21,7 @@ type PasswordConfig struct {
 type User struct {
 	ID             int64  `db:"id"`
 	Nickname       string `db:"nickname"`
+	AreaCode       string `json:"area_code"`
 	Phone          string `db:"phone"`
 	PasswordDigest string `db:"password_digest"`
 	Password       string
@@ -35,6 +36,19 @@ var passwordConfig = &PasswordConfig{
 	memory:  64 * 1024,
 	threads: 4,
 	keyLen:  64,
+}
+
+func (u *User) ExistedWithPhone(ctx context.Context) (bool, *xerror.Error) {
+	if len(u.Phone) == 0 {
+		return false, xerror.NewError(nil, xerror.Code.CParamsError, "params is invalid. ")
+	}
+
+	udb, err := FindUserByPhone(ctx, u.AreaCode, u.Phone)
+	if err != nil {
+		return false, err
+	}
+
+	return udb != nil, nil
 }
 
 func (u *User) ExistedWithNicknameOrPhone(ctx context.Context) (bool, *xerror.Error) {

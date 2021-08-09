@@ -69,7 +69,7 @@ func PhoneNumberValid(phone string) *xerror.Error {
 
 	if !matched {
 		msg := fmt.Sprintf("Phone number is invalid, expected regex: %s but get: %s", PhoneRegex, phone)
-		xerror.NewError(nil, xerror.Code.CParamsError, msg)
+		return xerror.NewError(nil, xerror.Code.CParamsError, msg)
 	}
 
 	return nil

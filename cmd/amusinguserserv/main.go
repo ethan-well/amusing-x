@@ -6,6 +6,7 @@ import (
 	"amusingx.fit/amusingx/services/amusinguserserv/router"
 	"amusingx.fit/amusingx/services/amusinguserserv/session"
 	"amusingx.fit/amusingx/services/amusinguserserv/xredis"
+	"amusingx.fit/amusingx/services/amusinguserserv/xrpc"
 	"github.com/ItsWewin/superfactory/powertrain"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
@@ -34,6 +35,11 @@ func InitFunc() {
 	err := session.InitSessionManager("redis", "sid", 24*60*60)
 	if err != nil {
 		panic(err)
+	}
+
+	xErr := xrpc.InitRPCClient()
+	if xErr != nil {
+		panic(xErr)
 	}
 }
 

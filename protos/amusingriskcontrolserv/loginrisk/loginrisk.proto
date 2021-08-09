@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option go_package = "amusing-x.com/riskcontrolserv/loginrisk";
+
+package loginrisk;
+
+service LoginRisk {
+  rpc LoginRiskControl (LoginRiskRequest) returns (LoginRiskReply) {}
+}
+
+message LoginRiskRequest {
+  int64 UserID = 1 [json_name="user_id"];
+  string StrategyType = 2 [json_name="strategy_type"];
+  string Phone = 3 [json_name="phone"];
+  string Action = 4 [json_name="action"];
+}
+
+message LoginRiskReply {
+  bool Result = 1;
+}
+

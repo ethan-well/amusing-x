@@ -30,6 +30,8 @@ type Config struct {
 	SessionStoreRedisPassword  string `config:"session:store.redis.password"`
 	SessionStoreRedisDB        int    `config:"session:store.redis.db"`
 	SessionStoreRedisKeyPrefix string `config:"session:store.redis.key.prefix"`
+
+	RPCAddress string `config:"rpc:amusingriskserver.address"`
 }
 
 func (c *Config) GetAddr() string {

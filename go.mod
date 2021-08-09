@@ -10,6 +10,8 @@ require (
 	github.com/jmoiron/sqlx v1.3.1
 	github.com/satori/go.uuid v1.2.0
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
+	google.golang.org/grpc v1.39.1
+	google.golang.org/protobuf v1.25.0
 )
 
 replace github.com/ItsWewin/superfactory => /Users/klook/workspace/src/github.com/ItsWewin/superfactory

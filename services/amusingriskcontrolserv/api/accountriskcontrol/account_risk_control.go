@@ -1,7 +1,7 @@
 package accountriskcontrol
 
 import (
-	"amusingx.fit/amusingx/apistruct/amusingriskcontrolserv"
+	"amusingx.fit/amusingx/protos/amusingriskcontrolserv/loginrisk/loginrisk"
 	"amusingx.fit/amusingx/services/amusingriskcontrolserv/app/verificationcoderisk"
 	"context"
 	"github.com/ItsWewin/superfactory/httputil"
@@ -30,8 +30,8 @@ func LoginControl(w http.ResponseWriter, r *http.Request) {
 	rest.SucceedJsonResponse(w, "succeed")
 }
 
-func getAndValidParams(r *http.Request) (*amusingriskcontrolserv.LoginRiskControlRequest, *xerror.Error) {
-	req := amusingriskcontrolserv.LoginRiskControlRequest{}
+func getAndValidParams(r *http.Request) (*loginrisk.LoginRiskRequest, *xerror.Error) {
+	req := loginrisk.LoginRiskRequest{}
 
 	err := httputil.DecodeJsonBody(r, &req)
 	if err != nil {
