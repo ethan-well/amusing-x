@@ -1,11 +1,12 @@
 package main
 
 import (
-	"amusingx.fit/amusingx/services/amusinguserserv/conf"
-	"amusingx.fit/amusingx/services/amusinguserserv/mysql/amusinguser"
-	"amusingx.fit/amusingx/services/amusinguserserv/router"
-	"amusingx.fit/amusingx/services/amusinguserserv/session"
-	"amusingx.fit/amusingx/services/amusinguserserv/xredis"
+	"amusingx.fit/amusingx/services/amusingwebapiserv/conf"
+	"amusingx.fit/amusingx/services/amusingwebapiserv/mysql/amusingxwebapi"
+	"amusingx.fit/amusingx/services/amusingwebapiserv/router"
+	"amusingx.fit/amusingx/services/amusingwebapiserv/rpcclient"
+	"amusingx.fit/amusingx/services/amusingwebapiserv/session"
+	"amusingx.fit/amusingx/services/amusingwebapiserv/xredis"
 	"github.com/ItsWewin/superfactory/powertrain"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
@@ -27,7 +28,7 @@ func main() {
 // 服务初始化时候执行
 func InitFunc() {
 	log.Println("amusing api sever listen:", conf.Conf.Addr)
-	amusinguser.InitMySQL()
+	amusingxwebapi.InitMySQL()
 
 	xredis.InitRedis(conf.Conf.RedisAddr, conf.Conf.RedisPassword, conf.Conf.RedisDB)
 
@@ -35,11 +36,34 @@ func InitFunc() {
 	if err != nil {
 		panic(err)
 	}
+
+	initRPCClient()
 }
 
 // 服务执行完毕时候执行
 func DeferFunc() {
-	amusinguser.MysqlDisConnect()
+	amusingxwebapi.MysqlDisConnect()
 
 	xredis.CloseRedis()
+
+	closeRPCClient()
+}
+
+func initRPCClient() {
+	xErr := rpcclient.InitRiskServerRPCClient()
+	if xErr != nil {
+		panic(xErr)
+	}
+
+	xErr = rpcclient.InitUserServerRPCClient()
+	if xErr != nil {
+		panic(xErr)
+	}
+}
+
+// 关闭 rpc 连接
+func closeRPCClient() {
+	rpcclient.RiskServerRPCClientClose()
+
+	rpcclient.UserServerRPCClientClose()
 }

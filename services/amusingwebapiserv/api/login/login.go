@@ -2,8 +2,8 @@ package login
 
 import (
 	"amusingx.fit/amusingx/apistruct/amusinguserserv"
-	"amusingx.fit/amusingx/services/amusinguserserv/app/loginapp"
-	"amusingx.fit/amusingx/services/amusinguserserv/session"
+	"amusingx.fit/amusingx/services/amusingwebapiserv/app/loginapp"
+	"amusingx.fit/amusingx/services/amusingwebapiserv/session"
 	"context"
 	"github.com/ItsWewin/superfactory/httputil"
 	"github.com/ItsWewin/superfactory/httputil/rest"

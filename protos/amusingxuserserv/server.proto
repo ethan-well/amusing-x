@@ -1,0 +1,13 @@
+syntax="proto3";
+
+option go_package="amusing-x.com/userservice/userservice";
+
+package userservice;
+
+import "regexp.proto";
+
+service AmusingxUserService {
+  rpc Pong(BlankParams) returns (PongResponse) {}
+}
+
+message BlankParams {}

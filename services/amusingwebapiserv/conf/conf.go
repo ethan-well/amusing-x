@@ -33,7 +33,7 @@ type Config struct {
 
 	RiskServiceRPCAddress string `config:"rpc:amusingriskservice.address"`
 
-	RPCNetwork            string `config:"rpc:network"`
+	RPCNetwork            string `rpc:network`
 	UserServiceRPCAddress string `config:"rpc:amusingxuserservice.address"`
 }
 

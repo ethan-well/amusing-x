@@ -4,9 +4,10 @@ import (
 	"amusingx.fit/amusingx/services/amusinguserserv/conf"
 	"amusingx.fit/amusingx/services/amusinguserserv/mysql/amusinguser"
 	"amusingx.fit/amusingx/services/amusinguserserv/router"
+	"amusingx.fit/amusingx/services/amusinguserserv/rpcclient"
+	rpcserver2 "amusingx.fit/amusingx/services/amusinguserserv/rpcserver"
 	"amusingx.fit/amusingx/services/amusinguserserv/session"
 	"amusingx.fit/amusingx/services/amusinguserserv/xredis"
-	"amusingx.fit/amusingx/services/amusinguserserv/xrpc"
 	"github.com/ItsWewin/superfactory/powertrain"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
@@ -37,9 +38,14 @@ func InitFunc() {
 		panic(err)
 	}
 
-	xErr := xrpc.InitRPCClient()
+	xErr := rpcclient.InitRPCClient()
 	if xErr != nil {
 		panic(xErr)
+	}
+
+	err = rpcserver2.InitRPCService()
+	if err != nil {
+		panic(err)
 	}
 }
 
@@ -48,4 +54,7 @@ func DeferFunc() {
 	amusinguser.MysqlDisConnect()
 
 	xredis.CloseRedis()
+
+	// 关闭 rpc 连接
+	rpcclient.RPCClientClose()
 }
