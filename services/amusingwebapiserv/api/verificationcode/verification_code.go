@@ -93,7 +93,7 @@ func riskControl(ctx context.Context, phone string) *xerror.Error {
 		Action:       "value_verify",
 	}
 
-	reply, err := riskrpcserver.RPCClient.RiskServerRPCClient.LoginRiskControl(ctx, req)
+	reply, err := riskrpcserver.RPCClient.Client.LoginRiskControl(ctx, req)
 	if err != nil {
 		return xerror.NewError(err, xerror.Code.BUnexpectedData, "riskControl request risk control failed")
 	}
@@ -112,7 +112,7 @@ func riskControlValueVerifyAdd(ctx context.Context, phone string) {
 		Action:       "value_add",
 	}
 
-	reply, err := riskrpcserver.RPCClient.RiskServerRPCClient.LoginRiskControl(ctx, req)
+	reply, err := riskrpcserver.RPCClient.Client.LoginRiskControl(ctx, req)
 	if err != nil {
 		err := xerror.NewError(err, xerror.Code.BUnexpectedData, "request risk control failed")
 		logger.Errorf("riskControlValueVerifyAdd failed: %s", err.Error())

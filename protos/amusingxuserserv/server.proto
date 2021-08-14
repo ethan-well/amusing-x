@@ -5,9 +5,22 @@ option go_package="amusing-x.com/userservice/userservice";
 package userservice;
 
 import "regexp.proto";
+import "login.proto";
+import "join.proto";
+import "country_code.proto";
+import "verification_code.proto";
+import "verification_code_check.proto";
+import "reset_password.proto";
 
 service AmusingxUserService {
   rpc Pong(BlankParams) returns (PongResponse) {}
+  rpc Regexps(BlankParams) returns (RegexpResponse) {}
+  rpc Login(LoginRequest) returns(LoginResponse) {}
+  rpc Join(JoinRequest) returns (JoinResponse) {}
+  rpc CountryCodes(BlankParams) returns (CountryCodeList) {}
+  rpc GetVerificationCode(VerificationCodeRequest) returns (VerificationCodeResponse) {}
+  rpc VerificationCodeCheck(VerificationCodeCheckRequest) returns (VerificationCodeCheckResponse) {}
+  rpc ResetPassword(ResetPasswordRequest) returns (ResetPasswordResponse) {}
 }
 
 message BlankParams {}

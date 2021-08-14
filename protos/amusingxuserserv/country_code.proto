@@ -1,0 +1,17 @@
+syntax="proto3";
+
+option  go_package = "amusing-x.com/userservice/userservice";
+
+package userservice;
+
+message CountryCode {
+  int64 ID = 1;
+  string Cname = 2;
+  string Code = 3;
+  string CreateTime = 4;
+  string UpdateTime = 5;
+}
+
+message CountryCodeList {
+  repeated CountryCode CountryCodeList = 1;
+}

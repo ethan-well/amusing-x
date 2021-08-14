@@ -3,7 +3,6 @@ package main
 import (
 	"amusingx.fit/amusingx/services/amusinguserserv/conf"
 	"amusingx.fit/amusingx/services/amusinguserserv/mysql/amusinguser"
-	"amusingx.fit/amusingx/services/amusinguserserv/router"
 	"amusingx.fit/amusingx/services/amusinguserserv/rpcclient"
 	rpcserver2 "amusingx.fit/amusingx/services/amusinguserserv/rpcserver"
 	"amusingx.fit/amusingx/services/amusinguserserv/session"
@@ -19,7 +18,7 @@ func main() {
 		o.InitFunc = InitFunc
 		o.DeferFunc = DeferFunc
 		o.RegisterRouter = func(mux *mux.Router) {
-			router.Register(mux)
+			//router.Register(mux)
 		}
 	})
 

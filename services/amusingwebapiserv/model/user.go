@@ -2,7 +2,6 @@ package model
 
 import (
 	"amusingx.fit/amusingx/mysqlstruct/amusinguser"
-	amusinguser2 "amusingx.fit/amusingx/services/amusingwebapiserv/mysql/amusinguser"
 	"amusingx.fit/amusingx/services/amusingwebapiserv/mysql/amusingxwebapi"
 	"context"
 	"crypto/rand"
@@ -114,7 +113,7 @@ func (u *User) ResetPassword(ctx context.Context, password string) *xerror.Error
 		PasswordDigest: u.PasswordDigest,
 		Salt:           u.Salt,
 	}
-	_, err = amusinguser2.UpdatePassword(ctx, udb)
+	_, err = amusingxwebapi.UpdatePassword(ctx, udb)
 	if err != nil {
 		return xerror.NewError(err, err.Code, err.Message)
 	}
@@ -143,7 +142,7 @@ func (u *User) GeneratePassword() *xerror.Error {
 }
 
 func FindUserByID(ctx context.Context, id int64) (*User, *xerror.Error) {
-	user, err := amusinguser2.QueryUserByIdContext(ctx, id)
+	user, err := amusingxwebapi.QueryUserByIdContext(ctx, id)
 	if err != nil {
 		return nil, err
 	}
@@ -161,7 +160,7 @@ func FindUserByID(ctx context.Context, id int64) (*User, *xerror.Error) {
 }
 
 func FindUserByPhone(ctx context.Context, areaCode, phone string) (*User, *xerror.Error) {
-	user, err := amusinguser2.QueryUserByPhone(ctx, areaCode+"-"+phone)
+	user, err := amusingxwebapi.QueryUserByPhone(ctx, areaCode+"-"+phone)
 	if err != nil {
 		return nil, err
 	}
@@ -197,7 +196,7 @@ func Create(ctx context.Context, user *User) (*User, *xerror.Error) {
 		Salt:           user.Salt,
 	}
 
-	udb, err = amusinguser2.Insert(ctx, udb)
+	udb, err = amusingxwebapi.Insert(ctx, udb)
 	if err != nil {
 		return nil, err
 	}
