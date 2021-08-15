@@ -1,7 +1,7 @@
 package rpcclient
 
 import (
-	"amusingx.fit/amusingx/protos/amusingriskcontrolserv/loginrisk/loginrisk"
+	"amusingx.fit/amusingx/protos/amusingriskservice/riskservice/loginrisk"
 	"amusingx.fit/amusingx/services/amusinguserserv/conf"
 	"amusingx.fit/amusingx/services/amusinguserserv/rpcclient/amusingxriskrpcserver"
 	"context"

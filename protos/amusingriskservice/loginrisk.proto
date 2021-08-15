@@ -1,12 +1,8 @@
 syntax = "proto3";
 
-option go_package = "amusing-x.com/riskcontrolserv/loginrisk";
+option go_package = "amusing-x.com/riskservice/riskservice";
 
-package loginrisk;
-
-service LoginRisk {
-  rpc LoginRiskControl (LoginRiskRequest) returns (LoginRiskReply) {}
-}
+package riskservice;
 
 message LoginRiskRequest {
   int64 UserID = 1 [json_name="user_id"];

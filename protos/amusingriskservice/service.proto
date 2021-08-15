@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option go_package = "amusing-x.com/riskservice/riskservice";
+
+package riskservice;
+
+import "loginrisk.proto";
+import "pong.proto";
+
+service RiskService {
+  rpc LoginRiskControl (LoginRiskRequest) returns (LoginRiskReply) {}
+  rpc Pong (blankParams) returns (PongReply) {}
+}
+
+message blankParams {}

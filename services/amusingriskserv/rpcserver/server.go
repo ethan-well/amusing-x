@@ -1,9 +1,9 @@
 package rpcserver
 
 import (
-	"amusingx.fit/amusingx/protos/amusingriskcontrolserv/loginrisk/loginrisk"
+	riskservice2 "amusingx.fit/amusingx/protos/amusingriskservice/riskservice"
 	"amusingx.fit/amusingx/services/amusingriskserv/conf"
-	"amusingx.fit/amusingx/services/amusingriskserv/rpcserver/loginriskserver"
+	"amusingx.fit/amusingx/services/amusingriskserv/rpcserver/riskservice"
 	"github.com/ItsWewin/superfactory/logger"
 	"github.com/ItsWewin/superfactory/xerror"
 	"google.golang.org/grpc"
@@ -19,7 +19,7 @@ var Server *RPCService
 func InitRPCServer() *xerror.Error {
 	rpcServ := grpc.NewServer()
 
-	loginrisk.RegisterLoginRiskServer(rpcServ, new(loginriskserver.LoginRiskServer))
+	riskservice2.RegisterRiskServiceServer(rpcServ, new(riskservice.LoginRiskService))
 
 	logger.Infof("InitRPCServer. network: %s, addr: %s", conf.Conf.RPCNetwork, conf.Conf.RPCAddress)
 

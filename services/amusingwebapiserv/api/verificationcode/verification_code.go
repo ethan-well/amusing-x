@@ -2,7 +2,7 @@ package verificationcode
 
 import (
 	"amusingx.fit/amusingx/apistruct/amusinguserserv"
-	"amusingx.fit/amusingx/protos/amusingriskcontrolserv/loginrisk/loginrisk"
+	"amusingx.fit/amusingx/protos/amusingriskservice/riskservice"
 	"amusingx.fit/amusingx/services/amusingwebapiserv/model"
 	"amusingx.fit/amusingx/services/amusingwebapiserv/rpcclient/riskrpcserver"
 	"context"
@@ -87,7 +87,7 @@ func getAndValidParams(ctx context.Context, r *http.Request) (*amusinguserserv.V
 }
 
 func riskControl(ctx context.Context, phone string) *xerror.Error {
-	req := &loginrisk.LoginRiskRequest{
+	req := &riskservice.LoginRiskRequest{
 		StrategyType: "verification_code",
 		Phone:        phone,
 		Action:       "value_verify",
@@ -106,7 +106,7 @@ func riskControl(ctx context.Context, phone string) *xerror.Error {
 }
 
 func riskControlValueVerifyAdd(ctx context.Context, phone string) {
-	req := &loginrisk.LoginRiskRequest{
+	req := &riskservice.LoginRiskRequest{
 		StrategyType: "verification_code",
 		Phone:        phone,
 		Action:       "value_add",

@@ -2,7 +2,7 @@ package userservice
 
 import (
 	"amusingx.fit/amusingx/protos/amusingxuserserv/userservice"
-	"amusingx.fit/amusingx/services/amusinguserserv/regexp"
+	"amusingx.fit/amusingx/regexp"
 	"amusingx.fit/amusingx/services/amusinguserserv/rpcserver/userservice/controller/countrycode"
 	password "amusingx.fit/amusingx/services/amusinguserserv/rpcserver/userservice/controller/findpassword"
 	"amusingx.fit/amusingx/services/amusinguserserv/rpcserver/userservice/controller/join"

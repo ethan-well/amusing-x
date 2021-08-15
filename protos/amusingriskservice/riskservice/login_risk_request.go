@@ -1,6 +1,8 @@
-package loginrisk
+package riskservice
 
-import "github.com/ItsWewin/superfactory/xerror"
+import (
+	"github.com/ItsWewin/superfactory/xerror"
+)
 
 var StrategyType = []string{"verification_code"}
 

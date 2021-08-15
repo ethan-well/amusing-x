@@ -1,14 +1,14 @@
 package amusingxriskrpcserver
 
 import (
-	"amusingx.fit/amusingx/protos/amusingriskcontrolserv/loginrisk/loginrisk"
+	"amusingx.fit/amusingx/protos/amusingriskservice/riskservice"
 	"github.com/ItsWewin/superfactory/xerror"
 	"google.golang.org/grpc"
 	"sync"
 )
 
 type RPCServerClients struct {
-	RiskServerRPCClient loginrisk.LoginRiskClient
+	RiskServerRPCClient riskservice.RiskServiceClient
 	CC                  *grpc.ClientConn
 }
 
@@ -27,7 +27,7 @@ func InitAmusingXRiskServerRPCClient(cc *grpc.ClientConn) *xerror.Error {
 
 	once.Do(func() {
 		RiskServerRPCClient = &RPCServerClients{
-			RiskServerRPCClient: loginrisk.NewLoginRiskClient(cc),
+			RiskServerRPCClient: riskservice.NewRiskServiceClient(cc),
 			CC:                  cc,
 		}
 	})

@@ -1,13 +1,13 @@
 package verificationcoderisk
 
 import (
-	"amusingx.fit/amusingx/protos/amusingriskcontrolserv/loginrisk/loginrisk"
+	"amusingx.fit/amusingx/protos/amusingriskservice/riskservice"
 	"amusingx.fit/amusingx/services/amusingriskserv/model/verificationcontrolmodel"
 	"context"
 	"github.com/ItsWewin/superfactory/xerror"
 )
 
-func LoginRiskControl(ctx context.Context, req *loginrisk.LoginRiskRequest) *xerror.Error {
+func LoginRiskControl(ctx context.Context, req *riskservice.LoginRiskRequest) *xerror.Error {
 	if req == nil {
 		return xerror.NewError(nil, xerror.Code.CParamsError, "request is nil")
 	}
@@ -20,7 +20,7 @@ func LoginRiskControl(ctx context.Context, req *loginrisk.LoginRiskRequest) *xer
 	return xerror.NewError(nil, xerror.Code.CUnexpectRequestDate, "strategy_type is invalid")
 }
 
-func verificationCodeRiskControl(ctx context.Context, req *loginrisk.LoginRiskRequest) *xerror.Error {
+func verificationCodeRiskControl(ctx context.Context, req *riskservice.LoginRiskRequest) *xerror.Error {
 	verificationCodeModel := verificationcontrolmodel.NewModel()
 
 	err := verificationCodeModel.SetPhoneNumber(req.Phone)

@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+option go_package = "amusing-x.com/riskservice/riskservice";
+
+package riskservice;
+
+message PongReply {
+  string result = 1;
+}
+

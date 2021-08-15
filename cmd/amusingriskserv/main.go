@@ -3,7 +3,6 @@ package main
 import (
 	"amusingx.fit/amusingx/services/amusingriskserv/conf"
 	"amusingx.fit/amusingx/services/amusingriskserv/mysql/amusingriskcontrol"
-	"amusingx.fit/amusingx/services/amusingriskserv/router"
 	"amusingx.fit/amusingx/services/amusingriskserv/rpcserver"
 	"amusingx.fit/amusingx/services/amusingriskserv/xredis"
 	"github.com/ItsWewin/superfactory/powertrain"
@@ -17,7 +16,7 @@ func main() {
 		o.InitFunc = InitFunc
 		o.DeferFunc = DeferFunc
 		o.RegisterRouter = func(mux *mux.Router) {
-			router.Register(mux)
+			//router.Register(mux)
 		}
 	})
 
