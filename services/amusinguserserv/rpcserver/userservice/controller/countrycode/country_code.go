@@ -16,7 +16,7 @@ func HandleCountryCodeList(ctx context.Context) (*userservice.CountryCodeList, *
 	var countryCodeList = make([]*userservice.CountryCode, 0)
 	for _, code := range codeList {
 		countryCodeList = append(countryCodeList, &userservice.CountryCode{
-			ID:         code.ID,
+			Id:         code.ID,
 			Cname:      code.Cname,
 			Code:       code.Code,
 			CreateTime: code.CreateTime,

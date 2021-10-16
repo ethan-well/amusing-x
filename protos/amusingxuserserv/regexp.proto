@@ -5,18 +5,18 @@ option  go_package = "amusing-x.com/userservice/userservice";
 package userservice;
 
 message RegexpResponse {
-  repeated Regexp Regexps = 1;
+  repeated Regexp regexps = 1;
 }
 
 message Regexp {
-  int64 ID = 1;
-  string Name = 2;
-  string Rules = 3;
-  string Desc = 4;
+  int64 id = 1;
+  string name = 2;
+  string rules = 3;
+  string desc = 4;
 }
 
 message PongResponse {
-  string ServerName = 1;
+  string serverName = 1;
 }
 
 

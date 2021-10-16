@@ -6,9 +6,9 @@ import (
 
 var StrategyType = []string{"verification_code"}
 
-func (r *LoginRiskRequest) ValidStrategyType() bool {
+func (x *LoginRiskRequest) ValidStrategyType() bool {
 	for _, st := range StrategyType {
-		if st == r.StrategyType {
+		if st == x.StrategyType {
 			return true
 		}
 	}
@@ -17,42 +17,42 @@ func (r *LoginRiskRequest) ValidStrategyType() bool {
 }
 
 // 策略控制值增加
-func (r *LoginRiskRequest) IsValueAddAction() bool {
-	return r.Action == "value_add"
+func (x *LoginRiskRequest) IsValueAddAction() bool {
+	return x.Action == "value_add"
 }
 
 // 策略控制值验证
-func (r *LoginRiskRequest) IsValueVerifyAction() bool {
-	return r.Action == "value_verify"
+func (x *LoginRiskRequest) IsValueVerifyAction() bool {
+	return x.Action == "value_verify"
 }
 
-func (r *LoginRiskRequest) IsVerificationCodeStrategy() bool {
-	return r.StrategyType == "verification_code"
+func (x *LoginRiskRequest) IsVerificationCodeStrategy() bool {
+	return x.StrategyType == "verification_code"
 }
 
-func (r *LoginRiskRequest) VerificationCodeStrategyRequestValid() *xerror.Error {
-	if len(r.Phone) == 0 {
+func (x *LoginRiskRequest) VerificationCodeStrategyRequestValid() *xerror.Error {
+	if len(x.Phone) == 0 {
 		return xerror.NewError(nil, xerror.Code.CParamsError, "params 'phone' is expected")
 	}
 
-	if !r.IsValueAddAction() && !r.IsValueVerifyAction() {
+	if !x.IsValueAddAction() && !x.IsValueVerifyAction() {
 		return xerror.NewError(nil, xerror.Code.CParamsError, "params 'action' is expected")
 	}
 
 	return nil
 }
 
-func (r *LoginRiskRequest) Valid() *xerror.Error {
-	if len(r.StrategyType) == 0 {
+func (x *LoginRiskRequest) Valid() *xerror.Error {
+	if len(x.StrategyType) == 0 {
 		return xerror.NewError(nil, xerror.Code.CUnexpectRequestDate, "strategy_type is expected")
 	}
 
-	if !r.ValidStrategyType() {
+	if !x.ValidStrategyType() {
 		return xerror.NewError(nil, xerror.Code.CParamsError, "strategy_type is invalid")
 	}
 
-	if r.IsVerificationCodeStrategy() {
-		return r.VerificationCodeStrategyRequestValid()
+	if x.IsVerificationCodeStrategy() {
+		return x.VerificationCodeStrategyRequestValid()
 	}
 
 	return nil

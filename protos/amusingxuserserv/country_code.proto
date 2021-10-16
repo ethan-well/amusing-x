@@ -5,13 +5,13 @@ option  go_package = "amusing-x.com/userservice/userservice";
 package userservice;
 
 message CountryCode {
-  int64 ID = 1;
-  string Cname = 2;
-  string Code = 3;
-  string CreateTime = 4;
-  string UpdateTime = 5;
+  int64 id = 1;
+  string cname = 2;
+  string code = 3;
+  string create_time = 4;
+  string update_time = 5;
 }
 
 message CountryCodeList {
-  repeated CountryCode CountryCodeList = 1;
+  repeated CountryCode country_code_list = 1;
 }

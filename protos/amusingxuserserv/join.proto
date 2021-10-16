@@ -5,15 +5,15 @@ option  go_package = "amusing-x.com/userservice/userservice";
 package userservice;
 
 message JoinRequest {
-  string Nickname = 1;
-  string Password = 2;
-  string AreaCode = 3;
-  string Phone = 4;
-  string VerificationCode = 5;
+  string nickname = 1;
+  string password = 2;
+  string areaCode = 3;
+  string phone = 4;
+  string verification_code = 5;
 }
 
 message JoinResponse {
-  string Nickname = 1;
-  string AreaCode = 2;
-  string Phone = 3;
+  string nickname = 1;
+  string area_code = 2;
+  string phone = 3;
 }

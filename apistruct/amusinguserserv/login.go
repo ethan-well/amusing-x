@@ -1,7 +1,7 @@
 package amusinguserserv
 
 import (
-	"amusingx.fit/amusingx/services/amusinguserserv/regexp"
+	"amusingx.fit/amusingx/regexp"
 	"github.com/ItsWewin/superfactory/xerror"
 	"strings"
 )

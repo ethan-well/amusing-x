@@ -2,9 +2,10 @@ package login
 
 import (
 	"amusingx.fit/amusingx/protos/amusingxuserserv/userservice"
-	"amusingx.fit/amusingx/services/amusinguserserv/regexp"
+	"amusingx.fit/amusingx/regexp"
 	"amusingx.fit/amusingx/services/amusinguserserv/rpcserver/userservice/handler/loginapp"
 	"context"
+	"github.com/ItsWewin/superfactory/logger"
 	"github.com/ItsWewin/superfactory/xerror"
 )
 
@@ -49,6 +50,8 @@ func ParamsValid(x *userservice.LoginRequest) *xerror.Error {
 
 func Login(ctx context.Context, loginRequest *userservice.LoginRequest) (string, *xerror.Error) {
 	loginDomain := loginapp.NewDomain()
+
+	logger.Infof("loginRequest: %s", logger.ToJson(loginRequest))
 
 	err := loginDomain.SetLoginRequestInfo(loginRequest)
 	if err != nil {

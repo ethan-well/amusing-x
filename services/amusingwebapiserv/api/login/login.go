@@ -22,6 +22,7 @@ func HandlerLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	logger.Infof("HandlerLogin getAndValidParams: %s", logger.ToJson(req))
 	response, err := userrpcserver.RPCClient.Client.Login(ctx, req)
 	if err != nil {
 		logger.Errorf("Login failed, err: %s", err)

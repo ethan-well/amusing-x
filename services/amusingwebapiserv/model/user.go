@@ -21,7 +21,7 @@ type PasswordConfig struct {
 type User struct {
 	ID             int64  `db:"id"`
 	Nickname       string `db:"nickname"`
-	AreaCode       string `json:"area_code"`
+	AreaCode       string `db:"area_code"`
 	Phone          string `db:"phone"`
 	PasswordDigest string `db:"password_digest"`
 	Password       string

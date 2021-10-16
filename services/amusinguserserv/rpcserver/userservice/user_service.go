@@ -25,7 +25,7 @@ func (s *UserService) Regexps(ctx context.Context, blank *userservice.BlankParam
 	regexps := make([]*userservice.Regexp, 0)
 	for _, regexp := range regexp.AllRegexps {
 		regexps = append(regexps, &userservice.Regexp{
-			ID:    regexp.ID,
+			Id:    regexp.ID,
 			Name:  regexp.Name,
 			Rules: regexp.Rules,
 			Desc:  regexp.Desc,
@@ -42,7 +42,7 @@ func (s *UserService) Login(ctx context.Context, in *userservice.LoginRequest) (
 		return nil, errors.New("Login failed. ")
 	}
 
-	return &userservice.LoginResponse{SessionID: sessionID}, err
+	return &userservice.LoginResponse{SessionId: sessionID}, err
 }
 
 func (s *UserService) Join(ctx context.Context, in *userservice.JoinRequest) (*userservice.JoinResponse, error) {

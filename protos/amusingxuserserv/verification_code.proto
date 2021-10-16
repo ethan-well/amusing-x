@@ -5,12 +5,12 @@ option  go_package = "amusing-x.com/userservice/userservice";
 package userservice;
 
 message VerificationCodeRequest {
-	string Phone = 1;
-	string Action = 2;
-	string AreaCode = 3;
+	string phone = 1;
+	string action = 2;
+	string area_code = 3;
 }
 
 message VerificationCodeResponse {
-	string Code = 1;
+	string code = 1;
 }
 

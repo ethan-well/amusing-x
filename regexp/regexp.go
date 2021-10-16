@@ -16,39 +16,39 @@ const (
 )
 
 type Regexp struct {
-	ID    int64
-	Name  string
-	Rules string
-	Desc  string
+	ID    int64  `json:"id"`
+	Name  string `json:"name"`
+	Rules string `json:"rules"`
+	Desc  string `json:"desc"`
 }
 
 var AllRegexps = []*Regexp{
 	{
-		ID:    0,
+		ID:    1,
 		Name:  "phone",
 		Rules: PhoneRegex,
 		Desc:  "手机号码是 5 - 11 位数字",
 	},
 	{
-		ID:    1,
+		ID:    2,
 		Name:  "area_code",
 		Rules: AreaRegex,
 		Desc:  "区号为 3 - 10 位数组或者字母",
 	},
 	{
-		ID:    2,
+		ID:    3,
 		Name:  "nickname",
 		Rules: NicknameRegex,
 		Desc:  "昵称为 5 - 20 位字母或者数字",
 	},
 	{
-		ID:    3,
+		ID:    4,
 		Name:  "verification_code",
 		Rules: VerificationCodeRegex,
 		Desc:  "验证码为 4 - 6 位字母或者数字",
 	},
 	{
-		ID:    4,
+		ID:    5,
 		Name:  "password",
 		Rules: PasswordRegexpForWeb,
 		Desc:  "6-16 位字母、数字、特殊字符(~!@#$%^&*)组成，至少包含一个数字和字母",

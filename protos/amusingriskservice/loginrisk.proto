@@ -5,13 +5,13 @@ option go_package = "amusing-x.com/riskservice/riskservice";
 package riskservice;
 
 message LoginRiskRequest {
-  int64 UserID = 1 [json_name="user_id"];
-  string StrategyType = 2 [json_name="strategy_type"];
-  string Phone = 3 [json_name="phone"];
-  string Action = 4 [json_name="action"];
+  int64 user_id = 1 [json_name="user_id"];
+  string strategy_type = 2 [json_name="strategy_type"];
+  string phone = 3 [json_name="phone"];
+  string action = 4 [json_name="action"];
 }
 
 message LoginRiskReply {
-  bool Result = 1;
+  bool result = 1;
 }
 

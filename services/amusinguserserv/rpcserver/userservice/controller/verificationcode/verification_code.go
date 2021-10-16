@@ -24,6 +24,8 @@ func HandlerVerificationCode(ctx context.Context,
 		return nil, err
 	}
 
+	logger.Infof("HandlerVerificationCode getAndValidParams: %s", logger.ToJson(req))
+
 	codeStore := randomcode.RandomCodeStoreInit()
 	randomCode, err := codeStore.Generate()
 	if err != nil {
