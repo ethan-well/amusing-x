@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+option go_package = "amusing-x.com/pluto/plutoservice";
+
+package plutoservice;
+
+message InventoryQueryRequest {
+  int64 id = 1;
+}
+
+message InventoryQueryResponse {
+  int64 id = 1;
+  int64 totalInventory = 2;
+  int64 availableInventory = 3;
+  int64 lockedInventory = 4;
+}

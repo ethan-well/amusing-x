@@ -1,7 +1,7 @@
 package rpcclient
 
 import (
-	"amusingx.fit/amusingx/protos/amusingriskservice/riskservice/loginrisk"
+	"amusingx.fit/amusingx/protos/amusingriskservice/riskservice"
 	"amusingx.fit/amusingx/protos/amusingxuserserv/userservice"
 	"amusingx.fit/amusingx/services/amusingwebapiserv/conf"
 	"amusingx.fit/amusingx/services/amusingwebapiserv/rpcclient/riskrpcserver"
@@ -18,8 +18,8 @@ func TestInitRiskServerRPCClient(t *testing.T) {
 		t.Fatalf("some error: %s", xErr)
 	}
 
-	req := &loginrisk.LoginRiskRequest{
-		UserID:       0,
+	req := &riskservice.LoginRiskRequest{
+		UserId:       0,
 		StrategyType: "",
 		Phone:        "",
 		Action:       "",

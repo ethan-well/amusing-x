@@ -1,0 +1,18 @@
+syntax="proto3";
+
+option go_package = "amusing-x.com/pluto/plutoservice";
+
+package plutoservice;
+
+message InventoryCacheInitRequest {
+  enum CacheObjType {
+    Book = 0;
+    Mac = 1;
+  }
+  CacheObjType obj = 1;
+}
+
+message InventoryCacheInitResponse {
+  bool Succeed = 1;
+  string Message = 2;
+}

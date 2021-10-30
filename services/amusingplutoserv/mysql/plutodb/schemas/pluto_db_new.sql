@@ -1,1 +1,1 @@
-package schemas
+CREATE DATABASE IF NOT EXISTS plutodb;

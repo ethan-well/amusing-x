@@ -4,8 +4,17 @@ option go_package = "amusing-x.com/pluto/plutoservice";
 
 package plutoservice;
 
+import "inventory_query.proto";
+import "inventory_lock.proto";
+import "inventory_unlock.proto";
+import "inventory_cache_init.proto";
+
 service AmusingxPlutoService {
   rpc Pong(BlankParams) returns (PongResponse) {}
+  rpc InventoryCacheInit(InventoryCacheInitRequest) returns (InventoryCacheInitResponse) {}
+  rpc InventoryQuery(InventoryQueryRequest) returns (InventoryQueryResponse) {}
+  rpc InventoryLock(InventoryLockRequest) returns (InventoryLockResponse) {}
+  rpc InventoryUnlock(InventoryUnlockRequest) returns (InventoryUnlockResponse) {}
 }
 
 message BlankParams{}

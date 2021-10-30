@@ -1,0 +1,15 @@
+syntax="proto3";
+
+option go_package = "amusing-x.com/pluto/plutoservice";
+
+package plutoservice;
+
+message InventoryLockRequest {
+  int64 id = 1;
+  int64 count = 2;
+}
+
+message InventoryLockResponse {
+  bool succeed = 1;
+  string message = 2;
+}

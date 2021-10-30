@@ -2,24 +2,46 @@ package amusingplutoserv
 
 import (
 	"amusingx.fit/amusingx/protos/amusingplutoservice/plutoservice"
+	"amusingx.fit/amusingx/rpcclient"
 	"amusingx.fit/amusingx/services/amusingplutoserv/conf"
-	"amusingx.fit/amusingx/tool/grpctester"
-	"context"
-	"github.com/ItsWewin/superfactory/logger"
-	"testing"
+	"github.com/ItsWewin/superfactory/xerror"
+	"google.golang.org/grpc"
 )
 
-func TestPlutoService(t *testing.T) {
-	clientConn, xErr := grpctester.InitRPCClient(conf.Conf.RPCAddress)
-	if xErr != nil {
-		t.Fatal(xErr)
+var (
+	Conn   *grpc.ClientConn
+	Client plutoservice.AmusingxPlutoServiceClient
+)
+
+func init() {
+	if Client == nil {
+		InitClient(conf.Conf.RPCAddress)
+	}
+}
+
+func InitClient(addr string) *xerror.Error {
+	if Conn != nil {
+		return nil
 	}
 
-	client := plutoservice.NewAmusingxPlutoServiceClient(clientConn.Conn)
+	var err *xerror.Error
+	if len(addr) == 0 {
+		return xerror.NewErrorf(nil, xerror.Code.SUnexpectedErr, "addr is blank")
+	}
 
-	response, err := client.Pong(context.Background(), &plutoservice.BlankParams{})
+	Conn, err = rpcclient.InitRPCClientConn(addr)
 	if err != nil {
-		t.Fatal(err)
+		return err
 	}
-	t.Logf("response: %s", logger.ToJson(response))
+
+	Client = plutoservice.NewAmusingxPlutoServiceClient(Conn)
+
+	return nil
+}
+
+func CloseClient(addr string) {
+	if Conn != nil {
+		Client = nil
+		Conn.Close()
+	}
 }
