@@ -2,7 +2,6 @@ package amusingplutoserv
 
 import (
 	"amusingx.fit/amusingx/protos/amusingplutoservice/plutoservice"
-	"amusingx.fit/amusingx/services/amusingplutoserv/conf"
 	"context"
 	"fmt"
 	"github.com/ItsWewin/superfactory/logger"
@@ -12,15 +11,14 @@ import (
 )
 
 func TestInitClient(t *testing.T) {
-	conf.Conf.RPCAddress = "localhost:11002"
-	InitClient(conf.Conf.RPCAddress)
+	InitClient("localhost:11002")
 
-	ctx, _ := context.WithTimeout(context.Background(), 4*time.Second)
+	ctx, _ := context.WithTimeout(context.Background(), 100*time.Second)
 
 	w := sync.WaitGroup{}
-	w.Add(1)
+	w.Add(2)
 	go ping(ctx, Client, &w)
-	//go bookInventoryCacheInit(ctx, Client, &w)
+	go bookInventoryCacheInit(ctx, Client, &w)
 
 	w.Wait()
 }

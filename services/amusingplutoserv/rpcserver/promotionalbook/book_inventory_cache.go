@@ -39,7 +39,7 @@ func (bc *BookInventoryCache) CacheInit(ctx context.Context) *xerror.Error {
 
 	xredis.Client.Del(ctx, bc.key)
 
-	dataSource, xErr := inventorycachedatasource.NewDataSource(inventorycachedatasource.MysqlDBSource)
+	dataSource, xErr := inventorycachedatasource.NewDataSource(inventorycachedatasource.LocalVariableSource)
 	if xErr != nil {
 		return xErr
 	}
@@ -52,8 +52,7 @@ func (bc *BookInventoryCache) CacheInit(ctx context.Context) *xerror.Error {
 	for id, iv := range idInventoryMap {
 		err := xredis.Client.HSet(ctx, bc.key, id, iv).Err()
 		if err != nil {
-			return xerror.NewErrorf(err, xerror.Code.SRedisExecuteErr,
-				"redis hset failed, key: %s, filed: %d, value: %d", bc.key, id, iv)
+			return xerror.NewErrorf(err, xerror.Code.SRedisExecuteErr, "redis hset failed, key: %s, filed: %d, value: %d", bc.key, id, iv)
 		}
 	}
 

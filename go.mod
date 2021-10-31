@@ -10,10 +10,11 @@ require (
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
 	github.com/jmoiron/sqlx v1.3.1
 	github.com/satori/go.uuid v1.2.0
+	go.etcd.io/etcd/client/v3 v3.5.1
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
 	golang.org/x/exp v0.0.0-20190121172915-509febef88a4
-	google.golang.org/grpc v1.39.1
-	google.golang.org/protobuf v1.25.0
+	google.golang.org/grpc v1.41.0
+	google.golang.org/protobuf v1.26.0
 )
 
 replace github.com/ItsWewin/superfactory => /Users/klook/workspace/src/github.com/ItsWewin/superfactory

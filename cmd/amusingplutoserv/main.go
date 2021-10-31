@@ -1,6 +1,7 @@
 package main
 
 import (
+	"amusingx.fit/amusingx/etcd"
 	"amusingx.fit/amusingx/services/amusingplutoserv/conf"
 	"amusingx.fit/amusingx/services/amusingplutoserv/mysql"
 	"amusingx.fit/amusingx/services/amusingplutoserv/rpcserver"
@@ -8,6 +9,8 @@ import (
 	"github.com/ItsWewin/superfactory/powertrain"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
+	clientv3 "go.etcd.io/etcd/client/v3"
+	"time"
 )
 
 func main() {
@@ -29,6 +32,11 @@ func InitFunc() {
 	xredis.InitRedis(conf.Conf.RedisAddr, conf.Conf.RedisPassword, conf.Conf.RedisDB)
 
 	InitRPCServer()
+
+	etcd.InitEtcdClientV3(clientv3.Config{
+		Endpoints:   []string{"localhost:2379"},
+		DialTimeout: 5 * time.Second,
+	})
 }
 
 // 服务执行完毕时候执行
@@ -36,6 +44,8 @@ func DeferFunc() {
 	mysql.DisConnectMySQL()
 
 	xredis.CloseRedis()
+
+	etcd.CloseEtcdClientV3()
 
 	rpcserver.CloseRPCServer()
 }

@@ -6,8 +6,6 @@ import (
 )
 
 type PromotionalBook struct {
-	//plutoservice.UnimplementedPromotionalObj
-
 	BookID int64
 }
 

@@ -3,7 +3,6 @@ package amusingplutoserv
 import (
 	"amusingx.fit/amusingx/protos/amusingplutoservice/plutoservice"
 	"amusingx.fit/amusingx/rpcclient"
-	"amusingx.fit/amusingx/services/amusingplutoserv/conf"
 	"github.com/ItsWewin/superfactory/xerror"
 	"google.golang.org/grpc"
 )
@@ -12,12 +11,6 @@ var (
 	Conn   *grpc.ClientConn
 	Client plutoservice.AmusingxPlutoServiceClient
 )
-
-func init() {
-	if Client == nil {
-		InitClient(conf.Conf.RPCAddress)
-	}
-}
 
 func InitClient(addr string) *xerror.Error {
 	if Conn != nil {

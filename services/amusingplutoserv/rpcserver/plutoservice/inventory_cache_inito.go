@@ -14,8 +14,6 @@ func (s *PlutoService) InventoryCacheInit(ctx context.Context, req *plutoservice
 		return nil, xerror.NewErrorf(nil, xerror.Code.CParamsError, "req is nil")
 	}
 
-	panic("panic")
-
 	switch req.GetObj() {
 	case plutoservice.InventoryCacheInitRequest_Book:
 		promotionalObj = promotionalbook.NewPromotionalBook(-1)
