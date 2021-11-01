@@ -10,6 +10,7 @@ const MysqlDBSource = "MysqlDBSource"
 
 type DataSource interface {
 	GetInventories(ctx context.Context) (map[int64]int64, *xerror.Error)
+	GetInventoriesByID(ctx context.Context, bookID int64) (map[int64]int64, *xerror.Error)
 }
 
 func NewDataSource(sourceType string) (DataSource, *xerror.Error) {

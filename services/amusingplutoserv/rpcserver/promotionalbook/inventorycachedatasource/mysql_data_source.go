@@ -35,3 +35,16 @@ func (s *MysqlDataSource) GetInventories(ctx context.Context) (map[int64]int64, 
 
 	return idInventoryMap, nil
 }
+
+func (s *MysqlDataSource) GetInventoriesByID(ctx context.Context, bookID int64) (map[int64]int64, *xerror.Error) {
+	ivs, err := model.QueryBookInventoryByID(ctx, bookID)
+	if err != nil {
+		return nil, err
+	}
+
+	if ivs == nil {
+		return map[int64]int64{bookID: 0}, nil
+	}
+
+	return map[int64]int64{ivs.ID: ivs.AvailableInventory}, nil
+}

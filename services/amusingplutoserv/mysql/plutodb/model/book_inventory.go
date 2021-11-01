@@ -37,3 +37,22 @@ func QueryBookInventoryByLimit(ctx context.Context, offSet, limit int64) ([]*Boo
 
 	return ivs, nil
 }
+
+func QueryBookInventoryByID(ctx context.Context, bookID int64) (*BookInventory, *xerror.Error) {
+	sqlStr := `SELECT id, book_id, real_inventory, available_inventory, locked_inventory
+		FROM book_inventory
+		where book_id = ?
+	`
+
+	if mysql.PlutoDB == nil {
+		logger.Errorf("pluto db is nil")
+	}
+
+	var ivs BookInventory
+	err := mysql.PlutoDB.GetContext(ctx, &ivs, sqlStr, bookID)
+	if err != nil {
+		return nil, xerror.NewErrorf(err, xerror.Code.SSqlExecuteErr, "query book_inventory failed")
+	}
+
+	return &ivs, nil
+}

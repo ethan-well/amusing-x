@@ -22,3 +22,7 @@ func (s *LocalVariablesSource) GetInventories(ctx context.Context) (map[int64]in
 
 	return idInventoryMap, nil
 }
+
+func (s *LocalVariablesSource) GetInventoriesByID(ctx context.Context, id int64) (map[int64]int64, *xerror.Error) {
+	return map[int64]int64{id: 1000}, nil
+}

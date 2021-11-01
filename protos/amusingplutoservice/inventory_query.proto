@@ -4,8 +4,11 @@ option go_package = "amusing-x.com/pluto/plutoservice";
 
 package plutoservice;
 
+import "inventory_cache_init.proto";
+
 message InventoryQueryRequest {
   int64 id = 1;
+  CacheObjType obj = 2;
 }
 
 message InventoryQueryResponse {

@@ -2,6 +2,7 @@ package etcd
 
 import (
 	"context"
+	"github.com/ItsWewin/superfactory/logger"
 	"github.com/ItsWewin/superfactory/xerror"
 	"go.etcd.io/etcd/client/v3/concurrency"
 	"time"
@@ -16,6 +17,11 @@ func Lock(key string, timeout time.Duration, ttl int64) (*XLock, *xerror.Error) 
 	// 生成一个30s超时的上下文
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
+
+	if Client == nil {
+		logger.Errorf("etcd client is nil")
+		return nil, xerror.NewErrorf(nil, xerror.Code.SUnexpectedErr, "etcd client is nil")
+	}
 
 	// 获取租约
 	response, e := Client.Grant(ctx, ttl)

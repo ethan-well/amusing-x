@@ -21,3 +21,18 @@ func TestQueryBookInventoryByLimit(t *testing.T) {
 
 	t.Logf("ivs: %s", logger.ToJson(ivs))
 }
+
+func TestQueryBookInventoryByID(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip")
+	}
+
+	mysql.Mock()
+
+	ivs, err := QueryBookInventoryByID(context.Background(), 1)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	t.Logf("ivs: %s", logger.ToJson(ivs))
+}

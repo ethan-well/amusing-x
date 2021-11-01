@@ -6,6 +6,7 @@ import (
 	"amusingx.fit/amusingx/services/amusingplutoserv/mysql"
 	"amusingx.fit/amusingx/services/amusingplutoserv/rpcserver"
 	"amusingx.fit/amusingx/services/amusingplutoserv/xredis"
+	"github.com/ItsWewin/superfactory/logger"
 	"github.com/ItsWewin/superfactory/powertrain"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
@@ -31,12 +32,12 @@ func InitFunc() {
 
 	xredis.InitRedis(conf.Conf.RedisAddr, conf.Conf.RedisPassword, conf.Conf.RedisDB)
 
-	InitRPCServer()
-
 	etcd.InitEtcdClientV3(clientv3.Config{
 		Endpoints:   []string{"localhost:2379"},
 		DialTimeout: 5 * time.Second,
 	})
+
+	InitRPCServer()
 }
 
 // 服务执行完毕时候执行
@@ -53,6 +54,7 @@ func DeferFunc() {
 func InitRPCServer() {
 	err := rpcserver.InitRPCServer()
 	if err != nil {
+		logger.Errorf("init rpc server failed: %s", err)
 		panic(err)
 	}
 }

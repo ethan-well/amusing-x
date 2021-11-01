@@ -31,6 +31,35 @@ func (bc *BookInventoryCache) GetInventory(ctx context.Context, bookID int64) (i
 	return iv, nil
 }
 
+func (bc *BookInventoryCache) SetInventory(ctx context.Context, bookID int64) (int64, *xerror.Error) {
+	if xredis.Client == nil {
+		return -1, xerror.NewErrorf(nil, xerror.Code.SRedisExecuteErr, "redis client is nil")
+	}
+
+	xredis.Client.Del(ctx, bc.key)
+
+	dataSource, xErr := inventorycachedatasource.NewDataSource(inventorycachedatasource.LocalVariableSource)
+	if xErr != nil {
+		return -1, xErr
+	}
+
+	idInventoryMap, xErr := dataSource.GetInventoriesByID(ctx, bookID)
+	if xErr != nil {
+		return -1, xErr
+	}
+
+	iv, ok := idInventoryMap[bookID]
+	if !ok {
+		iv = 0
+	}
+	err := xredis.Client.HSet(ctx, bc.key, bookID, iv).Err()
+	if err != nil {
+		return -1, xerror.NewErrorf(err, xerror.Code.SRedisExecuteErr, "redis hset failed, key: %s, filed: %d, value: %d", bc.key, bookID, iv)
+	}
+
+	return iv, nil
+}
+
 // redis load: book inventory
 func (bc *BookInventoryCache) CacheInit(ctx context.Context) *xerror.Error {
 	if xredis.Client == nil {

@@ -4,11 +4,12 @@ option go_package = "amusing-x.com/pluto/plutoservice";
 
 package plutoservice;
 
+enum CacheObjType {
+  Book = 0;
+  Mac = 1;
+}
+
 message InventoryCacheInitRequest {
-  enum CacheObjType {
-    Book = 0;
-    Mac = 1;
-  }
   CacheObjType obj = 1;
 }
 
