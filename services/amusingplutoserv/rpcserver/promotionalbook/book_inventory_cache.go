@@ -160,7 +160,7 @@ end
 	}
 }
 
-func (bc *BookInventoryCache) InventoryIncrBy(ctx context.Context, bookID int64, incr int) *xerror.Error {
+func (bc *BookInventoryCache) InventoryIncrBy(ctx context.Context, bookID int64, incr int) (int64, *xerror.Error) {
 	// -1 参数错误
 	// -2 库存不足
 	// >= 0 操作成功，返回剩余库存
@@ -181,19 +181,19 @@ return redis.call('HINCRBY', KEYS[1], ARGV[1], incr)
 	cmd := xredis.Client.Eval(ctx, script, []string{bc.key}, bookID, incr)
 	r, err := cmd.Result()
 	if err != nil {
-		return xerror.NewError(err, xerror.Code.SRedisExecuteErr, "加库存失败")
+		return -1, xerror.NewError(err, xerror.Code.SRedisExecuteErr, "加库存失败")
 	}
 	code, ok := r.(int64)
 	if !ok {
-		return xerror.NewErrorf(err, xerror.Code.SRedisExecuteErr, "加库存失败")
+		return -1, xerror.NewErrorf(err, xerror.Code.SRedisExecuteErr, "加库存失败")
 	}
 
 	switch code {
 	case InventoryDecrScriptCodeParamsErr:
-		return xerror.NewErrorf(err, xerror.Code.SRedisExecuteErr, "参数错误")
+		return -1, xerror.NewErrorf(err, xerror.Code.SRedisExecuteErr, "参数错误")
 	case InventoryDecrScriptCodeInventoryShortage:
-		return xerror.NewErrorf(err, xerror.Code.SRedisExecuteErr, "原本库存小于 0")
+		return -1, xerror.NewErrorf(err, xerror.Code.SRedisExecuteErr, "原本库存小于 0")
 	default:
-		return nil
+		return code, nil
 	}
 }

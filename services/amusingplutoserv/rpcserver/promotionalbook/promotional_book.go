@@ -57,8 +57,14 @@ func (pb *PromotionalBook) InventoryLock(ctx context.Context, lockCount int) (in
 	return iv, nil
 }
 
-func (pb *PromotionalBook) InventoryUnlock(ctx context.Context) (int64, *xerror.Error) {
-	return -1, nil
+func (pb *PromotionalBook) InventoryUnlock(ctx context.Context, unLockCount int) (int64, *xerror.Error) {
+	cache := NewBookInventoryCache()
+	iv, err := cache.InventoryIncrBy(ctx, pb.BookID, unLockCount) // 获取到锁后，先尝试再次获取
+	if err != nil {
+		return -1, err
+	}
+
+	return iv, nil
 }
 
 // 如果是缓存过期，先获取分布式锁，尝试再次获取

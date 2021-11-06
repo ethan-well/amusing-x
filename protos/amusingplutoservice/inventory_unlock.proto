@@ -4,12 +4,16 @@ option go_package = "amusing-x.com/pluto/plutoservice";
 
 package plutoservice;
 
+import "inventory_cache_init.proto";
+
 message InventoryUnlockRequest {
   int64 id = 1;
   int64 count = 2;
+  CacheObjType obj = 3;
 }
 
 message InventoryUnlockResponse {
   bool succeed = 1;
   string message = 2;
+  int64 RemainingInventory = 3;
 }

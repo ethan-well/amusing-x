@@ -19,7 +19,7 @@ func TestBookInventoryCache_InventoryDecrBy(t *testing.T) {
 
 	bookInventoryCache := NewBookInventoryCache()
 
-	err := bookInventoryCache.InventoryDecrBy(context.Background(), 7772, 10)
+	_, err := bookInventoryCache.InventoryDecrBy(context.Background(), 7772, 10)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -42,7 +42,7 @@ func TestBookInventoryCache_InventoryDecrByV2(t *testing.T) {
 		//w.Add(i)
 		go func() {
 			//defer w.Done()
-			err := bookInventoryCache.InventoryDecrBy(context.Background(), 7772, 10)
+			_, err := bookInventoryCache.InventoryDecrBy(context.Background(), 7772, 10)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -62,7 +62,7 @@ func TestBookInventoryCache_InventoryIncrBy(t *testing.T) {
 
 	bookInventoryCache := NewBookInventoryCache()
 
-	err := bookInventoryCache.InventoryIncrBy(context.Background(), 7772, 10)
+	_, err := bookInventoryCache.InventoryIncrBy(context.Background(), 7772, 10)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -102,7 +102,7 @@ func TestBookInventoryCache_InventoryIncrByV2(t *testing.T) {
 				}
 				mutex.Unlock()
 			}()
-			err := bookInventoryCache.InventoryIncrBy(context.Background(), 7772, incr)
+			_, err := bookInventoryCache.InventoryIncrBy(context.Background(), 7772, incr)
 			if err != nil {
 				panic(err)
 			}
