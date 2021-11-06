@@ -26,7 +26,7 @@ func (pb *PromotionalBook) InventoryCacheInit(ctx context.Context) *xerror.Error
 	}
 	defer lock.Unlock(ctx)
 
-	err = NewBookInventoryCache().CacheInit(ctx)
+	err = NewBookInventoryCache().AllBookInventoryCacheInit(ctx)
 	if err != nil {
 		return err
 	}
@@ -47,8 +47,14 @@ func (pb *PromotionalBook) InventoryQuery(ctx context.Context) (int64, *xerror.E
 	return iv, nil
 }
 
-func (pb *PromotionalBook) InventoryLock(ctx context.Context) (int64, *xerror.Error) {
-	return -1, nil
+func (pb *PromotionalBook) InventoryLock(ctx context.Context, lockCount int) (int64, *xerror.Error) {
+	cache := NewBookInventoryCache()
+	iv, err := cache.InventoryDecrBy(ctx, pb.BookID, lockCount) // 获取到锁后，先尝试再次获取
+	if err != nil {
+		return -1, err
+	}
+
+	return iv, nil
 }
 
 func (pb *PromotionalBook) InventoryUnlock(ctx context.Context) (int64, *xerror.Error) {

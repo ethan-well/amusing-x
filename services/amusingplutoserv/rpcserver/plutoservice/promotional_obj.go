@@ -6,10 +6,10 @@ import (
 )
 
 type PromotionalObj interface {
-	InventoryCacheInit(ctx context.Context) *xerror.Error
-	InventoryQuery(ctx context.Context) (int64, *xerror.Error)
-	InventoryLock(ctx context.Context) (int64, *xerror.Error)
-	InventoryUnlock(ctx context.Context) (int64, *xerror.Error)
+	InventoryCacheInit(context.Context) *xerror.Error
+	InventoryQuery(context.Context) (int64, *xerror.Error)
+	InventoryLock(context.Context, int) (int64, *xerror.Error)
+	InventoryUnlock(context.Context) (int64, *xerror.Error)
 }
 
 type UnimplementedPromotionalObj struct {

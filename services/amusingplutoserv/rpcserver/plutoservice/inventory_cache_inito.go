@@ -15,9 +15,9 @@ func (s *PlutoService) InventoryCacheInit(ctx context.Context, req *plutoservice
 	}
 
 	switch req.GetObj() {
-	case plutoservice.InventoryCacheInitRequest_Book:
+	case plutoservice.CacheObjType_Book:
 		promotionalObj = promotionalbook.NewPromotionalBook(-1)
-	case plutoservice.InventoryCacheInitRequest_Mac:
+	case plutoservice.CacheObjType_Mac:
 		return &plutoservice.InventoryCacheInitResponse{Succeed: false, Message: "unsupported type"}, nil
 	default:
 		return nil, xerror.NewErrorf(nil, xerror.Code.CParamsError, "unexpected obj type")
