@@ -3,7 +3,7 @@ module amusingx.fit/amusingx
 go 1.14
 
 require (
-	github.com/ItsWewin/superfactory v0.0.0-20210314074848-11481b418553
+	github.com/ItsWewin/superfactory v0.0.0-20211030134409-adeba8279cc8
 	github.com/go-redis/redis/v8 v8.8.0
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/gorilla/mux v1.8.0
@@ -17,4 +17,4 @@ require (
 	google.golang.org/protobuf v1.26.0
 )
 
-replace github.com/ItsWewin/superfactory => /Users/klook/workspace/src/github.com/ItsWewin/superfactory
+//replace github.com/ItsWewin/superfactory => /Users/klook/workspace/src/github.com/ItsWewin/superfactory

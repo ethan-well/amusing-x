@@ -2,9 +2,7 @@
 
 all: build-go
 
-build-go: build-amusingapiserv build-amusinguserserv
+build-go: build-amusingplutoserv
 
-build-amusingapiserv:
-	go build -o ./bin/amusingapiserv cmd/amusingapiserv/main.go
-build-amusinguserserv:
-	go build -o ./bin/amusinguserserv cmd/amusinguserserv/main.go
+build-amusingplutoserv:
+	go build -o ./bin/amusingplutoserv ./cmd/amusingplutoserv/main.go
