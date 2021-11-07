@@ -1,6 +1,6 @@
-# syntax=docker/dockerfile:1
+FROM golang:1.17
 
-FROM golang:1.16-alpine
+#RUN apk add build-base
 
 WORKDIR /app
 
@@ -10,10 +10,6 @@ RUN go mod download
 
 COPY . .
 
-RUN ls /app
+RUN go build -o /amusingplutoserv /app/cmd/amusingplutoserv/main.go
 
-RUN go build -o /docker-gs-ping /app/cmd/amusingplutoserv/main.go
-
-EXPOSE 8080
-
-ENTRYPOINT exec /docker-gs-ping -cf=/app/cmd/amusingplutoserv/service_testing.conf
+ENTRYPOINT exec /amusingplutoserv -cf=/app/cmd/amusingplutoserv/service_testing.conf
