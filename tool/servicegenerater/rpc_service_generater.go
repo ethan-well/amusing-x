@@ -23,7 +23,7 @@ func main() {
 	var serverName = flag.String("s", "", "Input server name")
 	var packageName = flag.String("p", "", "Input package name")
 	var protoVersion = flag.Int("v", 3, "Input proto version")
-	var protoFileName = flag.String("f", defaultFileName(), "Input proto version")
+	var protoFileName = flag.String("f", defaultFileName(), "proto file name")
 
 	flag.Parse()
 
