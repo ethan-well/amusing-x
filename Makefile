@@ -1,13 +1,14 @@
 .PHONY:clean
 .DEFAULT_GOAL := all
 
-all: build-amusingplutoserv
+all: build-amusingplutoserv build-amusingcharonserv
+docker: docker-build
 
 build-amusingplutoserv:
-	go build -o ./bin/amusingplutoserv ./cmd/amusingplutoserv/main.go
+	CGO_ENABLED=0 go build -o ./bin/amusingplutoserv ./cmd/amusingplutoserv/main.go
 
-docker-build:
-	docker build -t plutoserv:0.0.01 -f Dockerfile/Dockerfile .
+build-amusingcharonserv:
+	CGO_ENABLED=0 go build -o ./bin/amusingcharonserv ./cmd/amusingcharonserv/main.go
 
 clean:
 	rm -f ./bin/*
