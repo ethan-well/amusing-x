@@ -15,8 +15,8 @@ func InitRedis(addr, password string, db int) {
 		Addr:         addr,
 		Password:     password,
 		DB:           db,
-		DialTimeout:  60 * time.Second,
-		WriteTimeout: 60 * time.Second,
+		DialTimeout:  5 * time.Second,
+		WriteTimeout: 5 * time.Second,
 	})
 }
 

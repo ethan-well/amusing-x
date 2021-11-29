@@ -26,7 +26,7 @@ func Lock(key string, timeout time.Duration, ttl int64) (*XLock, *xerror.Error) 
 	// 获取租约
 	response, e := Client.Grant(ctx, ttl)
 	if e != nil {
-		return nil, xerror.NewErrorf(e, xerror.Code.SUnexpectedErr, "ect grant failed")
+		return nil, xerror.NewErrorf(e, xerror.Code.SUnexpectedErr, "ectd grant failed")
 	}
 
 	// 通过租约创建session
@@ -38,7 +38,10 @@ func Lock(key string, timeout time.Duration, ttl int64) (*XLock, *xerror.Error) 
 	mutex := concurrency.NewMutex(session, key)
 	e = mutex.Lock(ctx)
 	if e != nil {
-		return nil, xerror.NewErrorf(e, xerror.Code.SUnexpectedErr, "ect concurrency newMutex failed")
+		// 锁失败，删除当前空租约
+		session.Close()
+		session.Done()
+		return nil, xerror.NewErrorf(e, xerror.Code.SUnexpectedErr, "ectd concurrency newMutex failed")
 	}
 
 	return &XLock{

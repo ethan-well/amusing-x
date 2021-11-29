@@ -35,7 +35,7 @@ func InitFunc() {
 	xredis.InitRedis(conf.Conf.RedisAddr, conf.Conf.RedisPassword, conf.Conf.RedisDB)
 
 	etcd.InitEtcdClientV3(clientv3.Config{
-		Endpoints:   []string{"192.168.56.1:2379"},
+		Endpoints:   []string{"127.0.0.1:2379"},
 		DialTimeout: 5 * time.Second,
 	})
 

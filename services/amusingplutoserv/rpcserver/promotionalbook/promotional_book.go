@@ -19,15 +19,17 @@ func NewPromotionalBook(bookID int64) *PromotionalBook {
 }
 
 func (pb *PromotionalBook) InventoryCacheInit(ctx context.Context) *xerror.Error {
-	lock, err := etcd.Lock(pb.lockKey, 2*time.Second, 30)
+	lock, err := etcd.Lock(pb.lockKey, 1*time.Second, 30)
 	if err != nil {
 		logger.Errorf("get lock failed")
 		return err
 	}
+	logger.Infof("get lock succed, key: %s", pb.lockKey)
 	defer lock.Unlock(ctx)
 
 	err = NewBookInventoryCache().AllBookInventoryCacheInit(ctx)
 	if err != nil {
+		logger.Errorf("book inventory cache init failed: %s", err)
 		return err
 	}
 

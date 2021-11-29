@@ -79,14 +79,19 @@ func (bc *BookInventoryCache) AllBookInventoryCacheInit(ctx context.Context) *xe
 	if xredis.Client == nil {
 		return xerror.NewErrorf(nil, xerror.Code.SRedisExecuteErr, "redis client is nil")
 	}
+	
+	logger.Infof("AllBookInventoryCacheInit start delete key")
 
-	xredis.Client.Del(ctx, bc.key)
-
+	 xredis.Client.Del(ctx, bc.key)
+	
+	logger.Infof("AllBookInventoryCacheInit after delete key")
+	
 	dataSource, xErr := inventorycachedatasource.NewDataSource(inventorycachedatasource.LocalVariableSource)
 	if xErr != nil {
 		return xErr
 	}
 
+	logger.Infof("AllBookInventoryCacheInit GetInventories")
 	idInventoryMap, xErr := dataSource.GetInventories(ctx)
 	if xErr != nil {
 		return xErr

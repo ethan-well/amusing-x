@@ -16,11 +16,11 @@ func TestInitClient(t *testing.T) {
 	ctx, _ := context.WithTimeout(context.Background(), 100*time.Second)
 
 	w := sync.WaitGroup{}
-	w.Add(2)
+	w.Add(4)
 	go _ping(ctx, Client, &w)
 	go _bookInventoryCacheInit(ctx, Client, &w)
 	go _bookInventoryLock(ctx, Client, &w)
-	//go _bookInventoryUnLock(ctx, Client, &w)
+	go _bookInventoryUnLock(ctx, Client, &w)
 
 	w.Wait()
 }
