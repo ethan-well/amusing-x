@@ -1,4 +1,3 @@
-.PHONY:clean
 .DEFAULT_GOAL := all
 
 all: build-amusingplutoserv
