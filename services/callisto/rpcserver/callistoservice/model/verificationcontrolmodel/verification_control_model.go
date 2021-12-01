@@ -2,7 +2,7 @@ package verificationcontrolmodel
 
 import (
 	"amusingx.fit/amusingx/mysqlstruct/amusingriskcontrol"
-	amusingriskcontrol2 "amusingx.fit/amusingx/services/callisto/mysql/amusingriskcontrol"
+	amusingriskcontrol2 "amusingx.fit/amusingx/services/callisto/mysql/riskcontrol"
 	"context"
 	"github.com/ItsWewin/superfactory/xerror"
 	"strconv"

@@ -2,7 +2,7 @@ package main
 
 import (
 	"amusingx.fit/amusingx/services/callisto/conf"
-	"amusingx.fit/amusingx/services/callisto/mysql/amusingriskcontrol"
+	"amusingx.fit/amusingx/services/callisto/mysql/riskcontrol"
 	"amusingx.fit/amusingx/services/callisto/rpcserver"
 	"amusingx.fit/amusingx/services/callisto/xredis"
 	"github.com/ItsWewin/superfactory/powertrain"
@@ -26,7 +26,7 @@ func main() {
 // 服务初始化时候执行
 func InitFunc() {
 	log.Println("amusing api sever listen:", conf.Conf.Addr)
-	amusingriskcontrol.InitMySQL()
+	riskcontrol.InitMySQL()
 
 	xredis.InitRedis(conf.Conf.RedisAddr, conf.Conf.RedisPassword, conf.Conf.RedisDB)
 
@@ -35,7 +35,7 @@ func InitFunc() {
 
 // 服务执行完毕时候执行
 func DeferFunc() {
-	amusingriskcontrol.MysqlDisConnect()
+	riskcontrol.MysqlDisConnect()
 
 	xredis.CloseRedis()
 

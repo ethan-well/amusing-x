@@ -2,7 +2,7 @@ package verificationcoderisk
 
 import (
 	"amusingx.fit/amusingx/protos/callisto/service"
-	"amusingx.fit/amusingx/services/callisto/rpcserver/riskservice/model/verificationcontrolmodel"
+	"amusingx.fit/amusingx/services/callisto/rpcserver/callistoservice/model/verificationcontrolmodel"
 	"context"
 	"github.com/ItsWewin/superfactory/xerror"
 )

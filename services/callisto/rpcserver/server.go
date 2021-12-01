@@ -3,7 +3,7 @@ package rpcserver
 import (
 	riskservice2 "amusingx.fit/amusingx/protos/callisto/service"
 	"amusingx.fit/amusingx/services/callisto/conf"
-	"amusingx.fit/amusingx/services/callisto/rpcserver/riskservice"
+	"amusingx.fit/amusingx/services/callisto/rpcserver/callistoservice"
 	"github.com/ItsWewin/superfactory/logger"
 	"github.com/ItsWewin/superfactory/xerror"
 	"google.golang.org/grpc"
@@ -19,7 +19,7 @@ var Server *RPCService
 func InitRPCServer() *xerror.Error {
 	rpcServ := grpc.NewServer()
 
-	riskservice2.RegisterRiskServiceServer(rpcServ, new(riskservice.LoginRiskService))
+	riskservice2.RegisterRiskServiceServer(rpcServ, new(callistoservice.LoginRiskService))
 
 	logger.Infof("InitRPCServer. network: %s, addr: %s", conf.Conf.RPCNetwork, conf.Conf.RPCAddress)
 

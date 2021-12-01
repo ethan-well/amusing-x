@@ -1,19 +1,10 @@
-package amusingriskcontrolserv
+package riskservice
 
-import (
-	"github.com/ItsWewin/superfactory/xerror"
-)
-
-type LoginRiskControlRequest struct {
-	UserId       int64  `json:"user_id"`
-	StrategyType string `json:"strategy_type"`
-	Phone        string `json:"phone"`
-	Action       string `json:"action"`
-}
+import "github.com/ItsWewin/superfactory/xerror"
 
 var StrategyType = []string{"verification_code"}
 
-func (r *LoginRiskControlRequest) ValidStrategyType() bool {
+func (r *LoginRiskRequest) ValidStrategyType() bool {
 	for _, st := range StrategyType {
 		if st == r.StrategyType {
 			return true
@@ -24,20 +15,20 @@ func (r *LoginRiskControlRequest) ValidStrategyType() bool {
 }
 
 // 策略控制值增加
-func (r *LoginRiskControlRequest) IsValueAddAction() bool {
+func (r *LoginRiskRequest) IsValueAddAction() bool {
 	return r.Action == "value_add"
 }
 
 // 策略控制值验证
-func (r *LoginRiskControlRequest) IsValueVerifyAction() bool {
+func (r *LoginRiskRequest) IsValueVerifyAction() bool {
 	return r.Action == "value_verify"
 }
 
-func (r *LoginRiskControlRequest) IsVerificationCodeStrategy() bool {
+func (r *LoginRiskRequest) IsVerificationCodeStrategy() bool {
 	return r.StrategyType == "verification_code"
 }
 
-func (r *LoginRiskControlRequest) VerificationCodeStrategyRequestValid() *xerror.Error {
+func (r *LoginRiskRequest) VerificationCodeStrategyRequestValid() *xerror.Error {
 	if len(r.Phone) == 0 {
 		return xerror.NewError(nil, xerror.Code.CParamsError, "params 'phone' is expected")
 	}
@@ -49,7 +40,7 @@ func (r *LoginRiskControlRequest) VerificationCodeStrategyRequestValid() *xerror
 	return nil
 }
 
-func (r *LoginRiskControlRequest) Valid() *xerror.Error {
+func (r *LoginRiskRequest) Valid() *xerror.Error {
 	if len(r.StrategyType) == 0 {
 		return xerror.NewError(nil, xerror.Code.CUnexpectRequestDate, "strategy_type is expected")
 	}

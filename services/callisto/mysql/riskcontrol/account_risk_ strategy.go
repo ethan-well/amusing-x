@@ -1,4 +1,4 @@
-package amusingriskcontrol
+package riskcontrol
 
 import (
 	"amusingx.fit/amusingx/mysqlstruct/amusingriskcontrol"

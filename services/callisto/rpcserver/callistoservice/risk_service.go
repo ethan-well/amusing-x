@@ -1,8 +1,8 @@
-package riskservice
+package callistoservice
 
 import (
 	"amusingx.fit/amusingx/protos/callisto/service"
-	"amusingx.fit/amusingx/services/callisto/rpcserver/riskservice/controller/verificationcoderisk"
+	"amusingx.fit/amusingx/services/callisto/rpcserver/callistoservice/controller/verificationcoderisk"
 	"context"
 	"github.com/ItsWewin/superfactory/xerror"
 )
