@@ -11,15 +11,15 @@ type Config struct {
 	Addr string `config:"base:addr"`
 	Port string `config:"base:http.port"`
 
-	MysqlAmusinguserDatabase        string `config:"base:mysql.amusinguser.database"`
-	MysqlAmusinguserUsername        string `config:"base:mysql.amusinguser.username"`
-	MysqlAmusinguserPassword        string `config:"base:mysql.amusinguser.password"`
-	MysqlAmusinguserHost            string `config:"base:mysql.amusinguser.host"`
-	MysqlAmusinguserPort            string `config:"base:mysql.amusinguser.port"`
-	MysqlAmusinguserProtocol        string `config:"base:mysql.amusinguser.protocol"`
-	MysqlAmusinguserConnMaxLifetime int64  `config:"base:mysql.amusinguser.connMaxLifetime"`
-	MysqlAmusinguserMaxIdleConns    int    `config:"base:mysql.amusinguser.maxIdleConns"`
-	MysqlAmusinguserMaxOpenConns    int    `config:"base:mysql.amusinguser.maxOpenConns"`
+	MysqlEuropaDatabase        string `config:"base:mysql.europa.database"`
+	MysqlEuropaUsername        string `config:"base:mysql.europa.username"`
+	MysqlEuropaPassword        string `config:"base:mysql.europa.password"`
+	MysqlEuropaHost            string `config:"base:mysql.europa.host"`
+	MysqlEuropaPort            string `config:"base:mysql.europa.port"`
+	MysqlEuropaProtocol        string `config:"base:mysql.europa.protocol"`
+	MysqlEuropaConnMaxLifetime int64  `config:"base:mysql.europa.connMaxLifetime"`
+	MysqlEuropaMaxIdleConns    int    `config:"base:mysql.europa.maxIdleConns"`
+	MysqlEuropaMaxOpenConns    int    `config:"base:mysql.europa.maxOpenConns"`
 
 	RedisAddr     string `config:"base:redis.addr"`
 	RedisPassword string `config:"base:redis.password"`

@@ -11,15 +11,15 @@ type Config struct {
 	Addr string `config:"base:addr"`
 	Port string `config:"base:http.port"`
 
-	MysqlAmusingriskDatabase        string `config:"base:mysql.Amusingrisk.database"`
-	MysqlAmusingriskUsername        string `config:"base:mysql.Amusingrisk.username"`
-	MysqlAmusingriskPassword        string `config:"base:mysql.Amusingrisk.password"`
-	MysqlAmusingriskHost            string `config:"base:mysql.Amusingrisk.host"`
-	MysqlAmusingriskPort            string `config:"base:mysql.Amusingrisk.port"`
-	MysqlAmusingriskProtocol        string `config:"base:mysql.Amusingrisk.protocol"`
-	MysqlAmusingriskConnMaxLifetime int64  `config:"base:mysql.Amusingrisk.connMaxLifetime"`
-	MysqlAmusingriskMaxIdleConns    int    `config:"base:mysql.Amusingrisk.maxIdleConns"`
-	MysqlAmusingriskMaxOpenConns    int    `config:"base:mysql.Amusingrisk.maxOpenConns"`
+	MysqlCallistoDatabase        string `config:"base:mysql.callisto.database"`
+	MysqlCallistoUsername        string `config:"base:mysql.callisto.username"`
+	MysqlCallistoPassword        string `config:"base:mysql.callisto.password"`
+	MysqlCallistoHost            string `config:"base:mysql.callisto.host"`
+	MysqlCallistoPort            string `config:"base:mysql.callisto.port"`
+	MysqlCallistoProtocol        string `config:"base:mysql.callisto.protocol"`
+	MysqlCallistoConnMaxLifetime int64  `config:"base:mysql.callisto.connMaxLifetime"`
+	MysqlCallistoMaxIdleConns    int    `config:"base:mysql.callisto.maxIdleConns"`
+	MysqlCallistoMaxOpenConns    int    `config:"base:mysql.callisto.maxOpenConns"`
 
 	RedisAddr     string `config:"base:redis.addr"`
 	RedisPassword string `config:"base:redis.password"`

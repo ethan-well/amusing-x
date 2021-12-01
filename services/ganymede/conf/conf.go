@@ -11,15 +11,15 @@ type Config struct {
 	Addr string `config:"base:addr"`
 	Port string `config:"base:http.port"`
 
-	MysqlAmusinguserDatabase        string `config:"base:mysql.amusinguser.database"`
-	MysqlAmusinguserUsername        string `config:"base:mysql.amusinguser.username"`
-	MysqlAmusinguserPassword        string `config:"base:mysql.amusinguser.password"`
-	MysqlAmusinguserHost            string `config:"base:mysql.amusinguser.host"`
-	MysqlAmusinguserPort            string `config:"base:mysql.amusinguser.port"`
-	MysqlAmusinguserProtocol        string `config:"base:mysql.amusinguser.protocol"`
-	MysqlAmusinguserConnMaxLifetime int64  `config:"base:mysql.amusinguser.connMaxLifetime"`
-	MysqlAmusinguserMaxIdleConns    int    `config:"base:mysql.amusinguser.maxIdleConns"`
-	MysqlAmusinguserMaxOpenConns    int    `config:"base:mysql.amusinguser.maxOpenConns"`
+	MysqlGanymedeDatabase        string `config:"base:mysql.ganymede.database"`
+	MysqlGanymedeUsername        string `config:"base:mysql.ganymede.username"`
+	MysqlGanymedePassword        string `config:"base:mysql.ganymede.password"`
+	MysqlGanymedeHost            string `config:"base:mysql.ganymede.host"`
+	MysqlGanymedePort            string `config:"base:mysql.ganymede.port"`
+	MysqlGanymedeProtocol        string `config:"base:mysql.ganymede.protocol"`
+	MysqlGanymedeConnMaxLifetime int64  `config:"base:mysql.ganymede.connMaxLifetime"`
+	MysqlGanymedeMaxIdleConns    int    `config:"base:mysql.ganymede.maxIdleConns"`
+	MysqlGanymedeMaxOpenConns    int    `config:"base:mysql.ganymede.maxOpenConns"`
 
 	RedisAddr     string `config:"base:redis.addr"`
 	RedisPassword string `config:"base:redis.password"`
