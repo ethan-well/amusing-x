@@ -1,7 +1,7 @@
 package amusingcharonserver
 
 import (
-	"amusingx.fit/amusingx/protos/amusingcharonservice/charonservice"
+	"amusingx.fit/amusingx/protos/charons/charonservice"
 	"context"
 	"fmt"
 	"sync"

@@ -1,10 +1,10 @@
 package main
 
 import (
-	"amusingx.fit/amusingx/services/amusingriskserv/conf"
-	"amusingx.fit/amusingx/services/amusingriskserv/mysql/amusingriskcontrol"
-	"amusingx.fit/amusingx/services/amusingriskserv/rpcserver"
-	"amusingx.fit/amusingx/services/amusingriskserv/xredis"
+	"amusingx.fit/amusingx/services/callisto/conf"
+	"amusingx.fit/amusingx/services/callisto/mysql/amusingriskcontrol"
+	"amusingx.fit/amusingx/services/callisto/rpcserver"
+	"amusingx.fit/amusingx/services/callisto/xredis"
 	"github.com/ItsWewin/superfactory/powertrain"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"

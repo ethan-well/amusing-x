@@ -1,7 +1,7 @@
 package amusingplutoserv
 
 import (
-	"amusingx.fit/amusingx/protos/amusingplutoservice/plutoservice"
+	"amusingx.fit/amusingx/protos/pluto/plutoservice"
 	"amusingx.fit/amusingx/rpcclient"
 	"github.com/ItsWewin/superfactory/xerror"
 	"google.golang.org/grpc"

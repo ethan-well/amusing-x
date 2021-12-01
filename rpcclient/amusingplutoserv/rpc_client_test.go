@@ -1,7 +1,7 @@
 package amusingplutoserv
 
 import (
-	"amusingx.fit/amusingx/protos/amusingplutoservice/plutoservice"
+	"amusingx.fit/amusingx/protos/pluto/plutoservice"
 	"context"
 	"fmt"
 	"github.com/ItsWewin/superfactory/logger"

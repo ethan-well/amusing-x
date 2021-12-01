@@ -2,10 +2,10 @@ package main
 
 import (
 	"amusingx.fit/amusingx/etcd"
-	"amusingx.fit/amusingx/services/amusingplutoserv/conf"
-	"amusingx.fit/amusingx/services/amusingplutoserv/mysql"
-	"amusingx.fit/amusingx/services/amusingplutoserv/rpcserver"
-	"amusingx.fit/amusingx/services/amusingplutoserv/xredis"
+	"amusingx.fit/amusingx/services/pluto/conf"
+	"amusingx.fit/amusingx/services/pluto/mysql"
+	"amusingx.fit/amusingx/services/pluto/rpcserver"
+	"amusingx.fit/amusingx/services/pluto/xredis"
 	"fmt"
 	"github.com/ItsWewin/superfactory/logger"
 	"github.com/ItsWewin/superfactory/powertrain"
@@ -63,5 +63,5 @@ func InitRPCServer() {
 }
 
 func ServerInitLog() {
-	fmt.Println("amusingplutoserv")
+	fmt.Println("pluto")
 }
