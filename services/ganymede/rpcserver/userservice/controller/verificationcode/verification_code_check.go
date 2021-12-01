@@ -1,7 +1,7 @@
 package verificationcode
 
 import (
-	"amusingx.fit/amusingx/protos/ganymede/userservice"
+	"amusingx.fit/amusingx/protos/ganymede/service"
 	"context"
 	"github.com/ItsWewin/superfactory/logger"
 	"github.com/ItsWewin/superfactory/verificationcode/randomcode"

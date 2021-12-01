@@ -11,8 +11,7 @@ import (
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the grpc package it is being compiled against.
-// Requires gRPC-Go v1.32.0 or later.
-const _ = grpc.SupportPackageIsVersion7
+const _ = grpc.SupportPackageIsVersion6
 
 // AmusingxUserServiceClient is the client API for AmusingxUserService service.
 //
@@ -127,41 +126,34 @@ type AmusingxUserServiceServer interface {
 type UnimplementedAmusingxUserServiceServer struct {
 }
 
-func (UnimplementedAmusingxUserServiceServer) Pong(context.Context, *BlankParams) (*PongResponse, error) {
+func (*UnimplementedAmusingxUserServiceServer) Pong(context.Context, *BlankParams) (*PongResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Pong not implemented")
 }
-func (UnimplementedAmusingxUserServiceServer) Regexps(context.Context, *BlankParams) (*RegexpResponse, error) {
+func (*UnimplementedAmusingxUserServiceServer) Regexps(context.Context, *BlankParams) (*RegexpResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Regexps not implemented")
 }
-func (UnimplementedAmusingxUserServiceServer) Login(context.Context, *LoginRequest) (*LoginResponse, error) {
+func (*UnimplementedAmusingxUserServiceServer) Login(context.Context, *LoginRequest) (*LoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
 }
-func (UnimplementedAmusingxUserServiceServer) Join(context.Context, *JoinRequest) (*JoinResponse, error) {
+func (*UnimplementedAmusingxUserServiceServer) Join(context.Context, *JoinRequest) (*JoinResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Join not implemented")
 }
-func (UnimplementedAmusingxUserServiceServer) CountryCodes(context.Context, *BlankParams) (*CountryCodeList, error) {
+func (*UnimplementedAmusingxUserServiceServer) CountryCodes(context.Context, *BlankParams) (*CountryCodeList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CountryCodes not implemented")
 }
-func (UnimplementedAmusingxUserServiceServer) GetVerificationCode(context.Context, *VerificationCodeRequest) (*VerificationCodeResponse, error) {
+func (*UnimplementedAmusingxUserServiceServer) GetVerificationCode(context.Context, *VerificationCodeRequest) (*VerificationCodeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetVerificationCode not implemented")
 }
-func (UnimplementedAmusingxUserServiceServer) VerificationCodeCheck(context.Context, *VerificationCodeCheckRequest) (*VerificationCodeCheckResponse, error) {
+func (*UnimplementedAmusingxUserServiceServer) VerificationCodeCheck(context.Context, *VerificationCodeCheckRequest) (*VerificationCodeCheckResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method VerificationCodeCheck not implemented")
 }
-func (UnimplementedAmusingxUserServiceServer) ResetPassword(context.Context, *ResetPasswordRequest) (*ResetPasswordResponse, error) {
+func (*UnimplementedAmusingxUserServiceServer) ResetPassword(context.Context, *ResetPasswordRequest) (*ResetPasswordResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ResetPassword not implemented")
 }
-func (UnimplementedAmusingxUserServiceServer) mustEmbedUnimplementedAmusingxUserServiceServer() {}
+func (*UnimplementedAmusingxUserServiceServer) mustEmbedUnimplementedAmusingxUserServiceServer() {}
 
-// UnsafeAmusingxUserServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to AmusingxUserServiceServer will
-// result in compilation errors.
-type UnsafeAmusingxUserServiceServer interface {
-	mustEmbedUnimplementedAmusingxUserServiceServer()
-}
-
-func RegisterAmusingxUserServiceServer(s grpc.ServiceRegistrar, srv AmusingxUserServiceServer) {
-	s.RegisterService(&AmusingxUserService_ServiceDesc, srv)
+func RegisterAmusingxUserServiceServer(s *grpc.Server, srv AmusingxUserServiceServer) {
+	s.RegisterService(&_AmusingxUserService_serviceDesc, srv)
 }
 
 func _AmusingxUserService_Pong_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -308,10 +300,7 @@ func _AmusingxUserService_ResetPassword_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
-// AmusingxUserService_ServiceDesc is the grpc.ServiceDesc for AmusingxUserService service.
-// It's only intended for direct use with grpc.RegisterService,
-// and not to be introspected or modified (even as a copy)
-var AmusingxUserService_ServiceDesc = grpc.ServiceDesc{
+var _AmusingxUserService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "userservice.AmusingxUserService",
 	HandlerType: (*AmusingxUserServiceServer)(nil),
 	Methods: []grpc.MethodDesc{

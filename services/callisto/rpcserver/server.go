@@ -1,7 +1,7 @@
 package rpcserver
 
 import (
-	riskservice2 "amusingx.fit/amusingx/protos/amusingriskservice/riskservice"
+	riskservice2 "amusingx.fit/amusingx/protos/callisto/service"
 	"amusingx.fit/amusingx/services/callisto/conf"
 	"amusingx.fit/amusingx/services/callisto/rpcserver/riskservice"
 	"github.com/ItsWewin/superfactory/logger"

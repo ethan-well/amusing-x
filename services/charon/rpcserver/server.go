@@ -1,10 +1,10 @@
 package rpcserver
 
 import (
-	"amusingx.fit/amusingx/protos/charons/charonservice"
+	"amusingx.fit/amusingx/protos/charons/service"
+	"amusingx.fit/amusingx/services/charon/conf"
 	"amusingx.fit/amusingx/services/charon/rpcserver/charonserver"
 	"amusingx.fit/amusingx/services/charon/rpcserver/servermiddleware"
-	"amusingx.fit/amusingx/services/charon/conf"
 	"github.com/ItsWewin/superfactory/logger"
 	"github.com/ItsWewin/superfactory/xerror"
 	"github.com/grpc-ecosystem/go-grpc-middleware"
@@ -32,7 +32,7 @@ func InitRPCServer() *xerror.Error {
 			servermiddleware.UnaryServerInterceptorPanicRecover(),
 		)))
 
-	charonservice.RegisterCharonServServer(rpcServ, new(charonserver.CharonServer))
+	service.RegisterCharonServServer(rpcServ, new(charonserver.CharonServer))
 
 	logger.Infof("InitRPCServer. network: %s, addr: %s", conf.Conf.RPCNetwork, conf.Conf.RPCAddress)
 

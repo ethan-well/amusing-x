@@ -2,7 +2,7 @@ package verificationcode
 
 import (
 	"amusingx.fit/amusingx/apistruct/amusinguserserv"
-	"amusingx.fit/amusingx/protos/amusingriskservice/riskservice"
+	"amusingx.fit/amusingx/protos/callisto/service"
 	"amusingx.fit/amusingx/services/europa/model"
 	"amusingx.fit/amusingx/services/europa/rpcclient/riskrpcserver"
 	"context"

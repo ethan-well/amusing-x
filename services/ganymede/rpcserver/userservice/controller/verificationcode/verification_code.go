@@ -1,8 +1,8 @@
 package verificationcode
 
 import (
-	"amusingx.fit/amusingx/protos/amusingriskservice/riskservice"
-	"amusingx.fit/amusingx/protos/ganymede/userservice"
+	"amusingx.fit/amusingx/protos/callisto/service"
+	"amusingx.fit/amusingx/protos/ganymede/service"
 	"amusingx.fit/amusingx/services/ganymede/rpcclient/amusingxriskrpcserver"
 	"amusingx.fit/amusingx/services/ganymede/rpcserver/userservice/model"
 	"context"

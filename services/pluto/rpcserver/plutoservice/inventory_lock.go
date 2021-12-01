@@ -1,7 +1,7 @@
 package plutoservice
 
 import (
-	"amusingx.fit/amusingx/protos/plutoice/plutoservice"
+	"amusingx.fit/amusingx/protos/pluto/service"
 	"amusingx.fit/amusingx/services/pluto/rpcserver/promotionalbook"
 	"context"
 	"github.com/ItsWewin/superfactory/logger"

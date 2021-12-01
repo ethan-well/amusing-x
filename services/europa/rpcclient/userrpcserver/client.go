@@ -1,7 +1,7 @@
 package userrpcserver
 
 import (
-	"amusingx.fit/amusingx/protos/ganymede/userservice"
+	"amusingx.fit/amusingx/protos/ganymede/service"
 	"github.com/ItsWewin/superfactory/xerror"
 	"google.golang.org/grpc"
 	"sync"

@@ -1,10 +1,24 @@
-### 立项
-项目手机每个行业有趣的人，作为行业有趣人的展示和搜索平台
+### 秒杀 saas 服务
 
-### 实现步骤
-1、先做个基本的功能，展示出几个人们行业有趣的人
-2、搜索有趣的人
+### 服务功能规划
 
-### 服务划分理念
-采用为服务架构，将整个服务架构设定为宇宙模型，每个服务为一个星体，服务启动需要的配置看作是星体需要的物质组成
-服务的启动则为星体的运动
+#### pluto 秒杀功能，核型服务
+
+#### ganymede 用户注册，登录，认证
+
+#### europa web api，对外提供 http 服务
+
+#### charon
+
+#### Callisto, 准入，限流服务
+
+
+### protobuf support
+
+#### protobuf compiler install
+`https://grpc.io/docs/protoc-installation/`
+
+```shell
+protoc-gen-go v1.26.0
+protoc        v3.12.3
+```

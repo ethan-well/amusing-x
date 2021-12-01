@@ -1,6 +1,6 @@
 package xredis
 
-import "amusingx.fit/amusingx/services/amusingplutoserv/conf"
+import "amusingx.fit/amusingx/services/pluto/conf"
 
 func Mock() {
 	conf.Mock()

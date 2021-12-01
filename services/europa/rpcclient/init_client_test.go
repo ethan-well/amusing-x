@@ -1,8 +1,8 @@
 package rpcclient
 
 import (
-	"amusingx.fit/amusingx/protos/amusingriskservice/riskservice"
-	"amusingx.fit/amusingx/protos/ganymede/userservice"
+	"amusingx.fit/amusingx/protos/callisto/service"
+	"amusingx.fit/amusingx/protos/ganymede/service"
 	"amusingx.fit/amusingx/services/europa/conf"
 	"amusingx.fit/amusingx/services/europa/rpcclient/riskrpcserver"
 	"amusingx.fit/amusingx/services/europa/rpcclient/userrpcserver"

@@ -1,16 +1,16 @@
 package charonserver
 
 import (
-	"amusingx.fit/amusingx/protos/charons/charonservice"
+	"amusingx.fit/amusingx/protos/charons/service"
 	"amusingx.fit/amusingx/services/charon/conf"
 	"context"
 )
 
 type CharonServer struct {
-	charonservice.UnimplementedCharonServServer
+	service.UnimplementedCharonServServer
 }
 
 // 	Pong(context.Context, *BlankParams) (*PongResponse, error)
-func (s *CharonServer) Pong(ctx context.Context, in *charonservice.BlankParams) (*charonservice.PongResponse, error) {
-	return &charonservice.PongResponse{ServerName: conf.Conf.ServerName}, nil
+func (s *CharonServer) Pong(ctx context.Context, in *service.BlankParams) (*service.PongResponse, error) {
+	return &service.PongResponse{ServerName: conf.Conf.ServerName}, nil
 }

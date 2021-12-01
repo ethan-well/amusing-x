@@ -1,7 +1,7 @@
 package rpcserver
 
 import (
-	"amusingx.fit/amusingx/protos/plutoice/plutoservice"
+	"amusingx.fit/amusingx/protos/pluto/service"
 	"amusingx.fit/amusingx/services/pluto/conf"
 	plutoservice2 "amusingx.fit/amusingx/services/pluto/rpcserver/plutoservice"
 	"amusingx.fit/amusingx/services/pluto/rpcserver/servermiddleware"

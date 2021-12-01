@@ -1,7 +1,7 @@
 package riskrpcserver
 
 import (
-	"amusingx.fit/amusingx/protos/amusingriskservice/riskservice"
+	"amusingx.fit/amusingx/protos/callisto/service"
 	"github.com/ItsWewin/superfactory/xerror"
 	"google.golang.org/grpc"
 	"sync"

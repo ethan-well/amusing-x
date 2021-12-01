@@ -1,7 +1,7 @@
 package rpcserver
 
 import (
-	"amusingx.fit/amusingx/protos/ganymede/userservice"
+	"amusingx.fit/amusingx/protos/ganymede/service"
 	"amusingx.fit/amusingx/services/ganymede/conf"
 	userservice2 "amusingx.fit/amusingx/services/ganymede/rpcserver/userservice"
 	"github.com/ItsWewin/superfactory/xerror"

@@ -1,7 +1,7 @@
 package regexp
 
 import (
-	"amusingx.fit/amusingx/protos/ganymede/userservice"
+	"amusingx.fit/amusingx/protos/ganymede/service"
 	"amusingx.fit/amusingx/services/europa/rpcclient/userrpcserver"
 	"context"
 	"github.com/ItsWewin/superfactory/httputil/rest"

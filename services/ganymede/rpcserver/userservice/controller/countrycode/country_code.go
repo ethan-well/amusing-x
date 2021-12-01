@@ -1,7 +1,7 @@
 package countrycode
 
 import (
-	"amusingx.fit/amusingx/protos/ganymede/userservice"
+	"amusingx.fit/amusingx/protos/ganymede/service"
 	"amusingx.fit/amusingx/services/ganymede/mysql/amusinguser"
 	"context"
 	"github.com/ItsWewin/superfactory/xerror"

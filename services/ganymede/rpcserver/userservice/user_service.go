@@ -1,7 +1,7 @@
 package userservice
 
 import (
-	"amusingx.fit/amusingx/protos/ganymede/userservice"
+	"amusingx.fit/amusingx/protos/ganymede/service"
 	"amusingx.fit/amusingx/regexp"
 	"amusingx.fit/amusingx/services/ganymede/rpcserver/userservice/controller/countrycode"
 	password "amusingx.fit/amusingx/services/ganymede/rpcserver/userservice/controller/findpassword"

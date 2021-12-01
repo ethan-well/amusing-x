@@ -1,7 +1,7 @@
 package rpcclient
 
 import (
-	"amusingx.fit/amusingx/protos/amusingriskservice/riskservice"
+	"amusingx.fit/amusingx/protos/callisto/service"
 	"amusingx.fit/amusingx/services/ganymede/conf"
 	"amusingx.fit/amusingx/services/ganymede/rpcclient/amusingxriskrpcserver"
 	"context"
