@@ -1,10 +1,10 @@
 server:
-  name: "amusing-x/pluto"
+  name: "amusing-x/charon"
   httpServer:
-    addr: :10003
+    addr: :10004
   grpcServer:
     network: tcp
-    address: :20003
+    address: :20004
 mysql:
   plutodb:
     db: plutodb

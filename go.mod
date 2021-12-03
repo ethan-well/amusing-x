@@ -17,4 +17,4 @@ require (
 	google.golang.org/protobuf v1.27.1
 )
 
-replace github.com/ItsWewin/superfactory => /Users/klook/workspace/amusingx-project/superfactory
+replace github.com/ItsWewin/superfactory => /Users/wewin/workspace/amusingx/superfactory
