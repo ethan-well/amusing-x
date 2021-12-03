@@ -10,7 +10,7 @@ import (
 )
 
 func TestInitRPCClient(t *testing.T) {
-	conf.Conf.RiskServiceRPCAddress = "localhost:11002"
+	conf.ConfSect.RiskServiceRPCAddress = "localhost:11002"
 	xErr := InitRPCClient()
 	if xErr == nil {
 		t.Fatalf("some error: %s", xErr)

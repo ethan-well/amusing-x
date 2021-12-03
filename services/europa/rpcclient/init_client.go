@@ -11,9 +11,9 @@ import (
 )
 
 func InitRiskServerRPCClient() *xerror.Error {
-	logger.Infof("InitRPCClient. addr: %s", conf.Conf.RiskServiceRPCAddress)
+	logger.Infof("InitRPCClient. addr: %s", conf.ConfIns.RiskServiceRPCAddress)
 
-	conn, err := grpc.Dial(conf.Conf.RiskServiceRPCAddress, grpc.WithInsecure())
+	conn, err := grpc.Dial(conf.ConfIns.RiskServiceRPCAddress, grpc.WithInsecure())
 	if err != nil {
 		return xerror.NewError(err, xerror.Code.SUnexpectedErr, fmt.Sprintf("grpc dial error: %s", err))
 	}
@@ -31,9 +31,9 @@ func RiskServerRPCClientClose() {
 }
 
 func InitUserServerRPCClient() *xerror.Error {
-	logger.Infof("InitUserServerRPCClient. addr: %s", conf.Conf.UserServiceRPCAddress)
+	logger.Infof("InitUserServerRPCClient. addr: %s", conf.ConfIns.UserServiceRPCAddress)
 
-	conn, err := grpc.Dial(conf.Conf.UserServiceRPCAddress, grpc.WithInsecure())
+	conn, err := grpc.Dial(conf.ConfIns.UserServiceRPCAddress, grpc.WithInsecure())
 	if err != nil {
 		return xerror.NewError(err, xerror.Code.SUnexpectedErr, "grpc.Dial failed")
 	}

@@ -6,9 +6,9 @@ import (
 	"reflect"
 )
 
-var Conf = new(Config)
+var Conf2 = new(ConfigSection)
 
-type Config struct {
+type ConfigSection struct {
 	Addr       string `config:"base:addr"`
 	Port       string `config:"base:http.port"`
 	ServerName string `config:"base:server.name"`
@@ -27,15 +27,15 @@ type Config struct {
 	RPCAddress string `config:"rpc:address"`
 }
 
-func (c *Config) MaterType() string {
+func (c *ConfigSection) MaterType() string {
 	return basicmatter.MasterConfigBasicSection
 }
 
-func (c *Config) HttpAddr() string {
+func (c *ConfigSection) HttpAddr() string {
 	return c.Addr
 }
 
-func (c *Config) Print() {
+func (c *ConfigSection) Print() {
 	rv := reflect.ValueOf(*c)
 	rt := reflect.TypeOf(*c)
 

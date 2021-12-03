@@ -10,9 +10,9 @@ import (
 )
 
 func InitRPCClient() *xerror.Error {
-	logger.Infof("InitRPCClient. addr: %s", conf.Conf.RiskServiceRPCAddress)
+	logger.Infof("InitRPCClient. addr: %s", conf.ConfSect.RiskServiceRPCAddress)
 
-	conn, err := grpc.Dial(conf.Conf.RiskServiceRPCAddress, grpc.WithInsecure())
+	conn, err := grpc.Dial(conf.ConfSect.RiskServiceRPCAddress, grpc.WithInsecure())
 	if err != nil {
 		return xerror.NewError(err, xerror.Code.SUnexpectedErr, fmt.Sprintf("grpc dial error: %s", err))
 	}

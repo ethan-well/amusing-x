@@ -1,7 +1,7 @@
 package conf
 
 func Mock() {
-	Conf = &Config{
+	Conf = &ConfigSection{
 		Addr:                      "10001",
 		Port:                      "10001",
 		RedisAddr:                 "localhost:6379",
