@@ -9,8 +9,9 @@ import (
 var PlutoDB *sqlx.DB
 
 func InitMySQL() {
-	mysqlDB := mysql.NewMysqlDB(conf.Conf.MysqlPlutoDB, conf.Conf.MysqlPlutoUsername, conf.Conf.MysqlPlutoPassword,
-		conf.Conf.MysqlPlutoHost, conf.Conf.MysqlPlutoMaxOpenConns, conf.Conf.MysqlPlutoMaxIdleConns, conf.Conf.MysqlPlutoConnMaxLifetime)
+	plutodb := conf.Conf.Mysql.Plutodb
+	mysqlDB := mysql.NewMysqlDB(plutodb.DB, plutodb.User, plutodb.Password,
+		plutodb.Host, plutodb.Port, plutodb.Protocol, plutodb.MaxOpenConns, plutodb.MaxIdleConns, plutodb.MaxLifeTime)
 
 	PlutoDB = mysqlDB.Connect()
 }

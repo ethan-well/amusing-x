@@ -1,3 +1,4 @@
 .idea/
 bin/
 sql.sql
+cmd/**/*local.conf

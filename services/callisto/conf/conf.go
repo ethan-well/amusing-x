@@ -1,6 +1,7 @@
 package conf
 
 import (
+	"github.com/ItsWewin/superfactory/basicmatter"
 	"log"
 	"reflect"
 )
@@ -35,7 +36,11 @@ type Config struct {
 	RPCAddress string `config:"rpc:address"`
 }
 
-func (c *Config) GetAddr() string {
+func (c *Config) MaterType() string {
+	return basicmatter.MasterConfigBasicSection
+}
+
+func (c *Config) HttpAddr() string {
 	return c.Addr
 }
 
