@@ -7,5 +7,5 @@ import (
 func Mock() {
 	conf.Mock()
 
-	InitRedis(conf.Conf.RedisAddr, conf.Conf.RedisPassword, conf.Conf.RedisDB)
+	InitRedis(conf.ConfIns.RedisAddr, conf.ConfIns.RedisPassword, conf.ConfIns.RedisDB)
 }

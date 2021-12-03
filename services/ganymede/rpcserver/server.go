@@ -20,7 +20,7 @@ func InitRPCService() *xerror.Error {
 
 	userservice.RegisterAmusingxUserServiceServer(rpcService, new(userservice2.UserService))
 
-	lis, err := net.Listen(conf.Conf.RPCNetwork, conf.Conf.UserServiceRPCAddress)
+	lis, err := net.Listen(conf.ConfSect.RPCNetwork, conf.ConfSect.UserServiceRPCAddress)
 	if err != nil {
 		return xerror.NewError(err, xerror.Code.SUnexpectedErr, "RPC net listen failed")
 	}

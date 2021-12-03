@@ -1,7 +1,7 @@
 package conf
 
 func Mock() {
-	Conf = &Config{
+	ConfSection = &ConfigSection{
 		Addr:                      "10001",
 		Port:                      "10001",
 		MysqlPlutoDB:              "plutodb",

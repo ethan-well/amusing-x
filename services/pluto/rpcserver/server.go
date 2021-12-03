@@ -35,9 +35,10 @@ func InitRPCServer() *xerror.Error {
 
 	plutoservice.RegisterAmusingxPlutoServiceServer(rpcServ, new(plutoservice2.PlutoService))
 
-	logger.Infof("InitRPCServer. network: %s, addr: %s", conf.Conf.RPCNetwork, conf.Conf.RPCAddress)
+	rpcServConf := conf.Conf.Server.GrpcServer
+	logger.Infof("InitRPCServer. network: %s, addr: %s", rpcServConf.Network, rpcServConf.Address)
 
-	lis, err := net.Listen(conf.Conf.RPCNetwork, conf.Conf.RPCAddress)
+	lis, err := net.Listen(rpcServConf.Network, rpcServConf.Address)
 	if err != nil {
 		return xerror.NewErrorf(err, xerror.Code.SUnexpectedErr, "RPC Listen failed:  %s", err)
 	}

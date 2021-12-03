@@ -10,8 +10,8 @@ import (
 func TestSessionInit(t *testing.T) {
 	conf.Mock()
 
-	store, err := InitRedisStore(conf.Conf.SessionStoreRedisAddr, conf.Conf.SessionStoreRedisPassword,
-		conf.Conf.SessionStoreRedisDB, "session", 60)
+	store, err := InitRedisStore(conf.ConfSect.SessionStoreRedisAddr, conf.ConfSect.SessionStoreRedisPassword,
+		conf.ConfSect.SessionStoreRedisDB, "session", 60)
 
 	if err != nil {
 		t.Fatalf("some error: %s", err)

@@ -11,5 +11,5 @@ type PlutoService struct {
 }
 
 func (s *PlutoService) Pong(context.Context, *plutoservice.BlankParams) (*plutoservice.PongResponse, error) {
-	return &plutoservice.PongResponse{ServerName: conf.Conf.ServerName}, nil
+	return &plutoservice.PongResponse{ServerName: conf.Conf.Server.Name}, nil
 }
