@@ -10,7 +10,7 @@ func QueryCountryCodes(ctx context.Context) ([]*amusinguser.CountryCode, *xerror
 	var countryCodeList []*amusinguser.CountryCode
 
 	query := "SELECT id, country_code, cname FROM country_code"
-	err := AmusingUserDB.SelectContext(ctx, &countryCodeList, query)
+	err := GanymedeDB.SelectContext(ctx, &countryCodeList, query)
 	if err != nil {
 		return countryCodeList, xerror.NewError(err, xerror.Code.SSqlExecuteErr, "查询 country code 失败")
 	}

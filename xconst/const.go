@@ -15,8 +15,8 @@ func InitGlobalConst() {
 	globalConst = GlobalConst{Login: Login{LoginType: LoginType{"password": 0, "verificationCode": 1}}}
 }
 
-func (t LoginType) IsPasswordType() bool {
-	for k, v := range t {
-
-	}
-}
+//func (t LoginType) IsPasswordType() bool {
+//	for k, v := range t {
+//
+//	}
+//}

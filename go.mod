@@ -1,6 +1,6 @@
 module amusingx.fit/amusingx
 
-go 1.17
+go 1.15
 
 require (
 	github.com/ItsWewin/superfactory v0.0.0-20211204025551-a7f9f3f85b60
