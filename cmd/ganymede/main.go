@@ -10,11 +10,10 @@ import (
 	"github.com/ItsWewin/superfactory/powertrain"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
-	"log"
 )
 
 func main() {
-	powertrain.Run(conf.ConfSect, func(o *powertrain.Options) {
+	powertrain.Run(conf.Conf, func(o *powertrain.Options) {
 		o.InitFunc = InitFunc
 		o.DeferFunc = DeferFunc
 		o.RegisterRouter = func(mux *mux.Router) {
@@ -22,15 +21,15 @@ func main() {
 		}
 	})
 
-	conf.ConfSect.Print()
+	conf.Conf.Print()
 }
 
-// 服务初始化时候执行
+// InitFunc 服务初始化时候执行
 func InitFunc() {
-	log.Println("amusing api sever listen:", conf.ConfSect.Addr)
 	amusinguser.InitMySQL()
 
-	xredis.InitRedis(conf.ConfSect.RedisAddr, conf.ConfSect.RedisPassword, conf.ConfSect.RedisDB)
+	redis0 := conf.Conf.Redis.RedisO
+	xredis.InitRedis(redis0.Addr, redis0.Password, redis0.DBNo)
 
 	err := session.InitSessionManager("redis", "sid", 24*60*60)
 	if err != nil {
@@ -48,7 +47,7 @@ func InitFunc() {
 	}
 }
 
-// 服务执行完毕时候执行
+// DeferFunc 服务执行完毕时候执行
 func DeferFunc() {
 	amusinguser.MysqlDisConnect()
 

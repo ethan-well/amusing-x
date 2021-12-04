@@ -1,9 +1,9 @@
 .DEFAULT_GOAL := all
 
-all: build-amusingplutoserv
+all: build-plutos
 
-build-amusingplutoserv:
-	go build -o ./bin/amusingplutoserv ./cmd/amusingplutoserv/main.go
+build-plutos:
+	go build -o ./bin/pluto ./cmd/pluto/main.go
 
 docker-build:
 	docker build -t plutoserv:0.0.01 -f Dockerfile/Dockerfile .

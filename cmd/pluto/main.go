@@ -28,7 +28,7 @@ func main() {
 	conf.Conf.Print()
 }
 
-// 服务初始化时候执行
+// InitFunc 服务初始化时候执行
 func InitFunc() {
 	mysql.InitMySQL()
 
@@ -44,7 +44,7 @@ func InitFunc() {
 	ServerInitLog()
 }
 
-// 服务执行完毕时候执行
+// DeferFunc 服务执行完毕时候执行
 func DeferFunc() {
 	mysql.DisConnectMySQL()
 

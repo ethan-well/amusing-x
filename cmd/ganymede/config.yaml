@@ -8,8 +8,8 @@ server:
 mysql:
   plutodb:
     db: plutodb
-    user: klooktest
-    password: sees7&chanting
+    user: test111
+    password: pass123456
     host: localhost
     port: 3306
     protocol: tcp

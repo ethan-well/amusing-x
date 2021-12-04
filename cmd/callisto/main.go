@@ -8,7 +8,6 @@ import (
 	"github.com/ItsWewin/superfactory/powertrain"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
-	"log"
 )
 
 func main() {
@@ -24,17 +23,17 @@ func main() {
 	conf.Conf.Print()
 }
 
-// 服务初始化时候执行
+// InitFunc 服务初始化时候执行
 func InitFunc() {
-	log.Println("amusing api sever listen:", conf.Conf.Addr)
 	riskcontrol.InitMySQL()
 
-	xredis.InitRedis(conf.Conf.RedisAddr, conf.Conf.RedisPassword, conf.Conf.RedisDB)
+	redis0 := conf.Conf.Redis.RedisO
+	xredis.InitRedis(redis0.Addr, redis0.Password, redis0.DBNo)
 
 	InitRPCServer()
 }
 
-// 服务执行完毕时候执行
+// DeferFunc 服务执行完毕时候执行
 func DeferFunc() {
 	riskcontrol.MysqlDisConnect()
 

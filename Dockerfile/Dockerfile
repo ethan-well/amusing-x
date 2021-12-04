@@ -10,6 +10,6 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o /amusingplutoserv /app/cmd/amusingplutoserv/main.go
+RUN go build -o /pluto /app/cmd/pluto/main.go
 
-ENTRYPOINT exec /amusingplutoserv -cf=/app/cmd/amusingplutoserv/service_testing.conf
+ENTRYPOINT exec /pluto -cf=/app/cmd/pluto/config.yaml

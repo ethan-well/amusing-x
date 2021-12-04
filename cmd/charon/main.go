@@ -1,8 +1,8 @@
 package main
 
 import (
-	"amusingx.fit/amusingx/services/charon/rpcserver"
 	"amusingx.fit/amusingx/services/charon/conf"
+	"amusingx.fit/amusingx/services/charon/rpcserver"
 	"amusingx.fit/amusingx/services/charon/xredis"
 	"github.com/ItsWewin/superfactory/powertrain"
 	"github.com/gorilla/mux"
@@ -20,13 +20,14 @@ func main() {
 	conf.Conf.Print()
 }
 
-// 服务初始化时候执行
+// InitFunc 服务初始化时候执行
 func InitFunc() {
-	xredis.InitRedis(conf.Conf.RedisAddr, conf.Conf.RedisPassword, conf.Conf.RedisDB)
+	redis0 := conf.Conf.Redis.RedisO
+	xredis.InitRedis(redis0.Addr, redis0.Password, redis0.DBNo)
 	InitRPCServer()
 }
 
-// 服务执行完毕时候执行
+// DeferFunc 服务执行完毕时候执行
 func DeferFunc() {
 	xredis.CloseRedis()
 	rpcserver.CloseRPCServer()
