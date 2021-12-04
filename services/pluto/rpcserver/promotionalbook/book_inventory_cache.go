@@ -80,18 +80,13 @@ func (bc *BookInventoryCache) AllBookInventoryCacheInit(ctx context.Context) *xe
 		return xerror.NewErrorf(nil, xerror.Code.SRedisExecuteErr, "redis client is nil")
 	}
 	
-	logger.Infof("AllBookInventoryCacheInit start delete key")
-
-	 xredis.Client.Del(ctx, bc.key)
-	
-	logger.Infof("AllBookInventoryCacheInit after delete key")
+	xredis.Client.Del(ctx, bc.key)
 	
 	dataSource, xErr := inventorycachedatasource.NewDataSource(inventorycachedatasource.LocalVariableSource)
 	if xErr != nil {
 		return xErr
 	}
 
-	logger.Infof("AllBookInventoryCacheInit GetInventories")
 	idInventoryMap, xErr := dataSource.GetInventories(ctx)
 	if xErr != nil {
 		return xErr
@@ -151,9 +146,7 @@ end
 	if !ok {
 		return 0, xerror.NewErrorf(err, xerror.Code.SRedisExecuteErr, "减库存失败")
 	}
-
-	logger.Errorf("code code code: %d", code)
-
+	
 	switch code {
 	case InventoryDecrScriptCodeParamsErr:
 		return 0, xerror.NewErrorf(err, xerror.Code.SRedisExecuteErr, "参数错误")
