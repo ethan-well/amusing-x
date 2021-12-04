@@ -1,0 +1,22 @@
+server:
+  name: "amusing-x/pluto"
+  httpServer:
+    addr: :10003
+  grpcServer:
+    network: tcp
+    address: :20003
+mysql:
+  plutodb:
+    db: plutodb
+    user: test111
+    password: pass123456
+    host: localhost
+    port: 3306
+    protocol: tcp
+    maxLifeTime: 3600
+    maxOpenConns: 100
+    maxIdleConns: 10
+redis:
+  redis1:
+    addr: 127.0.0.1:6379
+    dbNo: 1

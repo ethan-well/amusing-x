@@ -14,7 +14,7 @@ import (
 )
 
 func main() {
-	powertrain.Run(conf.Conf, func(o *powertrain.Options) {
+	powertrain.Run(conf.ConfSect, func(o *powertrain.Options) {
 		o.InitFunc = InitFunc
 		o.DeferFunc = DeferFunc
 		o.RegisterRouter = func(mux *mux.Router) {
@@ -22,15 +22,15 @@ func main() {
 		}
 	})
 
-	conf.Conf.Print()
+	conf.ConfSect.Print()
 }
 
 // 服务初始化时候执行
 func InitFunc() {
-	log.Println("amusing api sever listen:", conf.Conf.Addr)
+	log.Println("amusing api sever listen:", conf.ConfSect.Addr)
 	amusinguser.InitMySQL()
 
-	xredis.InitRedis(conf.Conf.RedisAddr, conf.Conf.RedisPassword, conf.Conf.RedisDB)
+	xredis.InitRedis(conf.ConfSect.RedisAddr, conf.ConfSect.RedisPassword, conf.ConfSect.RedisDB)
 
 	err := session.InitSessionManager("redis", "sid", 24*60*60)
 	if err != nil {

@@ -11,7 +11,7 @@ import (
 )
 
 func TestInitClient(t *testing.T) {
-	InitClient(":11002")
+	InitClient(":20003")
 
 	ctx, _ := context.WithTimeout(context.Background(), 100*time.Second)
 

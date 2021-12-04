@@ -32,7 +32,8 @@ func main() {
 func InitFunc() {
 	mysql.InitMySQL()
 
-	xredis.InitRedis(conf.Conf.RedisAddr, conf.Conf.RedisPassword, conf.Conf.RedisDB)
+	redis := conf.Conf.Redis.RedisO
+	xredis.InitRedis(redis.Addr, redis.Password, redis.DBNo)
 
 	etcd.InitEtcdClientV3(clientv3.Config{
 		Endpoints:   []string{"127.0.0.1:2379"},
