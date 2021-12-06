@@ -11,12 +11,27 @@ type Config struct {
 	Server *Server   `yaml:"server"`
 	Mysql  MysqlConf `yaml:"mysql"`
 	Redis  Redis     `yaml:"redis"`
+	OAuth  *OAuth    `yaml:"oauth"`
 }
 
 type Server struct {
-	Name       string      `yaml:"name"`
-	HttpServer *HttpServer `yaml:"httpServer"`
-	GrpcServer *GrpcServer `yaml:"grpcServer"`
+	Name       string       `yaml:"name"`
+	HttpServer *HttpServer  `yaml:"httpServer"`
+	GrpcServer *GrpcServer  `yaml:"grpcServer"`
+	GrpcClient *GrpcClients `yaml:"grpc_client"`
+}
+
+type OAuth struct {
+	Github *GitHubOAuth `yaml:"github"`
+}
+
+type GitHubOAuth struct {
+	Provider       string `yaml:"provider"`
+	ClientID       string `yaml:"clientID"`
+	ClientSecret   string `yaml:"clientSecrets"`
+	RedirectUrl    string `yaml:"redirectUrl"`
+	AccessTokenUrl string `yaml:"access_token_url"`
+	UserProfileUrl string `yaml:"user_profile_url"`
 }
 
 type HttpServer struct {
@@ -26,6 +41,14 @@ type HttpServer struct {
 type GrpcServer struct {
 	Network string `yaml:"network"`
 	Address string `yaml:"address"`
+}
+
+type GrpcClients struct {
+	Callisto *GrpcClient `yaml:"callisto"`
+}
+
+type GrpcClient struct {
+	Addr string `json:"addr"`
 }
 
 type MysqlConf struct {

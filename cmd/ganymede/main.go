@@ -2,7 +2,7 @@ package main
 
 import (
 	"amusingx.fit/amusingx/services/ganymede/conf"
-	"amusingx.fit/amusingx/services/ganymede/mysql/amusinguser"
+	"amusingx.fit/amusingx/services/ganymede/mysql/ganymede/model"
 	"amusingx.fit/amusingx/services/ganymede/rpcclient"
 	rpcserver2 "amusingx.fit/amusingx/services/ganymede/rpcserver"
 	"amusingx.fit/amusingx/services/ganymede/session"
@@ -27,7 +27,7 @@ func main() {
 
 // InitFunc 服务初始化时候执行
 func InitFunc() {
-	amusinguser.InitMySQL()
+	model.InitMySQL()
 
 	redis0 := conf.Conf.Redis.RedisO
 	xredis.InitRedis(redis0.Addr, redis0.Password, redis0.DBNo)
@@ -50,7 +50,7 @@ func InitFunc() {
 
 // DeferFunc 服务执行完毕时候执行
 func DeferFunc() {
-	amusinguser.MysqlDisConnect()
+	model.MysqlDisConnect()
 
 	xredis.CloseRedis()
 

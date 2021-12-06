@@ -1,4 +1,4 @@
-package amusinguser
+package model
 
 func Mock() {
 	InitMySQL()

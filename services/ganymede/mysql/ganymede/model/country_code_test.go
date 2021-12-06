@@ -1,4 +1,4 @@
-package amusinguser
+package model
 
 import (
 	"amusingx.fit/amusingx/services/ganymede/conf"

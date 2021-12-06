@@ -4,16 +4,16 @@ import (
 	"amusingx.fit/amusingx/protos/callisto/service"
 	"amusingx.fit/amusingx/protos/ganymede/service"
 	"amusingx.fit/amusingx/services/europa/conf"
-	"amusingx.fit/amusingx/services/europa/rpcclient/riskrpcserver"
+	"amusingx.fit/amusingx/services/europa/rpcclient/callistoserver"
 	"amusingx.fit/amusingx/services/europa/rpcclient/userrpcserver"
 	"context"
 	"github.com/ItsWewin/superfactory/logger"
 	"testing"
 )
 
-func TestInitRiskServerRPCClient(t *testing.T) {
+func TestInitCallistoRPCClient(t *testing.T) {
 	conf.ConfIns.RiskServiceRPCAddress = "localhost:11002"
-	xErr := InitRiskServerRPCClient()
+	xErr := callistoserver.InitCallistoRPCClient()
 	if xErr == nil {
 		t.Fatalf("some error: %s", xErr)
 	}
@@ -25,7 +25,7 @@ func TestInitRiskServerRPCClient(t *testing.T) {
 		Action:       "",
 	}
 
-	result, err := riskrpcserver.RPCClient.Client.LoginRiskControl(context.Background(), req)
+	result, err := callistoserver.RPCClient.Client.LoginRiskControl(context.Background(), req)
 	if err != nil {
 		t.Fatalf("some error: %s", err)
 	}

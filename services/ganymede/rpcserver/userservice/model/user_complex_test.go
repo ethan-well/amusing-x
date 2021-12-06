@@ -5,7 +5,7 @@ import (
 )
 
 func TestSignPassword(t *testing.T) {
-	u := User{
+	u := UserComplex{
 		ID:             0,
 		Nickname:       "",
 		Phone:          "",
@@ -24,7 +24,7 @@ func TestSignPassword(t *testing.T) {
 }
 
 func TestComparePassword(t *testing.T) {
-	u := &User{
+	u := &UserComplex{
 		ID:             0,
 		Nickname:       "",
 		Phone:          "",

@@ -11,6 +11,7 @@ type Config struct {
 	Server *Server   `yaml:"server"`
 	Mysql  MysqlConf `yaml:"mysql"`
 	Redis  Redis     `yaml:"redis"`
+	OAuth  *OAuth    `yaml:"oauth"`
 }
 
 type Server struct {
@@ -52,6 +53,19 @@ type RedisConf struct {
 	Addr     string `yaml:"addr"`
 	DBNo     int    `yaml:"dbNo"`
 	Password string `yaml:"password"`
+}
+
+type OAuth struct {
+	Github *GitHubOAuth `yaml:"github"`
+}
+
+type GitHubOAuth struct {
+	Provider       string `yaml:"provider"`
+	ClientID       string `yaml:"clientID"`
+	ClientSecret   string `yaml:"clientSecrets"`
+	RedirectUrl    string `yaml:"redirectUrl"`
+	AccessTokenUrl string `yaml:"access_token_url"`
+	UserProfileUrl string `yaml:"user_profile_url"`
 }
 
 func (c *Config) MaterType() string {

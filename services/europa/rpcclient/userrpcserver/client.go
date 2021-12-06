@@ -15,12 +15,12 @@ type UserRPCClient struct {
 var RPCClient *UserRPCClient
 var once sync.Once
 
-func InitUserServerRPCClient(cc *grpc.ClientConn) *xerror.Error {
+func InitGanymedeRPCClient(cc *grpc.ClientConn) *xerror.Error {
 	if cc == nil {
 		return xerror.NewError(nil, xerror.Code.BUnexpectedData, "cc is nil")
 	}
 
-	CloseUserServerPRCClient()
+	CloseGanymedePRCClient()
 
 	once.Do(func() {
 		RPCClient = &UserRPCClient{
@@ -32,7 +32,7 @@ func InitUserServerRPCClient(cc *grpc.ClientConn) *xerror.Error {
 	return nil
 }
 
-func CloseUserServerPRCClient() {
+func CloseGanymedePRCClient() {
 	if RPCClient != nil && RPCClient.CC != nil {
 		RPCClient.CC.Close()
 	}

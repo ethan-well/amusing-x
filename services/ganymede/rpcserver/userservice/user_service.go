@@ -7,6 +7,7 @@ import (
 	password "amusingx.fit/amusingx/services/ganymede/rpcserver/userservice/controller/findpassword"
 	"amusingx.fit/amusingx/services/ganymede/rpcserver/userservice/controller/join"
 	"amusingx.fit/amusingx/services/ganymede/rpcserver/userservice/controller/login"
+	"amusingx.fit/amusingx/services/ganymede/rpcserver/userservice/controller/oauthlogin"
 	"amusingx.fit/amusingx/services/ganymede/rpcserver/userservice/controller/verificationcode"
 	"context"
 	"errors"
@@ -87,6 +88,16 @@ func (s *UserService) VerificationCodeCheck(ctx context.Context, req *userservic
 
 func (s *UserService) ResetPassword(ctx context.Context, req *userservice.ResetPasswordRequest) (*userservice.ResetPasswordResponse, error) {
 	resp, err := password.HandlerResetPassword(ctx, req)
+	if err != nil {
+		logger.Errorf("[ResetPassword] password.HandlerResetPassword failed: %s", err)
+		return nil, errors.New("reset password failed")
+	}
+
+	return resp, nil
+}
+
+func (s *UserService) OAuthLogin(ctx context.Context, req *userservice.OAuthLoginRequest) (*userservice.OAuthLoginResponse, error) {
+	resp, err := oauthlogin.HandlerOAuthLogin(ctx, req)
 	if err != nil {
 		logger.Errorf("[ResetPassword] password.HandlerResetPassword failed: %s", err)
 		return nil, errors.New("reset password failed")

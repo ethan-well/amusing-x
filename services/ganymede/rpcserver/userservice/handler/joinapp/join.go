@@ -10,10 +10,10 @@ import (
 	"github.com/ItsWewin/superfactory/xerror"
 )
 
-func CreateUser(ctx context.Context, r *userservice.JoinRequest) (*model.User, *xerror.Error) {
+func CreateUser(ctx context.Context, r *userservice.JoinRequest) (*model.UserComplex, *xerror.Error) {
 	var (
 		err  *xerror.Error
-		user = &model.User{
+		user = &model.UserComplex{
 			Nickname: r.Nickname,
 			Phone:    fmt.Sprintf("%s-%s", r.AreaCode, r.Phone),
 			Password: r.Password,
@@ -50,7 +50,7 @@ func CreateUser(ctx context.Context, r *userservice.JoinRequest) (*model.User, *
 	return user, nil
 }
 
-func clearPassword(r *userservice.JoinRequest, u *model.User) {
+func clearPassword(r *userservice.JoinRequest, u *model.UserComplex) {
 	r.Password = ""
 	u.Password = ""
 	u.PasswordDigest = ""

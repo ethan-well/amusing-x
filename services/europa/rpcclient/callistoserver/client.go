@@ -1,4 +1,4 @@
-package riskrpcserver
+package callistoserver
 
 import (
 	"amusingx.fit/amusingx/protos/callisto/service"
@@ -15,12 +15,12 @@ type RPCServerClients struct {
 var RPCClient *RPCServerClients
 var once sync.Once
 
-func InitRiskServerRPCClient(cc *grpc.ClientConn) *xerror.Error {
+func InitCallistoRPCClient(cc *grpc.ClientConn) *xerror.Error {
 	if cc == nil {
 		return xerror.NewError(nil, xerror.Code.BUnexpectedData, "cc is nil")
 	}
 
-	CloseRiskServerRPCClient()
+	CloseCallistoRPCClient()
 
 	once.Do(func() {
 		RPCClient = &RPCServerClients{
@@ -32,7 +32,7 @@ func InitRiskServerRPCClient(cc *grpc.ClientConn) *xerror.Error {
 	return nil
 }
 
-func CloseRiskServerRPCClient() {
+func CloseCallistoRPCClient() {
 	if RPCClient != nil && RPCClient.CC != nil {
 		RPCClient.CC.Close()
 	}

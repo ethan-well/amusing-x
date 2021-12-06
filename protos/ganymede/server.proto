@@ -11,6 +11,7 @@ import "country_code.proto";
 import "verification_code.proto";
 import "verification_code_check.proto";
 import "reset_password.proto";
+import "oauth_login.proto";
 
 service AmusingxUserService {
   rpc Pong(BlankParams) returns (PongResponse) {}
@@ -21,6 +22,7 @@ service AmusingxUserService {
   rpc GetVerificationCode(VerificationCodeRequest) returns (VerificationCodeResponse) {}
   rpc VerificationCodeCheck(VerificationCodeCheckRequest) returns (VerificationCodeCheckResponse) {}
   rpc ResetPassword(ResetPasswordRequest) returns (ResetPasswordResponse) {}
+  rpc OAuthLogin(OAuthLoginRequest) returns (OAuthLoginResponse) {}
 }
 
 message BlankParams {}

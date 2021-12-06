@@ -16,6 +16,12 @@ mysql:
     maxLifeTime: 3600
     maxOpenConns: 100
     maxIdleConns: 10
+oauth:
+  github:
+    provider: "GitHub"
+    clientID: ""
+    clientSecrets: ""
+    redirectUrl: ""
 redis:
   redis1:
     addr: 127.0.0.1:6379

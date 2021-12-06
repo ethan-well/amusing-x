@@ -1,7 +1,7 @@
 package password
 
 import (
-	"amusingx.fit/amusingx/apistruct/amusinguserserv"
+	"amusingx.fit/amusingx/apistruct/europa"
 	"amusingx.fit/amusingx/services/europa/app/passwordapp"
 	"context"
 	"github.com/ItsWewin/superfactory/httputil"
@@ -32,7 +32,7 @@ func HandlerResetPassword(w http.ResponseWriter, r *http.Request) {
 	rest.SucceedJsonResponse(w, "密码重置成功")
 }
 
-func resetPassword(ctx context.Context, req *amusinguserserv.ResetPasswordRequest) *xerror.Error {
+func resetPassword(ctx context.Context, req *europa.ResetPasswordRequest) *xerror.Error {
 	domain := passwordapp.NewDomain()
 
 	err := domain.SetResetPasswordInfo(req)
@@ -53,8 +53,8 @@ func resetPassword(ctx context.Context, req *amusinguserserv.ResetPasswordReques
 	return nil
 }
 
-func getAndValidParams(r *http.Request) (*amusinguserserv.ResetPasswordRequest, *xerror.Error) {
-	resetPasswordRequest := amusinguserserv.ResetPasswordRequest{}
+func getAndValidParams(r *http.Request) (*europa.ResetPasswordRequest, *xerror.Error) {
+	resetPasswordRequest := europa.ResetPasswordRequest{}
 
 	err := httputil.DecodeJsonBody(r, &resetPasswordRequest)
 	if err != nil {

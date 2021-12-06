@@ -2,13 +2,13 @@ package countrycode
 
 import (
 	"amusingx.fit/amusingx/protos/ganymede/service"
-	"amusingx.fit/amusingx/services/ganymede/mysql/amusinguser"
+	"amusingx.fit/amusingx/services/ganymede/mysql/ganymede/model"
 	"context"
 	"github.com/ItsWewin/superfactory/xerror"
 )
 
 func HandleCountryCodeList(ctx context.Context) (*userservice.CountryCodeList, *xerror.Error) {
-	codeList, err := amusinguser.QueryCountryCodes(ctx)
+	codeList, err := model.QueryCountryCodes(ctx)
 	if err != nil {
 		return nil, err
 	}

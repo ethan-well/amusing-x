@@ -15,7 +15,7 @@ type LoginDomain interface {
 
 type Domain struct {
 	LoginInfo     *userservice.LoginRequest
-	UserModelInfo *model.User
+	UserModelInfo *model.UserComplex
 	SessionID     string
 }
 
@@ -54,9 +54,9 @@ func (d *Domain) SetUserModelInfo(ctx context.Context) *xerror.Error {
 }
 
 func (d *Domain) LoginAuthentication(ctx context.Context) *xerror.Error {
-	if d.LoginInfo.LoginByPassword() {
-		return d.ValidPassword(ctx)
-	}
+	//if d.LoginInfo.LoginByPassword() {
+	//	return d.ValidPassword(ctx)
+	//}
 
 	return d.ValidVerificationCode(ctx)
 }

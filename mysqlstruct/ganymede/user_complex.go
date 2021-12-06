@@ -1,6 +1,6 @@
-package amusinguser
+package ganymede
 
-type User struct {
+type UserComplex struct {
 	ID             int64  `db:"id"`
 	Nickname       string `db:"nickname"`
 	Phone          string `db:"phone"`

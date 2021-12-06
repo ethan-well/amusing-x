@@ -1,7 +1,7 @@
-package amusinguser
+package model
 
 import (
-	"amusingx.fit/amusingx/mysqlstruct/amusinguser"
+	"amusingx.fit/amusingx/mysqlstruct/ganymede"
 	"amusingx.fit/amusingx/services/ganymede/conf"
 	"context"
 	"github.com/ItsWewin/superfactory/logger"
@@ -36,18 +36,18 @@ func TestQueryUserByNicknameOrPhone(t *testing.T) {
 	t.Logf("u: %v", u)
 }
 
-func TestInsert(t *testing.T) {
+func TestInsertUserComplex(t *testing.T) {
 	conf.Mock()
 	Mock()
 
-	u := &amusinguser.User{
+	u := &ganymede.UserComplex{
 		Nickname:       "wei.wei3",
 		Phone:          "18710565582",
 		PasswordDigest: "password digest test",
 		Salt:           "salt test",
 	}
 
-	u, err := Insert(context.TODO(), u)
+	u, err := InsertUserComplex(context.TODO(), u)
 	if err != nil {
 		t.Fatalf("some error: %s", err)
 	}

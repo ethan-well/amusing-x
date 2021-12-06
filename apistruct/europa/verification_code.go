@@ -1,4 +1,4 @@
-package amusinguserserv
+package europa
 
 import (
 	"amusingx.fit/amusingx/regexp"

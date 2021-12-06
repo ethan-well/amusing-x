@@ -12,7 +12,7 @@ type ResetPasswordDomain interface {
 
 type Domain struct {
 	ResetPasswordInfo *userservice.ResetPasswordRequest
-	UserModelInfo     *model.User
+	UserModelInfo     *model.UserComplex
 }
 
 func NewDomain() *Domain {

@@ -1,4 +1,4 @@
-package amusinguser
+package ganymede
 
 type CountryCode struct {
 	ID         int64  `json:"id" db:"id"`

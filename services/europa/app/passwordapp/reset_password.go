@@ -1,7 +1,7 @@
 package passwordapp
 
 import (
-	"amusingx.fit/amusingx/apistruct/amusinguserserv"
+	"amusingx.fit/amusingx/apistruct/europa"
 	"amusingx.fit/amusingx/services/europa/model"
 	"context"
 	"github.com/ItsWewin/superfactory/xerror"
@@ -11,7 +11,7 @@ type ResetPasswordDomain interface {
 }
 
 type Domain struct {
-	ResetPasswordInfo *amusinguserserv.ResetPasswordRequest
+	ResetPasswordInfo *europa.ResetPasswordRequest
 	UserModelInfo     *model.User
 }
 
@@ -19,7 +19,7 @@ func NewDomain() *Domain {
 	return &Domain{}
 }
 
-func (d *Domain) SetResetPasswordInfo(request *amusinguserserv.ResetPasswordRequest) *xerror.Error {
+func (d *Domain) SetResetPasswordInfo(request *europa.ResetPasswordRequest) *xerror.Error {
 	if request == nil {
 		return xerror.NewError(nil, xerror.Code.CUnexpectRequestDate, "Request is nil. ")
 	}
