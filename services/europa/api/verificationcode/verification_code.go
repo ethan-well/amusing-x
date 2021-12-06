@@ -4,7 +4,7 @@ import (
 	"amusingx.fit/amusingx/apistruct/europa"
 	"amusingx.fit/amusingx/protos/callisto/service"
 	"amusingx.fit/amusingx/services/europa/model"
-	"amusingx.fit/amusingx/services/europa/rpcclient/callistoserver"
+	"amusingx.fit/amusingx/services/europa/rpcclient/callisto"
 	"context"
 	"github.com/ItsWewin/superfactory/httputil/rest"
 	"github.com/ItsWewin/superfactory/logger"
@@ -93,7 +93,7 @@ func riskControl(ctx context.Context, phone string) *xerror.Error {
 		Action:       "value_verify",
 	}
 
-	reply, err := callistoserver.RPCClient.Client.LoginRiskControl(ctx, req)
+	reply, err := callisto.RPCClient.Client.LoginRiskControl(ctx, req)
 	if err != nil {
 		return xerror.NewError(err, xerror.Code.BUnexpectedData, "riskControl request risk control failed")
 	}
@@ -112,7 +112,7 @@ func riskControlValueVerifyAdd(ctx context.Context, phone string) {
 		Action:       "value_add",
 	}
 
-	reply, err := callistoserver.RPCClient.Client.LoginRiskControl(ctx, req)
+	reply, err := callisto.RPCClient.Client.LoginRiskControl(ctx, req)
 	if err != nil {
 		err := xerror.NewError(err, xerror.Code.BUnexpectedData, "request risk control failed")
 		logger.Errorf("riskControlValueVerifyAdd failed: %s", err.Error())

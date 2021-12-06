@@ -1,4 +1,4 @@
-package callistoserver
+package callisto
 
 import (
 	"amusingx.fit/amusingx/protos/callisto/service"

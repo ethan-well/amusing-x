@@ -21,8 +21,8 @@ func InitSessionManager(storeName, cookieName string, maxLiftTTime int) error {
 
 	switch storeName {
 	case "redis":
-		GlobalSessionManager.Store, err = InitRedisStore(conf.ConfSect.SessionStoreRedisAddr, conf.ConfSect.SessionStoreRedisPassword,
-			conf.ConfSect.SessionStoreRedisDB, cookieName, maxLiftTTime)
+		redis := conf.Conf.SessionStore.Redis
+		GlobalSessionManager.Store, err = InitRedisStore(redis.Addr, redis.Password, redis.DBNo, cookieName, maxLiftTTime)
 		if err != nil {
 			return err
 		}

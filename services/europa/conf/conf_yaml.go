@@ -15,13 +15,23 @@ type Config struct {
 }
 
 type Server struct {
-	Name       string      `yaml:"name"`
-	HttpServer *HttpServer `yaml:"httpServer"`
-	GrpcServer *GrpcServer `yaml:"grpcServer"`
+	Name       string       `yaml:"name"`
+	HttpServer *HttpServer  `yaml:"httpServer"`
+	GrpcServer *GrpcServer  `yaml:"grpcServer"`
+	GrpcClient *GrpcClients `yaml:"grpcClient"`
 }
 
 type HttpServer struct {
 	Addr string `yaml:"addr"`
+}
+
+type GrpcClients struct {
+	Callisto *GrpcClient `yaml:"callisto"`
+	Ganymede *GrpcClient `yaml:"ganymede"`
+}
+
+type GrpcClient struct {
+	Addr string `json:"addr"`
 }
 
 type GrpcServer struct {

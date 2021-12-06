@@ -1,11 +1,12 @@
 package oauthlogin
 
 import (
+	"amusingx.fit/amusingx/apistruct/github"
 	"amusingx.fit/amusingx/mysqlstruct/ganymede"
 	userservice "amusingx.fit/amusingx/protos/ganymede/service"
-	"amusingx.fit/amusingx/services/europa/oauth"
 	"amusingx.fit/amusingx/services/ganymede/conf"
 	"amusingx.fit/amusingx/services/ganymede/mysql/ganymede/model"
+	"amusingx.fit/amusingx/services/ganymede/oauth"
 	"context"
 	"github.com/ItsWewin/superfactory/xerror"
 )
@@ -69,7 +70,7 @@ type LoginDomain struct {
 
 func getOauthConf(provider string) (clientID, clientSecret, redirectUrl, accessTokenUrl, userProfileUrl string, err *xerror.Error) {
 	switch provider {
-	case oauth.ProviderGitHub:
+	case github.ProviderGitHub:
 		p := conf.Conf.OAuth.Github
 		clientID = p.ClientID
 		clientSecret = p.ClientSecret
@@ -84,7 +85,7 @@ func getOauthConf(provider string) (clientID, clientSecret, redirectUrl, accessT
 	}
 }
 
-func saveUserInfo(ctx context.Context, provider, code string, token *oauth.AccessTokenResponse, profile *oauth.UserProfile) *xerror.Error {
+func saveUserInfo(ctx context.Context, provider, code string, token *github.AccessTokenResponse, profile *github.UserProfile) *xerror.Error {
 	tx, err := model.GanymedeDB.Beginx()
 	if err != nil {
 		return xerror.NewError(err, xerror.Code.SSqlExecuteErr, "bing tx failed")

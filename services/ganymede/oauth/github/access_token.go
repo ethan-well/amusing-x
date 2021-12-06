@@ -1,7 +1,7 @@
 package github
 
 import (
-	"amusingx.fit/amusingx/services/europa/oauth"
+	"amusingx.fit/amusingx/apistruct/github"
 	"github.com/ItsWewin/superfactory/httputil"
 	"github.com/ItsWewin/superfactory/httputil/rest"
 	"github.com/ItsWewin/superfactory/xerror"
@@ -31,7 +31,7 @@ func New(clientID, clientSecret, redirectUrl string) *OAuth {
 	}
 }
 
-func (c *OAuth) GetAccessToken(accessTokenUrl, code string) (*oauth.AccessTokenResponse, *xerror.Error) {
+func (c *OAuth) GetAccessToken(accessTokenUrl, code string) (*github.AccessTokenResponse, *xerror.Error) {
 	req := AccessTokenRequest{
 		AccessTokenUrl: c.AccessTokenUrl,
 		ClientID:       c.ClientID,
@@ -47,7 +47,7 @@ func (c *OAuth) GetAccessToken(accessTokenUrl, code string) (*oauth.AccessTokenR
 		}
 	}
 
-	var resp oauth.AccessTokenResponse
+	var resp github.AccessTokenResponse
 	err := rest.Post(accessTokenUrl, req, &resp, opts)
 	if err != nil {
 		return nil, xerror.NewErrorf(err, err.Code, err.Message)

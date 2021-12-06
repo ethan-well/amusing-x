@@ -4,16 +4,17 @@ import (
 	"amusingx.fit/amusingx/protos/callisto/service"
 	"amusingx.fit/amusingx/protos/ganymede/service"
 	"amusingx.fit/amusingx/services/europa/conf"
-	"amusingx.fit/amusingx/services/europa/rpcclient/callistoserver"
-	"amusingx.fit/amusingx/services/europa/rpcclient/userrpcserver"
+	"amusingx.fit/amusingx/services/europa/rpcclient/callisto"
+	"amusingx.fit/amusingx/services/europa/rpcclient/ganymede"
 	"context"
 	"github.com/ItsWewin/superfactory/logger"
 	"testing"
 )
 
 func TestInitCallistoRPCClient(t *testing.T) {
-	conf.ConfIns.RiskServiceRPCAddress = "localhost:11002"
-	xErr := callistoserver.InitCallistoRPCClient()
+	conf.Mock()
+
+	xErr := InitCallistoServerRPCClient()
 	if xErr == nil {
 		t.Fatalf("some error: %s", xErr)
 	}
@@ -25,7 +26,7 @@ func TestInitCallistoRPCClient(t *testing.T) {
 		Action:       "",
 	}
 
-	result, err := callistoserver.RPCClient.Client.LoginRiskControl(context.Background(), req)
+	result, err := callisto.RPCClient.Client.LoginRiskControl(context.Background(), req)
 	if err != nil {
 		t.Fatalf("some error: %s", err)
 	}
@@ -34,22 +35,23 @@ func TestInitCallistoRPCClient(t *testing.T) {
 }
 
 func TestInitUserServerRPCClient(t *testing.T) {
-	conf.ConfIns.UserServiceRPCAddress = "localhost:11001"
-	xErr := InitUserServerRPCClient()
+	conf.Mock()
+
+	xErr := InitGanymedeRPCClient()
 	if xErr != nil {
 		t.Fatalf("some error: %s", xErr)
 	}
 
 	req := &userservice.BlankParams{}
 
-	result, err := userrpcserver.RPCClient.Client.Pong(context.Background(), req)
+	result, err := ganymede.RPCClient.Client.Pong(context.Background(), req)
 	if err != nil {
 		t.Fatalf("some error: %s", err)
 	}
 
 	t.Logf("result: %s", logger.ToJson(result.ServerName))
 
-	regex, err := userrpcserver.RPCClient.Client.Regexps(context.Background(), req)
+	regex, err := ganymede.RPCClient.Client.Regexps(context.Background(), req)
 	if err != nil {
 		t.Fatalf("some error: %s", err)
 	}
@@ -63,7 +65,7 @@ func TestInitUserServerRPCClient(t *testing.T) {
 		VerificationCode: "",
 		Phone:            "",
 	}
-	response, err := userrpcserver.RPCClient.Client.Login(context.Background(), loginReq)
+	response, err := ganymede.RPCClient.Client.Login(context.Background(), loginReq)
 	if err != nil {
 		t.Logf("err: %s", err)
 	}
@@ -76,13 +78,13 @@ func TestInitUserServerRPCClient(t *testing.T) {
 		Phone:            "18710565589",
 		VerificationCode: "123",
 	}
-	joinResp, err := userrpcserver.RPCClient.Client.Join(context.Background(), joinReq)
+	joinResp, err := ganymede.RPCClient.Client.Join(context.Background(), joinReq)
 	if err != nil {
 		t.Logf("err: %s", err)
 	}
 	t.Logf("joinResp: %s", joinResp)
 
-	code, err := userrpcserver.RPCClient.Client.CountryCodes(context.Background(), req)
+	code, err := ganymede.RPCClient.Client.CountryCodes(context.Background(), req)
 	if err != nil {
 		t.Logf("CountryCodes err: %s", err)
 	}
@@ -95,7 +97,7 @@ func TestInitUserServerRPCClient(t *testing.T) {
 		AreaCode: "",
 	}
 
-	vsResult, err := userrpcserver.RPCClient.Client.GetVerificationCode(context.Background(), vcReq)
+	vsResult, err := ganymede.RPCClient.Client.GetVerificationCode(context.Background(), vcReq)
 	if err != nil {
 		t.Logf("GetVerificationCode err: %s", err)
 	}
@@ -106,7 +108,7 @@ func TestInitUserServerRPCClient(t *testing.T) {
 		Action:   "",
 		AreaCode: "",
 	}
-	vccResult, err := userrpcserver.RPCClient.Client.GetVerificationCode(context.Background(), vccReq)
+	vccResult, err := ganymede.RPCClient.Client.GetVerificationCode(context.Background(), vccReq)
 	if err != nil {
 		t.Logf("GetVerificationCode err: %s", err)
 	}
@@ -118,7 +120,7 @@ func TestInitUserServerRPCClient(t *testing.T) {
 		Phone:            "",
 		VerificationCode: "",
 	}
-	rspResult, err := userrpcserver.RPCClient.Client.ResetPassword(context.Background(), rspReq)
+	rspResult, err := ganymede.RPCClient.Client.ResetPassword(context.Background(), rspReq)
 	if err != nil {
 		t.Logf("ResetPassword err: %s", err)
 	}

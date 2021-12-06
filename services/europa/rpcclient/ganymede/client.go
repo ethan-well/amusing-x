@@ -1,4 +1,4 @@
-package userrpcserver
+package ganymede
 
 import (
 	"amusingx.fit/amusingx/protos/ganymede/service"

@@ -8,17 +8,22 @@ import (
 var Conf = new(Config)
 
 type Config struct {
-	Server *Server   `yaml:"server"`
-	Mysql  MysqlConf `yaml:"mysql"`
-	Redis  Redis     `yaml:"redis"`
-	OAuth  *OAuth    `yaml:"oauth"`
+	Server       *Server       `yaml:"server"`
+	Mysql        MysqlConf     `yaml:"mysql"`
+	Redis        Redis         `yaml:"redis"`
+	OAuth        *OAuth        `yaml:"oauth"`
+	SessionStore *SessionStore `yaml:"session_store"`
+	GrpcClient   *GrpcClients  `yaml:"grpc_client"`
+}
+
+type SessionStore struct {
+	Redis *RedisConf `yaml:"redis"`
 }
 
 type Server struct {
-	Name       string       `yaml:"name"`
-	HttpServer *HttpServer  `yaml:"httpServer"`
-	GrpcServer *GrpcServer  `yaml:"grpcServer"`
-	GrpcClient *GrpcClients `yaml:"grpc_client"`
+	Name       string      `yaml:"name"`
+	HttpServer *HttpServer `yaml:"http_server"`
+	GrpcServer *GrpcServer `yaml:"grpc_server"`
 }
 
 type OAuth struct {
@@ -27,9 +32,9 @@ type OAuth struct {
 
 type GitHubOAuth struct {
 	Provider       string `yaml:"provider"`
-	ClientID       string `yaml:"clientID"`
-	ClientSecret   string `yaml:"clientSecrets"`
-	RedirectUrl    string `yaml:"redirectUrl"`
+	ClientID       string `yaml:"client_id"`
+	ClientSecret   string `yaml:"client_secrets"`
+	RedirectUrl    string `yaml:"redirect_url"`
 	AccessTokenUrl string `yaml:"access_token_url"`
 	UserProfileUrl string `yaml:"user_profile_url"`
 }
@@ -62,9 +67,9 @@ type Mysql struct {
 	Host         string `yaml:"host"`
 	Port         string `json:"port"`
 	Protocol     string `yaml:"protocol"`
-	MaxLifeTime  int64  `yaml:"maxLifeTime"`
-	MaxOpenConns int    `yaml:"maxOpenConns"`
-	MaxIdleConns int    `yaml:"maxIdleConns"`
+	MaxLifeTime  int64  `yaml:"max_life_time"`
+	MaxOpenConns int    `yaml:"max_open_conns"`
+	MaxIdleConns int    `yaml:"max_idle_conns"`
 }
 
 type Redis struct {

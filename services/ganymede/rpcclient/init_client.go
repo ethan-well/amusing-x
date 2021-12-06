@@ -9,7 +9,7 @@ import (
 )
 
 func InitRPCClient() *xerror.Error {
-	grpcConf := conf.Conf.Server.GrpcClient.Callisto
+	grpcConf := conf.Conf.GrpcClient.Callisto
 	conn, err := grpc.Dial(grpcConf.Addr, grpc.WithInsecure())
 	if err != nil {
 		return xerror.NewError(err, xerror.Code.SUnexpectedErr, fmt.Sprintf("grpc dial error: %s", err))

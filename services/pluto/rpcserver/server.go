@@ -47,6 +47,7 @@ func InitRPCServer() *xerror.Error {
 	if err != nil {
 		return xerror.NewErrorf(err, xerror.Code.SUnexpectedErr, "RPC Server failed: %s", err)
 	}
+	logger.Info("rpcServ init succeed")
 
 	Server = &RPCService{Server: rpcServ}
 

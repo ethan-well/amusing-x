@@ -49,20 +49,20 @@ func DeferFunc() {
 }
 
 func initRPCClient() {
-	xErr := rpcclient.InitRiskServerRPCClient()
-	if xErr != nil {
-		panic(xErr)
+	err := rpcclient.InitCallistoServerRPCClient()
+	if err != nil {
+		panic(err)
 	}
 
-	xErr = rpcclient.InitUserServerRPCClient()
-	if xErr != nil {
-		panic(xErr)
+	err = rpcclient.InitGanymedeRPCClient()
+	if err != nil {
+		panic(err)
 	}
 }
 
 // 关闭 rpc 连接
 func closeRPCClient() {
-	rpcclient.RiskServerRPCClientClose()
+	rpcclient.CallistoRPCClientClose()
 
-	rpcclient.UserServerRPCClientClose()
+	rpcclient.GanymedeRPCClientClose()
 }

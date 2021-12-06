@@ -2,8 +2,8 @@ package github
 
 import (
 	"amusingx.fit/amusingx/apistruct/europa"
+	"amusingx.fit/amusingx/services/europa/app/oauth"
 	"context"
-	"encoding/json"
 	"github.com/ItsWewin/superfactory/httputil/rest"
 	"github.com/ItsWewin/superfactory/logger"
 	"github.com/ItsWewin/superfactory/xerror"
@@ -13,17 +13,26 @@ import (
 func HandlerOauthLogin(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
 
-	req, xErr := getAndValidParams(r)
-	if xErr != nil {
-		logger.Errorf("get and valid params failed, err: %s", xErr.Error())
+	req, err := getAndValidParams(r)
+	if err != nil {
+		logger.Errorf("get and valid params failed, err: %s", err.Error())
 
 		rest.FailJsonResponse(w, xerror.Code.CParamsError, xerror.Message.ParamsError)
 		return
 	}
 
+	err = oauth.Login(ctx, req.Provider, req.Code)
+	if err != nil {
+		logger.Errorf("%s OAuthLogin failed, err: %s", err.Error())
+
+		rest.FailJsonResponse(w, err.Code, "oauth failed")
+		return
+	}
+
+	rest.SucceedJsonResponse(w, "succeed")
 }
 
-func getAndValidParams(r http.Request) (*europa.OAuthLogin, *xerror.Error) {
+func getAndValidParams(r *http.Request) (*europa.OAuthLogin, *xerror.Error) {
 	code := r.FormValue("code")
 	provider := r.FormValue("provider")
 	if len(code) == 0 {
