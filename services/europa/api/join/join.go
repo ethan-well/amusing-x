@@ -1,7 +1,7 @@
 package join
 
 import (
-	"amusingx.fit/amusingx/apistruct/amusinguserserv"
+	"amusingx.fit/amusingx/apistruct/europa"
 	"amusingx.fit/amusingx/services/europa/app/joinapp"
 	"context"
 	"github.com/ItsWewin/superfactory/httputil"
@@ -29,7 +29,7 @@ func HandleJoin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp := amusinguserserv.JoinResponse{
+	resp := europa.JoinResponse{
 		Nickname: u.Nickname,
 		Phone:    u.Phone,
 	}
@@ -37,8 +37,8 @@ func HandleJoin(w http.ResponseWriter, r *http.Request) {
 	rest.SucceedJsonResponse(w, resp)
 }
 
-func getAndValidParams(r *http.Request) (*amusinguserserv.JoinRequest, *xerror.Error) {
-	joinRequest := amusinguserserv.JoinRequest{}
+func getAndValidParams(r *http.Request) (*europa.JoinRequest, *xerror.Error) {
+	joinRequest := europa.JoinRequest{}
 
 	err := httputil.DecodeJsonBody(r, &joinRequest)
 	if err != nil {

@@ -1,10 +1,13 @@
 server:
-  name: "amusing-x/pluto"
-  httpServer:
+  name: "amusing-x/ganymede"
+  http_server:
     addr: :10005
-  grpcServer:
+  grpc_server:
     network: tcp
     address: :20005
+grpc_client:
+  callisto:
+    addr: 20002
 mysql:
   plutodb:
     db: plutodb
@@ -13,10 +16,20 @@ mysql:
     host: localhost
     port: 3306
     protocol: tcp
-    maxLifeTime: 3600
-    maxOpenConns: 100
-    maxIdleConns: 10
+    max_life_time: 3600
+    max_open_conns: 100
+    max_idle_conns: 10
+oauth:
+  github:
+    provider: "GitHub"
+    client_id: ""
+    client_secrets: ""
+    redirect_url: ""
 redis:
   redis1:
     addr: 127.0.0.1:6379
-    dbNo: 1
+    db_no: 1
+session_store:
+  redis:
+    addr: 127.0.0.1:6379
+    db_no: 2

@@ -1,10 +1,10 @@
 package verificationcode
 
 import (
-	"amusingx.fit/amusingx/apistruct/amusinguserserv"
+	"amusingx.fit/amusingx/apistruct/europa"
 	"amusingx.fit/amusingx/protos/callisto/service"
 	"amusingx.fit/amusingx/services/europa/model"
-	"amusingx.fit/amusingx/services/europa/rpcclient/riskrpcserver"
+	"amusingx.fit/amusingx/services/europa/rpcclient/callisto"
 	"context"
 	"github.com/ItsWewin/superfactory/httputil/rest"
 	"github.com/ItsWewin/superfactory/logger"
@@ -42,8 +42,8 @@ func HandlerVerificationCode(w http.ResponseWriter, r *http.Request) {
 	go riskControlValueVerifyAdd(ctx, req.Phone)
 }
 
-func getAndValidParams(ctx context.Context, r *http.Request) (*amusinguserserv.VerificationCodeRequest, *xerror.Error) {
-	request := &amusinguserserv.VerificationCodeRequest{
+func getAndValidParams(ctx context.Context, r *http.Request) (*europa.VerificationCodeRequest, *xerror.Error) {
+	request := &europa.VerificationCodeRequest{
 		Phone:    r.FormValue("phone"),
 		Action:   r.FormValue("action"),
 		AreaCode: r.FormValue("area_code"),
@@ -93,7 +93,7 @@ func riskControl(ctx context.Context, phone string) *xerror.Error {
 		Action:       "value_verify",
 	}
 
-	reply, err := riskrpcserver.RPCClient.Client.LoginRiskControl(ctx, req)
+	reply, err := callisto.RPCClient.Client.LoginRiskControl(ctx, req)
 	if err != nil {
 		return xerror.NewError(err, xerror.Code.BUnexpectedData, "riskControl request risk control failed")
 	}
@@ -112,7 +112,7 @@ func riskControlValueVerifyAdd(ctx context.Context, phone string) {
 		Action:       "value_add",
 	}
 
-	reply, err := riskrpcserver.RPCClient.Client.LoginRiskControl(ctx, req)
+	reply, err := callisto.RPCClient.Client.LoginRiskControl(ctx, req)
 	if err != nil {
 		err := xerror.NewError(err, xerror.Code.BUnexpectedData, "request risk control failed")
 		logger.Errorf("riskControlValueVerifyAdd failed: %s", err.Error())

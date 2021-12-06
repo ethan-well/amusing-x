@@ -1,7 +1,7 @@
 package loginapp
 
 import (
-	"amusingx.fit/amusingx/apistruct/amusinguserserv"
+	"amusingx.fit/amusingx/apistruct/europa"
 	"amusingx.fit/amusingx/services/europa/model"
 	"amusingx.fit/amusingx/services/europa/session"
 	"context"
@@ -14,7 +14,7 @@ type LoginDomain interface {
 }
 
 type Domain struct {
-	LoginInfo     *amusinguserserv.LoginRequest
+	LoginInfo     *europa.LoginRequest
 	UserModelInfo *model.User
 	SessionID     string
 }
@@ -24,7 +24,7 @@ func NewDomain() *Domain {
 }
 
 // 设置登录信息
-func (d *Domain) SetLoginRequestInfo(loginRequest *amusinguserserv.LoginRequest) *xerror.Error {
+func (d *Domain) SetLoginRequestInfo(loginRequest *europa.LoginRequest) *xerror.Error {
 	if loginRequest == nil {
 		return xerror.NewError(nil, xerror.Code.BUnexpectedBlankVariable, "login request is blank")
 	}

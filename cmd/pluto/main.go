@@ -64,5 +64,5 @@ func InitRPCServer() {
 }
 
 func ServerInitLog() {
-	fmt.Println("pluto")
+	fmt.Println("pluto xxxxxxxx")
 }

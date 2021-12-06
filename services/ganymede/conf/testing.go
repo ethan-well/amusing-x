@@ -1,19 +1,11 @@
 package conf
 
 import (
-	"github.com/ItsWewin/superfactory/logger"
-	"runtime"
+	amusing_x "amusingx.fit/amusingx"
+	"github.com/ItsWewin/superfactory/basicmatter/config"
 )
 
 func Mock() {
-	TestingGetFileName()
-	
- 	//conf := config.NewBasicYamlConf()
-	//conf.Unmarshal(Conf, "")
-}
-
-
-func TestingGetFileName() {
-	_, filename, _, _ := runtime.Caller(0)
-	logger.Infof("file name: %s", filename)
+	conf := config.NewBasicYamlConf()
+	conf.Unmarshal(Conf, amusing_x.Root()+"/cmd/ganymede/config_local.yaml")
 }

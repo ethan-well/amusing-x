@@ -1,15 +1,15 @@
 package amusingxwebapi
 
 import (
-	"amusingx.fit/amusingx/mysqlstruct/amusinguser"
+	"amusingx.fit/amusingx/mysqlstruct/ganymede"
 	"context"
 	"database/sql"
 	"github.com/ItsWewin/superfactory/xerror"
 )
 
 // 通过 id 查询用户
-func QueryUserByIdContext(ctx context.Context, id int64) (*amusinguser.User, *xerror.Error) {
-	user := &amusinguser.User{}
+func QueryUserByIdContext(ctx context.Context, id int64) (*ganymede.UserComplex, *xerror.Error) {
+	user := &ganymede.UserComplex{}
 
 	query := `SELECT  id, nickname, phone, password_digest, create_time, update_time FROM user WHERE id= ?`
 	err := AmusingUserDB.GetContext(ctx, user, query, id)
@@ -20,8 +20,8 @@ func QueryUserByIdContext(ctx context.Context, id int64) (*amusinguser.User, *xe
 	return user, nil
 }
 
-func QueryUserByPhone(ctx context.Context, phone string) (*amusinguser.User, *xerror.Error) {
-	user := &amusinguser.User{}
+func QueryUserByPhone(ctx context.Context, phone string) (*ganymede.UserComplex, *xerror.Error) {
+	user := &ganymede.UserComplex{}
 
 	query := `SELECT id, nickname, phone, password_digest, salt FROM user WHERE phone = ?`
 	err := AmusingUserDB.GetContext(ctx, user, query, phone)
@@ -36,8 +36,8 @@ func QueryUserByPhone(ctx context.Context, phone string) (*amusinguser.User, *xe
 	return user, nil
 }
 
-func QueryUserByNicknameOrPhone(ctx context.Context, nickName, phone string) (*amusinguser.User, *xerror.Error) {
-	user := &amusinguser.User{}
+func QueryUserByNicknameOrPhone(ctx context.Context, nickName, phone string) (*ganymede.UserComplex, *xerror.Error) {
+	user := &ganymede.UserComplex{}
 
 	query := `SELECT id, nickname, phone, password_digest FROM user WHERE nickname = ? OR phone = ?`
 	err := AmusingUserDB.GetContext(ctx, user, query, nickName, phone)
@@ -52,7 +52,7 @@ func QueryUserByNicknameOrPhone(ctx context.Context, nickName, phone string) (*a
 	return user, nil
 }
 
-func Insert(ctx context.Context, user *amusinguser.User) (*amusinguser.User, *xerror.Error) {
+func Insert(ctx context.Context, user *ganymede.UserComplex) (*ganymede.UserComplex, *xerror.Error) {
 	defer clearPasswordDigest(user)
 	query := `INSERT INTO user (nickname, phone, password_digest, salt) VALUES (:nickname,:phone,:password_digest, :salt)`
 	result, err := AmusingUserDB.NamedExecContext(ctx, query, user)
@@ -69,11 +69,11 @@ func Insert(ctx context.Context, user *amusinguser.User) (*amusinguser.User, *xe
 	return user, nil
 }
 
-func clearPasswordDigest(user *amusinguser.User) {
+func clearPasswordDigest(user *ganymede.UserComplex) {
 	user.PasswordDigest = ""
 }
 
-func UpdatePassword(ctx context.Context, user *amusinguser.User) (*amusinguser.User, *xerror.Error) {
+func UpdatePassword(ctx context.Context, user *ganymede.UserComplex) (*ganymede.UserComplex, *xerror.Error) {
 	defer clearPasswordDigest(user)
 
 	query := `UPDATE user set password_digest = :password_digest, salt = :salt WHERE phone = :phone`

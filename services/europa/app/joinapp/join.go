@@ -1,7 +1,7 @@
 package joinapp
 
 import (
-	"amusingx.fit/amusingx/apistruct/amusinguserserv"
+	"amusingx.fit/amusingx/apistruct/europa"
 	"amusingx.fit/amusingx/services/europa/model"
 	"amusingx.fit/amusingx/services/europa/xredis/lock"
 	"context"
@@ -10,7 +10,7 @@ import (
 	"github.com/ItsWewin/superfactory/xerror"
 )
 
-func CreateUser(ctx context.Context, u *amusinguserserv.JoinRequest) (*model.User, *xerror.Error) {
+func CreateUser(ctx context.Context, u *europa.JoinRequest) (*model.User, *xerror.Error) {
 	var (
 		err  *xerror.Error
 		user = &model.User{
@@ -50,7 +50,7 @@ func CreateUser(ctx context.Context, u *amusinguserserv.JoinRequest) (*model.Use
 	return user, nil
 }
 
-func clearPassword(r *amusinguserserv.JoinRequest, u *model.User) {
+func clearPassword(r *europa.JoinRequest, u *model.User) {
 	r.Password = ""
 	u.Password = ""
 	u.PasswordDigest = ""

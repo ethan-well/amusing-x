@@ -5,7 +5,7 @@
 - pluto：秒杀功能的核心服务，负责库存相关操作
 - ganymede：用户注册、登录、认证服务
 - europa：对外提供 web api 接口
-- callisto： 用户的准入、限流
+- callisto： 用户的准入、限流, 风制
 
 ## 依赖的软件包版本
 ```shell

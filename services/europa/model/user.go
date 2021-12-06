@@ -1,7 +1,7 @@
 package model
 
 import (
-	"amusingx.fit/amusingx/mysqlstruct/amusinguser"
+	"amusingx.fit/amusingx/mysqlstruct/ganymede"
 	"amusingx.fit/amusingx/services/europa/mysql/amusingxwebapi"
 	"context"
 	"crypto/rand"
@@ -108,7 +108,7 @@ func (u *User) ResetPassword(ctx context.Context, password string) *xerror.Error
 	}
 	defer clearPassword(u)
 
-	udb := &amusinguser.User{
+	udb := &ganymede.UserComplex{
 		Phone:          u.Phone,
 		PasswordDigest: u.PasswordDigest,
 		Salt:           u.Salt,
@@ -189,7 +189,7 @@ func Create(ctx context.Context, user *User) (*User, *xerror.Error) {
 		return nil, xerror.NewError(err, xerror.Code.SUnexpectedErr, "Generate password failed. ")
 	}
 
-	udb := &amusinguser.User{
+	udb := &ganymede.UserComplex{
 		Nickname:       user.Nickname,
 		Phone:          user.Phone,
 		PasswordDigest: user.PasswordDigest,

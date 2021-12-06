@@ -1,0 +1,14 @@
+syntax="proto3";
+
+option  go_package = "amusing-x.com/userservice/userservice";
+
+package userservice;
+
+message OAuthLoginRequest {
+  string provider = 1;
+  string code = 2;
+}
+
+message OAuthLoginResponse {
+  bool result = 1;
+}

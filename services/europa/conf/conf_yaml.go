@@ -11,16 +11,27 @@ type Config struct {
 	Server *Server   `yaml:"server"`
 	Mysql  MysqlConf `yaml:"mysql"`
 	Redis  Redis     `yaml:"redis"`
+	OAuth  *OAuth    `yaml:"oauth"`
 }
 
 type Server struct {
-	Name       string      `yaml:"name"`
-	HttpServer *HttpServer `yaml:"httpServer"`
-	GrpcServer *GrpcServer `yaml:"grpcServer"`
+	Name       string       `yaml:"name"`
+	HttpServer *HttpServer  `yaml:"httpServer"`
+	GrpcServer *GrpcServer  `yaml:"grpcServer"`
+	GrpcClient *GrpcClients `yaml:"grpcClient"`
 }
 
 type HttpServer struct {
 	Addr string `yaml:"addr"`
+}
+
+type GrpcClients struct {
+	Callisto *GrpcClient `yaml:"callisto"`
+	Ganymede *GrpcClient `yaml:"ganymede"`
+}
+
+type GrpcClient struct {
+	Addr string `json:"addr"`
 }
 
 type GrpcServer struct {
@@ -52,6 +63,19 @@ type RedisConf struct {
 	Addr     string `yaml:"addr"`
 	DBNo     int    `yaml:"dbNo"`
 	Password string `yaml:"password"`
+}
+
+type OAuth struct {
+	Github *GitHubOAuth `yaml:"github"`
+}
+
+type GitHubOAuth struct {
+	Provider       string `yaml:"provider"`
+	ClientID       string `yaml:"clientID"`
+	ClientSecret   string `yaml:"clientSecrets"`
+	RedirectUrl    string `yaml:"redirectUrl"`
+	AccessTokenUrl string `yaml:"access_token_url"`
+	UserProfileUrl string `yaml:"user_profile_url"`
 }
 
 func (c *Config) MaterType() string {

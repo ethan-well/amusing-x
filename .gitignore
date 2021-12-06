@@ -2,3 +2,4 @@
 bin/
 sql.sql
 cmd/**/*local.yaml
+**test**local**

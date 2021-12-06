@@ -44,7 +44,7 @@ func getAndValidParams(ctx context.Context, request *userservice.VerificationCod
 		return err
 	}
 
-	user := model.User{
+	user := model.UserComplex{
 		Phone:    request.Phone,
 		AreaCode: request.AreaCode,
 	}
