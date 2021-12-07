@@ -66,7 +66,7 @@ type Redis struct {
 
 type RedisConf struct {
 	Addr     string `yaml:"addr"`
-	DBNo     int    `yaml:"dbNo"`
+	DBNo     int    `yaml:"db_no"`
 	Password string `yaml:"password"`
 }
 

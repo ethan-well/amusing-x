@@ -15,8 +15,8 @@ type Config struct {
 
 type Server struct {
 	Name       string      `yaml:"name"`
-	HttpServer *HttpServer `yaml:"httpServer"`
-	GrpcServer *GrpcServer `yaml:"grpcServer"`
+	HttpServer *HttpServer `yaml:"http_server"`
+	GrpcServer *GrpcServer `yaml:"grpc_server"`
 }
 
 type HttpServer struct {
@@ -39,9 +39,9 @@ type Mysql struct {
 	Host         string `yaml:"host"`
 	Port         string `json:"port"`
 	Protocol     string `yaml:"protocol"`
-	MaxLifeTime  int64  `yaml:"maxLifeTime"`
-	MaxOpenConns int    `yaml:"maxOpenConns"`
-	MaxIdleConns int    `yaml:"maxIdleConns"`
+	MaxLifeTime  int64  `yaml:"max_life_time"`
+	MaxOpenConns int    `yaml:"max_open_conns"`
+	MaxIdleConns int    `yaml:"max_idle_conns"`
 }
 
 type Redis struct {
@@ -50,7 +50,7 @@ type Redis struct {
 
 type RedisConf struct {
 	Addr     string `yaml:"addr"`
-	DBNo     int    `yaml:"dbNo"`
+	DBNo     int    `yaml:"db_no"`
 	Password string `yaml:"password"`
 }
 
