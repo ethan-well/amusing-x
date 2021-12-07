@@ -2,7 +2,7 @@ package main
 
 import (
 	"amusingx.fit/amusingx/services/ganymede/conf"
-	"amusingx.fit/amusingx/services/ganymede/mysql/ganymede/model"
+	"amusingx.fit/amusingx/services/ganymede/mysql/ganymededb/model"
 	"amusingx.fit/amusingx/services/ganymede/rpcclient"
 	rpcserver2 "amusingx.fit/amusingx/services/ganymede/rpcserver"
 	"amusingx.fit/amusingx/services/ganymede/session"

@@ -5,7 +5,7 @@ import (
 	"amusingx.fit/amusingx/mysqlstruct/ganymede"
 	userservice "amusingx.fit/amusingx/protos/ganymede/service"
 	"amusingx.fit/amusingx/services/ganymede/conf"
-	"amusingx.fit/amusingx/services/ganymede/mysql/ganymede/model"
+	"amusingx.fit/amusingx/services/ganymede/mysql/ganymededb/model"
 	"amusingx.fit/amusingx/services/ganymede/oauth"
 	"context"
 	"github.com/ItsWewin/superfactory/xerror"

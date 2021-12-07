@@ -7,7 +7,7 @@ server:
     address: :20001
 mysql:
   plutodb:
-    db: plutodb
+    db: europadb
     user: test111
     password: pass123456
     host: localhost

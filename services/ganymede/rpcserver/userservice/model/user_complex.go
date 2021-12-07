@@ -2,7 +2,7 @@ package model
 
 import (
 	"amusingx.fit/amusingx/mysqlstruct/ganymede"
-	amusinguser2 "amusingx.fit/amusingx/services/ganymede/mysql/ganymede/model"
+	amusinguser2 "amusingx.fit/amusingx/services/ganymede/mysql/ganymededb/model"
 	"context"
 	"crypto/rand"
 	"crypto/subtle"
