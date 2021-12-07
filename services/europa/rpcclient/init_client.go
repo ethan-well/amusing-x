@@ -10,7 +10,7 @@ import (
 )
 
 func InitCallistoServerRPCClient() *xerror.Error {
-	callistoClient := conf.Conf.Server.GrpcClient.Callisto
+	callistoClient := conf.Conf.GrpcClient.Callisto
 	conn, err := grpc.Dial(callistoClient.Addr, grpc.WithInsecure())
 	if err != nil {
 		return xerror.NewError(err, xerror.Code.SUnexpectedErr, fmt.Sprintf("grpc dial error: %s", err))
@@ -29,7 +29,7 @@ func CallistoRPCClientClose() {
 }
 
 func InitGanymedeRPCClient() *xerror.Error {
-	ganymedeClient := conf.Conf.Server.GrpcClient.Ganymede
+	ganymedeClient := conf.Conf.GrpcClient.Ganymede
 
 	conn, err := grpc.Dial(ganymedeClient.Addr, grpc.WithInsecure())
 	if err != nil {

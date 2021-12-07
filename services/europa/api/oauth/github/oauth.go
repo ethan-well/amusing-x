@@ -4,6 +4,7 @@ import (
 	"amusingx.fit/amusingx/apistruct/europa"
 	"amusingx.fit/amusingx/services/europa/app/oauth"
 	"context"
+	"github.com/ItsWewin/superfactory/httputil"
 	"github.com/ItsWewin/superfactory/httputil/rest"
 	"github.com/ItsWewin/superfactory/logger"
 	"github.com/ItsWewin/superfactory/xerror"
@@ -33,18 +34,17 @@ func HandlerOauthLogin(w http.ResponseWriter, r *http.Request) {
 }
 
 func getAndValidParams(r *http.Request) (*europa.OAuthLogin, *xerror.Error) {
-	code := r.FormValue("code")
-	provider := r.FormValue("provider")
-	if len(code) == 0 {
-		return nil, xerror.NewErrorf(nil, xerror.Code.CParamsError, "params 'code' is expected")
+	var req europa.OAuthLogin
+
+	err := httputil.DecodeJsonBody(r, &req)
+	if err != nil {
+		return nil, xerror.NewErrorf(err, xerror.Code.CParamsError, "decode json body failed")
 	}
 
-	if len(provider) == 0 {
-		return nil, xerror.NewErrorf(nil, xerror.Code.CParamsError, "params 'code' is expected")
+	xErr := req.Valid()
+	if xErr != nil {
+		return nil, xErr
 	}
 
-	return &europa.OAuthLogin{
-		Code:     code,
-		Provider: provider,
-	}, nil
+	return &req, nil
 }

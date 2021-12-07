@@ -10,8 +10,9 @@ var AmusingUserDB *sqlx.DB
 
 // 初始化数据库
 func InitMySQL() {
-	mysqlDB := mysql.NewMysqlDB(conf.ConfIns.MysqlAmusinguserDatabase, conf.ConfIns.MysqlAmusinguserUsername, conf.ConfIns.MysqlAmusinguserPassword,
-		conf.ConfIns.MysqlAmusinguserHost, conf.ConfIns.MysqlAmusinguserMaxOpenConns, conf.ConfIns.MysqlAmusinguserMaxIdleConns, conf.ConfIns.MysqlAmusinguserConnMaxLifetime)
+	europa := conf.Conf.Mysql.Europadb
+	mysqlDB := mysql.NewMysqlDB(europa.DB, europa.User, europa.Password,
+		europa.Host, europa.Port, europa.Protocol, europa.MaxOpenConns, europa.MaxIdleConns, europa.MaxLifeTime)
 
 	AmusingUserDB = mysqlDB.Connect()
 }

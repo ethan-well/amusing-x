@@ -2,7 +2,7 @@ package login
 
 import (
 	"amusingx.fit/amusingx/protos/ganymede/service"
-	"amusingx.fit/amusingx/services/europa/rpcclient/userrpcserver"
+	"amusingx.fit/amusingx/services/europa/rpcclient/ganymede"
 	"context"
 	"github.com/ItsWewin/superfactory/httputil"
 	"github.com/ItsWewin/superfactory/httputil/rest"
@@ -23,7 +23,7 @@ func HandlerLogin(w http.ResponseWriter, r *http.Request) {
 	}
 
 	logger.Infof("HandlerLogin getAndValidParams: %s", logger.ToJson(req))
-	response, err := userrpcserver.RPCClient.Client.Login(ctx, req)
+	response, err := ganymede.RPCClient.Client.Login(ctx, req)
 	if err != nil {
 		logger.Errorf("Login failed, err: %s", err)
 

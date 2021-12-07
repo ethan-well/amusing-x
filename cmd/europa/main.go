@@ -16,6 +16,7 @@ func main() {
 	powertrain.Run(conf.Conf, func(o *powertrain.Options) {
 		o.InitFunc = InitFunc
 		o.DeferFunc = DeferFunc
+		o.InitHttpServer = true
 		o.RegisterRouter = func(mux *mux.Router) {
 			router.Register(mux)
 		}

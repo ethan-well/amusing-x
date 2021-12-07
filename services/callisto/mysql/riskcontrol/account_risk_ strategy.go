@@ -14,7 +14,7 @@ func QueryAccountRiskStrategy(ctx context.Context, strategyType string) (*amusin
 		WHERE strategy_type = ?
 	`
 	var accountRiskStrategy amusingriskcontrol.AccountRiskStrategy
-	err := AmusingRiskDB.GetContext(ctx, &accountRiskStrategy, query, strategyType)
+	err := CallistoDB.GetContext(ctx, &accountRiskStrategy, query, strategyType)
 	switch {
 	case err == sql.ErrNoRows:
 		return nil, nil

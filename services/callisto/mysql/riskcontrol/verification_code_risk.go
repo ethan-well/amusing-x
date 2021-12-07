@@ -15,7 +15,7 @@ func QueryVerificationCodeRiskByPhone(ctx context.Context, phone string) (*amusi
     `
 
 	var risk amusingriskcontrol.VerificationCodeRisk
-	err := AmusingRiskDB.GetContext(ctx, &risk, query, phone)
+	err := CallistoDB.GetContext(ctx, &risk, query, phone)
 	switch {
 	case err == sql.ErrNoRows:
 		return nil, nil
@@ -34,7 +34,7 @@ func VerificationCodeRiskUpdate(ctx context.Context, risk *amusingriskcontrol.Ve
 		WHERE id = :id
     `
 
-	_, err := AmusingRiskDB.NamedExecContext(ctx, query, risk)
+	_, err := CallistoDB.NamedExecContext(ctx, query, risk)
 	if err != nil {
 		return xerror.NewError(err, xerror.Code.SSqlExecuteErr, "Sql Execute failed. ")
 	}
@@ -52,7 +52,7 @@ func VerificationCodeRiskInsertOrUpdate(ctx context.Context, risk *amusingriskco
 			max_count = VALUES(max_count)
 	`
 
-	_, err := AmusingRiskDB.NamedExecContext(ctx, query, risk)
+	_, err := CallistoDB.NamedExecContext(ctx, query, risk)
 	if err != nil {
 		return xerror.NewError(err, xerror.Code.SSqlExecuteErr, "Sql Execute failed. ")
 	}

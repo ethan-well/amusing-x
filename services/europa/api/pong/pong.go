@@ -5,6 +5,6 @@ import (
 )
 
 func Pong(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("amusing web api service"))
+	w.Write([]byte("web api service"))
 	return
 }

@@ -34,9 +34,10 @@ func InitRPCServer() *xerror.Error {
 
 	service.RegisterCharonServServer(rpcServ, new(charonserver.CharonServer))
 
-	logger.Infof("InitRPCServer. network: %s, addr: %s", conf.Conf.RPCNetwork, conf.Conf.RPCAddress)
+	rpcConf := conf.Conf.Server.GrpcServer
+	logger.Infof("InitRPCServer. network: %s, addr: %s", rpcConf.Network, rpcConf.Address)
 
-	lis, err := net.Listen(conf.Conf.RPCNetwork, conf.Conf.RPCAddress)
+	lis, err := net.Listen(rpcConf.Network, rpcConf.Address)
 	if err != nil {
 		return xerror.NewErrorf(err, xerror.Code.SUnexpectedErr, "RPC Listen failed:  %s", err)
 	}

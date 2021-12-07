@@ -12,5 +12,5 @@ type CharonServer struct {
 
 // 	Pong(context.Context, *BlankParams) (*PongResponse, error)
 func (s *CharonServer) Pong(ctx context.Context, in *service.BlankParams) (*service.PongResponse, error) {
-	return &service.PongResponse{ServerName: conf.Conf.ServerName}, nil
+	return &service.PongResponse{ServerName: conf.Conf.Server.Name}, nil
 }
