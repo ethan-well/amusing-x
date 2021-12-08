@@ -8,6 +8,7 @@ import (
 	"amusingx.fit/amusingx/services/ganymede/mysql/ganymededb/model"
 	"amusingx.fit/amusingx/services/ganymede/oauth"
 	"context"
+	"github.com/ItsWewin/superfactory/logger"
 	"github.com/ItsWewin/superfactory/xerror"
 )
 
@@ -17,6 +18,7 @@ func HandlerOAuthLogin(ctx context.Context, req *userservice.OAuthLoginRequest) 
 		return nil, err
 	}
 
+	logger.Infof("[HandlerOAuthLogin], req: %s", logger.ToJson(req))
 	err = oauthLogin(ctx, req)
 	if err != nil {
 		return nil, err
@@ -39,6 +41,9 @@ func oauthLogin(ctx context.Context, req *userservice.OAuthLoginRequest) *xerror
 	if err != nil {
 		return err
 	}
+
+	logger.Infof("clientID: %s, clientSecret: %s, redirectUrl: %s, accessTokenUrl: %s, userProfileUrl: %s",
+		clientID, clientSecret, redirectUrl, accessTokenUrl, userProfileUrl)
 
 	oAuth, err := oauth.NewOAuth(req.Provider, clientID, clientSecret, redirectUrl)
 	if err != nil {

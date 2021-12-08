@@ -4,6 +4,7 @@ import (
 	github2 "amusingx.fit/amusingx/apistruct/github"
 	"amusingx.fit/amusingx/services/ganymede/oauth/github"
 	"github.com/ItsWewin/superfactory/xerror"
+	"strings"
 )
 
 type OAuth interface {
@@ -12,8 +13,8 @@ type OAuth interface {
 }
 
 func NewOAuth(provider, clientID, clientSecret, redirectUrl string) (OAuth, *xerror.Error) {
-	switch provider {
-	case github2.ProviderGitHub:
+	switch strings.ToLower(provider) {
+	case strings.ToLower(github2.ProviderGitHub):
 		return github.New(clientID, clientSecret, redirectUrl), nil
 	default:
 		return nil, xerror.NewErrorf(nil, xerror.Code.CParamsError, "unknown oauth provider")

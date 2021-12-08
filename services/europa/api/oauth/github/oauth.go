@@ -18,15 +18,13 @@ func HandlerOauthLogin(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		logger.Errorf("get and valid params failed, err: %s", err.Error())
 
-		rest.FailJsonResponse(w, xerror.Code.CParamsError, xerror.Message.ParamsError)
+		rest.FailJsonResponse(w, xerror.Code.CParamsError, err.Message)
 		return
 	}
 
 	err = oauth.Login(ctx, req.Provider, req.Code)
 	if err != nil {
-		logger.Errorf("%s OAuthLogin failed, err: %s", err.Error())
-
-		rest.FailJsonResponse(w, err.Code, "oauth failed")
+		rest.FailJsonResponse(w, err.Code, err.Error())
 		return
 	}
 
@@ -38,7 +36,7 @@ func getAndValidParams(r *http.Request) (*europa.OAuthLogin, *xerror.Error) {
 
 	err := httputil.DecodeJsonBody(r, &req)
 	if err != nil {
-		return nil, xerror.NewErrorf(err, xerror.Code.CParamsError, "decode json body failed")
+		return nil, xerror.NewErrorf(err, xerror.Code.CParamsError, err.Error())
 	}
 
 	xErr := req.Valid()

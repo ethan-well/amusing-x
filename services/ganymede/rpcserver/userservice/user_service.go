@@ -99,8 +99,8 @@ func (s *UserService) ResetPassword(ctx context.Context, req *userservice.ResetP
 func (s *UserService) OAuthLogin(ctx context.Context, req *userservice.OAuthLoginRequest) (*userservice.OAuthLoginResponse, error) {
 	resp, err := oauthlogin.HandlerOAuthLogin(ctx, req)
 	if err != nil {
-		logger.Errorf("[ResetPassword] password.HandlerResetPassword failed: %s", err)
-		return nil, errors.New("reset password failed")
+		logger.Errorf("[OAuthLogin] oauthlogin.HandlerOAuthLogin failed: %s", err)
+		return nil, errors.New(err.Message)
 	}
 
 	return resp, nil
