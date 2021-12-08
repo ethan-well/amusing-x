@@ -8,7 +8,9 @@ import (
 )
 
 func InsertUser(ctx context.Context, tx *sqlx.Tx, user *ganymede.User) (*ganymede.User, *xerror.Error) {
-	query := `INSERT INTO user (name, login) VALUES (:name,:login)`
+	query := `INSERT INTO user (name, login) VALUES (:name,:login)
+		ON DUPLICATE KEY UPDATE login=:login;
+	`
 	result, err := tx.NamedExecContext(ctx, query, user)
 	if err != nil {
 		return nil, xerror.NewError(err, xerror.Code.SSqlExecuteErr, "Unexpected error. ")

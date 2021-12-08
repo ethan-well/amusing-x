@@ -1,7 +1,7 @@
 package oauth
 
 import (
-	userservice "amusingx.fit/amusingx/protos/ganymede/service"
+	"amusingx.fit/amusingx/protos/ganymede/service"
 	"amusingx.fit/amusingx/services/europa/rpcclient/ganymede"
 	"context"
 	"github.com/ItsWewin/superfactory/xerror"

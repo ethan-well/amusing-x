@@ -53,17 +53,9 @@ func (c *OAuth) GetAccessToken(accessTokenUrl, code string) (*github.AccessToken
 		return nil, xerror.NewErrorf(err, err.Code, err.Message)
 	}
 
-	//defer resp.Body.Close()
-	//
-	//if resp.StatusCode != http.StatusOK {
-	//	return nil, xerror.NewErrorf(err, xerror.Code.OtherNetworkError, "get access token failed")
-	//}
-	//
-	//bt, _ := io.ReadAll(resp.Body)
-	//
-	//if strings.Contains(string(bt), github.RequestErrKey) {
-	//
-	//}
+	if dest.IsError() {
+		return nil, xerror.NewErrorf(nil, xerror.Code.OtherNetworkError, dest.ErrorDescription)
+	}
 
 	return &dest, nil
 }

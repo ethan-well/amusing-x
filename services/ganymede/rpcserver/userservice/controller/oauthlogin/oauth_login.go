@@ -55,10 +55,13 @@ func oauthLogin(ctx context.Context, req *ganymedeservice.OAuthLoginRequest) *xe
 		return err
 	}
 
+	logger.Infof("token: %s", logger.ToJson(token))
+
 	userProfile, err := oAuth.GetUserProfile(userProfileUrl, token.AccessToken)
 	if err != nil {
 		return err
 	}
+	logger.Infof("userProfile: %s", logger.ToJson(userProfile))
 
 	err = saveUserInfo(ctx, req.Provider, req.Code, token, userProfile)
 	if err != nil {
@@ -97,11 +100,20 @@ func saveUserInfo(ctx context.Context, provider, code string, token *github.Acce
 	}
 	defer tx.Rollback()
 
+	authInfo, xErr := model.QueryOAuthInfoByProviderAndLogin(ctx, tx, provider, profile.Login)
+	if err != nil {
+		return xErr
+	}
+
+	if authInfo != nil && authInfo.UseID != 0 {
+		//updateAuthInfo()
+	}
+
 	user := &ganymede.User{
 		Name:  profile.Name,
 		Login: profile.Login,
 	}
-	user, xErr := model.InsertUser(ctx, tx, user)
+	user, xErr = model.InsertUser(ctx, tx, user)
 	if xErr != nil {
 		return xErr
 	}

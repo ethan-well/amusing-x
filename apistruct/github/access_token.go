@@ -30,3 +30,7 @@ type UserProfile struct {
 	Email     string `json:"email"`
 	Location  string `json:"location"`
 }
+
+func (resp *AccessTokenResponse) IsError() bool {
+	return len(resp.Error) != 0
+}

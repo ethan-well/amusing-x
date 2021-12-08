@@ -99,8 +99,7 @@ func (s *UserService) ResetPassword(ctx context.Context, req *ganymedeservice.Re
 func (s *UserService) OAuthLogin(ctx context.Context, req *ganymedeservice.OAuthLoginRequest) (*ganymedeservice.OAuthLoginResponse, error) {
 	resp, err := oauthlogin.HandlerOAuthLogin(ctx, req)
 	if err != nil {
-		logger.Errorf("[OAuthLogin] oauthlogin.HandlerOAuthLogin failed: %s", err)
-		return nil, errors.New(err.Message)
+		return nil, err
 	}
 
 	return resp, nil

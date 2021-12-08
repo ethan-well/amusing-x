@@ -16,12 +16,12 @@ func TestInsertOAuthInfo(t *testing.T) {
 		ID:          11,
 		UseID:       1111,
 		Provider:    "github",
-		OuterID:     2222,
-		Login:       "Login",
-		AvatarUrl:   "AvatarUrl",
-		Email:       "Email",
-		AccessToken: "AccessToken",
-		Code:        "Code",
+		OuterID:     22222,
+		Login:       "Login-3",
+		AvatarUrl:   "AvatarUrl-333",
+		Email:       "Email-333",
+		AccessToken: "AccessToken-333",
+		Code:        "Code-333",
 		CreateTime:  "",
 	}
 
@@ -39,4 +39,22 @@ func TestInsertOAuthInfo(t *testing.T) {
 		t.Fatal(err)
 	}
 	t.Logf("oauth: %s", logger.ToJson(u))
+}
+
+func TestQueryOAuthInfoByProviderAndLogin(t *testing.T) {
+	conf.Mock()
+	Mock()
+
+	tx, err := GanymedeDB.BeginTxx(context.TODO(), nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer tx.Rollback()
+
+	info, err := QueryOAuthInfoByProviderAndLogin(context.TODO(), tx, "github", "Login")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	t.Logf("info: %s", logger.ToJson(info))
 }
