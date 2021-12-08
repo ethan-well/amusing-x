@@ -36,8 +36,8 @@ func HandlerLogin(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-func getAndValidParams(r *http.Request) (*userservice.LoginRequest, *xerror.Error) {
-	login := &userservice.LoginRequest{}
+func getAndValidParams(r *http.Request) (*ganymedeservice.LoginRequest, *xerror.Error) {
+	login := &ganymedeservice.LoginRequest{}
 
 	err := httputil.DecodeJsonBody(r, login)
 	if err != nil {

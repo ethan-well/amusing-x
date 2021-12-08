@@ -3,7 +3,7 @@ package oauthlogin
 import (
 	"amusingx.fit/amusingx/apistruct/github"
 	"amusingx.fit/amusingx/mysqlstruct/ganymede"
-	userservice "amusingx.fit/amusingx/protos/ganymede/service"
+	"amusingx.fit/amusingx/protos/ganymede/service"
 	"amusingx.fit/amusingx/services/ganymede/conf"
 	"amusingx.fit/amusingx/services/ganymede/mysql/ganymededb/model"
 	"amusingx.fit/amusingx/services/ganymede/oauth"
@@ -12,7 +12,7 @@ import (
 	"github.com/ItsWewin/superfactory/xerror"
 )
 
-func HandlerOAuthLogin(ctx context.Context, req *userservice.OAuthLoginRequest) (*userservice.OAuthLoginResponse, *xerror.Error) {
+func HandlerOAuthLogin(ctx context.Context, req *ganymedeservice.OAuthLoginRequest) (*ganymedeservice.OAuthLoginResponse, *xerror.Error) {
 	err := getAndValidRequest(req)
 	if err != nil {
 		return nil, err
@@ -24,10 +24,10 @@ func HandlerOAuthLogin(ctx context.Context, req *userservice.OAuthLoginRequest) 
 		return nil, err
 	}
 
-	return &userservice.OAuthLoginResponse{Result: true}, nil
+	return &ganymedeservice.OAuthLoginResponse{Result: true}, nil
 }
 
-func getAndValidRequest(req *userservice.OAuthLoginRequest) *xerror.Error {
+func getAndValidRequest(req *ganymedeservice.OAuthLoginRequest) *xerror.Error {
 	xErr := req.Valid()
 	if xErr != nil {
 		return xErr
@@ -36,7 +36,7 @@ func getAndValidRequest(req *userservice.OAuthLoginRequest) *xerror.Error {
 	return nil
 }
 
-func oauthLogin(ctx context.Context, req *userservice.OAuthLoginRequest) *xerror.Error {
+func oauthLogin(ctx context.Context, req *ganymedeservice.OAuthLoginRequest) *xerror.Error {
 	clientID, clientSecret, redirectUrl, accessTokenUrl, userProfileUrl, err := getOauthConf(req.Provider)
 	if err != nil {
 		return err

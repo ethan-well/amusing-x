@@ -8,7 +8,7 @@ import (
 )
 
 func Login(ctx context.Context, provider, code string) *xerror.Error {
-	rpcReq := &userservice.OAuthLoginRequest{
+	rpcReq := &ganymedeservice.OAuthLoginRequest{
 		Provider: provider,
 		Code:     code,
 	}

@@ -47,11 +47,23 @@ func (c *OAuth) GetAccessToken(accessTokenUrl, code string) (*github.AccessToken
 		}
 	}
 
-	var resp github.AccessTokenResponse
-	err := rest.Post(accessTokenUrl, req, &resp, opts)
+	var dest github.AccessTokenResponse
+	_, err := rest.Post(accessTokenUrl, req, &dest, opts)
 	if err != nil {
 		return nil, xerror.NewErrorf(err, err.Code, err.Message)
 	}
 
-	return &resp, nil
+	//defer resp.Body.Close()
+	//
+	//if resp.StatusCode != http.StatusOK {
+	//	return nil, xerror.NewErrorf(err, xerror.Code.OtherNetworkError, "get access token failed")
+	//}
+	//
+	//bt, _ := io.ReadAll(resp.Body)
+	//
+	//if strings.Contains(string(bt), github.RequestErrKey) {
+	//
+	//}
+
+	return &dest, nil
 }

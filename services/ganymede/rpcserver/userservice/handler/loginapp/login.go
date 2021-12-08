@@ -14,7 +14,7 @@ type LoginDomain interface {
 }
 
 type Domain struct {
-	LoginInfo     *userservice.LoginRequest
+	LoginInfo     *ganymedeservice.LoginRequest
 	UserModelInfo *model.UserComplex
 	SessionID     string
 }
@@ -24,7 +24,7 @@ func NewDomain() *Domain {
 }
 
 // 设置登录信息
-func (d *Domain) SetLoginRequestInfo(loginRequest *userservice.LoginRequest) *xerror.Error {
+func (d *Domain) SetLoginRequestInfo(loginRequest *ganymedeservice.LoginRequest) *xerror.Error {
 	if loginRequest == nil {
 		return xerror.NewError(nil, xerror.Code.BUnexpectedBlankVariable, "login request is blank")
 	}

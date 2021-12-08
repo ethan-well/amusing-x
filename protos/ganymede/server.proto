@@ -1,8 +1,8 @@
 syntax="proto3";
 
-option go_package="amusing-x.com/userservice/userservice";
+option go_package="amusing-x.com/ganymede/ganymedeservice";
 
-package userservice;
+package ganymde;
 
 import "regexp.proto";
 import "login.proto";
@@ -13,7 +13,7 @@ import "verification_code_check.proto";
 import "reset_password.proto";
 import "oauth_login.proto";
 
-service AmusingxUserService {
+service GanymedeService {
   rpc Pong(BlankParams) returns (PongResponse) {}
   rpc Regexps(BlankParams) returns (RegexpResponse) {}
   rpc Login(LoginRequest) returns(LoginResponse) {}

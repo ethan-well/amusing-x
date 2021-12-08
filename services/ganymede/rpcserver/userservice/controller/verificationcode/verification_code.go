@@ -12,7 +12,7 @@ import (
 )
 
 func HandlerVerificationCode(ctx context.Context,
-	req *userservice.VerificationCodeRequest) (*userservice.VerificationCodeResponse, *xerror.Error) {
+	req *ganymedeservice.VerificationCodeRequest) (*ganymedeservice.VerificationCodeResponse, *xerror.Error) {
 
 	err := getAndValidParams(ctx, req)
 	if err != nil {
@@ -34,10 +34,10 @@ func HandlerVerificationCode(ctx context.Context,
 
 	go riskControlValueVerifyAdd(ctx, req.Phone)
 
-	return &userservice.VerificationCodeResponse{Code: randomCode.GetCode()}, nil
+	return &ganymedeservice.VerificationCodeResponse{Code: randomCode.GetCode()}, nil
 }
 
-func getAndValidParams(ctx context.Context, request *userservice.VerificationCodeRequest) *xerror.Error {
+func getAndValidParams(ctx context.Context, request *ganymedeservice.VerificationCodeRequest) *xerror.Error {
 	logger.Infof("request: %s", logger.ToJson(request))
 
 	if err := request.Valid(); err != nil {

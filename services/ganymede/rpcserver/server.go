@@ -3,7 +3,7 @@ package rpcserver
 import (
 	"amusingx.fit/amusingx/protos/ganymede/service"
 	"amusingx.fit/amusingx/services/ganymede/conf"
-	userservice2 "amusingx.fit/amusingx/services/ganymede/rpcserver/userservice"
+	"amusingx.fit/amusingx/services/ganymede/rpcserver/userservice"
 	"github.com/ItsWewin/superfactory/logger"
 	"github.com/ItsWewin/superfactory/xerror"
 	"google.golang.org/grpc"
@@ -21,7 +21,7 @@ func InitRPCService() *xerror.Error {
 
 	rpcService := grpc.NewServer()
 
-	userservice.RegisterAmusingxUserServiceServer(rpcService, new(userservice2.UserService))
+	ganymedeservice.RegisterGanymedeServiceServer(rpcService, new(userservice.UserService))
 
 	grpcConf := conf.Conf.Server.GrpcServer
 	lis, err := net.Listen(grpcConf.Network, grpcConf.Address)

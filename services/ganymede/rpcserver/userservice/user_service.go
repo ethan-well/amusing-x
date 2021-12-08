@@ -15,17 +15,17 @@ import (
 )
 
 type UserService struct {
-	userservice.UnimplementedAmusingxUserServiceServer
+	ganymedeservice.UnimplementedGanymedeServiceServer
 }
 
-func (s *UserService) Pong(ctx context.Context, blank *userservice.BlankParams) (*userservice.PongResponse, error) {
-	return &userservice.PongResponse{ServerName: "amusing-x-user-service"}, nil
+func (s *UserService) Pong(ctx context.Context, blank *ganymedeservice.BlankParams) (*ganymedeservice.PongResponse, error) {
+	return &ganymedeservice.PongResponse{ServerName: "amusing-x-user-service"}, nil
 }
 
-func (s *UserService) Regexps(ctx context.Context, blank *userservice.BlankParams) (*userservice.RegexpResponse, error) {
-	regexps := make([]*userservice.Regexp, 0)
+func (s *UserService) Regexps(ctx context.Context, blank *ganymedeservice.BlankParams) (*ganymedeservice.RegexpResponse, error) {
+	regexps := make([]*ganymedeservice.Regexp, 0)
 	for _, regexp := range regexp.AllRegexps {
-		regexps = append(regexps, &userservice.Regexp{
+		regexps = append(regexps, &ganymedeservice.Regexp{
 			Id:    regexp.ID,
 			Name:  regexp.Name,
 			Rules: regexp.Rules,
@@ -33,20 +33,20 @@ func (s *UserService) Regexps(ctx context.Context, blank *userservice.BlankParam
 		})
 	}
 
-	return &userservice.RegexpResponse{Regexps: regexps}, nil
+	return &ganymedeservice.RegexpResponse{Regexps: regexps}, nil
 }
 
-func (s *UserService) Login(ctx context.Context, in *userservice.LoginRequest) (*userservice.LoginResponse, error) {
+func (s *UserService) Login(ctx context.Context, in *ganymedeservice.LoginRequest) (*ganymedeservice.LoginResponse, error) {
 	sessionID, err := login.HandlerLogin(ctx, in)
 	if err != nil {
 		logger.Errorf("Login failed: %s", err)
 		return nil, errors.New("Login failed. ")
 	}
 
-	return &userservice.LoginResponse{SessionId: sessionID}, err
+	return &ganymedeservice.LoginResponse{SessionId: sessionID}, err
 }
 
-func (s *UserService) Join(ctx context.Context, in *userservice.JoinRequest) (*userservice.JoinResponse, error) {
+func (s *UserService) Join(ctx context.Context, in *ganymedeservice.JoinRequest) (*ganymedeservice.JoinResponse, error) {
 	joinResponse, err := join.HandleJoin(ctx, in)
 	if err != nil {
 		logger.Errorf("Join failed: %s", err)
@@ -56,7 +56,7 @@ func (s *UserService) Join(ctx context.Context, in *userservice.JoinRequest) (*u
 	return joinResponse, nil
 }
 
-func (s *UserService) CountryCodes(ctx context.Context, req *userservice.BlankParams) (*userservice.CountryCodeList, error) {
+func (s *UserService) CountryCodes(ctx context.Context, req *ganymedeservice.BlankParams) (*ganymedeservice.CountryCodeList, error) {
 	resp, err := countrycode.HandleCountryCodeList(ctx)
 	if err != nil {
 		logger.Errorf("[CountryCodes] countrycode.HandleCountryCodeList failed: %s", err)
@@ -66,7 +66,7 @@ func (s *UserService) CountryCodes(ctx context.Context, req *userservice.BlankPa
 	return resp, nil
 }
 
-func (s *UserService) GetVerificationCode(ctx context.Context, req *userservice.VerificationCodeRequest) (*userservice.VerificationCodeResponse, error) {
+func (s *UserService) GetVerificationCode(ctx context.Context, req *ganymedeservice.VerificationCodeRequest) (*ganymedeservice.VerificationCodeResponse, error) {
 	resp, err := verificationcode.HandlerVerificationCode(ctx, req)
 	if err != nil {
 		logger.Errorf("[GetVerificationCode] verificationcode.HandlerVerificationCode failed: %s", err)
@@ -76,7 +76,7 @@ func (s *UserService) GetVerificationCode(ctx context.Context, req *userservice.
 	return resp, nil
 }
 
-func (s *UserService) VerificationCodeCheck(ctx context.Context, req *userservice.VerificationCodeCheckRequest) (*userservice.VerificationCodeCheckResponse, error) {
+func (s *UserService) VerificationCodeCheck(ctx context.Context, req *ganymedeservice.VerificationCodeCheckRequest) (*ganymedeservice.VerificationCodeCheckResponse, error) {
 	resp, err := verificationcode.HandlerVerificationCheck(ctx, req)
 	if err != nil {
 		logger.Errorf("[VerificationCodeCheck] verificationcode.HandlerVerificationCheck failed: %s", err)
@@ -86,7 +86,7 @@ func (s *UserService) VerificationCodeCheck(ctx context.Context, req *userservic
 	return resp, nil
 }
 
-func (s *UserService) ResetPassword(ctx context.Context, req *userservice.ResetPasswordRequest) (*userservice.ResetPasswordResponse, error) {
+func (s *UserService) ResetPassword(ctx context.Context, req *ganymedeservice.ResetPasswordRequest) (*ganymedeservice.ResetPasswordResponse, error) {
 	resp, err := password.HandlerResetPassword(ctx, req)
 	if err != nil {
 		logger.Errorf("[ResetPassword] password.HandlerResetPassword failed: %s", err)
@@ -96,7 +96,7 @@ func (s *UserService) ResetPassword(ctx context.Context, req *userservice.ResetP
 	return resp, nil
 }
 
-func (s *UserService) OAuthLogin(ctx context.Context, req *userservice.OAuthLoginRequest) (*userservice.OAuthLoginResponse, error) {
+func (s *UserService) OAuthLogin(ctx context.Context, req *ganymedeservice.OAuthLoginRequest) (*ganymedeservice.OAuthLoginResponse, error) {
 	resp, err := oauthlogin.HandlerOAuthLogin(ctx, req)
 	if err != nil {
 		logger.Errorf("[OAuthLogin] oauthlogin.HandlerOAuthLogin failed: %s", err)

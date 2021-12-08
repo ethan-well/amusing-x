@@ -1,13 +1,23 @@
 package github
 
 const (
-	ProviderGitHub = "GitHub"
+	ProviderGitHub = "github"
+	RequestErrKey  = "error"
 )
 
 type AccessTokenResponse struct {
-	AccessToken string `json:"access_token"`
-	Scope       string `json:"scope"`
-	TokenType   string `json:"token_type"`
+	AccessToken      string `json:"access_token"`
+	Scope            string `json:"scope"`
+	TokenType        string `json:"token_type"`
+	Error            string `json:"error"`
+	ErrorDescription string `json:"error_description"`
+	ErrorUri         string `json:"error_uri"`
+}
+
+type AccessTokenErrResponse struct {
+	Error            string `json:"error"`
+	ErrorDescription string `json:"error_description"`
+	ErrorUri         string `json:"error_uri"`
 }
 
 type UserProfile struct {

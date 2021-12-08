@@ -8,7 +8,7 @@ import (
 )
 
 func HandlerResetPassword(ctx context.Context,
-	req *userservice.ResetPasswordRequest) (*userservice.ResetPasswordResponse, *xerror.Error) {
+	req *ganymedeservice.ResetPasswordRequest) (*ganymedeservice.ResetPasswordResponse, *xerror.Error) {
 
 	err := getAndValidRequest(req)
 	if err != nil {
@@ -20,10 +20,10 @@ func HandlerResetPassword(ctx context.Context,
 		return nil, err
 	}
 
-	return &userservice.ResetPasswordResponse{Result: "密码重置成功"}, nil
+	return &ganymedeservice.ResetPasswordResponse{Result: "密码重置成功"}, nil
 }
 
-func resetPassword(ctx context.Context, req *userservice.ResetPasswordRequest) *xerror.Error {
+func resetPassword(ctx context.Context, req *ganymedeservice.ResetPasswordRequest) *xerror.Error {
 	domain := passwordapp.NewDomain()
 
 	err := domain.SetResetPasswordInfo(req)
@@ -44,7 +44,7 @@ func resetPassword(ctx context.Context, req *userservice.ResetPasswordRequest) *
 	return nil
 }
 
-func getAndValidRequest(request *userservice.ResetPasswordRequest) *xerror.Error {
+func getAndValidRequest(request *ganymedeservice.ResetPasswordRequest) *xerror.Error {
 	xErr := request.Valid()
 	if xErr != nil {
 		return xErr
