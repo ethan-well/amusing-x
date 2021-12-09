@@ -47,11 +47,15 @@ func (c *OAuth) GetAccessToken(accessTokenUrl, code string) (*github.AccessToken
 		}
 	}
 
-	var resp github.AccessTokenResponse
-	err := rest.Post(accessTokenUrl, req, &resp, opts)
+	var dest github.AccessTokenResponse
+	_, err := rest.Post(accessTokenUrl, req, &dest, opts)
 	if err != nil {
 		return nil, xerror.NewErrorf(err, err.Code, err.Message)
 	}
 
-	return &resp, nil
+	if dest.IsError() {
+		return nil, xerror.NewErrorf(nil, xerror.Code.OtherNetworkError, dest.ErrorDescription)
+	}
+
+	return &dest, nil
 }

@@ -3,7 +3,7 @@ package oauthlogin
 import (
 	"amusingx.fit/amusingx/apistruct/github"
 	"amusingx.fit/amusingx/mysqlstruct/ganymede"
-	userservice "amusingx.fit/amusingx/protos/ganymede/service"
+	"amusingx.fit/amusingx/protos/ganymede/service"
 	"amusingx.fit/amusingx/services/ganymede/conf"
 	"amusingx.fit/amusingx/services/ganymede/mysql/ganymededb/model"
 	"amusingx.fit/amusingx/services/ganymede/oauth"
@@ -12,7 +12,7 @@ import (
 	"github.com/ItsWewin/superfactory/xerror"
 )
 
-func HandlerOAuthLogin(ctx context.Context, req *userservice.OAuthLoginRequest) (*userservice.OAuthLoginResponse, *xerror.Error) {
+func HandlerOAuthLogin(ctx context.Context, req *ganymedeservice.OAuthLoginRequest) (*ganymedeservice.OAuthLoginResponse, *xerror.Error) {
 	err := getAndValidRequest(req)
 	if err != nil {
 		return nil, err
@@ -24,10 +24,10 @@ func HandlerOAuthLogin(ctx context.Context, req *userservice.OAuthLoginRequest) 
 		return nil, err
 	}
 
-	return &userservice.OAuthLoginResponse{Result: true}, nil
+	return &ganymedeservice.OAuthLoginResponse{Result: true}, nil
 }
 
-func getAndValidRequest(req *userservice.OAuthLoginRequest) *xerror.Error {
+func getAndValidRequest(req *ganymedeservice.OAuthLoginRequest) *xerror.Error {
 	xErr := req.Valid()
 	if xErr != nil {
 		return xErr
@@ -36,7 +36,7 @@ func getAndValidRequest(req *userservice.OAuthLoginRequest) *xerror.Error {
 	return nil
 }
 
-func oauthLogin(ctx context.Context, req *userservice.OAuthLoginRequest) *xerror.Error {
+func oauthLogin(ctx context.Context, req *ganymedeservice.OAuthLoginRequest) *xerror.Error {
 	clientID, clientSecret, redirectUrl, accessTokenUrl, userProfileUrl, err := getOauthConf(req.Provider)
 	if err != nil {
 		return err
@@ -55,10 +55,13 @@ func oauthLogin(ctx context.Context, req *userservice.OAuthLoginRequest) *xerror
 		return err
 	}
 
+	logger.Infof("token: %s", logger.ToJson(token))
+
 	userProfile, err := oAuth.GetUserProfile(userProfileUrl, token.AccessToken)
 	if err != nil {
 		return err
 	}
+	logger.Infof("userProfile: %s", logger.ToJson(userProfile))
 
 	err = saveUserInfo(ctx, req.Provider, req.Code, token, userProfile)
 	if err != nil {
@@ -97,17 +100,7 @@ func saveUserInfo(ctx context.Context, provider, code string, token *github.Acce
 	}
 	defer tx.Rollback()
 
-	user := &ganymede.User{
-		Name:  profile.Name,
-		Login: profile.Login,
-	}
-	user, xErr := model.InsertUser(ctx, tx, user)
-	if xErr != nil {
-		return xErr
-	}
-
 	oauth := &ganymede.OauthInfo{
-		UseID:       user.ID,
 		Provider:    provider,
 		OuterID:     profile.ID,
 		Login:       profile.Login,
@@ -116,9 +109,47 @@ func saveUserInfo(ctx context.Context, provider, code string, token *github.Acce
 		AccessToken: token.AccessToken,
 		Code:        code,
 	}
-	oauth, xErr = model.InsertOAuthInfo(ctx, tx, oauth)
+
+	// 保存或者更新 oauth info
+	oauth, xErr := model.InsertOrUpdateOAuthInfo(ctx, tx, oauth)
 	if xErr != nil {
 		return xErr
+	}
+
+	// 加锁查询 oauth info 是不是已经关联了 user
+	authInfo, xErr := model.QueryOAuthInfoByProviderAndLogin(ctx, tx, provider, profile.Login)
+	if err != nil {
+		return xErr
+	}
+
+	var user *ganymede.User
+	// 已经关联了用户
+	if authInfo != nil && authInfo.UseID != 0 {
+		user, xErr = model.QueryUserByID(ctx, tx, authInfo.UseID)
+		if err != nil {
+			return xErr
+		}
+	}
+
+	// 用户不存在
+	if user == nil {
+		user = &ganymede.User{
+			Name:  profile.Name,
+			Login: provider + profile.Login,
+		}
+
+		user, xErr = model.InsertUser(ctx, tx, user)
+		if xErr != nil {
+			return xErr
+		}
+	}
+
+	// auth info 关联用户
+	if authInfo == nil || authInfo.UseID != user.ID {
+		xErr = model.UpdateOAuthUserID(ctx, tx, user.ID, provider, profile.Login)
+		if xErr != nil {
+			return xErr
+		}
 	}
 
 	err = tx.Commit()

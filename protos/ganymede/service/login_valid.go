@@ -1,4 +1,4 @@
-package userservice
+package ganymedeservice
 
 import (
 	"amusingx.fit/amusingx/regexp"

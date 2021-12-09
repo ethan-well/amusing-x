@@ -11,7 +11,7 @@ type ResetPasswordDomain interface {
 }
 
 type Domain struct {
-	ResetPasswordInfo *userservice.ResetPasswordRequest
+	ResetPasswordInfo *ganymedeservice.ResetPasswordRequest
 	UserModelInfo     *model.UserComplex
 }
 
@@ -19,7 +19,7 @@ func NewDomain() *Domain {
 	return &Domain{}
 }
 
-func (d *Domain) SetResetPasswordInfo(request *userservice.ResetPasswordRequest) *xerror.Error {
+func (d *Domain) SetResetPasswordInfo(request *ganymedeservice.ResetPasswordRequest) *xerror.Error {
 	if request == nil {
 		return xerror.NewError(nil, xerror.Code.CUnexpectRequestDate, "Request is nil. ")
 	}

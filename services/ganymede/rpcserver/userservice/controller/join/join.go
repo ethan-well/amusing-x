@@ -7,7 +7,7 @@ import (
 	"github.com/ItsWewin/superfactory/xerror"
 )
 
-func HandleJoin(ctx context.Context, joinRequest *userservice.JoinRequest) (*userservice.JoinResponse, *xerror.Error) {
+func HandleJoin(ctx context.Context, joinRequest *ganymedeservice.JoinRequest) (*ganymedeservice.JoinResponse, *xerror.Error) {
 	err := getAndValidParams(joinRequest)
 	if err != nil {
 		return nil, xerror.NewError(err, err.Code, err.Message)
@@ -18,7 +18,7 @@ func HandleJoin(ctx context.Context, joinRequest *userservice.JoinRequest) (*use
 		return nil, xerror.NewError(err, err.Code, err.Message)
 	}
 
-	resp := &userservice.JoinResponse{
+	resp := &ganymedeservice.JoinResponse{
 		Nickname: u.Nickname,
 		Phone:    u.Phone,
 		AreaCode: u.AreaCode,
@@ -27,7 +27,7 @@ func HandleJoin(ctx context.Context, joinRequest *userservice.JoinRequest) (*use
 	return resp, nil
 }
 
-func getAndValidParams(joinRequest *userservice.JoinRequest) *xerror.Error {
+func getAndValidParams(joinRequest *ganymedeservice.JoinRequest) *xerror.Error {
 	xErr := joinRequest.Valid()
 	if xErr != nil {
 		return xErr

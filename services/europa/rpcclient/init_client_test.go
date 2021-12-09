@@ -42,7 +42,7 @@ func TestInitUserServerRPCClient(t *testing.T) {
 		t.Fatalf("some error: %s", xErr)
 	}
 
-	req := &userservice.BlankParams{}
+	req := &ganymedeservice.BlankParams{}
 
 	result, err := ganymede.RPCClient.Client.Pong(context.Background(), req)
 	if err != nil {
@@ -58,7 +58,7 @@ func TestInitUserServerRPCClient(t *testing.T) {
 
 	t.Logf("regex: %s", regex)
 
-	var loginReq = &userservice.LoginRequest{
+	var loginReq = &ganymedeservice.LoginRequest{
 		Type:             0,
 		AreaCode:         "",
 		Password:         "",
@@ -71,7 +71,7 @@ func TestInitUserServerRPCClient(t *testing.T) {
 	}
 	t.Logf("response: %s", logger.ToJson(response))
 
-	joinReq := &userservice.JoinRequest{
+	joinReq := &ganymedeservice.JoinRequest{
 		Nickname:         "wei,wei",
 		Password:         "wewin123",
 		AreaCode:         "87",
@@ -91,7 +91,7 @@ func TestInitUserServerRPCClient(t *testing.T) {
 
 	t.Logf("code: %s", code)
 
-	vcReq := &userservice.VerificationCodeRequest{
+	vcReq := &ganymedeservice.VerificationCodeRequest{
 		Phone:    "",
 		Action:   "",
 		AreaCode: "",
@@ -103,7 +103,7 @@ func TestInitUserServerRPCClient(t *testing.T) {
 	}
 	t.Logf("vsResult: %s", vsResult)
 
-	vccReq := &userservice.VerificationCodeRequest{
+	vccReq := &ganymedeservice.VerificationCodeRequest{
 		Phone:    "",
 		Action:   "",
 		AreaCode: "",
@@ -114,7 +114,7 @@ func TestInitUserServerRPCClient(t *testing.T) {
 	}
 	t.Logf("vccResult: %s", vccResult)
 
-	rspReq := &userservice.ResetPasswordRequest{
+	rspReq := &ganymedeservice.ResetPasswordRequest{
 		Password:         "",
 		AreaCode:         "",
 		Phone:            "",

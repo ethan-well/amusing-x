@@ -8,7 +8,7 @@ import (
 )
 
 type UserRPCClient struct {
-	Client userservice.AmusingxUserServiceClient
+	Client ganymedeservice.GanymedeServiceClient
 	CC     *grpc.ClientConn
 }
 
@@ -24,7 +24,7 @@ func InitGanymedeRPCClient(cc *grpc.ClientConn) *xerror.Error {
 
 	once.Do(func() {
 		RPCClient = &UserRPCClient{
-			Client: userservice.NewAmusingxUserServiceClient(cc),
+			Client: ganymedeservice.NewGanymedeServiceClient(cc),
 			CC:     cc,
 		}
 	})

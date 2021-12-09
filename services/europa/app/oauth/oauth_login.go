@@ -1,14 +1,14 @@
 package oauth
 
 import (
-	userservice "amusingx.fit/amusingx/protos/ganymede/service"
+	"amusingx.fit/amusingx/protos/ganymede/service"
 	"amusingx.fit/amusingx/services/europa/rpcclient/ganymede"
 	"context"
 	"github.com/ItsWewin/superfactory/xerror"
 )
 
 func Login(ctx context.Context, provider, code string) *xerror.Error {
-	rpcReq := &userservice.OAuthLoginRequest{
+	rpcReq := &ganymedeservice.OAuthLoginRequest{
 		Provider: provider,
 		Code:     code,
 	}

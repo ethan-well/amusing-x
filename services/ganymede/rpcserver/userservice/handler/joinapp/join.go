@@ -10,7 +10,7 @@ import (
 	"github.com/ItsWewin/superfactory/xerror"
 )
 
-func CreateUser(ctx context.Context, r *userservice.JoinRequest) (*model.UserComplex, *xerror.Error) {
+func CreateUser(ctx context.Context, r *ganymedeservice.JoinRequest) (*model.UserComplex, *xerror.Error) {
 	var (
 		err  *xerror.Error
 		user = &model.UserComplex{
@@ -50,7 +50,7 @@ func CreateUser(ctx context.Context, r *userservice.JoinRequest) (*model.UserCom
 	return user, nil
 }
 
-func clearPassword(r *userservice.JoinRequest, u *model.UserComplex) {
+func clearPassword(r *ganymedeservice.JoinRequest, u *model.UserComplex) {
 	r.Password = ""
 	u.Password = ""
 	u.PasswordDigest = ""

@@ -12,7 +12,7 @@ import (
 
 func HandlerRegexp(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
-	req := &userservice.BlankParams{}
+	req := &ganymedeservice.BlankParams{}
 
 	regex, err := ganymede.RPCClient.Client.Regexps(ctx, req)
 	if err != nil {

@@ -1,4 +1,4 @@
-package userservice
+package ganymedeservice
 
 import "github.com/ItsWewin/superfactory/xerror"
 

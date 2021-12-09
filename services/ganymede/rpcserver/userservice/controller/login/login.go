@@ -9,7 +9,7 @@ import (
 	"github.com/ItsWewin/superfactory/xerror"
 )
 
-func HandlerLogin(ctx context.Context, req *userservice.LoginRequest) (string, *xerror.Error) {
+func HandlerLogin(ctx context.Context, req *ganymedeservice.LoginRequest) (string, *xerror.Error) {
 	if err := ParamsValid(req); err != nil {
 		return "", xerror.NewError(nil, err.Code, err.Message)
 	}
@@ -22,7 +22,7 @@ func HandlerLogin(ctx context.Context, req *userservice.LoginRequest) (string, *
 	return sessionID, nil
 }
 
-func ParamsValid(x *userservice.LoginRequest) *xerror.Error {
+func ParamsValid(x *ganymedeservice.LoginRequest) *xerror.Error {
 	if x.Type != 0 && x.Type != 1 {
 		return xerror.NewError(nil, xerror.Code.CParamsError, "Type is invalid. ")
 	}
@@ -48,7 +48,7 @@ func ParamsValid(x *userservice.LoginRequest) *xerror.Error {
 	return nil
 }
 
-func Login(ctx context.Context, loginRequest *userservice.LoginRequest) (string, *xerror.Error) {
+func Login(ctx context.Context, loginRequest *ganymedeservice.LoginRequest) (string, *xerror.Error) {
 	loginDomain := loginapp.NewDomain()
 
 	logger.Infof("loginRequest: %s", logger.ToJson(loginRequest))
