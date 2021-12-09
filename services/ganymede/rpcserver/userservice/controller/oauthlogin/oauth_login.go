@@ -100,26 +100,7 @@ func saveUserInfo(ctx context.Context, provider, code string, token *github.Acce
 	}
 	defer tx.Rollback()
 
-	authInfo, xErr := model.QueryOAuthInfoByProviderAndLogin(ctx, tx, provider, profile.Login)
-	if err != nil {
-		return xErr
-	}
-
-	if authInfo != nil && authInfo.UseID != 0 {
-		//updateAuthInfo()
-	}
-
-	user := &ganymede.User{
-		Name:  profile.Name,
-		Login: profile.Login,
-	}
-	user, xErr = model.InsertUser(ctx, tx, user)
-	if xErr != nil {
-		return xErr
-	}
-
 	oauth := &ganymede.OauthInfo{
-		UseID:       user.ID,
 		Provider:    provider,
 		OuterID:     profile.ID,
 		Login:       profile.Login,
@@ -128,9 +109,47 @@ func saveUserInfo(ctx context.Context, provider, code string, token *github.Acce
 		AccessToken: token.AccessToken,
 		Code:        code,
 	}
-	oauth, xErr = model.InsertOAuthInfo(ctx, tx, oauth)
+
+	// 保存或者更新 oauth info
+	oauth, xErr := model.InsertOrUpdateOAuthInfo(ctx, tx, oauth)
 	if xErr != nil {
 		return xErr
+	}
+
+	// 加锁查询 oauth info 是不是已经关联了 user
+	authInfo, xErr := model.QueryOAuthInfoByProviderAndLogin(ctx, tx, provider, profile.Login)
+	if err != nil {
+		return xErr
+	}
+
+	var user *ganymede.User
+	// 已经关联了用户
+	if authInfo != nil && authInfo.UseID != 0 {
+		user, xErr = model.QueryUserByID(ctx, tx, authInfo.UseID)
+		if err != nil {
+			return xErr
+		}
+	}
+
+	// 用户不存在
+	if user == nil {
+		user = &ganymede.User{
+			Name:  profile.Name,
+			Login: provider + profile.Login,
+		}
+
+		user, xErr = model.InsertUser(ctx, tx, user)
+		if xErr != nil {
+			return xErr
+		}
+	}
+
+	// auth info 关联用户
+	if authInfo == nil || authInfo.UseID != user.ID {
+		xErr = model.UpdateOAuthUserID(ctx, tx, user.ID, provider, profile.Login)
+		if xErr != nil {
+			return xErr
+		}
 	}
 
 	err = tx.Commit()

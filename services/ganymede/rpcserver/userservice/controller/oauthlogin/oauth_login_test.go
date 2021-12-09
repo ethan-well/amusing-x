@@ -15,7 +15,7 @@ func TestOauthLogin(t *testing.T) {
 
 	req := &ganymedeservice.OAuthLoginRequest{
 		Provider: "github",
-		Code:     "194fa95399c9c55533eb",
+		Code:     "8cc35348db4ea7efa6c4",
 	}
 
 	err := oauthLogin(context.Background(), req)

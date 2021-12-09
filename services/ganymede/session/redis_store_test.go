@@ -2,6 +2,7 @@ package session
 
 import (
 	"amusingx.fit/amusingx/services/ganymede/conf"
+	"amusingx.fit/amusingx/services/ganymede/mysql/ganymededb/model"
 	"context"
 	"github.com/ItsWewin/superfactory/logger"
 	"testing"
@@ -10,9 +11,10 @@ import (
 func TestSessionInit(t *testing.T) {
 	conf.Mock()
 
-	store, err := InitRedisStore(conf.ConfSect.SessionStoreRedisAddr, conf.ConfSect.SessionStoreRedisPassword,
-		conf.ConfSect.SessionStoreRedisDB, "session", 60)
+	model.InitMySQL()
 
+	redis := conf.Conf.SessionStore.Redis
+	store, err := InitRedisStore(redis.Addr, redis.Password, redis.DBNo, "session", 60)
 	if err != nil {
 		t.Fatalf("some error: %s", err)
 	}

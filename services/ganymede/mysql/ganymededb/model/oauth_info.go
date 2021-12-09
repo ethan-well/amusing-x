@@ -8,7 +8,7 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-func InsertOAuthInfo(ctx context.Context, tx *sqlx.Tx, oauth *ganymede.OauthInfo) (*ganymede.OauthInfo, *xerror.Error) {
+func InsertOrUpdateOAuthInfo(ctx context.Context, tx *sqlx.Tx, oauth *ganymede.OauthInfo) (*ganymede.OauthInfo, *xerror.Error) {
 	query := `INSERT INTO oauth_info (user_id, provider, access_token, code, outer_id, login, avatar_url, email)
 	VALUES (:user_id, :provider, :access_token, :code, :outer_id, :login, :avatar_url, :email)
 	ON DUPLICATE KEY UPDATE access_token = :access_token,
@@ -28,6 +28,17 @@ func InsertOAuthInfo(ctx context.Context, tx *sqlx.Tx, oauth *ganymede.OauthInfo
 	oauth.ID = id
 
 	return oauth, nil
+}
+
+func UpdateOAuthUserID(ctx context.Context, tx *sqlx.Tx, userID int64, provider, login string) *xerror.Error {
+	query := `UPDATE oauth_info set user_id = ? WHERE provider = ? AND login = ?`
+
+	_, err := tx.ExecContext(ctx, query, userID, provider, login)
+	if err != nil {
+		return xerror.NewError(err, xerror.Code.SSqlExecuteErr, "Unexpected error. ")
+	}
+
+	return nil
 }
 
 func QueryOAuthInfoByProviderAndLogin(ctx context.Context, tx *sqlx.Tx, provider, login string) (*ganymede.OauthInfo, *xerror.Error) {
