@@ -17,9 +17,5 @@ func TestGetAccessToken(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if resp.IsError() {
-		t.Logf("request is errr: %s", resp.ErrorDescription)
-	}
-
 	t.Logf("resp: %s", logger.ToJson(resp))
 }

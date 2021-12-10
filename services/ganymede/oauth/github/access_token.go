@@ -2,25 +2,17 @@ package github
 
 import (
 	"amusingx.fit/amusingx/apistruct/github"
+	"amusingx.fit/amusingx/services/ganymede/oauth"
 	"github.com/ItsWewin/superfactory/httputil"
 	"github.com/ItsWewin/superfactory/httputil/rest"
 	"github.com/ItsWewin/superfactory/xerror"
 )
 
 type OAuth struct {
-	AccessTokenUrl string `json:"access_token_url"`
-	ClientID       string `json:"client_id"`
-	ClientSecret   string `json:"client_secret"`
-	Code           string `json:"code"`
-	RedirectUrl    string `json:"redirect_url"`
-}
-
-type AccessTokenRequest struct {
-	AccessTokenUrl string `json:"access_token_url"`
-	ClientID       string `json:"client_id"`
-	ClientSecret   string `json:"client_secret"`
-	Code           string `json:"code"`
-	RedirectUrl    string `json:"redirect_url"`
+	ClientID     string `json:"client_id"`
+	ClientSecret string `json:"client_secret"`
+	Code         string `json:"code"`
+	RedirectUrl  string `json:"redirect_url"`
 }
 
 func New(clientID, clientSecret, redirectUrl string) *OAuth {
@@ -31,13 +23,12 @@ func New(clientID, clientSecret, redirectUrl string) *OAuth {
 	}
 }
 
-func (c *OAuth) GetAccessToken(accessTokenUrl, code string) (*github.AccessTokenResponse, *xerror.Error) {
-	req := AccessTokenRequest{
-		AccessTokenUrl: c.AccessTokenUrl,
-		ClientID:       c.ClientID,
-		ClientSecret:   c.ClientSecret,
-		Code:           code,
-		RedirectUrl:    c.RedirectUrl,
+func (c *OAuth) GetAccessToken(accessTokenUrl, code string) (*oauth.AccessToken, *xerror.Error) {
+	req := github.AccessTokenRequest{
+		ClientID:     c.ClientID,
+		ClientSecret: c.ClientSecret,
+		Code:         code,
+		RedirectUrl:  c.RedirectUrl,
 	}
 
 	opts := func(opts *rest.Options) {
@@ -57,5 +48,13 @@ func (c *OAuth) GetAccessToken(accessTokenUrl, code string) (*github.AccessToken
 		return nil, xerror.NewErrorf(nil, xerror.Code.OtherNetworkError, dest.ErrorDescription)
 	}
 
-	return &dest, nil
+	return &oauth.AccessToken{
+		AccessToken:  dest.AccessToken,
+		Scope:        dest.Scope,
+		TokenType:    dest.TokenType,
+		ExpiresIn:    oauth.AccessTokenExpireNever,
+		RefreshToken: "",
+		OpenID:       "",
+		UnionID:      "",
+	}, nil
 }

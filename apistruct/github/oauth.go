@@ -14,10 +14,12 @@ type AccessTokenResponse struct {
 	ErrorUri         string `json:"error_uri"`
 }
 
-type AccessTokenErrResponse struct {
-	Error            string `json:"error"`
-	ErrorDescription string `json:"error_description"`
-	ErrorUri         string `json:"error_uri"`
+type AccessTokenRequest struct {
+	AccessTokenUrl string `json:"access_token_url"`
+	ClientID       string `json:"client_id"`
+	ClientSecret   string `json:"client_secret"`
+	Code           string `json:"code"`
+	RedirectUrl    string `json:"redirect_url"`
 }
 
 type UserProfile struct {

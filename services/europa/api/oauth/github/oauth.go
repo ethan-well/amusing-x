@@ -22,13 +22,14 @@ func HandlerOauthLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = oauth.Login(ctx, req.Provider, req.Code)
+	resp, err := oauth.Login(ctx, w, req.Provider, req.Code)
 	if err != nil {
+		logger.Infof("oAuth login failed: %s", err)
 		rest.FailJsonResponse(w, err.Code, err.Error())
 		return
 	}
 
-	rest.SucceedJsonResponse(w, "succeed")
+	rest.SucceedJsonResponse(w, resp.LoginInfo.UserInfo)
 }
 
 func getAndValidParams(r *http.Request) (*europa.OAuthLogin, *xerror.Error) {

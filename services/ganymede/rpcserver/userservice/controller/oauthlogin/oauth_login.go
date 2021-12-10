@@ -7,6 +7,7 @@ import (
 	"amusingx.fit/amusingx/services/ganymede/conf"
 	"amusingx.fit/amusingx/services/ganymede/mysql/ganymededb/model"
 	"amusingx.fit/amusingx/services/ganymede/oauth"
+	"amusingx.fit/amusingx/services/ganymede/rpcserver/userservice/session"
 	"context"
 	"github.com/ItsWewin/superfactory/logger"
 	"github.com/ItsWewin/superfactory/xerror"
@@ -19,12 +20,12 @@ func HandlerOAuthLogin(ctx context.Context, req *ganymedeservice.OAuthLoginReque
 	}
 
 	logger.Infof("[HandlerOAuthLogin], req: %s", logger.ToJson(req))
-	err = oauthLogin(ctx, req)
+	loginInfo, err := oauthLogin(ctx, req)
 	if err != nil {
-		return nil, err
+		return &ganymedeservice.OAuthLoginResponse{Result: false}, err
 	}
 
-	return &ganymedeservice.OAuthLoginResponse{Result: true}, nil
+	return &ganymedeservice.OAuthLoginResponse{Result: true, LoginInfo: loginInfo}, nil
 }
 
 func getAndValidRequest(req *ganymedeservice.OAuthLoginRequest) *xerror.Error {
@@ -36,10 +37,13 @@ func getAndValidRequest(req *ganymedeservice.OAuthLoginRequest) *xerror.Error {
 	return nil
 }
 
-func oauthLogin(ctx context.Context, req *ganymedeservice.OAuthLoginRequest) *xerror.Error {
+func oauthLogin(ctx context.Context, req *ganymedeservice.OAuthLoginRequest) (*ganymedeservice.LoginInfo, *xerror.Error) {
+
+	var loginInfo = &ganymedeservice.LoginInfo{}
+
 	clientID, clientSecret, redirectUrl, accessTokenUrl, userProfileUrl, err := getOauthConf(req.Provider)
 	if err != nil {
-		return err
+		return loginInfo, err
 	}
 
 	logger.Infof("clientID: %s, clientSecret: %s, redirectUrl: %s, accessTokenUrl: %s, userProfileUrl: %s",
@@ -47,28 +51,40 @@ func oauthLogin(ctx context.Context, req *ganymedeservice.OAuthLoginRequest) *xe
 
 	oAuth, err := oauth.NewOAuth(req.Provider, clientID, clientSecret, redirectUrl)
 	if err != nil {
-		return err
+		return loginInfo, err
 	}
 
 	token, err := oAuth.GetAccessToken(accessTokenUrl, req.Code)
 	if err != nil {
-		return err
+		return loginInfo, err
 	}
 
 	logger.Infof("token: %s", logger.ToJson(token))
 
 	userProfile, err := oAuth.GetUserProfile(userProfileUrl, token.AccessToken)
 	if err != nil {
-		return err
+		return loginInfo, err
 	}
 	logger.Infof("userProfile: %s", logger.ToJson(userProfile))
 
 	user, err := saveUserInfo(ctx, req.Provider, req.Code, token, userProfile)
 	if err != nil {
-		return err
+		return loginInfo, err
 	}
 
-	return nil
+	sessionID, err := setSession(ctx, user.ID)
+	if err != nil {
+		return loginInfo, err
+	}
+
+	loginInfo.SessionId = sessionID
+	loginInfo.UserInfo = &ganymedeservice.UserInfo{
+		Id:    user.ID,
+		Name:  user.Name,
+		Login: user.Login,
+	}
+
+	return loginInfo, nil
 }
 
 type LoginDomain struct {
@@ -158,4 +174,11 @@ func saveUserInfo(ctx context.Context, provider, code string, token *github.Acce
 	}
 
 	return user, nil
+}
+
+func setSession(ctx context.Context, userID int64) (string, *xerror.Error) {
+	info := &session.Info{UserID: userID}
+
+	model := session.New()
+	return model.SetSession(ctx, info)
 }

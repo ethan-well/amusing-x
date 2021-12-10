@@ -50,7 +50,6 @@ func (r *RedisStore) SessionRead(ctx context.Context, sid string) (Session, erro
 
 	cmd := r.Client.Get(ctx, key)
 	valueRaw, err := cmd.Result()
-
 	if err != nil {
 		return nil, xerror.NewError(nil, xerror.Code.SRedisExecuteErr, "get value failed")
 	}

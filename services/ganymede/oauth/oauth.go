@@ -7,9 +7,34 @@ import (
 	"strings"
 )
 
+const (
+	AccessTokenExpireNever = -1
+)
+
+type AccessToken struct {
+	AccessToken  string
+	Scope        string
+	TokenType    string
+	ExpiresIn    int64 // -1 表示永不过期
+	RefreshToken string
+	OpenID       string
+	UnionID      string
+}
+
+type UserProfile struct {
+	Login       string // 地方方网站唯一标识
+	OuterUserID int64  // 用户外部 id
+	AvatarUrl   string
+	Name        string
+	Company     string
+	Blog        string
+	Email       string
+	Location    string
+}
+
 type OAuth interface {
-	GetAccessToken(accessTokenUrl, code string) (*github2.AccessTokenResponse, *xerror.Error)
-	GetUserProfile(url string, accessToken string) (*github2.UserProfile, *xerror.Error)
+	GetAccessToken(accessTokenUrl, code string) (*AccessToken, *xerror.Error)
+	GetUserProfile(url string, accessToken string) (*UserProfile, *xerror.Error)
 }
 
 func NewOAuth(provider, clientID, clientSecret, redirectUrl string) (OAuth, *xerror.Error) {

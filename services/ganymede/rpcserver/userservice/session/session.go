@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"github.com/ItsWewin/superfactory/xerror"
 	uuid "github.com/satori/go.uuid"
+	"strconv"
 )
 
 type Info struct {
@@ -48,10 +49,15 @@ func (m *Model) GetUserID(ctx context.Context, sid string) (int64, *xerror.Error
 
 	v, err := sess.Get(ctx, "id")
 
-	id, ok := v.(int64)
-	if !ok {
+	switch v.(type) {
+	case int64:
+		return v.(int64), nil
+	case string:
+		id, err := strconv.ParseInt(v.(string), 10, 64)
+		return id, xerror.NewErrorf(err, xerror.Code.BUnexpectedData, "get user id failed")
+	case float64:
+		return int64(v.(float64)), nil
+	default:
 		return 0, xerror.NewErrorf(nil, xerror.Code.BUnexpectedData, "no user id")
 	}
-
-	return id, nil
 }
