@@ -55,7 +55,7 @@ func _githubOAth(ctx context.Context, client ganymedeservice.GanymedeServiceClie
 	case <-ticker.C:
 		req := &ganymedeservice.OAuthLoginRequest{
 			Provider: "github",
-			Code:     "1de6e15ed2fcc46f2b62",
+			Code:     "958b85c5a03c5d92f66e",
 		}
 		resp, err := client.OAuthLogin(context.Background(), req)
 		if err != nil {

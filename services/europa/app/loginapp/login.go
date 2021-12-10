@@ -98,7 +98,7 @@ func (d *Domain) SetSession(ctx context.Context) *xerror.Error {
 
 	uid := uuid.NewV4().String()
 
-	sess, err := session.GlobalSessionManager.Store.SessionInit(ctx, uuid.NewV4().String())
+	sess, err := session.GlobalSessionManager.Store.SessionInit(ctx, uid)
 	if err != nil {
 		return xerror.NewError(nil, xerror.Code.SUnexpectedErr, "get session failed")
 	}

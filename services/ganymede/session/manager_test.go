@@ -54,15 +54,15 @@ func TestNewManager(t *testing.T) {
 		t.Fatalf("some error occured when session.Set: %s", err)
 	}
 
-	session2, err := GlobalSessionManager.Store.SessionInit(context.TODO(), uuid.NewV4().String())
-	if err != nil {
-		t.Fatalf("some error: %s", err)
-	}
-
-	name, err := session2.Get(context.TODO(), "name")
-	if err != nil {
-		t.Fatalf("some err: %s", err)
-	}
-
-	t.Fatalf("name: %s", name)
+	//session2, err := GlobalSessionManager.Store.SessionInit(context.TODO(), uuid.NewV4().String())
+	//if err != nil {
+	//	t.Fatalf("some error: %s", err)
+	//}
+	//
+	//name, err := session2.Get(context.TODO(), "name")
+	//if err != nil {
+	//	t.Fatalf("some err: %s", err)
+	//}
+	//
+	//t.Fatalf("name: %s", name)
 }

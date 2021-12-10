@@ -63,7 +63,7 @@ func oauthLogin(ctx context.Context, req *ganymedeservice.OAuthLoginRequest) *xe
 	}
 	logger.Infof("userProfile: %s", logger.ToJson(userProfile))
 
-	err = saveUserInfo(ctx, req.Provider, req.Code, token, userProfile)
+	user, err := saveUserInfo(ctx, req.Provider, req.Code, token, userProfile)
 	if err != nil {
 		return err
 	}
@@ -93,10 +93,10 @@ func getOauthConf(provider string) (clientID, clientSecret, redirectUrl, accessT
 	}
 }
 
-func saveUserInfo(ctx context.Context, provider, code string, token *github.AccessTokenResponse, profile *github.UserProfile) *xerror.Error {
+func saveUserInfo(ctx context.Context, provider, code string, token *github.AccessTokenResponse, profile *github.UserProfile) (*ganymede.User, *xerror.Error) {
 	tx, err := model.GanymedeDB.Beginx()
 	if err != nil {
-		return xerror.NewError(err, xerror.Code.SSqlExecuteErr, "bing tx failed")
+		return nil, xerror.NewError(err, xerror.Code.SSqlExecuteErr, "bing tx failed")
 	}
 	defer tx.Rollback()
 
@@ -113,13 +113,13 @@ func saveUserInfo(ctx context.Context, provider, code string, token *github.Acce
 	// 保存或者更新 oauth info
 	oauth, xErr := model.InsertOrUpdateOAuthInfo(ctx, tx, oauth)
 	if xErr != nil {
-		return xErr
+		return nil, xErr
 	}
 
 	// 加锁查询 oauth info 是不是已经关联了 user
 	authInfo, xErr := model.QueryOAuthInfoByProviderAndLogin(ctx, tx, provider, profile.Login)
 	if err != nil {
-		return xErr
+		return nil, xErr
 	}
 
 	var user *ganymede.User
@@ -127,7 +127,7 @@ func saveUserInfo(ctx context.Context, provider, code string, token *github.Acce
 	if authInfo != nil && authInfo.UseID != 0 {
 		user, xErr = model.QueryUserByID(ctx, tx, authInfo.UseID)
 		if err != nil {
-			return xErr
+			return nil, xErr
 		}
 	}
 
@@ -140,7 +140,7 @@ func saveUserInfo(ctx context.Context, provider, code string, token *github.Acce
 
 		user, xErr = model.InsertUser(ctx, tx, user)
 		if xErr != nil {
-			return xErr
+			return nil, xErr
 		}
 	}
 
@@ -148,14 +148,14 @@ func saveUserInfo(ctx context.Context, provider, code string, token *github.Acce
 	if authInfo == nil || authInfo.UseID != user.ID {
 		xErr = model.UpdateOAuthUserID(ctx, tx, user.ID, provider, profile.Login)
 		if xErr != nil {
-			return xErr
+			return nil, xErr
 		}
 	}
 
 	err = tx.Commit()
 	if err != nil {
-		return xerror.NewErrorf(err, xerror.Code.SSqlExecuteErr, "commit failed")
+		return nil, xerror.NewErrorf(err, xerror.Code.SSqlExecuteErr, "commit failed")
 	}
 
-	return nil
+	return user, nil
 }

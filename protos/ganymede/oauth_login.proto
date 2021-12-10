@@ -11,4 +11,5 @@ message OAuthLoginRequest {
 
 message OAuthLoginResponse {
   bool result = 1;
+  LoginInfo
 }
