@@ -2,7 +2,7 @@ package wechat
 
 import (
 	"amusingx.fit/amusingx/apistruct/wechat"
-	"amusingx.fit/amusingx/services/ganymede/oauth"
+	"amusingx.fit/amusingx/services/ganymede/oauth/oauthstruct"
 	"fmt"
 	"github.com/ItsWewin/superfactory/httputil"
 	"github.com/ItsWewin/superfactory/httputil/rest"
@@ -11,7 +11,7 @@ import (
 	"net/url"
 )
 
-func (o *OAuth) GetUserProfile(profileUrl string, accessToken string) (*oauth.UserProfile, *xerror.Error) {
+func (o *OAuth) GetUserProfile(profileUrl string, accessToken string) (*oauthstruct.UserProfile, *xerror.Error) {
 	var params = url.Values{}
 	params.Set("openid", o.ClientID)
 	params.Set("access_token", o.ClientSecret)
@@ -40,16 +40,14 @@ func (o *OAuth) GetUserProfile(profileUrl string, accessToken string) (*oauth.Us
 		return nil, xerror.NewErrorf(nil, xerror.Code.OtherNetworkError, dest.Errmsg)
 	}
 
-	return &oauth.UserProfile{
+	return &oauthstruct.UserProfile{
 		Login:       dest.Unionid,
 		OuterUserID: 0,
 		AvatarUrl:   dest.AvatarUrl,
 		Name:        dest.Nickname,
-		Company:     ,
+		Company:     "",
 		Blog:        "",
 		Email:       "",
 		Location:    fmt.Sprintf("%s,%s,%s", dest.Country, dest.Province, dest.City),
 	}, nil
-
-
 }

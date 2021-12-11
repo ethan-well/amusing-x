@@ -2,7 +2,8 @@ package github
 
 const (
 	ProviderGitHub = "github"
-	RequestErrKey  = "error"
+
+	RequestErrKey = "error"
 )
 
 type AccessTokenResponse struct {

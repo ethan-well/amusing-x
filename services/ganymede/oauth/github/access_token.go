@@ -2,7 +2,7 @@ package github
 
 import (
 	"amusingx.fit/amusingx/apistruct/github"
-	"amusingx.fit/amusingx/services/ganymede/oauth"
+	"amusingx.fit/amusingx/services/ganymede/oauth/oauthstruct"
 	"github.com/ItsWewin/superfactory/httputil"
 	"github.com/ItsWewin/superfactory/httputil/rest"
 	"github.com/ItsWewin/superfactory/xerror"
@@ -23,7 +23,7 @@ func New(clientID, clientSecret, redirectUrl string) *OAuth {
 	}
 }
 
-func (c *OAuth) GetAccessToken(accessTokenUrl, code string) (*oauth.AccessToken, *xerror.Error) {
+func (c *OAuth) GetAccessToken(accessTokenUrl, code string) (*oauthstruct.AccessToken, *xerror.Error) {
 	req := github.AccessTokenRequest{
 		ClientID:     c.ClientID,
 		ClientSecret: c.ClientSecret,
@@ -48,11 +48,11 @@ func (c *OAuth) GetAccessToken(accessTokenUrl, code string) (*oauth.AccessToken,
 		return nil, xerror.NewErrorf(nil, xerror.Code.OtherNetworkError, dest.ErrorDescription)
 	}
 
-	return &oauth.AccessToken{
+	return &oauthstruct.AccessToken{
 		AccessToken:  dest.AccessToken,
 		Scope:        dest.Scope,
 		TokenType:    dest.TokenType,
-		ExpiresIn:    oauth.AccessTokenExpireNever,
+		ExpiresIn:    oauthstruct.AccessTokenExpireNever,
 		RefreshToken: "",
 		OpenID:       "",
 		UnionID:      "",

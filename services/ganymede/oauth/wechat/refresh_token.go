@@ -9,28 +9,15 @@ import (
 	"net/url"
 )
 
-type OAuth struct {
-	ClientID     string `json:"client_id"`
-	ClientSecret string `json:"client_secret"`
-	GrantType    string `json:"grant_type"`
-}
+//AccessTokenResponse
 
-func New(clientID, clientSecret, authorizationCode string) *OAuth {
-	return &OAuth{
-		ClientID:     clientID,
-		ClientSecret: clientSecret,
-		GrantType:    authorizationCode,
-	}
-}
-
-func (o *OAuth) GetAccessToken(accessTokenUrl, code string) (*oauthstruct.AccessToken, *xerror.Error) {
+func (o *OAuth) RefreshToken(refreshTokenUrl, refreshToken string) (*oauthstruct.AccessToken, *xerror.Error) {
 	var params = url.Values{}
 	params.Set("appid", o.ClientID)
-	params.Set("secret", o.ClientSecret)
-	params.Set("code", code)
-	params.Set("grant_type", code)
+	params.Set("grant_type", o.GrantType)
+	params.Set("refresh_token", refreshToken)
 
-	u, err := url.Parse(accessTokenUrl)
+	u, err := url.Parse(refreshTokenUrl)
 	if err != nil {
 		return nil, xerror.NewErrorf(nil, xerror.Code.BUnexpectedData, "accessTokenUrl format err")
 	}

@@ -2,11 +2,13 @@ package oauthlogin
 
 import (
 	"amusingx.fit/amusingx/apistruct/github"
+	"amusingx.fit/amusingx/apistruct/wechat"
 	"amusingx.fit/amusingx/mysqlstruct/ganymede"
 	"amusingx.fit/amusingx/protos/ganymede/service"
 	"amusingx.fit/amusingx/services/ganymede/conf"
 	"amusingx.fit/amusingx/services/ganymede/mysql/ganymededb/model"
 	"amusingx.fit/amusingx/services/ganymede/oauth"
+	"amusingx.fit/amusingx/services/ganymede/oauth/oauthstruct"
 	"amusingx.fit/amusingx/services/ganymede/rpcserver/userservice/session"
 	"context"
 	"github.com/ItsWewin/superfactory/logger"
@@ -41,15 +43,15 @@ func oauthLogin(ctx context.Context, req *ganymedeservice.OAuthLoginRequest) (*g
 
 	var loginInfo = &ganymedeservice.LoginInfo{}
 
-	clientID, clientSecret, redirectUrl, accessTokenUrl, userProfileUrl, err := getOauthConf(req.Provider)
+	clientID, clientSecret, redirectUrl, accessTokenUrl, refreshTokenUrl, userProfileUrl, grantType, err := getOauthConf(req.Provider)
 	if err != nil {
 		return loginInfo, err
 	}
 
-	logger.Infof("clientID: %s, clientSecret: %s, redirectUrl: %s, accessTokenUrl: %s, userProfileUrl: %s",
-		clientID, clientSecret, redirectUrl, accessTokenUrl, userProfileUrl)
+	logger.Infof("clientID: %s, clientSecret: %s, redirectUrl: %s, accessTokenUrl: %s, refreshTokenUrl: %s, userProfileUrl: %s",
+		clientID, clientSecret, redirectUrl, accessTokenUrl, refreshTokenUrl, userProfileUrl)
 
-	oAuth, err := oauth.NewOAuth(req.Provider, clientID, clientSecret, redirectUrl)
+	oAuth, err := oauth.NewOAuth(req.Provider, clientID, clientSecret, redirectUrl, grantType)
 	if err != nil {
 		return loginInfo, err
 	}
@@ -92,7 +94,7 @@ type LoginDomain struct {
 	Provider string
 }
 
-func getOauthConf(provider string) (clientID, clientSecret, redirectUrl, accessTokenUrl, userProfileUrl string, err *xerror.Error) {
+func getOauthConf(provider string) (clientID, clientSecret, redirectUrl, accessTokenUrl, refreshTokenUrl, userProfileUrl, grantType string, err *xerror.Error) {
 	switch provider {
 	case github.ProviderGitHub:
 		p := conf.Conf.OAuth.Github
@@ -101,6 +103,18 @@ func getOauthConf(provider string) (clientID, clientSecret, redirectUrl, accessT
 		redirectUrl = p.RedirectUrl
 		accessTokenUrl = p.AccessTokenUrl
 		userProfileUrl = p.UserProfileUrl
+		grantType = p.GrantType
+
+		return
+	case wechat.ProviderWeChat:
+		p := conf.Conf.OAuth.WeChat
+		clientID = p.ClientID
+		clientSecret = p.ClientSecret
+		redirectUrl = p.RedirectUrl
+		accessTokenUrl = p.AccessTokenUrl
+		userProfileUrl = p.UserProfileUrl
+		refreshTokenUrl = p.RefreshTokenUrl
+		grantType = p.GrantType
 
 		return
 	default:
@@ -109,7 +123,7 @@ func getOauthConf(provider string) (clientID, clientSecret, redirectUrl, accessT
 	}
 }
 
-func saveUserInfo(ctx context.Context, provider, code string, token *github.AccessTokenResponse, profile *github.UserProfile) (*ganymede.User, *xerror.Error) {
+func saveUserInfo(ctx context.Context, provider, code string, token *oauthstruct.AccessToken, profile *oauthstruct.UserProfile) (*ganymede.User, *xerror.Error) {
 	tx, err := model.GanymedeDB.Beginx()
 	if err != nil {
 		return nil, xerror.NewError(err, xerror.Code.SSqlExecuteErr, "bing tx failed")
@@ -118,7 +132,7 @@ func saveUserInfo(ctx context.Context, provider, code string, token *github.Acce
 
 	oauth := &ganymede.OauthInfo{
 		Provider:    provider,
-		OuterID:     profile.ID,
+		OuterID:     profile.OuterUserID,
 		Login:       profile.Login,
 		AvatarUrl:   profile.AvatarUrl,
 		Email:       profile.Email,

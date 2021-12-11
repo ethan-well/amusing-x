@@ -27,16 +27,19 @@ type Server struct {
 }
 
 type OAuth struct {
-	Github *GitHubOAuth `yaml:"github"`
+	Github *OAuthProviderInfo `yaml:"github"`
+	WeChat *OAuthProviderInfo `yaml:"wechat"`
 }
 
-type GitHubOAuth struct {
-	Provider       string `yaml:"provider"`
-	ClientID       string `yaml:"client_id"`
-	ClientSecret   string `yaml:"client_secrets"`
-	RedirectUrl    string `yaml:"redirect_url"`
-	AccessTokenUrl string `yaml:"access_token_url"`
-	UserProfileUrl string `yaml:"user_profile_url"`
+type OAuthProviderInfo struct {
+	Provider        string `yaml:"provider"`
+	ClientID        string `yaml:"client_id"`
+	ClientSecret    string `yaml:"client_secrets"`
+	RedirectUrl     string `yaml:"redirect_url"`
+	AccessTokenUrl  string `yaml:"access_token_url"`
+	UserProfileUrl  string `yaml:"user_profile_url"`
+	RefreshTokenUrl string `yaml:"refresh_token_url"`
+	GrantType       string `yaml:"grant_type"`
 }
 
 type HttpServer struct {
