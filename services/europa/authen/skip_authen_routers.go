@@ -7,7 +7,7 @@ import (
 )
 
 var skipAuthenticationRouters = []string{
-	//"/v1/europa/pong",
+	"/v1/europa/pong",
 	"/v1/europa/login",
 	"/v1/europa/login/regexp",
 	"/v1/europa/country/list",
