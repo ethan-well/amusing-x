@@ -17,7 +17,8 @@ type Config struct {
 }
 
 type SessionStore struct {
-	Redis *RedisConf `yaml:"redis"`
+	Prefix string     `yaml:"prefix"`
+	Redis  *RedisConf `yaml:"redis"`
 }
 
 type Server struct {

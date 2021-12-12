@@ -113,3 +113,12 @@ func (s *UserService) OAuthInfo(ctx context.Context, req *ganymedeservice.OAuthI
 
 	return resp, nil
 }
+
+func (s *UserService) IsLogin(ctx context.Context, req *ganymedeservice.IsLoginRequest) (*ganymedeservice.IsLoginResponse, error) {
+	resp, err := login.HandlerIsLogin(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, nil
+}

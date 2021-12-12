@@ -10,7 +10,7 @@ import (
 func TestNewManager(t *testing.T) {
 	conf.Mock()
 
-	err := InitSessionManager("redis", "uid", 60)
+	err := InitSessionManager("redis", 60)
 	if err != nil {
 		t.Fatalf("some err: %s", err)
 	}

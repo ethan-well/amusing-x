@@ -9,7 +9,7 @@ import (
 
 func TestModel_SetSession(t *testing.T) {
 	conf.Mock()
-	err := session.InitSessionManager("redis", "uid", 120)
+	err := session.InitSessionManager("redis", 120)
 	if err != nil {
 		t.Fatalf("some err: %s", err)
 	}

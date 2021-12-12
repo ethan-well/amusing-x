@@ -8,6 +8,7 @@ import (
 	"amusingx.fit/amusingx/services/ganymede/oauth"
 	"amusingx.fit/amusingx/services/ganymede/oauth/oauthstruct"
 	"amusingx.fit/amusingx/services/ganymede/rpcserver/userservice/session"
+	session2 "amusingx.fit/amusingx/services/ganymede/session"
 	"context"
 	"github.com/ItsWewin/superfactory/logger"
 	"github.com/ItsWewin/superfactory/xerror"
@@ -75,6 +76,11 @@ func oauthLogin(ctx context.Context, req *ganymedeservice.OAuthLoginRequest) (*g
 	sessionID, err := setSession(ctx, user.ID)
 	if err != nil {
 		return loginInfo, err
+	}
+
+	loginInfo.SessionInfo = &ganymedeservice.SessionInfo{
+		SessionID: sessionID,
+		MaxAge:    int64(session2.MaxAge),
 	}
 
 	loginInfo.SessionId = sessionID

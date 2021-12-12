@@ -15,14 +15,16 @@ type Manager struct {
 
 var GlobalSessionManager *Manager
 
-func InitSessionManager(storeName, cookieName string, maxLiftTTime int) error {
+var MaxAge = 7 * 24 * 60 * 60 //second
+
+func InitSessionManager(storeName string, maxLiftTTime int) error {
 	GlobalSessionManager = &Manager{}
 	var err error
 
 	switch storeName {
 	case "redis":
 		redis := conf.Conf.SessionStore.Redis
-		GlobalSessionManager.Store, err = InitRedisStore(redis.Addr, redis.Password, redis.DBNo, cookieName, maxLiftTTime)
+		GlobalSessionManager.Store, err = InitRedisStore(redis.Addr, redis.Password, redis.DBNo, conf.Conf.SessionStore.Prefix, maxLiftTTime)
 		if err != nil {
 			return err
 		}
@@ -30,7 +32,7 @@ func InitSessionManager(storeName, cookieName string, maxLiftTTime int) error {
 		return errors.New("session store type is invalid. ")
 	}
 
-	GlobalSessionManager.CookieName = cookieName
+	GlobalSessionManager.CookieName = conf.Conf.SessionStore.Prefix
 	GlobalSessionManager.MaxLifeTime = maxLiftTTime
 
 	return nil

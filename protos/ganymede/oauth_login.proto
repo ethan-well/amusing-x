@@ -10,9 +10,15 @@ message UserInfo {
 	string login = 3;
 }
 
+message SessionInfo {
+  string SessionID = 1;
+  int64 MaxAge = 2; // second
+}
+
 message LoginInfo {
     string session_id = 1;
   	UserInfo user_info = 2;
+    SessionInfo session_info = 3;
 }
 
 message OAuthLoginRequest {

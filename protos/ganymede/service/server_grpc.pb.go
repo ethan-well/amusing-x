@@ -28,6 +28,7 @@ type GanymedeServiceClient interface {
 	ResetPassword(ctx context.Context, in *ResetPasswordRequest, opts ...grpc.CallOption) (*ResetPasswordResponse, error)
 	OAuthLogin(ctx context.Context, in *OAuthLoginRequest, opts ...grpc.CallOption) (*OAuthLoginResponse, error)
 	OAuthInfo(ctx context.Context, in *OAuthInfoRequest, opts ...grpc.CallOption) (*OAuthInfoResponse, error)
+	IsLogin(ctx context.Context, in *IsLoginRequest, opts ...grpc.CallOption) (*IsLoginResponse, error)
 }
 
 type ganymedeServiceClient struct {
@@ -128,6 +129,15 @@ func (c *ganymedeServiceClient) OAuthInfo(ctx context.Context, in *OAuthInfoRequ
 	return out, nil
 }
 
+func (c *ganymedeServiceClient) IsLogin(ctx context.Context, in *IsLoginRequest, opts ...grpc.CallOption) (*IsLoginResponse, error) {
+	out := new(IsLoginResponse)
+	err := c.cc.Invoke(ctx, "/ganymde.GanymedeService/IsLogin", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // GanymedeServiceServer is the server API for GanymedeService service.
 // All implementations must embed UnimplementedGanymedeServiceServer
 // for forward compatibility
@@ -142,6 +152,7 @@ type GanymedeServiceServer interface {
 	ResetPassword(context.Context, *ResetPasswordRequest) (*ResetPasswordResponse, error)
 	OAuthLogin(context.Context, *OAuthLoginRequest) (*OAuthLoginResponse, error)
 	OAuthInfo(context.Context, *OAuthInfoRequest) (*OAuthInfoResponse, error)
+	IsLogin(context.Context, *IsLoginRequest) (*IsLoginResponse, error)
 	mustEmbedUnimplementedGanymedeServiceServer()
 }
 
@@ -178,6 +189,9 @@ func (UnimplementedGanymedeServiceServer) OAuthLogin(context.Context, *OAuthLogi
 }
 func (UnimplementedGanymedeServiceServer) OAuthInfo(context.Context, *OAuthInfoRequest) (*OAuthInfoResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method OAuthInfo not implemented")
+}
+func (UnimplementedGanymedeServiceServer) IsLogin(context.Context, *IsLoginRequest) (*IsLoginResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method IsLogin not implemented")
 }
 func (UnimplementedGanymedeServiceServer) mustEmbedUnimplementedGanymedeServiceServer() {}
 
@@ -372,6 +386,24 @@ func _GanymedeService_OAuthInfo_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _GanymedeService_IsLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IsLoginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GanymedeServiceServer).IsLogin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ganymde.GanymedeService/IsLogin",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GanymedeServiceServer).IsLogin(ctx, req.(*IsLoginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // GanymedeService_ServiceDesc is the grpc.ServiceDesc for GanymedeService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -418,6 +450,10 @@ var GanymedeService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "OAuthInfo",
 			Handler:    _GanymedeService_OAuthInfo_Handler,
+		},
+		{
+			MethodName: "IsLogin",
+			Handler:    _GanymedeService_IsLogin_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

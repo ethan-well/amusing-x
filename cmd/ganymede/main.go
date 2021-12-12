@@ -42,7 +42,7 @@ func InitFunc() {
 		panic(xErr)
 	}
 
-	err := session.InitSessionManager("redis", "sid", 24*60*60)
+	err := session.InitSessionManager("redis", session.MaxAge)
 	if err != nil {
 		panic(err)
 	}

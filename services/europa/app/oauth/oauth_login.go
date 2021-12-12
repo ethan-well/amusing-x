@@ -3,10 +3,10 @@ package oauth
 import (
 	"amusingx.fit/amusingx/protos/ganymede/service"
 	"amusingx.fit/amusingx/services/europa/rpcclient/ganymede"
+	"amusingx.fit/amusingx/services/europa/session"
 	"context"
 	"github.com/ItsWewin/superfactory/xerror"
 	"net/http"
-	"time"
 )
 
 func Login(ctx context.Context, w http.ResponseWriter, provider, code string) (*ganymedeservice.OAuthLoginResponse, *xerror.Error) {
@@ -21,22 +21,7 @@ func Login(ctx context.Context, w http.ResponseWriter, provider, code string) (*
 		return nil, xerror.NewErrorf(err, xerror.Code.BUnexpectedData, "login failed")
 	}
 
-	cookie := &http.Cookie{
-		Name:       "sid",
-		Value:      resp.LoginInfo.SessionId,
-		Path:       "",
-		Domain:     "",
-		Expires:    time.Now().Add(7 * 24 * time.Hour),
-		RawExpires: "",
-		MaxAge:     0,
-		Secure:     true,
-		HttpOnly:   true,
-		SameSite:   http.SameSiteStrictMode,
-		Raw:        "",
-		Unparsed:   nil,
-	}
-
-	http.SetCookie(w, cookie)
+	session.SetSession(w, resp.LoginInfo.SessionInfo)
 
 	return resp, nil
 }

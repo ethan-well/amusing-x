@@ -73,8 +73,9 @@ var file_server_proto_rawDesc = []byte{
 	0x74, 0x5f, 0x70, 0x61, 0x73, 0x73, 0x77, 0x6f, 0x72, 0x64, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
 	0x1a, 0x11, 0x6f, 0x61, 0x75, 0x74, 0x68, 0x5f, 0x6c, 0x6f, 0x67, 0x69, 0x6e, 0x2e, 0x70, 0x72,
 	0x6f, 0x74, 0x6f, 0x1a, 0x10, 0x6f, 0x61, 0x75, 0x74, 0x68, 0x5f, 0x69, 0x6e, 0x66, 0x6f, 0x2e,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x0e, 0x69, 0x73, 0x5f, 0x6c, 0x6f, 0x67, 0x69, 0x6e, 0x2e,
 	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x0d, 0x0a, 0x0b, 0x42, 0x6c, 0x61, 0x6e, 0x6b, 0x50, 0x61,
-	0x72, 0x61, 0x6d, 0x73, 0x32, 0xe0, 0x05, 0x0a, 0x0f, 0x47, 0x61, 0x6e, 0x79, 0x6d, 0x65, 0x64,
+	0x72, 0x61, 0x6d, 0x73, 0x32, 0xa0, 0x06, 0x0a, 0x0f, 0x47, 0x61, 0x6e, 0x79, 0x6d, 0x65, 0x64,
 	0x65, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x35, 0x0a, 0x04, 0x50, 0x6f, 0x6e, 0x67,
 	0x12, 0x14, 0x2e, 0x67, 0x61, 0x6e, 0x79, 0x6d, 0x64, 0x65, 0x2e, 0x42, 0x6c, 0x61, 0x6e, 0x6b,
 	0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x1a, 0x15, 0x2e, 0x67, 0x61, 0x6e, 0x79, 0x6d, 0x64, 0x65,
@@ -120,6 +121,10 @@ var file_server_proto_rawDesc = []byte{
 	0x2e, 0x67, 0x61, 0x6e, 0x79, 0x6d, 0x64, 0x65, 0x2e, 0x4f, 0x41, 0x75, 0x74, 0x68, 0x49, 0x6e,
 	0x66, 0x6f, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1a, 0x2e, 0x67, 0x61, 0x6e, 0x79,
 	0x6d, 0x64, 0x65, 0x2e, 0x4f, 0x41, 0x75, 0x74, 0x68, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x3e, 0x0a, 0x07, 0x49, 0x73, 0x4c, 0x6f, 0x67,
+	0x69, 0x6e, 0x12, 0x17, 0x2e, 0x67, 0x61, 0x6e, 0x79, 0x6d, 0x64, 0x65, 0x2e, 0x49, 0x73, 0x4c,
+	0x6f, 0x67, 0x69, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x18, 0x2e, 0x67, 0x61,
+	0x6e, 0x79, 0x6d, 0x64, 0x65, 0x2e, 0x49, 0x73, 0x4c, 0x6f, 0x67, 0x69, 0x6e, 0x52, 0x65, 0x73,
 	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x28, 0x5a, 0x26, 0x61, 0x6d, 0x75, 0x73, 0x69,
 	0x6e, 0x67, 0x2d, 0x78, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x67, 0x61, 0x6e, 0x79, 0x6d, 0x65, 0x64,
 	0x65, 0x2f, 0x67, 0x61, 0x6e, 0x79, 0x6d, 0x65, 0x64, 0x65, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63,
@@ -148,16 +153,18 @@ var file_server_proto_goTypes = []interface{}{
 	(*ResetPasswordRequest)(nil),          // 5: ganymde.ResetPasswordRequest
 	(*OAuthLoginRequest)(nil),             // 6: ganymde.OAuthLoginRequest
 	(*OAuthInfoRequest)(nil),              // 7: ganymde.OAuthInfoRequest
-	(*PongResponse)(nil),                  // 8: ganymde.PongResponse
-	(*RegexpResponse)(nil),                // 9: ganymde.RegexpResponse
-	(*LoginResponse)(nil),                 // 10: ganymde.LoginResponse
-	(*JoinResponse)(nil),                  // 11: ganymde.JoinResponse
-	(*CountryCodeList)(nil),               // 12: ganymde.CountryCodeList
-	(*VerificationCodeResponse)(nil),      // 13: ganymde.VerificationCodeResponse
-	(*VerificationCodeCheckResponse)(nil), // 14: ganymde.VerificationCodeCheckResponse
-	(*ResetPasswordResponse)(nil),         // 15: ganymde.ResetPasswordResponse
-	(*OAuthLoginResponse)(nil),            // 16: ganymde.OAuthLoginResponse
-	(*OAuthInfoResponse)(nil),             // 17: ganymde.OAuthInfoResponse
+	(*IsLoginRequest)(nil),                // 8: ganymde.IsLoginRequest
+	(*PongResponse)(nil),                  // 9: ganymde.PongResponse
+	(*RegexpResponse)(nil),                // 10: ganymde.RegexpResponse
+	(*LoginResponse)(nil),                 // 11: ganymde.LoginResponse
+	(*JoinResponse)(nil),                  // 12: ganymde.JoinResponse
+	(*CountryCodeList)(nil),               // 13: ganymde.CountryCodeList
+	(*VerificationCodeResponse)(nil),      // 14: ganymde.VerificationCodeResponse
+	(*VerificationCodeCheckResponse)(nil), // 15: ganymde.VerificationCodeCheckResponse
+	(*ResetPasswordResponse)(nil),         // 16: ganymde.ResetPasswordResponse
+	(*OAuthLoginResponse)(nil),            // 17: ganymde.OAuthLoginResponse
+	(*OAuthInfoResponse)(nil),             // 18: ganymde.OAuthInfoResponse
+	(*IsLoginResponse)(nil),               // 19: ganymde.IsLoginResponse
 }
 var file_server_proto_depIdxs = []int32{
 	0,  // 0: ganymde.GanymedeService.Pong:input_type -> ganymde.BlankParams
@@ -170,18 +177,20 @@ var file_server_proto_depIdxs = []int32{
 	5,  // 7: ganymde.GanymedeService.ResetPassword:input_type -> ganymde.ResetPasswordRequest
 	6,  // 8: ganymde.GanymedeService.OAuthLogin:input_type -> ganymde.OAuthLoginRequest
 	7,  // 9: ganymde.GanymedeService.OAuthInfo:input_type -> ganymde.OAuthInfoRequest
-	8,  // 10: ganymde.GanymedeService.Pong:output_type -> ganymde.PongResponse
-	9,  // 11: ganymde.GanymedeService.Regexps:output_type -> ganymde.RegexpResponse
-	10, // 12: ganymde.GanymedeService.Login:output_type -> ganymde.LoginResponse
-	11, // 13: ganymde.GanymedeService.Join:output_type -> ganymde.JoinResponse
-	12, // 14: ganymde.GanymedeService.CountryCodes:output_type -> ganymde.CountryCodeList
-	13, // 15: ganymde.GanymedeService.GetVerificationCode:output_type -> ganymde.VerificationCodeResponse
-	14, // 16: ganymde.GanymedeService.VerificationCodeCheck:output_type -> ganymde.VerificationCodeCheckResponse
-	15, // 17: ganymde.GanymedeService.ResetPassword:output_type -> ganymde.ResetPasswordResponse
-	16, // 18: ganymde.GanymedeService.OAuthLogin:output_type -> ganymde.OAuthLoginResponse
-	17, // 19: ganymde.GanymedeService.OAuthInfo:output_type -> ganymde.OAuthInfoResponse
-	10, // [10:20] is the sub-list for method output_type
-	0,  // [0:10] is the sub-list for method input_type
+	8,  // 10: ganymde.GanymedeService.IsLogin:input_type -> ganymde.IsLoginRequest
+	9,  // 11: ganymde.GanymedeService.Pong:output_type -> ganymde.PongResponse
+	10, // 12: ganymde.GanymedeService.Regexps:output_type -> ganymde.RegexpResponse
+	11, // 13: ganymde.GanymedeService.Login:output_type -> ganymde.LoginResponse
+	12, // 14: ganymde.GanymedeService.Join:output_type -> ganymde.JoinResponse
+	13, // 15: ganymde.GanymedeService.CountryCodes:output_type -> ganymde.CountryCodeList
+	14, // 16: ganymde.GanymedeService.GetVerificationCode:output_type -> ganymde.VerificationCodeResponse
+	15, // 17: ganymde.GanymedeService.VerificationCodeCheck:output_type -> ganymde.VerificationCodeCheckResponse
+	16, // 18: ganymde.GanymedeService.ResetPassword:output_type -> ganymde.ResetPasswordResponse
+	17, // 19: ganymde.GanymedeService.OAuthLogin:output_type -> ganymde.OAuthLoginResponse
+	18, // 20: ganymde.GanymedeService.OAuthInfo:output_type -> ganymde.OAuthInfoResponse
+	19, // 21: ganymde.GanymedeService.IsLogin:output_type -> ganymde.IsLoginResponse
+	11, // [11:22] is the sub-list for method output_type
+	0,  // [0:11] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name
 	0,  // [0:0] is the sub-list for extension extendee
 	0,  // [0:0] is the sub-list for field type_name
@@ -201,6 +210,7 @@ func file_server_proto_init() {
 	file_reset_password_proto_init()
 	file_oauth_login_proto_init()
 	file_oauth_info_proto_init()
+	file_is_login_proto_init()
 	if !protoimpl.UnsafeEnabled {
 		file_server_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*BlankParams); i {

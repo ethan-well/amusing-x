@@ -5,7 +5,6 @@ import (
 	"amusingx.fit/amusingx/services/europa/mysql/amusingxwebapi"
 	"amusingx.fit/amusingx/services/europa/router"
 	"amusingx.fit/amusingx/services/europa/rpcclient"
-	"amusingx.fit/amusingx/services/europa/session"
 	"amusingx.fit/amusingx/services/europa/xredis"
 	"github.com/ItsWewin/superfactory/powertrain"
 	_ "github.com/go-sql-driver/mysql"
@@ -31,11 +30,6 @@ func InitFunc() {
 
 	redis0 := conf.Conf.Redis.RedisO
 	xredis.InitRedis(redis0.Addr, redis0.Password, redis0.DBNo)
-
-	err := session.InitSessionManager("redis", "sid", 24*60*60)
-	if err != nil {
-		panic(err)
-	}
 
 	initRPCClient()
 }
