@@ -1,11 +1,5 @@
 package github
 
-const (
-	ProviderGitHub = "github"
-
-	RequestErrKey = "error"
-)
-
 type AccessTokenResponse struct {
 	AccessToken      string `json:"access_token"`
 	Scope            string `json:"scope"`

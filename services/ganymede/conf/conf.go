@@ -27,8 +27,15 @@ type Server struct {
 }
 
 type OAuth struct {
+	Store  *Store             `yaml:"store"`
 	Github *OAuthProviderInfo `yaml:"github"`
 	WeChat *OAuthProviderInfo `yaml:"wechat"`
+}
+
+type Store struct {
+	Prefix      string     `yaml:"prefix"`
+	MaxLifeTime int64      `yaml:"max_life_time"`
+	Redis       *RedisConf `yaml:"redis"`
 }
 
 type OAuthProviderInfo struct {
@@ -36,10 +43,12 @@ type OAuthProviderInfo struct {
 	ClientID        string `yaml:"client_id"`
 	ClientSecret    string `yaml:"client_secrets"`
 	RedirectUrl     string `yaml:"redirect_url"`
+	OAuthUrl        string `yaml:"oauth_url"`
 	AccessTokenUrl  string `yaml:"access_token_url"`
 	UserProfileUrl  string `yaml:"user_profile_url"`
 	RefreshTokenUrl string `yaml:"refresh_token_url"`
 	GrantType       string `yaml:"grant_type"`
+	Scope           string `yaml:"scope"`
 }
 
 type HttpServer struct {

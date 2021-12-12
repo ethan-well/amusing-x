@@ -5,33 +5,33 @@ import (
 	"github.com/ItsWewin/superfactory/xerror"
 )
 
-func (x *LoginRequest) LoginByPassword() bool {
-	return x.Type == 0
+func (req *LoginRequest) LoginByPassword() bool {
+	return req.Type == 0
 }
 
-func (x *LoginRequest) LoginByVerificationCode() bool {
-	return x.Type == 1
+func (req *LoginRequest) LoginByVerificationCode() bool {
+	return req.Type == 1
 }
 
-func (x *LoginRequest) Valid() *xerror.Error {
-	if x.Type != 0 && x.Type != 1 {
+func (req *LoginRequest) Valid() *xerror.Error {
+	if req.Type != 0 && req.Type != 1 {
 		return xerror.NewError(nil, xerror.Code.CParamsError, "Type is invalid. ")
 	}
 
-	if err := regexp.PhoneNumberValid(x.Phone); err != nil {
+	if err := regexp.PhoneNumberValid(req.Phone); err != nil {
 		return err
 	}
 
-	if err := regexp.AreaCodeValid(x.AreaCode); err != nil {
+	if err := regexp.AreaCodeValid(req.AreaCode); err != nil {
 		return err
 	}
 
-	if x.Type == 0 {
-		if err := regexp.PasswordValid(x.Password); err != nil {
+	if req.Type == 0 {
+		if err := regexp.PasswordValid(req.Password); err != nil {
 			return err
 		}
 	} else {
-		if err := regexp.VerificationCodeValid(x.VerificationCode); err != nil {
+		if err := regexp.VerificationCodeValid(req.VerificationCode); err != nil {
 			return err
 		}
 	}

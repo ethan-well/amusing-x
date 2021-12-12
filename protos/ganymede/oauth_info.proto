@@ -1,0 +1,19 @@
+syntax="proto3";
+
+option  go_package = "amusing-x.com/ganymede/ganymedeservice";
+
+package ganymde;
+
+message OAuthInfoResponse {
+  string provider = 1;
+  string oauth_url = 2;
+  string client_id = 3;
+  string scope = 4;
+  string state = 5;
+  string grant_type = 6;
+  string redirect_url = 7;
+}
+
+message OAuthInfoRequest {
+  string provider = 1;
+}

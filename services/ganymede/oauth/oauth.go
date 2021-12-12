@@ -1,11 +1,10 @@
 package oauth
 
 import (
-	github2 "amusingx.fit/amusingx/apistruct/github"
-	"amusingx.fit/amusingx/apistruct/wechat"
 	"amusingx.fit/amusingx/services/ganymede/oauth/github"
 	"amusingx.fit/amusingx/services/ganymede/oauth/oauthstruct"
 	wechat2 "amusingx.fit/amusingx/services/ganymede/oauth/wechat"
+	"context"
 	"github.com/ItsWewin/superfactory/xerror"
 	"strings"
 )
@@ -17,11 +16,19 @@ type OAuth interface {
 
 func NewOAuth(provider, clientID, clientSecret, redirectUrl, grantType string) (OAuth, *xerror.Error) {
 	switch strings.ToLower(provider) {
-	case strings.ToLower(github2.ProviderGitHub):
+	case strings.ToLower(oauthstruct.ProviderGitHub):
 		return github.New(clientID, clientSecret, redirectUrl), nil
-	case strings.ToLower(wechat.ProviderWeChat):
+	case strings.ToLower(oauthstruct.ProviderWeChat):
 		return wechat2.New(clientID, clientSecret, grantType), nil
 	default:
 		return nil, xerror.NewErrorf(nil, xerror.Code.CParamsError, "unknown oauth provider")
 	}
+}
+
+func RandomState(ctx context.Context) (string, *xerror.Error) {
+	return StoreIns.RandomStateCode(ctx)
+}
+
+func StateCodeValid(ctx context.Context, stateCode string) *xerror.Error {
+	return StoreIns.ValidSate(ctx, stateCode)
 }

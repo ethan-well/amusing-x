@@ -2,6 +2,8 @@ package oauthstruct
 
 const (
 	AccessTokenExpireNever = -1
+	ProviderGitHub         = "github"
+	ProviderWeChat         = "weChat"
 )
 
 type AccessToken struct {

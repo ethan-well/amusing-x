@@ -12,6 +12,7 @@ import "verification_code.proto";
 import "verification_code_check.proto";
 import "reset_password.proto";
 import "oauth_login.proto";
+import "oauth_info.proto";
 
 service GanymedeService {
   rpc Pong(BlankParams) returns (PongResponse) {}
@@ -23,6 +24,7 @@ service GanymedeService {
   rpc VerificationCodeCheck(VerificationCodeCheckRequest) returns (VerificationCodeCheckResponse) {}
   rpc ResetPassword(ResetPasswordRequest) returns (ResetPasswordResponse) {}
   rpc OAuthLogin(OAuthLoginRequest) returns (OAuthLoginResponse) {}
+  rpc OAuthInfo(OAuthInfoRequest) returns (OAuthInfoResponse) {}
 }
 
 message BlankParams {}

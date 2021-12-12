@@ -11,7 +11,8 @@ import (
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the grpc package it is being compiled against.
-const _ = grpc.SupportPackageIsVersion6
+// Requires gRPC-Go v1.32.0 or later.
+const _ = grpc.SupportPackageIsVersion7
 
 // GanymedeServiceClient is the client API for GanymedeService service.
 //
@@ -26,6 +27,7 @@ type GanymedeServiceClient interface {
 	VerificationCodeCheck(ctx context.Context, in *VerificationCodeCheckRequest, opts ...grpc.CallOption) (*VerificationCodeCheckResponse, error)
 	ResetPassword(ctx context.Context, in *ResetPasswordRequest, opts ...grpc.CallOption) (*ResetPasswordResponse, error)
 	OAuthLogin(ctx context.Context, in *OAuthLoginRequest, opts ...grpc.CallOption) (*OAuthLoginResponse, error)
+	OAuthInfo(ctx context.Context, in *OAuthInfoRequest, opts ...grpc.CallOption) (*OAuthInfoResponse, error)
 }
 
 type ganymedeServiceClient struct {
@@ -117,6 +119,15 @@ func (c *ganymedeServiceClient) OAuthLogin(ctx context.Context, in *OAuthLoginRe
 	return out, nil
 }
 
+func (c *ganymedeServiceClient) OAuthInfo(ctx context.Context, in *OAuthInfoRequest, opts ...grpc.CallOption) (*OAuthInfoResponse, error) {
+	out := new(OAuthInfoResponse)
+	err := c.cc.Invoke(ctx, "/ganymde.GanymedeService/OAuthInfo", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // GanymedeServiceServer is the server API for GanymedeService service.
 // All implementations must embed UnimplementedGanymedeServiceServer
 // for forward compatibility
@@ -130,6 +141,7 @@ type GanymedeServiceServer interface {
 	VerificationCodeCheck(context.Context, *VerificationCodeCheckRequest) (*VerificationCodeCheckResponse, error)
 	ResetPassword(context.Context, *ResetPasswordRequest) (*ResetPasswordResponse, error)
 	OAuthLogin(context.Context, *OAuthLoginRequest) (*OAuthLoginResponse, error)
+	OAuthInfo(context.Context, *OAuthInfoRequest) (*OAuthInfoResponse, error)
 	mustEmbedUnimplementedGanymedeServiceServer()
 }
 
@@ -137,37 +149,47 @@ type GanymedeServiceServer interface {
 type UnimplementedGanymedeServiceServer struct {
 }
 
-func (*UnimplementedGanymedeServiceServer) Pong(context.Context, *BlankParams) (*PongResponse, error) {
+func (UnimplementedGanymedeServiceServer) Pong(context.Context, *BlankParams) (*PongResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Pong not implemented")
 }
-func (*UnimplementedGanymedeServiceServer) Regexps(context.Context, *BlankParams) (*RegexpResponse, error) {
+func (UnimplementedGanymedeServiceServer) Regexps(context.Context, *BlankParams) (*RegexpResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Regexps not implemented")
 }
-func (*UnimplementedGanymedeServiceServer) Login(context.Context, *LoginRequest) (*LoginResponse, error) {
+func (UnimplementedGanymedeServiceServer) Login(context.Context, *LoginRequest) (*LoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
 }
-func (*UnimplementedGanymedeServiceServer) Join(context.Context, *JoinRequest) (*JoinResponse, error) {
+func (UnimplementedGanymedeServiceServer) Join(context.Context, *JoinRequest) (*JoinResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Join not implemented")
 }
-func (*UnimplementedGanymedeServiceServer) CountryCodes(context.Context, *BlankParams) (*CountryCodeList, error) {
+func (UnimplementedGanymedeServiceServer) CountryCodes(context.Context, *BlankParams) (*CountryCodeList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CountryCodes not implemented")
 }
-func (*UnimplementedGanymedeServiceServer) GetVerificationCode(context.Context, *VerificationCodeRequest) (*VerificationCodeResponse, error) {
+func (UnimplementedGanymedeServiceServer) GetVerificationCode(context.Context, *VerificationCodeRequest) (*VerificationCodeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetVerificationCode not implemented")
 }
-func (*UnimplementedGanymedeServiceServer) VerificationCodeCheck(context.Context, *VerificationCodeCheckRequest) (*VerificationCodeCheckResponse, error) {
+func (UnimplementedGanymedeServiceServer) VerificationCodeCheck(context.Context, *VerificationCodeCheckRequest) (*VerificationCodeCheckResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method VerificationCodeCheck not implemented")
 }
-func (*UnimplementedGanymedeServiceServer) ResetPassword(context.Context, *ResetPasswordRequest) (*ResetPasswordResponse, error) {
+func (UnimplementedGanymedeServiceServer) ResetPassword(context.Context, *ResetPasswordRequest) (*ResetPasswordResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ResetPassword not implemented")
 }
-func (*UnimplementedGanymedeServiceServer) OAuthLogin(context.Context, *OAuthLoginRequest) (*OAuthLoginResponse, error) {
+func (UnimplementedGanymedeServiceServer) OAuthLogin(context.Context, *OAuthLoginRequest) (*OAuthLoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method OAuthLogin not implemented")
 }
-func (*UnimplementedGanymedeServiceServer) mustEmbedUnimplementedGanymedeServiceServer() {}
+func (UnimplementedGanymedeServiceServer) OAuthInfo(context.Context, *OAuthInfoRequest) (*OAuthInfoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method OAuthInfo not implemented")
+}
+func (UnimplementedGanymedeServiceServer) mustEmbedUnimplementedGanymedeServiceServer() {}
 
-func RegisterGanymedeServiceServer(s *grpc.Server, srv GanymedeServiceServer) {
-	s.RegisterService(&_GanymedeService_serviceDesc, srv)
+// UnsafeGanymedeServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to GanymedeServiceServer will
+// result in compilation errors.
+type UnsafeGanymedeServiceServer interface {
+	mustEmbedUnimplementedGanymedeServiceServer()
+}
+
+func RegisterGanymedeServiceServer(s grpc.ServiceRegistrar, srv GanymedeServiceServer) {
+	s.RegisterService(&GanymedeService_ServiceDesc, srv)
 }
 
 func _GanymedeService_Pong_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -332,7 +354,28 @@ func _GanymedeService_OAuthLogin_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
-var _GanymedeService_serviceDesc = grpc.ServiceDesc{
+func _GanymedeService_OAuthInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OAuthInfoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GanymedeServiceServer).OAuthInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ganymde.GanymedeService/OAuthInfo",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GanymedeServiceServer).OAuthInfo(ctx, req.(*OAuthInfoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// GanymedeService_ServiceDesc is the grpc.ServiceDesc for GanymedeService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var GanymedeService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "ganymde.GanymedeService",
 	HandlerType: (*GanymedeServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
@@ -371,6 +414,10 @@ var _GanymedeService_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "OAuthLogin",
 			Handler:    _GanymedeService_OAuthLogin_Handler,
+		},
+		{
+			MethodName: "OAuthInfo",
+			Handler:    _GanymedeService_OAuthInfo_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

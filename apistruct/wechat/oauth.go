@@ -1,7 +1,5 @@
 package wechat
 
-const ProviderWeChat = "weChat"
-
 type AccessTokenRequest struct {
 	AppID     string `json:"appid"`
 	Secret    string `json:"secret"`

@@ -3,6 +3,7 @@ package main
 import (
 	"amusingx.fit/amusingx/services/ganymede/conf"
 	"amusingx.fit/amusingx/services/ganymede/mysql/ganymededb/model"
+	"amusingx.fit/amusingx/services/ganymede/oauth"
 	"amusingx.fit/amusingx/services/ganymede/rpcclient"
 	rpcserver2 "amusingx.fit/amusingx/services/ganymede/rpcserver"
 	"amusingx.fit/amusingx/services/ganymede/session"
@@ -35,19 +36,24 @@ func InitFunc() {
 	redis0 := conf.Conf.Redis.RedisO
 	xredis.InitRedis(redis0.Addr, redis0.Password, redis0.DBNo)
 
+	store := conf.Conf.OAuth.Store
+	xErr := oauth.InitOAuthRedisStore(store.Redis.Addr, store.Redis.Password, store.Redis.DBNo, store.Prefix, store.MaxLifeTime)
+	if xErr != nil {
+		panic(xErr)
+	}
+
 	err := session.InitSessionManager("redis", "sid", 24*60*60)
 	if err != nil {
 		panic(err)
 	}
 
-	xErr := rpcclient.InitRPCClient()
+	xErr = rpcclient.InitRPCClient()
 	if xErr != nil {
 		panic(xErr)
 	}
 
 	xErr = rpcserver2.InitRPCService()
 	if xErr != nil {
-		logger.Infof("xxxxxxxxxx")
 		panic(xErr)
 	}
 }

@@ -1,8 +1,6 @@
 package oauthlogin
 
 import (
-	"amusingx.fit/amusingx/apistruct/github"
-	"amusingx.fit/amusingx/apistruct/wechat"
 	"amusingx.fit/amusingx/mysqlstruct/ganymede"
 	"amusingx.fit/amusingx/protos/ganymede/service"
 	"amusingx.fit/amusingx/services/ganymede/conf"
@@ -96,7 +94,7 @@ type LoginDomain struct {
 
 func getOauthConf(provider string) (clientID, clientSecret, redirectUrl, accessTokenUrl, refreshTokenUrl, userProfileUrl, grantType string, err *xerror.Error) {
 	switch provider {
-	case github.ProviderGitHub:
+	case oauthstruct.ProviderGitHub:
 		p := conf.Conf.OAuth.Github
 		clientID = p.ClientID
 		clientSecret = p.ClientSecret
@@ -106,7 +104,7 @@ func getOauthConf(provider string) (clientID, clientSecret, redirectUrl, accessT
 		grantType = p.GrantType
 
 		return
-	case wechat.ProviderWeChat:
+	case oauthstruct.ProviderWeChat:
 		p := conf.Conf.OAuth.WeChat
 		clientID = p.ClientID
 		clientSecret = p.ClientSecret
