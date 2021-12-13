@@ -7,6 +7,7 @@ import (
 	password "amusingx.fit/amusingx/services/ganymede/rpcserver/userservice/controller/findpassword"
 	"amusingx.fit/amusingx/services/ganymede/rpcserver/userservice/controller/join"
 	"amusingx.fit/amusingx/services/ganymede/rpcserver/userservice/controller/login"
+	"amusingx.fit/amusingx/services/ganymede/rpcserver/userservice/controller/logout"
 	"amusingx.fit/amusingx/services/ganymede/rpcserver/userservice/controller/oauthlogin"
 	"amusingx.fit/amusingx/services/ganymede/rpcserver/userservice/controller/verificationcode"
 	"context"
@@ -121,4 +122,13 @@ func (s *UserService) IsLogin(ctx context.Context, req *ganymedeservice.IsLoginR
 	}
 
 	return resp, nil
+}
+
+func (s *UserService) LogOut(ctx context.Context, req *ganymedeservice.LogoutRequest) (*ganymedeservice.LogoutResponse, error) {
+	resp, err := logout.HandlerIsLogOut(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, err
 }

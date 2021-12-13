@@ -25,10 +25,12 @@ func NewOAuth(provider, clientID, clientSecret, redirectUrl, grantType string) (
 	}
 }
 
+// oauth info 中的 state 信息存储
 func RandomState(ctx context.Context) (string, *xerror.Error) {
 	return StoreIns.RandomStateCode(ctx)
 }
 
+// 登陆验证 state 是否有效，防止 csrf
 func StateCodeValid(ctx context.Context, stateCode string) *xerror.Error {
 	return StoreIns.ValidSate(ctx, stateCode)
 }

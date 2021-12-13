@@ -61,3 +61,17 @@ func (m *Model) GetUserID(ctx context.Context, sid string) (int64, *xerror.Error
 		return 0, xerror.NewErrorf(nil, xerror.Code.BUnexpectedData, "no user id")
 	}
 }
+
+func (m *Model) Delete(ctx context.Context, sid string) *xerror.Error {
+	sess, err := session.GlobalSessionManager.Store.SessionInit(ctx, sid)
+	if err != nil {
+		return xerror.NewError(nil, xerror.Code.SUnexpectedErr, "destroy session failed")
+	}
+
+	err = sess.Delete(ctx, sid)
+	if err != nil {
+		return xerror.NewError(nil, xerror.Code.SUnexpectedErr, "delete session failed")
+	}
+
+	return nil
+}

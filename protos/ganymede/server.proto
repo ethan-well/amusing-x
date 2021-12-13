@@ -14,6 +14,7 @@ import "reset_password.proto";
 import "oauth_login.proto";
 import "oauth_info.proto";
 import "is_login.proto";
+import "logout.proto";
 
 service GanymedeService {
   rpc Pong(BlankParams) returns (PongResponse) {}
@@ -27,6 +28,8 @@ service GanymedeService {
   rpc OAuthLogin(OAuthLoginRequest) returns (OAuthLoginResponse) {}
   rpc OAuthInfo(OAuthInfoRequest) returns (OAuthInfoResponse) {}
   rpc IsLogin(IsLoginRequest) returns (IsLoginResponse) {}
+  rpc LogOut(LogoutRequest) returns (LogoutResponse) {}
 }
+
 
 message BlankParams {}
