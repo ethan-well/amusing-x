@@ -27,7 +27,7 @@ func Register(mux *mux.Router) {
 	mux.HandleFunc("/v1/europa/reset_password", password.HandlerResetPassword).Methods(http.MethodPost)
 	mux.HandleFunc("/v1/europa/login/oauth", github.HandlerOauthLogin).Methods(http.MethodPost)
 	mux.HandleFunc("/v1/europa/oauth/info", oauth.HandlerGetOAuthInfo).Methods(http.MethodGet)
-	mux.HandleFunc("/v1/europa/oauth/logout", logout.HandlerLogOut).Methods(http.MethodGet)
 
 	// 商品服务
+	mux.HandleFunc("/v1/europa/logout", logout.HandlerLogOut).Methods(http.MethodGet)
 }

@@ -37,7 +37,7 @@ func authenticated(ctx context.Context, r *http.Request) bool {
 		return false
 	}
 
-	resp, err := ganymede.RPCClient.Client.IsLogin(ctx, &ganymedeservice.IsLoginRequest{SessionID: cook.Value})
+	resp, err := ganymede.RPCClient.Client.IsLogin(ctx, &ganymedeservice.IsLoginRequest{SessionID: sid})
 	if err != nil {
 		return false
 	}

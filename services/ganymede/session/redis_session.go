@@ -53,15 +53,13 @@ func (s *RedisSession) Delete(ctx context.Context, key string) error {
 		return xerror.NewError(nil, xerror.Code.BUnexpectedBlankVariable, "session is not init")
 	}
 
-	if s.Value == nil {
-		return xerror.NewError(nil, xerror.Code.BUnexpectedBlankVariable, "session value is nil")
+	if s.Value != nil {
+		// 删除键
+		delete(s.Value, key)
 	}
 
-	// 删除键
-	delete(s.Value, key)
-
 	// 写入 Redis
-	err := s.Store.SessionWrite(ctx, s.Sid, s.Value)
+	err := s.Store.SessionDestroy(ctx, s.Sid)
 	if err != nil {
 		return err
 	}

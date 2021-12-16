@@ -6,6 +6,8 @@ import (
 	"amusingx.fit/amusingx/services/europa/session"
 	"context"
 	"github.com/ItsWewin/superfactory/httputil/rest"
+	"github.com/ItsWewin/superfactory/logger"
+	"github.com/ItsWewin/superfactory/xerror"
 	"net/http"
 )
 
@@ -14,16 +16,18 @@ func HandlerLogOut(w http.ResponseWriter, r *http.Request) {
 
 	sid, ok := session.GetSessionID(r)
 	if !ok && sid == "" {
-		rest.SucceedJsonResponse(w, "logout succeed")
+		rest.SucceedJsonResponse(w, ganymedeservice.LogoutResponse{Logout: true})
 		return
 	}
 
-	req := &ganymedeservice.LogoutRequest{SessionID: sid}
-
-	resp, err := ganymede.RPCClient.Client.LogOut(ctx, req)
+	resp, err := ganymede.RPCClient.Client.LogOut(ctx, &ganymedeservice.LogoutRequest{SessionID: sid})
 	if err != nil {
-		rest.SucceedJsonResponse(w, "logout failed")
+		logger.Errorf("log out failed: %s", err)
+		rest.FailJsonResponse(w, xerror.Code.SUnexpectedErr, "logout failed")
+		return
 	}
+
+	session.DeleteSession(w)
 
 	rest.SucceedJsonResponse(w, resp)
 }
