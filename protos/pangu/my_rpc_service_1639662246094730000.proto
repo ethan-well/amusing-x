@@ -2,10 +2,13 @@ syntax = "proto3";
 
 option go_package = "amusing-x.com/pangu/panguservice";
 
-package plutoservice;
+package panguservice;
+
+import "category.proto";
 
 service PanGuService {
   rpc Pong(BlankParams) returns (PongResponse) {}
+  rpc Create(CategoryCreateRequest) returns (CategoryCreateResponse) {}
 }
 
 message BlankParams{}

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option go_package = "amusing-x.com/pangu/panguservice";
+
+package panguservice;
+
+message CategoryCreateRequest {
+  string name = 1;
+  string desc = 2;
+}
+
+message CategoryCreateResponse {
+  bool succeed = 1;
+  int64 id = 2;
+  string name = 3;
+  string desc = 4;
+}
