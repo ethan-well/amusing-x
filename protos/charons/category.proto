@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-option go_package = "amusing-x.com/pangu/panguservice";
+option go_package = "amusing-x.com/charon/charonservice";
 
-package panguservice;
+package charonservice;
 
 message CategoryCreateRequest {
   string name = 1;

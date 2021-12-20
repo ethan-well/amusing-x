@@ -2,7 +2,7 @@ package password
 
 import (
 	"amusingx.fit/amusingx/protos/ganymede/service"
-	"amusingx.fit/amusingx/services/ganymede/rpcserver/userservice/handler/passwordapp"
+	"amusingx.fit/amusingx/services/ganymede/rpcserver/userservice/app/passwordapp"
 	"context"
 	"github.com/ItsWewin/superfactory/xerror"
 )

@@ -29,7 +29,7 @@ type GrpcServer struct {
 }
 
 type MysqlConf struct {
-	Plutodb *Mysql `yaml:"plutodb"`
+	Charon *Mysql `yaml:"charon"`
 }
 
 type Mysql struct {

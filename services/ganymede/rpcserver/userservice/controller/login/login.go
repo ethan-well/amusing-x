@@ -3,7 +3,7 @@ package login
 import (
 	"amusingx.fit/amusingx/protos/ganymede/service"
 	"amusingx.fit/amusingx/regexp"
-	"amusingx.fit/amusingx/services/ganymede/rpcserver/userservice/handler/loginapp"
+	"amusingx.fit/amusingx/services/ganymede/rpcserver/userservice/app/loginapp"
 	"context"
 	"github.com/ItsWewin/superfactory/logger"
 	"github.com/ItsWewin/superfactory/xerror"

@@ -8,9 +8,18 @@ import (
 var Conf = new(Config)
 
 type Config struct {
-	Server *Server   `yaml:"server"`
-	Mysql  MysqlConf `yaml:"mysql"`
-	Redis  Redis     `yaml:"redis"`
+	Server     *Server      `yaml:"server"`
+	Mysql      MysqlConf    `yaml:"mysql"`
+	Redis      Redis        `yaml:"redis"`
+	GrpcClient *GrpcClients `yaml:"grpc_client"`
+}
+
+type GrpcClients struct {
+	Charon *GrpcClient `yaml:"charon"`
+}
+
+type GrpcClient struct {
+	Addr string `json:"addr"`
 }
 
 type Server struct {

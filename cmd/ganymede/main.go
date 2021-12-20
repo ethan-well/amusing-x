@@ -8,7 +8,6 @@ import (
 	rpcserver2 "amusingx.fit/amusingx/services/ganymede/rpcserver"
 	"amusingx.fit/amusingx/services/ganymede/session"
 	"amusingx.fit/amusingx/services/ganymede/xredis"
-	"github.com/ItsWewin/superfactory/logger"
 	"github.com/ItsWewin/superfactory/powertrain"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
@@ -29,8 +28,6 @@ func main() {
 
 // InitFunc 服务初始化时候执行
 func InitFunc() {
-	logger.Infof("init func")
-
 	model.InitMySQL()
 
 	redis0 := conf.Conf.Redis.RedisO

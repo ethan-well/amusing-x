@@ -39,13 +39,19 @@ func InitRPCServer() *xerror.Error {
 
 	lis, err := net.Listen(rpcConf.Network, rpcConf.Address)
 	if err != nil {
+		logger.Infof("net.Listen err: %s", err)
 		return xerror.NewErrorf(err, xerror.Code.SUnexpectedErr, "RPC Listen failed:  %s", err)
 	}
 
+	logger.Infof("net.Listen init succeed")
+
 	err = rpcServ.Serve(lis)
 	if err != nil {
+		logger.Errorf("RPC Server init err: %s", err)
 		return xerror.NewErrorf(err, xerror.Code.SUnexpectedErr, "RPC Server failed: %s", err)
 	}
+
+	logger.Infof("rpcServ.Serve succeed")
 
 	Server = &RPCService{Server: rpcServ}
 

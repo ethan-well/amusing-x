@@ -4,11 +4,8 @@ option go_package = "amusing-x.com/pangu/panguservice";
 
 package panguservice;
 
-import "category.proto";
-
 service PanGuService {
   rpc Pong(BlankParams) returns (PongResponse) {}
-  rpc Create(CategoryCreateRequest) returns (CategoryCreateResponse) {}
 }
 
 message BlankParams{}

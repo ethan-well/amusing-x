@@ -1,5 +1,5 @@
 server:
-  name: "amusing-x/pangu"
+  name: amusing-x/pangu
   http_server:
     addr: :10005
   grpc_server:
