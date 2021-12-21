@@ -5,11 +5,15 @@ import (
 	"amusingx.fit/amusingx/services/pangu/conf"
 	"amusingx.fit/amusingx/services/pangu/rpcserver/panguserver"
 	"amusingx.fit/amusingx/services/pangu/rpcserver/servermiddleware"
+	"context"
+	"fmt"
 	"github.com/ItsWewin/superfactory/aerror"
 	"github.com/ItsWewin/superfactory/logger"
 	"github.com/grpc-ecosystem/go-grpc-middleware"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 	"net"
+	"net/http"
 )
 
 type RPCService struct {
@@ -39,21 +43,45 @@ func InitRPCServer() aerror.Error {
 
 	lis, err := net.Listen(rpcConf.Network, rpcConf.Address)
 	if err != nil {
-		logger.Infof("net.Listen err: %s", err)
+		logger.Errorf("net.Listen err: %s", err)
 		return aerror.NewErrorf(err, aerror.Code.SUnexpectedErr, "RPC Listen failed:  %s", err)
 	}
 
-	logger.Infof("net.Listen init succeed")
+	go func() {
+		err := rpcServ.Serve(lis)
+		if err != nil {
+			panic(err)
+		}
+	}()
 
-	err = rpcServ.Serve(lis)
+	conn, err := grpc.DialContext(
+		context.Background(),
+		fmt.Sprintf("0.0.0.0%s", rpcConf.Address),
+		grpc.WithBlock(),
+		grpc.WithInsecure(),
+	)
 	if err != nil {
-		logger.Errorf("RPC Server init err: %s", err)
-		return aerror.NewErrorf(err, aerror.Code.SUnexpectedErr, "RPC Server failed: %s", err)
+		return aerror.NewErrorf(err, aerror.Code.SUnexpectedErr, "Failed to dial server: %s", err)
 	}
 
-	logger.Infof("rpcServ.Serve succeed")
+	gwmux := runtime.NewServeMux()
+	// Register Greeter
+	err = panguservice.RegisterPanGuServiceHandler(context.Background(), gwmux, conn)
+	if err != nil {
+		return aerror.NewErrorf(err, aerror.Code.SUnexpectedErr, "Failed register panGu service handler err")
+	}
 
-	Server = &RPCService{Server: rpcServ}
+	httpServ := conf.Conf.Server.HttpServer
+	gwServer := &http.Server{
+		Addr:    httpServ.Addr,
+		Handler: gwmux,
+	}
+
+	logger.Infof("Serving gRPC-Gateway on %s", httpServ.Addr)
+	err = gwServer.ListenAndServe()
+	if err != nil {
+		return aerror.NewErrorf(err, aerror.Code.SUnexpectedErr, "Failed ListenAndServe")
+	}
 
 	return nil
 }

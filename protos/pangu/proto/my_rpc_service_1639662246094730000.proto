@@ -2,7 +2,7 @@ syntax = "proto3";
 
 option go_package = "amusing-x.com/pangu/panguservice";
 
-//import "google/api/annotations.proto";
+import "google/api/annotations.proto";
 
 package panguservice;
 
@@ -14,6 +14,9 @@ message PongResponse {
 
 service PanGuService {
   rpc Pong(BlankParams) returns (PongResponse) {
+    option (google.api.http) = {
+      get: "/v1/pangu/pong"
+    };
   }
 }
 

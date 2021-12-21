@@ -4,7 +4,6 @@ import (
 	pangu2 "amusingx.fit/amusingx/rpcclient/pangu"
 	"amusingx.fit/amusingx/services/pangu/conf"
 	"amusingx.fit/amusingx/services/pangu/mysql/pangu"
-	"amusingx.fit/amusingx/services/pangu/router"
 	"amusingx.fit/amusingx/services/pangu/rpcserver"
 	"amusingx.fit/amusingx/services/pangu/xredis"
 	"github.com/ItsWewin/superfactory/powertrain"
@@ -18,7 +17,7 @@ func main() {
 		o.DeferFunc = DeferFunc
 		o.InitHttpServer = false
 		o.RegisterRouter = func(mux *mux.Router) {
-			router.Register(mux)
+			//router.Register(mux)
 		}
 	})
 
