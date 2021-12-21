@@ -16,9 +16,9 @@ func InitRPCClient() aerror.Error {
 	}
 	//defer conn.Close()
 
-	xErr := amusingxriskrpcserver.InitAmusingXRiskServerRPCClient(conn)
+	err = amusingxriskrpcserver.InitAmusingXRiskServerRPCClient(conn)
 	if err != nil {
-		return aerror.NewError(xErr, xerr.Code(), "InitRPCServer failed")
+		return aerror.NewError(err, err.(aerror.Error).Code(), "InitRPCServer failed")
 	}
 
 	return nil

@@ -16,9 +16,9 @@ func InitCallistoServerRPCClient() aerror.Error {
 		return aerror.NewError(err, aerror.Code.SUnexpectedErr, fmt.Sprintf("grpc dial error: %s", err))
 	}
 
-	xErr := callisto.InitCallistoRPCClient(conn)
-	if xErr != nil {
-		return aerror.NewError(xErr, xerr.Code(), "InitRiskServerRPCClient failed")
+	err = callisto.InitCallistoRPCClient(conn)
+	if err != nil {
+		return aerror.NewError(err, err.(aerror.Error).Code(), "InitRiskServerRPCClient failed")
 	}
 
 	return nil
@@ -36,9 +36,9 @@ func InitGanymedeRPCClient() aerror.Error {
 		return aerror.NewError(err, aerror.Code.SUnexpectedErr, "grpc.Dial failed")
 	}
 
-	xErr := ganymede.InitGanymedeRPCClient(conn)
-	if xErr != nil {
-		return aerror.NewError(xErr, xerr.Code(), "InitUserServerRPCClient failed")
+	err = ganymede.InitGanymedeRPCClient(conn)
+	if err != nil {
+		return aerror.NewError(err, err.(aerror.Error).Code(), "InitUserServerRPCClient failed")
 	}
 
 	return nil

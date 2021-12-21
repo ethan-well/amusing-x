@@ -7,6 +7,8 @@ import (
 	"amusingx.fit/amusingx/services/europa/rpcclient/callisto"
 	"amusingx.fit/amusingx/services/europa/rpcclient/ganymede"
 	"context"
+	"errors"
+	"github.com/ItsWewin/superfactory/aerror"
 	"github.com/ItsWewin/superfactory/logger"
 	"testing"
 )
@@ -125,4 +127,19 @@ func TestInitUserServerRPCClient(t *testing.T) {
 		t.Logf("ResetPassword err: %s", err)
 	}
 	t.Logf("rspResult: %s", rspResult)
+}
+
+func TestSomeError(t *testing.T) {
+	err := _error()
+	err = _aerror()
+	t.Log(err.(aerror.Error).Code())
+	t.Log(err.(aerror.Error).Message())
+}
+
+func _error() error {
+	return errors.New("text")
+}
+
+func _aerror() aerror.Error {
+	return aerror.NewErrorf(nil, "code", "message")
 }
