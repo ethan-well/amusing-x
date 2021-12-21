@@ -4,10 +4,10 @@ import (
 	"amusingx.fit/amusingx/mysqlstruct/amusingriskcontrol"
 	"context"
 	"database/sql"
-	"github.com/ItsWewin/superfactory/xerror"
+	"github.com/ItsWewin/superfactory/aerror"
 )
 
-func QueryAccountRiskStrategy(ctx context.Context, strategyType string) (*amusingriskcontrol.AccountRiskStrategy, *xerror.Error) {
+func QueryAccountRiskStrategy(ctx context.Context, strategyType string) (*amusingriskcontrol.AccountRiskStrategy, aerror.Error) {
 	query := `
 		SELECT id, strategy, strategy_type, strategy_value, strategy_value_type 
 		FROM account_risk_strategy
@@ -19,7 +19,7 @@ func QueryAccountRiskStrategy(ctx context.Context, strategyType string) (*amusin
 	case err == sql.ErrNoRows:
 		return nil, nil
 	case err != nil:
-		return nil, xerror.NewError(err, xerror.Code.SSqlExecuteErr, "Sql execute failed. ")
+		return nil, aerror.NewError(err, aerror.Code.SSqlExecuteErr, "Sql execute failed. ")
 	}
 
 	return &accountRiskStrategy, nil

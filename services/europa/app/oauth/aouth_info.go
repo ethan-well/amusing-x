@@ -5,26 +5,26 @@ import (
 	ganymedeservice "amusingx.fit/amusingx/protos/ganymede/service"
 	"amusingx.fit/amusingx/services/europa/rpcclient/ganymede"
 	"context"
-	"github.com/ItsWewin/superfactory/xerror"
+	"github.com/ItsWewin/superfactory/aerror"
 	"net/url"
 )
 
-func GetOAuthInfo(ctx context.Context, provider string) (*europa.OAuthInfo, *xerror.Error) {
+func GetOAuthInfo(ctx context.Context, provider string) (*europa.OAuthInfo, aerror.Error) {
 	in := &ganymedeservice.OAuthInfoRequest{Provider: provider}
 
 	resp, err := ganymede.RPCClient.Client.OAuthInfo(ctx, in)
 	if err != nil {
-		return nil, xerror.NewErrorf(nil, xerror.Code.SUnexpectedErr, err.Error())
+		return nil, aerror.NewErrorf(nil, aerror.Code.SUnexpectedErr, err.Error())
 	}
 
 	u, err := url.Parse(resp.OauthUrl)
 	if err != nil {
-		return nil, xerror.NewError(nil, xerror.Code.BUnexpectedData, err.Error())
+		return nil, aerror.NewError(nil, aerror.Code.BUnexpectedData, err.Error())
 	}
 
 	_, err = url.Parse(resp.RedirectUrl)
 	if err != nil {
-		return nil, xerror.NewError(nil, xerror.Code.BUnexpectedData, err.Error())
+		return nil, aerror.NewError(nil, aerror.Code.BUnexpectedData, err.Error())
 	}
 
 	q := u.Query()

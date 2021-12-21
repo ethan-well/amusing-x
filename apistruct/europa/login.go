@@ -2,7 +2,7 @@ package europa
 
 import (
 	"amusingx.fit/amusingx/regexp"
-	"github.com/ItsWewin/superfactory/xerror"
+	"github.com/ItsWewin/superfactory/aerror"
 	"strings"
 )
 
@@ -22,13 +22,13 @@ func (r *LoginRequest) LoginByVerificationCode() bool {
 	return r.Type == 1
 }
 
-func (r *LoginRequest) Valid() *xerror.Error {
+func (r *LoginRequest) Valid() aerror.Error {
 	r.Phone = strings.TrimSpace(r.Phone)
 	r.AreaCode = strings.TrimSpace(r.AreaCode)
 	r.Password = strings.TrimSpace(r.Password)
 
 	if r.Type != 0 && r.Type != 1 {
-		return xerror.NewError(nil, xerror.Code.CParamsError, "Type is invalid. ")
+		return aerror.NewError(nil, aerror.Code.CParamsError, "Type is invalid. ")
 	}
 
 	if err := regexp.PhoneNumberValid(r.Phone); err != nil {

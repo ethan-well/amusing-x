@@ -12,9 +12,8 @@ func TestInsetCategory(t *testing.T) {
 	charon.Mock()
 
 	category := &charon2.Category{
-		ParentID: 12,
-		Name:     "category name",
-		Desc:     "category desc",
+		Name: "category name 2",
+		Desc: "category desc",
 	}
 	category, err := InsetCategory(context.Background(), category)
 	if err != nil {

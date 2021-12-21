@@ -3,15 +3,15 @@ package wechat
 import (
 	"amusingx.fit/amusingx/apistruct/wechat"
 	"amusingx.fit/amusingx/services/ganymede/oauth/oauthstruct"
+	"github.com/ItsWewin/superfactory/aerror"
 	"github.com/ItsWewin/superfactory/httputil"
 	"github.com/ItsWewin/superfactory/httputil/rest"
-	"github.com/ItsWewin/superfactory/xerror"
 	"net/url"
 )
 
 //AccessTokenResponse
 
-func (o *OAuth) RefreshToken(refreshTokenUrl, refreshToken string) (*oauthstruct.AccessToken, *xerror.Error) {
+func (o *OAuth) RefreshToken(refreshTokenUrl, refreshToken string) (*oauthstruct.AccessToken, aerror.Error) {
 	var params = url.Values{}
 	params.Set("appid", o.ClientID)
 	params.Set("grant_type", o.GrantType)
@@ -19,7 +19,7 @@ func (o *OAuth) RefreshToken(refreshTokenUrl, refreshToken string) (*oauthstruct
 
 	u, err := url.Parse(refreshTokenUrl)
 	if err != nil {
-		return nil, xerror.NewErrorf(nil, xerror.Code.BUnexpectedData, "accessTokenUrl format err")
+		return nil, aerror.NewErrorf(nil, aerror.Code.BUnexpectedData, "accessTokenUrl format err")
 	}
 	u.RawQuery = params.Encode()
 
@@ -37,7 +37,7 @@ func (o *OAuth) RefreshToken(refreshTokenUrl, refreshToken string) (*oauthstruct
 	}
 
 	if dest.IsError() {
-		return nil, xerror.NewErrorf(nil, xerror.Code.OtherNetworkError, dest.Errmsg)
+		return nil, aerror.NewErrorf(nil, aerror.Code.OtherNetworkError, dest.Errmsg)
 	}
 
 	return &oauthstruct.AccessToken{

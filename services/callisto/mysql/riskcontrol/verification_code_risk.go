@@ -4,10 +4,10 @@ import (
 	"amusingx.fit/amusingx/mysqlstruct/amusingriskcontrol"
 	"context"
 	"database/sql"
-	"github.com/ItsWewin/superfactory/xerror"
+	"github.com/ItsWewin/superfactory/aerror"
 )
 
-func QueryVerificationCodeRiskByPhone(ctx context.Context, phone string) (*amusingriskcontrol.VerificationCodeRisk, *xerror.Error) {
+func QueryVerificationCodeRiskByPhone(ctx context.Context, phone string) (*amusingriskcontrol.VerificationCodeRisk, aerror.Error) {
 	query := `
    		SELECT id, phone, used_count, max_count
 		FROM verification_code_risk
@@ -20,13 +20,13 @@ func QueryVerificationCodeRiskByPhone(ctx context.Context, phone string) (*amusi
 	case err == sql.ErrNoRows:
 		return nil, nil
 	case err != nil:
-		return nil, xerror.NewError(err, xerror.Code.SSqlExecuteErr, "Sql execute error")
+		return nil, aerror.NewError(err, aerror.Code.SSqlExecuteErr, "Sql execute error")
 	}
 
 	return &risk, nil
 }
 
-func VerificationCodeRiskUpdate(ctx context.Context, risk *amusingriskcontrol.VerificationCodeRisk) *xerror.Error {
+func VerificationCodeRiskUpdate(ctx context.Context, risk *amusingriskcontrol.VerificationCodeRisk) aerror.Error {
 	query := `
    		UPDATE verification_code_risk id
 		set used_count = :used_count,
@@ -36,13 +36,13 @@ func VerificationCodeRiskUpdate(ctx context.Context, risk *amusingriskcontrol.Ve
 
 	_, err := CallistoDB.NamedExecContext(ctx, query, risk)
 	if err != nil {
-		return xerror.NewError(err, xerror.Code.SSqlExecuteErr, "Sql Execute failed. ")
+		return aerror.NewError(err, aerror.Code.SSqlExecuteErr, "Sql Execute failed. ")
 	}
 
 	return nil
 }
 
-func VerificationCodeRiskInsertOrUpdate(ctx context.Context, risk *amusingriskcontrol.VerificationCodeRisk) *xerror.Error {
+func VerificationCodeRiskInsertOrUpdate(ctx context.Context, risk *amusingriskcontrol.VerificationCodeRisk) aerror.Error {
 
 	query := `
 		INSERT INTO verification_code_risk (phone, used_count, max_count)
@@ -54,7 +54,7 @@ func VerificationCodeRiskInsertOrUpdate(ctx context.Context, risk *amusingriskco
 
 	_, err := CallistoDB.NamedExecContext(ctx, query, risk)
 	if err != nil {
-		return xerror.NewError(err, xerror.Code.SSqlExecuteErr, "Sql Execute failed. ")
+		return aerror.NewError(err, aerror.Code.SSqlExecuteErr, "Sql Execute failed. ")
 	}
 
 	return nil

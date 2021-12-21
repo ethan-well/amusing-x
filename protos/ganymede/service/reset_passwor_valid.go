@@ -2,11 +2,11 @@ package ganymedeservice
 
 import (
 	"amusingx.fit/amusingx/regexp"
+	"github.com/ItsWewin/superfactory/aerror"
 	"github.com/ItsWewin/superfactory/verificationcode/randomcode"
-	"github.com/ItsWewin/superfactory/xerror"
 )
 
-func (x *ResetPasswordRequest) Valid() *xerror.Error {
+func (x *ResetPasswordRequest) Valid() aerror.Error {
 	if err := regexp.PhoneNumberValid(x.Phone); err != nil {
 		return err
 	}
@@ -25,7 +25,7 @@ func (x *ResetPasswordRequest) Valid() *xerror.Error {
 
 	codeStore := randomcode.RandomCodeStoreInit()
 	if !codeStore.Check(x.VerificationCode) {
-		return xerror.NewError(nil, xerror.Code.CParamsError, "验证码错误")
+		return aerror.NewError(nil, aerror.Code.CParamsError, "验证码错误")
 	}
 
 	return nil

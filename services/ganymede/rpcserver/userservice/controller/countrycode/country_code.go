@@ -4,10 +4,10 @@ import (
 	"amusingx.fit/amusingx/protos/ganymede/service"
 	"amusingx.fit/amusingx/services/ganymede/mysql/ganymededb/model"
 	"context"
-	"github.com/ItsWewin/superfactory/xerror"
+	"github.com/ItsWewin/superfactory/aerror"
 )
 
-func HandleCountryCodeList(ctx context.Context) (*ganymedeservice.CountryCodeList, *xerror.Error) {
+func HandleCountryCodeList(ctx context.Context) (*ganymedeservice.CountryCodeList, aerror.Error) {
 	codeList, err := model.QueryCountryCodes(ctx)
 	if err != nil {
 		return nil, err

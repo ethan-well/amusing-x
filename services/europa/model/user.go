@@ -7,7 +7,7 @@ import (
 	"crypto/rand"
 	"crypto/subtle"
 	"encoding/base64"
-	"github.com/ItsWewin/superfactory/xerror"
+	"github.com/ItsWewin/superfactory/aerror"
 	"golang.org/x/crypto/argon2"
 )
 
@@ -38,9 +38,9 @@ var passwordConfig = &PasswordConfig{
 	keyLen:  64,
 }
 
-func (u *User) ExistedWithPhone(ctx context.Context) (bool, *xerror.Error) {
+func (u *User) ExistedWithPhone(ctx context.Context) (bool, aerror.Error) {
 	if len(u.Phone) == 0 {
-		return false, xerror.NewError(nil, xerror.Code.CParamsError, "params is invalid. ")
+		return false, aerror.NewError(nil, aerror.Code.CParamsError, "params is invalid. ")
 	}
 
 	udb, err := FindUserByPhone(ctx, u.AreaCode, u.Phone)
@@ -51,9 +51,9 @@ func (u *User) ExistedWithPhone(ctx context.Context) (bool, *xerror.Error) {
 	return udb != nil, nil
 }
 
-func (u *User) ExistedWithNicknameOrPhone(ctx context.Context) (bool, *xerror.Error) {
+func (u *User) ExistedWithNicknameOrPhone(ctx context.Context) (bool, aerror.Error) {
 	if len(u.Nickname) == 0 || len(u.Phone) == 0 {
-		return false, xerror.NewError(nil, xerror.Code.CParamsError, "params is invalid. ")
+		return false, aerror.NewError(nil, aerror.Code.CParamsError, "params is invalid. ")
 	}
 
 	udb, err := amusingxwebapi.QueryUserByNicknameOrPhone(ctx, u.Nickname, u.Phone)
@@ -65,31 +65,31 @@ func (u *User) ExistedWithNicknameOrPhone(ctx context.Context) (bool, *xerror.Er
 	case udb == nil:
 		return false, nil
 	case udb.Nickname == u.Nickname:
-		return true, xerror.NewError(nil, xerror.Code.BDataIsNotAllow, "该昵称已经被占用")
+		return true, aerror.NewError(nil, aerror.Code.BDataIsNotAllow, "该昵称已经被占用")
 	case udb.Phone == u.Phone:
-		return true, xerror.NewError(nil, xerror.Code.BDataIsNotAllow, "此手机号已经被占用")
+		return true, aerror.NewError(nil, aerror.Code.BDataIsNotAllow, "此手机号已经被占用")
 	default:
-		return true, xerror.NewError(nil, xerror.Code.BDataIsNotAllow, "该用户已经存在")
+		return true, aerror.NewError(nil, aerror.Code.BDataIsNotAllow, "该用户已经存在")
 	}
 }
 
-func (u *User) ComparePassword(password string) (bool, *xerror.Error) {
+func (u *User) ComparePassword(password string) (bool, aerror.Error) {
 	if len(password) == 0 ||
 		len(u.Salt) == 0 ||
 		len(u.PasswordDigest) == 0 ||
 		passwordConfig == nil {
 
-		return false, xerror.NewError(nil, xerror.Code.BDataIsNotAllow, "密码不符合要求")
+		return false, aerror.NewError(nil, aerror.Code.BDataIsNotAllow, "密码不符合要求")
 	}
 
 	salt, err := base64.RawStdEncoding.DecodeString(u.Salt)
 	if err != nil {
-		return false, xerror.NewError(err, xerror.Code.SUnexpectedErr, "Salt decode failed. ")
+		return false, aerror.NewError(err, aerror.Code.SUnexpectedErr, "Salt decode failed. ")
 	}
 
 	decodedHash, err := base64.RawStdEncoding.DecodeString(u.PasswordDigest)
 	if err != nil {
-		return false, xerror.NewError(err, xerror.Code.SUnexpectedErr, "Password decode failed. ")
+		return false, aerror.NewError(err, aerror.Code.SUnexpectedErr, "Password decode failed. ")
 	}
 
 	c := passwordConfig
@@ -100,7 +100,7 @@ func (u *User) ComparePassword(password string) (bool, *xerror.Error) {
 	return subtle.ConstantTimeCompare(decodedHash, comparisonHash) == 1, nil
 }
 
-func (u *User) ResetPassword(ctx context.Context, password string) *xerror.Error {
+func (u *User) ResetPassword(ctx context.Context, password string) aerror.Error {
 	u.Password = password
 	err := u.GeneratePassword()
 	if err != nil {
@@ -115,21 +115,21 @@ func (u *User) ResetPassword(ctx context.Context, password string) *xerror.Error
 	}
 	_, err = amusingxwebapi.UpdatePassword(ctx, udb)
 	if err != nil {
-		return xerror.NewError(err, err.Code, err.Message)
+		return aerror.NewError(err, err.Code(), err.Message())
 	}
 
 	return nil
 }
 
-func (u *User) GeneratePassword() *xerror.Error {
+func (u *User) GeneratePassword() aerror.Error {
 	if len(u.Password) == 0 || passwordConfig == nil {
-		return xerror.NewError(nil, xerror.Code.BDataIsNotAllow, "Password is blank")
+		return aerror.NewError(nil, aerror.Code.BDataIsNotAllow, "Password is blank")
 	}
 
 	// Generate a Salt
 	salt := make([]byte, 16)
 	if _, err := rand.Read(salt); err != nil {
-		return xerror.NewError(err, xerror.Code.SUnexpectedErr, "Unexpected err")
+		return aerror.NewError(err, aerror.Code.SUnexpectedErr, "Unexpected err")
 	}
 
 	c := passwordConfig
@@ -141,7 +141,7 @@ func (u *User) GeneratePassword() *xerror.Error {
 	return nil
 }
 
-func FindUserByID(ctx context.Context, id int64) (*User, *xerror.Error) {
+func FindUserByID(ctx context.Context, id int64) (*User, aerror.Error) {
 	user, err := amusingxwebapi.QueryUserByIdContext(ctx, id)
 	if err != nil {
 		return nil, err
@@ -159,7 +159,7 @@ func FindUserByID(ctx context.Context, id int64) (*User, *xerror.Error) {
 	return u, nil
 }
 
-func FindUserByPhone(ctx context.Context, areaCode, phone string) (*User, *xerror.Error) {
+func FindUserByPhone(ctx context.Context, areaCode, phone string) (*User, aerror.Error) {
 	user, err := amusingxwebapi.QueryUserByPhone(ctx, areaCode+"-"+phone)
 	if err != nil {
 		return nil, err
@@ -182,11 +182,11 @@ func FindUserByPhone(ctx context.Context, areaCode, phone string) (*User, *xerro
 	return u, nil
 }
 
-func Create(ctx context.Context, user *User) (*User, *xerror.Error) {
+func Create(ctx context.Context, user *User) (*User, aerror.Error) {
 	err := user.GeneratePassword()
 
 	if err != nil {
-		return nil, xerror.NewError(err, xerror.Code.SUnexpectedErr, "Generate password failed. ")
+		return nil, aerror.NewError(err, aerror.Code.SUnexpectedErr, "Generate password failed. ")
 	}
 
 	udb := &ganymede.UserComplex{

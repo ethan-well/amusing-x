@@ -3,12 +3,12 @@ package verificationcode
 import (
 	"amusingx.fit/amusingx/protos/ganymede/service"
 	"context"
+	"github.com/ItsWewin/superfactory/aerror"
 	"github.com/ItsWewin/superfactory/logger"
 	"github.com/ItsWewin/superfactory/verificationcode/randomcode"
-	"github.com/ItsWewin/superfactory/xerror"
 )
 
-func HandlerVerificationCheck(ctx context.Context, req *ganymedeservice.VerificationCodeCheckRequest) (*ganymedeservice.VerificationCodeCheckResponse, *xerror.Error) {
+func HandlerVerificationCheck(ctx context.Context, req *ganymedeservice.VerificationCodeCheckRequest) (*ganymedeservice.VerificationCodeCheckResponse, aerror.Error) {
 	codeStore := randomcode.RandomCodeStoreInit()
 
 	logger.Infof("code: %s", req.Code)

@@ -4,7 +4,7 @@ import (
 	"amusingx.fit/amusingx/apistruct/europa"
 	"amusingx.fit/amusingx/services/europa/model"
 	"context"
-	"github.com/ItsWewin/superfactory/xerror"
+	"github.com/ItsWewin/superfactory/aerror"
 )
 
 type ResetPasswordDomain interface {
@@ -19,9 +19,9 @@ func NewDomain() *Domain {
 	return &Domain{}
 }
 
-func (d *Domain) SetResetPasswordInfo(request *europa.ResetPasswordRequest) *xerror.Error {
+func (d *Domain) SetResetPasswordInfo(request *europa.ResetPasswordRequest) aerror.Error {
 	if request == nil {
-		return xerror.NewError(nil, xerror.Code.CUnexpectRequestDate, "Request is nil. ")
+		return aerror.NewError(nil, aerror.Code.CUnexpectRequestDate, "Request is nil. ")
 	}
 
 	d.ResetPasswordInfo = request
@@ -29,9 +29,9 @@ func (d *Domain) SetResetPasswordInfo(request *europa.ResetPasswordRequest) *xer
 	return nil
 }
 
-func (d *Domain) SetUserModelInfo(ctx context.Context) *xerror.Error {
+func (d *Domain) SetUserModelInfo(ctx context.Context) aerror.Error {
 	if d.ResetPasswordInfo == nil {
-		return xerror.NewError(nil, xerror.Code.BUnexpectedBlankVariable, "reset password info is blank")
+		return aerror.NewError(nil, aerror.Code.BUnexpectedBlankVariable, "reset password info is blank")
 	}
 
 	user, err := model.FindUserByPhone(ctx, d.ResetPasswordInfo.AreaCode, d.ResetPasswordInfo.Phone)
@@ -40,7 +40,7 @@ func (d *Domain) SetUserModelInfo(ctx context.Context) *xerror.Error {
 	}
 
 	if user == nil {
-		return xerror.NewError(err, xerror.Code.CUnexpectRequestDate, "账号密码错误")
+		return aerror.NewError(err, aerror.Code.CUnexpectRequestDate, "账号密码错误")
 	}
 
 	d.UserModelInfo = user
@@ -48,18 +48,18 @@ func (d *Domain) SetUserModelInfo(ctx context.Context) *xerror.Error {
 	return nil
 }
 
-func (d *Domain) ResetPassword(ctx context.Context, password string) *xerror.Error {
+func (d *Domain) ResetPassword(ctx context.Context, password string) aerror.Error {
 	if d.ResetPasswordInfo == nil {
-		return xerror.NewError(nil, xerror.Code.BUnexpectedBlankVariable, "reset password info is blank")
+		return aerror.NewError(nil, aerror.Code.BUnexpectedBlankVariable, "reset password info is blank")
 	}
 
 	if d.UserModelInfo == nil {
-		return xerror.NewError(nil, xerror.Code.BUnexpectedBlankVariable, "user model info is blank")
+		return aerror.NewError(nil, aerror.Code.BUnexpectedBlankVariable, "user model info is blank")
 	}
 
 	err := d.UserModelInfo.ResetPassword(ctx, password)
 	if err != nil {
-		return xerror.NewError(err, err.Code, err.Message)
+		return aerror.NewError(err, err.Code(), err.Message())
 	}
 
 	return nil

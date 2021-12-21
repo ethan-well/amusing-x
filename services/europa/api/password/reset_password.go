@@ -4,10 +4,10 @@ import (
 	"amusingx.fit/amusingx/apistruct/europa"
 	"amusingx.fit/amusingx/services/europa/app/passwordapp"
 	"context"
+	"github.com/ItsWewin/superfactory/aerror"
 	"github.com/ItsWewin/superfactory/httputil"
 	"github.com/ItsWewin/superfactory/httputil/rest"
 	"github.com/ItsWewin/superfactory/logger"
-	"github.com/ItsWewin/superfactory/xerror"
 	"net/http"
 )
 
@@ -17,7 +17,7 @@ func HandlerResetPassword(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		logger.Errorf("params is invalid: %s", err.Error())
 
-		rest.FailJsonResponse(w, xerror.Code.CUnexpectRequestDate, err.Message)
+		rest.FailJsonResponse(w, aerror.Code.CUnexpectRequestDate, err.Message())
 		return
 	}
 
@@ -25,40 +25,40 @@ func HandlerResetPassword(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		logger.Errorf("reset password failed: %s", err.Error())
 
-		rest.FailJsonResponse(w, err.Code, err.Message)
+		rest.FailJsonResponse(w, err.Code(), err.Message())
 		return
 	}
 
 	rest.SucceedJsonResponse(w, "密码重置成功")
 }
 
-func resetPassword(ctx context.Context, req *europa.ResetPasswordRequest) *xerror.Error {
+func resetPassword(ctx context.Context, req *europa.ResetPasswordRequest) aerror.Error {
 	domain := passwordapp.NewDomain()
 
 	err := domain.SetResetPasswordInfo(req)
 	if err != nil {
-		return xerror.NewError(err, err.Code, "SetResetPasswordInfo failed. ")
+		return aerror.NewError(err, err.Code(), "SetResetPasswordInfo failed. ")
 	}
 
 	err = domain.SetUserModelInfo(ctx)
 	if err != nil {
-		return xerror.NewError(err, err.Code, "SetUserModelInfo failed. ")
+		return aerror.NewError(err, err.Code(), "SetUserModelInfo failed. ")
 	}
 
 	err = domain.ResetPassword(ctx, domain.ResetPasswordInfo.Password)
 	if err != nil {
-		return xerror.NewError(err, err.Code, "ResetPassword failed. ")
+		return aerror.NewError(err, err.Code(), "ResetPassword failed. ")
 	}
 
 	return nil
 }
 
-func getAndValidParams(r *http.Request) (*europa.ResetPasswordRequest, *xerror.Error) {
+func getAndValidParams(r *http.Request) (*europa.ResetPasswordRequest, aerror.Error) {
 	resetPasswordRequest := europa.ResetPasswordRequest{}
 
 	err := httputil.DecodeJsonBody(r, &resetPasswordRequest)
 	if err != nil {
-		return nil, xerror.NewError(err, xerror.Code.CParamsError, "decode request body failed")
+		return nil, aerror.NewError(err, aerror.Code.CParamsError, "decode request body failed")
 	}
 
 	xErr := resetPasswordRequest.Valid()

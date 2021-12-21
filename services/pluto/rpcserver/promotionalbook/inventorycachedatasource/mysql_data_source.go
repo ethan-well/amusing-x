@@ -3,7 +3,7 @@ package inventorycachedatasource
 import (
 	"amusingx.fit/amusingx/services/pluto/mysql/plutodb/model"
 	"context"
-	"github.com/ItsWewin/superfactory/xerror"
+	"github.com/ItsWewin/superfactory/aerror"
 )
 
 type MysqlDataSource struct {
@@ -13,7 +13,7 @@ func NewRedisDataSource() *MysqlDataSource {
 	return &MysqlDataSource{}
 }
 
-func (s *MysqlDataSource) GetInventories(ctx context.Context) (map[int64]int64, *xerror.Error) {
+func (s *MysqlDataSource) GetInventories(ctx context.Context) (map[int64]int64, aerror.Error) {
 	offset := 0
 	limit := 10000
 	idInventoryMap := make(map[int64]int64)
@@ -36,7 +36,7 @@ func (s *MysqlDataSource) GetInventories(ctx context.Context) (map[int64]int64, 
 	return idInventoryMap, nil
 }
 
-func (s *MysqlDataSource) GetInventoriesByID(ctx context.Context, bookID int64) (map[int64]int64, *xerror.Error) {
+func (s *MysqlDataSource) GetInventoriesByID(ctx context.Context, bookID int64) (map[int64]int64, aerror.Error) {
 	ivs, err := model.QueryBookInventoryByID(ctx, bookID)
 	if err != nil {
 		return nil, err

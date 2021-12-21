@@ -2,8 +2,8 @@ package europa
 
 import (
 	"amusingx.fit/amusingx/regexp"
+	"github.com/ItsWewin/superfactory/aerror"
 	"github.com/ItsWewin/superfactory/verificationcode/randomcode"
-	"github.com/ItsWewin/superfactory/xerror"
 	"strings"
 )
 
@@ -21,7 +21,7 @@ type JoinResponse struct {
 	Phone    string `json:"phone"`
 }
 
-func (r *JoinRequest) Valid() *xerror.Error {
+func (r *JoinRequest) Valid() aerror.Error {
 	r.Nickname = strings.TrimSpace(r.Nickname)
 	r.Password = strings.TrimSpace(r.Password)
 	r.AreaCode = strings.TrimSpace(r.AreaCode)
@@ -42,7 +42,7 @@ func (r *JoinRequest) Valid() *xerror.Error {
 
 	codeStore := randomcode.RandomCodeStoreInit()
 	if !codeStore.Check(r.VerificationCode) {
-		return xerror.NewError(nil, xerror.Code.CParamsError, "验证码错误")
+		return aerror.NewError(nil, aerror.Code.CParamsError, "验证码错误")
 	}
 
 	return nil

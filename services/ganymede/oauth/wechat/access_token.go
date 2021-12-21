@@ -3,9 +3,9 @@ package wechat
 import (
 	"amusingx.fit/amusingx/apistruct/wechat"
 	"amusingx.fit/amusingx/services/ganymede/oauth/oauthstruct"
+	"github.com/ItsWewin/superfactory/aerror"
 	"github.com/ItsWewin/superfactory/httputil"
 	"github.com/ItsWewin/superfactory/httputil/rest"
-	"github.com/ItsWewin/superfactory/xerror"
 	"net/url"
 )
 
@@ -23,7 +23,7 @@ func New(clientID, clientSecret, authorizationCode string) *OAuth {
 	}
 }
 
-func (o *OAuth) GetAccessToken(accessTokenUrl, code string) (*oauthstruct.AccessToken, *xerror.Error) {
+func (o *OAuth) GetAccessToken(accessTokenUrl, code string) (*oauthstruct.AccessToken, aerror.Error) {
 	var params = url.Values{}
 	params.Set("appid", o.ClientID)
 	params.Set("secret", o.ClientSecret)
@@ -32,7 +32,7 @@ func (o *OAuth) GetAccessToken(accessTokenUrl, code string) (*oauthstruct.Access
 
 	u, err := url.Parse(accessTokenUrl)
 	if err != nil {
-		return nil, xerror.NewErrorf(nil, xerror.Code.BUnexpectedData, "accessTokenUrl format err")
+		return nil, aerror.NewErrorf(nil, aerror.Code.BUnexpectedData, "accessTokenUrl format err")
 	}
 	u.RawQuery = params.Encode()
 
@@ -50,7 +50,7 @@ func (o *OAuth) GetAccessToken(accessTokenUrl, code string) (*oauthstruct.Access
 	}
 
 	if dest.IsError() {
-		return nil, xerror.NewErrorf(nil, xerror.Code.OtherNetworkError, dest.Errmsg)
+		return nil, aerror.NewErrorf(nil, aerror.Code.OtherNetworkError, dest.Errmsg)
 	}
 
 	return &oauthstruct.AccessToken{

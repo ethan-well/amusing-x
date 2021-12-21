@@ -6,10 +6,10 @@ import (
 	"amusingx.fit/amusingx/services/europa/model"
 	"amusingx.fit/amusingx/services/europa/rpcclient/callisto"
 	"context"
+	"github.com/ItsWewin/superfactory/aerror"
 	"github.com/ItsWewin/superfactory/httputil/rest"
 	"github.com/ItsWewin/superfactory/logger"
 	"github.com/ItsWewin/superfactory/verificationcode/randomcode"
-	"github.com/ItsWewin/superfactory/xerror"
 	"net/http"
 )
 
@@ -17,14 +17,14 @@ func HandlerVerificationCode(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
 	req, err := getAndValidParams(ctx, r)
 	if err != nil {
-		rest.FailJsonResponse(w, err.Code, err.Message)
+		rest.FailJsonResponse(w, err.Code(), err.Message())
 		return
 	}
 
 	err = riskControl(ctx, req.Phone)
 	if err != nil {
 		logger.Errorf("[HandlerVerificationCode] riskControl failed: %s", err)
-		rest.FailJsonResponse(w, err.Code, err.Message)
+		rest.FailJsonResponse(w, err.Code(), err.Message())
 		return
 	}
 
@@ -33,7 +33,7 @@ func HandlerVerificationCode(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		logger.Errorf("get and valid params failed, err: %s", err.Error())
 
-		rest.FailJsonResponse(w, xerror.Code.SUnexpectedErr, xerror.Message.ParamsError)
+		rest.FailJsonResponse(w, aerror.Code.SUnexpectedErr, aerror.Message.ParamsError)
 		return
 	}
 
@@ -42,7 +42,7 @@ func HandlerVerificationCode(w http.ResponseWriter, r *http.Request) {
 	go riskControlValueVerifyAdd(ctx, req.Phone)
 }
 
-func getAndValidParams(ctx context.Context, r *http.Request) (*europa.VerificationCodeRequest, *xerror.Error) {
+func getAndValidParams(ctx context.Context, r *http.Request) (*europa.VerificationCodeRequest, aerror.Error) {
 	request := &europa.VerificationCodeRequest{
 		Phone:    r.FormValue("phone"),
 		Action:   r.FormValue("action"),
@@ -64,29 +64,29 @@ func getAndValidParams(ctx context.Context, r *http.Request) (*europa.Verificati
 	case request.IsJoin():
 		existed, err := user.ExistedWithPhone(ctx)
 		if err != nil {
-			return nil, xerror.NewError(err, err.Code, "getAndValidParams failed")
+			return nil, aerror.NewError(err, err.Code(), "getAndValidParams failed")
 		}
 		if existed {
-			return nil, xerror.NewError(nil, xerror.Code.CParamsError, "phone is token")
+			return nil, aerror.NewError(nil, aerror.Code.CParamsError, "phone is token")
 		}
 
 		return request, nil
 	case request.IsLogin():
 		existed, err := user.ExistedWithPhone(ctx)
 		if err != nil {
-			return nil, xerror.NewError(err, err.Code, "getAndValidParams failed")
+			return nil, aerror.NewError(err, err.Code(), "getAndValidParams failed")
 		}
 		if !existed {
-			return nil, xerror.NewError(nil, xerror.Code.CParamsError, "phone number not join")
+			return nil, aerror.NewError(nil, aerror.Code.CParamsError, "phone number not join")
 		}
 	default:
-		return nil, xerror.NewError(nil, xerror.Code.CParamsError, "'action' is invalid")
+		return nil, aerror.NewError(nil, aerror.Code.CParamsError, "'action' is invalid")
 	}
 
 	return request, nil
 }
 
-func riskControl(ctx context.Context, phone string) *xerror.Error {
+func riskControl(ctx context.Context, phone string) aerror.Error {
 	req := &riskservice.LoginRiskRequest{
 		StrategyType: "verification_code",
 		Phone:        phone,
@@ -95,11 +95,11 @@ func riskControl(ctx context.Context, phone string) *xerror.Error {
 
 	reply, err := callisto.RPCClient.Client.LoginRiskControl(ctx, req)
 	if err != nil {
-		return xerror.NewError(err, xerror.Code.BUnexpectedData, "riskControl request risk control failed")
+		return aerror.NewError(err, aerror.Code.BUnexpectedData, "riskControl request risk control failed")
 	}
 
 	if !reply.Result {
-		return xerror.NewError(err, xerror.Code.BUnexpectedData, "不能使用验证码服务")
+		return aerror.NewError(err, aerror.Code.BUnexpectedData, "不能使用验证码服务")
 	}
 
 	return nil
@@ -114,13 +114,13 @@ func riskControlValueVerifyAdd(ctx context.Context, phone string) {
 
 	reply, err := callisto.RPCClient.Client.LoginRiskControl(ctx, req)
 	if err != nil {
-		err := xerror.NewError(err, xerror.Code.BUnexpectedData, "request risk control failed")
+		err := aerror.NewError(err, aerror.Code.BUnexpectedData, "request risk control failed")
 		logger.Errorf("riskControlValueVerifyAdd failed: %s", err.Error())
 		return
 	}
 
 	if !reply.Result {
-		err := xerror.NewError(err, xerror.Code.BUnexpectedData, "不能使用验证码服务")
+		err := aerror.NewError(err, aerror.Code.BUnexpectedData, "不能使用验证码服务")
 		logger.Errorf("riskControlValueVerifyAdd failed: %s", err.Error())
 		return
 	}
@@ -138,6 +138,6 @@ func HandlerVerificationCheck(w http.ResponseWriter, r *http.Request) {
 		rest.SucceedJsonResponse(w, "check succeed")
 		return
 	} else {
-		rest.FailJsonResponse(w, xerror.Code.CUnexpectRequestDate, "验证失败")
+		rest.FailJsonResponse(w, aerror.Code.CUnexpectRequestDate, "验证失败")
 	}
 }

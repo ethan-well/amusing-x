@@ -3,12 +3,12 @@ package github
 import (
 	"amusingx.fit/amusingx/apistruct/github"
 	"amusingx.fit/amusingx/services/ganymede/oauth/oauthstruct"
+	"github.com/ItsWewin/superfactory/aerror"
 	"github.com/ItsWewin/superfactory/httputil"
 	"github.com/ItsWewin/superfactory/httputil/rest"
-	"github.com/ItsWewin/superfactory/xerror"
 )
 
-func (c *OAuth) GetUserProfile(url string, accessToken string) (*oauthstruct.UserProfile, *xerror.Error) {
+func (c *OAuth) GetUserProfile(url string, accessToken string) (*oauthstruct.UserProfile, aerror.Error) {
 	opts := func(opts *rest.Options) {
 		opts.Header = map[string]string{
 			httputil.HeaderContent:       httputil.JsonHeaderContent,
@@ -19,7 +19,7 @@ func (c *OAuth) GetUserProfile(url string, accessToken string) (*oauthstruct.Use
 	var user github.UserProfile
 	err := rest.Get(url, &user, opts)
 	if err != nil {
-		return nil, xerror.NewErrorf(err, xerror.Code.OtherNetworkError, "get user profile failed")
+		return nil, aerror.NewErrorf(err, aerror.Code.OtherNetworkError, "get user profile failed")
 	}
 
 	return &oauthstruct.UserProfile{

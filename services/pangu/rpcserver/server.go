@@ -5,8 +5,8 @@ import (
 	"amusingx.fit/amusingx/services/pangu/conf"
 	"amusingx.fit/amusingx/services/pangu/rpcserver/panguserver"
 	"amusingx.fit/amusingx/services/pangu/rpcserver/servermiddleware"
+	"github.com/ItsWewin/superfactory/aerror"
 	"github.com/ItsWewin/superfactory/logger"
-	"github.com/ItsWewin/superfactory/xerror"
 	"github.com/grpc-ecosystem/go-grpc-middleware"
 	"google.golang.org/grpc"
 	"net"
@@ -18,7 +18,7 @@ type RPCService struct {
 
 var Server *RPCService
 
-func InitRPCServer() *xerror.Error {
+func InitRPCServer() aerror.Error {
 	defer func() {
 		if r := recover(); r != nil {
 			logger.Errorf("[InitRPCServer] server is panic")
@@ -40,7 +40,7 @@ func InitRPCServer() *xerror.Error {
 	lis, err := net.Listen(rpcConf.Network, rpcConf.Address)
 	if err != nil {
 		logger.Infof("net.Listen err: %s", err)
-		return xerror.NewErrorf(err, xerror.Code.SUnexpectedErr, "RPC Listen failed:  %s", err)
+		return aerror.NewErrorf(err, aerror.Code.SUnexpectedErr, "RPC Listen failed:  %s", err)
 	}
 
 	logger.Infof("net.Listen init succeed")
@@ -48,7 +48,7 @@ func InitRPCServer() *xerror.Error {
 	err = rpcServ.Serve(lis)
 	if err != nil {
 		logger.Errorf("RPC Server init err: %s", err)
-		return xerror.NewErrorf(err, xerror.Code.SUnexpectedErr, "RPC Server failed: %s", err)
+		return aerror.NewErrorf(err, aerror.Code.SUnexpectedErr, "RPC Server failed: %s", err)
 	}
 
 	logger.Infof("rpcServ.Serve succeed")

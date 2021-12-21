@@ -3,7 +3,7 @@ package ganymede
 import (
 	"amusingx.fit/amusingx/protos/ganymede/service"
 	"amusingx.fit/amusingx/rpcclient"
-	"github.com/ItsWewin/superfactory/xerror"
+	"github.com/ItsWewin/superfactory/aerror"
 	"google.golang.org/grpc"
 )
 
@@ -12,14 +12,14 @@ var (
 	Client ganymedeservice.GanymedeServiceClient
 )
 
-func InitClient(addr string) *xerror.Error {
+func InitClient(addr string) aerror.Error {
 	if Conn != nil {
 		return nil
 	}
 
-	var err *xerror.Error
+	var err aerror.Error
 	if len(addr) == 0 {
-		return xerror.NewErrorf(nil, xerror.Code.SUnexpectedErr, "addr is blank")
+		return aerror.NewErrorf(nil, aerror.Code.SUnexpectedErr, "addr is blank")
 	}
 
 	Conn, err = rpcclient.InitRPCClientConn(addr)

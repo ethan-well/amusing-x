@@ -4,14 +4,14 @@ import (
 	"amusingx.fit/amusingx/protos/pluto/service"
 	"amusingx.fit/amusingx/services/pluto/rpcserver/promotionalbook"
 	"context"
-	"github.com/ItsWewin/superfactory/xerror"
+	"github.com/ItsWewin/superfactory/aerror"
 )
 
 func (s *PlutoService) InventoryCacheInit(ctx context.Context, req *plutoservice.InventoryCacheInitRequest) (*plutoservice.InventoryCacheInitResponse, error) {
 	var promotionalObj PromotionalObj
 
 	if req == nil {
-		return nil, xerror.NewErrorf(nil, xerror.Code.CParamsError, "req is nil")
+		return nil, aerror.NewErrorf(nil, aerror.Code.CParamsError, "req is nil")
 	}
 
 	switch req.GetObj() {
@@ -20,7 +20,7 @@ func (s *PlutoService) InventoryCacheInit(ctx context.Context, req *plutoservice
 	case plutoservice.CacheObjType_Mac:
 		return &plutoservice.InventoryCacheInitResponse{Succeed: false, Message: "unsupported type"}, nil
 	default:
-		return nil, xerror.NewErrorf(nil, xerror.Code.CParamsError, "unexpected obj type")
+		return nil, aerror.NewErrorf(nil, aerror.Code.CParamsError, "unexpected obj type")
 	}
 
 	err := promotionalObj.InventoryCacheInit(ctx)

@@ -6,9 +6,9 @@ import (
 	"amusingx.fit/amusingx/services/europa/rpcclient/ganymede"
 	"amusingx.fit/amusingx/services/europa/session"
 	"context"
+	"github.com/ItsWewin/superfactory/aerror"
 	"github.com/ItsWewin/superfactory/httputil/rest"
 	"github.com/ItsWewin/superfactory/logger"
-	"github.com/ItsWewin/superfactory/xerror"
 	"net/http"
 )
 
@@ -18,7 +18,7 @@ func LoginAuthentication(f handlerFunc) handlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.Background()
 		if !authenticated(ctx, r) {
-			rest.FailJsonResponse(w, xerror.Code.CForbidden, xerror.Message.CForbidden)
+			rest.FailJsonResponse(w, aerror.Code.CForbidden, aerror.Message.CForbidden)
 			return
 		}
 

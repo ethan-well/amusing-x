@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/ItsWewin/superfactory/xerror"
+	"github.com/ItsWewin/superfactory/aerror"
 	"github.com/go-redis/redis/v8"
 	"time"
 )
@@ -17,7 +17,7 @@ type RedisStore struct {
 
 func InitRedisStore(addr, password string, db int, prefix string, maxLifeSecond int) (Store, error) {
 	if len(addr) == 0 {
-		return nil, xerror.NewError(nil, xerror.Code.BUnexpectedBlankVariable, "addr is blank")
+		return nil, aerror.NewError(nil, aerror.Code.BUnexpectedBlankVariable, "addr is blank")
 	}
 
 	client := redis.NewClient(&redis.Options{
@@ -31,7 +31,7 @@ func InitRedisStore(addr, password string, db int, prefix string, maxLifeSecond 
 
 func (r *RedisStore) SessionInit(ctx context.Context, sid string) (Session, error) {
 	if r.Client == nil {
-		return nil, xerror.NewError(nil, xerror.Code.BUnexpectedBlankVariable, "client is nil")
+		return nil, aerror.NewError(nil, aerror.Code.BUnexpectedBlankVariable, "client is nil")
 	}
 
 	return &RedisSession{
@@ -43,7 +43,7 @@ func (r *RedisStore) SessionInit(ctx context.Context, sid string) (Session, erro
 
 func (r *RedisStore) SessionRead(ctx context.Context, sid string) (Session, error) {
 	if r.Client == nil {
-		return nil, xerror.NewError(nil, xerror.Code.BUnexpectedBlankVariable, "client is nil")
+		return nil, aerror.NewError(nil, aerror.Code.BUnexpectedBlankVariable, "client is nil")
 	}
 
 	key := fmt.Sprintf("%s:%s", r.KeyPrefix, sid)
@@ -51,13 +51,13 @@ func (r *RedisStore) SessionRead(ctx context.Context, sid string) (Session, erro
 	cmd := r.Client.Get(ctx, key)
 	valueRaw, err := cmd.Result()
 	if err != nil {
-		return nil, xerror.NewError(nil, xerror.Code.SRedisExecuteErr, "get value failed")
+		return nil, aerror.NewError(nil, aerror.Code.SRedisExecuteErr, "get value failed")
 	}
 
 	var value map[string]interface{}
 	err = json.Unmarshal([]byte(valueRaw), &value)
 	if err != nil {
-		return nil, xerror.NewError(err, xerror.Code.SUnexpectedErr, "redis json unmarshal failed")
+		return nil, aerror.NewError(err, aerror.Code.SUnexpectedErr, "redis json unmarshal failed")
 	}
 
 	return &RedisSession{
@@ -68,14 +68,14 @@ func (r *RedisStore) SessionRead(ctx context.Context, sid string) (Session, erro
 
 func (r *RedisStore) SessionDestroy(ctx context.Context, sid string) error {
 	if r.Client == nil {
-		return xerror.NewError(nil, xerror.Code.BUnexpectedBlankVariable, "client is nil")
+		return aerror.NewError(nil, aerror.Code.BUnexpectedBlankVariable, "client is nil")
 	}
 
 	key := fmt.Sprintf("%s:%s", r.KeyPrefix, sid)
 
 	_, err := r.Client.Del(ctx, key).Result()
 	if err != nil {
-		return xerror.NewError(err, xerror.Code.SRedisExecuteErr, err.Error())
+		return aerror.NewError(err, aerror.Code.SRedisExecuteErr, err.Error())
 	}
 
 	return nil
@@ -83,19 +83,19 @@ func (r *RedisStore) SessionDestroy(ctx context.Context, sid string) error {
 
 func (r *RedisStore) SessionWrite(ctx context.Context, sid string, value interface{}) error {
 	if r.Client == nil {
-		return xerror.NewError(nil, xerror.Code.BUnexpectedBlankVariable, "client is nil")
+		return aerror.NewError(nil, aerror.Code.BUnexpectedBlankVariable, "client is nil")
 	}
 
 	key := fmt.Sprintf("%s:%s", r.KeyPrefix, sid)
 
 	bt, err := json.Marshal(value)
 	if err != nil {
-		return xerror.NewError(nil, xerror.Code.SUnexpectedErr, "json unmarshal failed")
+		return aerror.NewError(nil, aerror.Code.SUnexpectedErr, "json unmarshal failed")
 	}
 
 	_, err = r.Client.Set(ctx, key, string(bt), time.Duration(r.MaxLifeSecond)*time.Second).Result()
 	if err != nil {
-		return xerror.NewError(err, xerror.Code.SRedisExecuteErr, "redis set failed")
+		return aerror.NewError(err, aerror.Code.SRedisExecuteErr, "redis set failed")
 	}
 
 	return nil

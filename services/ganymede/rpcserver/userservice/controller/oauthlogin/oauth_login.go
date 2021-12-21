@@ -10,11 +10,11 @@ import (
 	"amusingx.fit/amusingx/services/ganymede/rpcserver/userservice/session"
 	session2 "amusingx.fit/amusingx/services/ganymede/session"
 	"context"
+	"github.com/ItsWewin/superfactory/aerror"
 	"github.com/ItsWewin/superfactory/logger"
-	"github.com/ItsWewin/superfactory/xerror"
 )
 
-func HandlerOAuthLogin(ctx context.Context, req *ganymedeservice.OAuthLoginRequest) (*ganymedeservice.OAuthLoginResponse, *xerror.Error) {
+func HandlerOAuthLogin(ctx context.Context, req *ganymedeservice.OAuthLoginRequest) (*ganymedeservice.OAuthLoginResponse, aerror.Error) {
 	err := getAndValidRequest(req)
 	if err != nil {
 		return nil, err
@@ -29,7 +29,7 @@ func HandlerOAuthLogin(ctx context.Context, req *ganymedeservice.OAuthLoginReque
 	return &ganymedeservice.OAuthLoginResponse{Result: true, LoginInfo: loginInfo}, nil
 }
 
-func getAndValidRequest(req *ganymedeservice.OAuthLoginRequest) *xerror.Error {
+func getAndValidRequest(req *ganymedeservice.OAuthLoginRequest) aerror.Error {
 	xErr := req.Valid()
 	if xErr != nil {
 		return xErr
@@ -38,7 +38,7 @@ func getAndValidRequest(req *ganymedeservice.OAuthLoginRequest) *xerror.Error {
 	return nil
 }
 
-func oauthLogin(ctx context.Context, req *ganymedeservice.OAuthLoginRequest) (*ganymedeservice.LoginInfo, *xerror.Error) {
+func oauthLogin(ctx context.Context, req *ganymedeservice.OAuthLoginRequest) (*ganymedeservice.LoginInfo, aerror.Error) {
 
 	var loginInfo = &ganymedeservice.LoginInfo{}
 
@@ -98,7 +98,7 @@ type LoginDomain struct {
 	Provider string
 }
 
-func getOauthConf(provider string) (clientID, clientSecret, redirectUrl, accessTokenUrl, refreshTokenUrl, userProfileUrl, grantType string, err *xerror.Error) {
+func getOauthConf(provider string) (clientID, clientSecret, redirectUrl, accessTokenUrl, refreshTokenUrl, userProfileUrl, grantType string, err aerror.Error) {
 	switch provider {
 	case oauthstruct.ProviderGitHub:
 		p := conf.Conf.OAuth.Github
@@ -122,15 +122,15 @@ func getOauthConf(provider string) (clientID, clientSecret, redirectUrl, accessT
 
 		return
 	default:
-		err = xerror.NewError(nil, xerror.Code.CParamsError, "provider is invalid")
+		err = aerror.NewError(nil, aerror.Code.CParamsError, "provider is invalid")
 		return
 	}
 }
 
-func saveUserInfo(ctx context.Context, provider, code string, token *oauthstruct.AccessToken, profile *oauthstruct.UserProfile) (*ganymede.User, *xerror.Error) {
+func saveUserInfo(ctx context.Context, provider, code string, token *oauthstruct.AccessToken, profile *oauthstruct.UserProfile) (*ganymede.User, aerror.Error) {
 	tx, err := model.GanymedeDB.Beginx()
 	if err != nil {
-		return nil, xerror.NewError(err, xerror.Code.SSqlExecuteErr, "bing tx failed")
+		return nil, aerror.NewError(err, aerror.Code.SSqlExecuteErr, "bing tx failed")
 	}
 	defer tx.Rollback()
 
@@ -188,13 +188,13 @@ func saveUserInfo(ctx context.Context, provider, code string, token *oauthstruct
 
 	err = tx.Commit()
 	if err != nil {
-		return nil, xerror.NewErrorf(err, xerror.Code.SSqlExecuteErr, "commit failed")
+		return nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "commit failed")
 	}
 
 	return user, nil
 }
 
-func setSession(ctx context.Context, userID int64) (string, *xerror.Error) {
+func setSession(ctx context.Context, userID int64) (string, aerror.Error) {
 	info := &session.Info{UserID: userID}
 
 	model := session.New()

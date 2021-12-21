@@ -2,7 +2,7 @@ package callisto
 
 import (
 	"amusingx.fit/amusingx/protos/callisto/service"
-	"github.com/ItsWewin/superfactory/xerror"
+	"github.com/ItsWewin/superfactory/aerror"
 	"google.golang.org/grpc"
 	"sync"
 )
@@ -15,9 +15,9 @@ type RPCServerClients struct {
 var RPCClient *RPCServerClients
 var once sync.Once
 
-func InitCallistoRPCClient(cc *grpc.ClientConn) *xerror.Error {
+func InitCallistoRPCClient(cc *grpc.ClientConn) aerror.Error {
 	if cc == nil {
-		return xerror.NewError(nil, xerror.Code.BUnexpectedData, "cc is nil")
+		return aerror.NewError(nil, aerror.Code.BUnexpectedData, "cc is nil")
 	}
 
 	CloseCallistoRPCClient()

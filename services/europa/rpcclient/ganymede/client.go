@@ -2,7 +2,7 @@ package ganymede
 
 import (
 	"amusingx.fit/amusingx/protos/ganymede/service"
-	"github.com/ItsWewin/superfactory/xerror"
+	"github.com/ItsWewin/superfactory/aerror"
 	"google.golang.org/grpc"
 	"sync"
 )
@@ -15,9 +15,9 @@ type UserRPCClient struct {
 var RPCClient *UserRPCClient
 var once sync.Once
 
-func InitGanymedeRPCClient(cc *grpc.ClientConn) *xerror.Error {
+func InitGanymedeRPCClient(cc *grpc.ClientConn) aerror.Error {
 	if cc == nil {
-		return xerror.NewError(nil, xerror.Code.BUnexpectedData, "cc is nil")
+		return aerror.NewError(nil, aerror.Code.BUnexpectedData, "cc is nil")
 	}
 
 	CloseGanymedePRCClient()

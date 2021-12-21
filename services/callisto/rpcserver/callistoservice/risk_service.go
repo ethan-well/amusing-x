@@ -4,7 +4,7 @@ import (
 	"amusingx.fit/amusingx/protos/callisto/service"
 	"amusingx.fit/amusingx/services/callisto/rpcserver/callistoservice/controller/verificationcoderisk"
 	"context"
-	"github.com/ItsWewin/superfactory/xerror"
+	"github.com/ItsWewin/superfactory/aerror"
 )
 
 type LoginRiskService struct {
@@ -13,12 +13,12 @@ type LoginRiskService struct {
 
 func (s *LoginRiskService) LoginRiskControl(ctx context.Context, req *riskservice.LoginRiskRequest) (*riskservice.LoginRiskReply, error) {
 	if req == nil {
-		return nil, xerror.NewError(nil, xerror.Code.CUnexpectRequestDate, "req is nil")
+		return nil, aerror.NewError(nil, aerror.Code.CUnexpectRequestDate, "req is nil")
 	}
 
 	err := verificationcoderisk.LoginRiskControl(ctx, req)
 	if err != nil {
-		return nil, xerror.NewError(err, err.Code, err.Message)
+		return nil, aerror.NewError(err, err.Code(), err.Message())
 	}
 
 	return &riskservice.LoginRiskReply{Result: true}, nil

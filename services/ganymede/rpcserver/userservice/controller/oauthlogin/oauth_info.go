@@ -6,13 +6,13 @@ import (
 	"amusingx.fit/amusingx/services/ganymede/oauth"
 	"amusingx.fit/amusingx/services/ganymede/oauth/oauthstruct"
 	"context"
-	"github.com/ItsWewin/superfactory/xerror"
+	"github.com/ItsWewin/superfactory/aerror"
 	"google.golang.org/grpc"
 )
 
 func HandlerGetOAuthInfo(ctx context.Context, in *ganymedeservice.OAuthInfoRequest, opts ...grpc.CallOption) (*ganymedeservice.OAuthInfoResponse, error) {
 	if in == nil {
-		return nil, xerror.NewError(nil, xerror.Code.CParamsError, "requst info is invalid")
+		return nil, aerror.NewError(nil, aerror.Code.CParamsError, "requst info is invalid")
 	}
 
 	if err := in.Valid(); err != nil {
@@ -48,6 +48,6 @@ func HandlerGetOAuthInfo(ctx context.Context, in *ganymedeservice.OAuthInfoReque
 			RedirectUrl: provider.RedirectUrl,
 		}, nil
 	default:
-		return nil, xerror.NewErrorf(err, xerror.Code.CParamsError, "provider '%s' is invalid", in.Provider)
+		return nil, aerror.NewErrorf(err, aerror.Code.CParamsError, "provider '%s' is invalid", in.Provider)
 	}
 }

@@ -3,9 +3,9 @@ package github
 import (
 	"amusingx.fit/amusingx/apistruct/github"
 	"amusingx.fit/amusingx/services/ganymede/oauth/oauthstruct"
+	"github.com/ItsWewin/superfactory/aerror"
 	"github.com/ItsWewin/superfactory/httputil"
 	"github.com/ItsWewin/superfactory/httputil/rest"
-	"github.com/ItsWewin/superfactory/xerror"
 )
 
 type OAuth struct {
@@ -23,7 +23,7 @@ func New(clientID, clientSecret, redirectUrl string) *OAuth {
 	}
 }
 
-func (c *OAuth) GetAccessToken(accessTokenUrl, code string) (*oauthstruct.AccessToken, *xerror.Error) {
+func (c *OAuth) GetAccessToken(accessTokenUrl, code string) (*oauthstruct.AccessToken, aerror.Error) {
 	req := github.AccessTokenRequest{
 		ClientID:     c.ClientID,
 		ClientSecret: c.ClientSecret,
@@ -41,11 +41,11 @@ func (c *OAuth) GetAccessToken(accessTokenUrl, code string) (*oauthstruct.Access
 	var dest github.AccessTokenResponse
 	_, err := rest.Post(accessTokenUrl, req, &dest, opts)
 	if err != nil {
-		return nil, xerror.NewErrorf(err, err.Code, err.Message)
+		return nil, aerror.NewErrorf(err, err.Code(), err.Message())
 	}
 
 	if dest.IsError() {
-		return nil, xerror.NewErrorf(nil, xerror.Code.OtherNetworkError, dest.ErrorDescription)
+		return nil, aerror.NewErrorf(nil, aerror.Code.OtherNetworkError, dest.ErrorDescription)
 	}
 
 	return &oauthstruct.AccessToken{

@@ -2,6 +2,7 @@ package main
 
 import (
 	"amusingx.fit/amusingx/services/charon/conf"
+	"amusingx.fit/amusingx/services/charon/mysql/charon"
 	"amusingx.fit/amusingx/services/charon/rpcserver"
 	"amusingx.fit/amusingx/services/charon/xredis"
 	"github.com/ItsWewin/superfactory/powertrain"
@@ -24,6 +25,8 @@ func main() {
 func InitFunc() {
 	redis0 := conf.Conf.Redis.RedisO
 	xredis.InitRedis(redis0.Addr, redis0.Password, redis0.DBNo)
+	charon.InitMySQL()
+
 	InitRPCServer()
 }
 

@@ -1,6 +1,6 @@
 package riskservice
 
-import "github.com/ItsWewin/superfactory/xerror"
+import "github.com/ItsWewin/superfactory/aerror"
 
 var StrategyType = []string{"verification_code"}
 
@@ -28,25 +28,25 @@ func (r *LoginRiskRequest) IsVerificationCodeStrategy() bool {
 	return r.StrategyType == "verification_code"
 }
 
-func (r *LoginRiskRequest) VerificationCodeStrategyRequestValid() *xerror.Error {
+func (r *LoginRiskRequest) VerificationCodeStrategyRequestValid() aerror.Error {
 	if len(r.Phone) == 0 {
-		return xerror.NewError(nil, xerror.Code.CParamsError, "params 'phone' is expected")
+		return aerror.NewError(nil, aerror.Code.CParamsError, "params 'phone' is expected")
 	}
 
 	if !r.IsValueAddAction() && !r.IsValueVerifyAction() {
-		return xerror.NewError(nil, xerror.Code.CParamsError, "params 'action' is expected")
+		return aerror.NewError(nil, aerror.Code.CParamsError, "params 'action' is expected")
 	}
 
 	return nil
 }
 
-func (r *LoginRiskRequest) Valid() *xerror.Error {
+func (r *LoginRiskRequest) Valid() aerror.Error {
 	if len(r.StrategyType) == 0 {
-		return xerror.NewError(nil, xerror.Code.CUnexpectRequestDate, "strategy_type is expected")
+		return aerror.NewError(nil, aerror.Code.CUnexpectRequestDate, "strategy_type is expected")
 	}
 
 	if !r.ValidStrategyType() {
-		return xerror.NewError(nil, xerror.Code.CParamsError, "strategy_type is invalid")
+		return aerror.NewError(nil, aerror.Code.CParamsError, "strategy_type is invalid")
 	}
 
 	if r.IsVerificationCodeStrategy() {

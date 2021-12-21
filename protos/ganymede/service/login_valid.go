@@ -2,7 +2,7 @@ package ganymedeservice
 
 import (
 	"amusingx.fit/amusingx/regexp"
-	"github.com/ItsWewin/superfactory/xerror"
+	"github.com/ItsWewin/superfactory/aerror"
 )
 
 func (req *LoginRequest) LoginByPassword() bool {
@@ -13,9 +13,9 @@ func (req *LoginRequest) LoginByVerificationCode() bool {
 	return req.Type == 1
 }
 
-func (req *LoginRequest) Valid() *xerror.Error {
+func (req *LoginRequest) Valid() aerror.Error {
 	if req.Type != 0 && req.Type != 1 {
-		return xerror.NewError(nil, xerror.Code.CParamsError, "Type is invalid. ")
+		return aerror.NewError(nil, aerror.Code.CParamsError, "Type is invalid. ")
 	}
 
 	if err := regexp.PhoneNumberValid(req.Phone); err != nil {

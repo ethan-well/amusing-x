@@ -6,13 +6,13 @@ import (
 	"amusingx.fit/amusingx/services/europa/xredis/lock"
 	"context"
 	"fmt"
+	"github.com/ItsWewin/superfactory/aerror"
 	"github.com/ItsWewin/superfactory/logger"
-	"github.com/ItsWewin/superfactory/xerror"
 )
 
-func CreateUser(ctx context.Context, u *europa.JoinRequest) (*model.User, *xerror.Error) {
+func CreateUser(ctx context.Context, u *europa.JoinRequest) (*model.User, aerror.Error) {
 	var (
-		err  *xerror.Error
+		err  aerror.Error
 		user = &model.User{
 			Nickname: u.Nickname,
 			Phone:    fmt.Sprintf("%s-%s", u.AreaCode, u.Phone),
@@ -28,7 +28,7 @@ func CreateUser(ctx context.Context, u *europa.JoinRequest) (*model.User, *xerro
 	if err := locker.Lock(ctx); err != nil {
 		logger.Errorf("\nlock failed: %s\n", err)
 
-		return nil, xerror.NewError(err, xerror.Code.SGetLockeErr, "Try again. ")
+		return nil, aerror.NewError(err, aerror.Code.SGetLockeErr, "Try again. ")
 	}
 	// 释放锁
 	defer locker.Unlock(ctx)
@@ -39,7 +39,7 @@ func CreateUser(ctx context.Context, u *europa.JoinRequest) (*model.User, *xerro
 	}
 
 	if existed {
-		return nil, xerror.NewError(err, xerror.Code.BDataIsNotAllow, "Phone or nickname is taken. ")
+		return nil, aerror.NewError(err, aerror.Code.BDataIsNotAllow, "Phone or nickname is taken. ")
 	}
 
 	user, err = model.Create(ctx, user)

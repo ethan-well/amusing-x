@@ -2,7 +2,7 @@ package regexp
 
 import (
 	"fmt"
-	"github.com/ItsWewin/superfactory/xerror"
+	"github.com/ItsWewin/superfactory/aerror"
 	"regexp"
 	"unicode"
 )
@@ -55,61 +55,61 @@ var AllRegexps = []*Regexp{
 	},
 }
 
-func PhoneNumberValid(phone string) *xerror.Error {
+func PhoneNumberValid(phone string) aerror.Error {
 	matched, err := regexp.MatchString(PhoneRegex, phone)
 	if err != nil {
-		return xerror.NewError(err, xerror.Code.SUnexpectedErr, "Unexpected error. ")
+		return aerror.NewError(err, aerror.Code.SUnexpectedErr, "Unexpected error. ")
 	}
 
 	if !matched {
 		msg := fmt.Sprintf("Phone number is invalid, expected regex: %s but get: %s", PhoneRegex, phone)
-		return xerror.NewError(nil, xerror.Code.CParamsError, msg)
+		return aerror.NewError(nil, aerror.Code.CParamsError, msg)
 	}
 
 	return nil
 }
 
-func AreaCodeValid(areaCode string) *xerror.Error {
+func AreaCodeValid(areaCode string) aerror.Error {
 	matched, err := regexp.MatchString(AreaRegex, areaCode)
 	if err != nil {
-		return xerror.NewError(err, xerror.Code.SUnexpectedErr, "Unexpected error. ")
+		return aerror.NewError(err, aerror.Code.SUnexpectedErr, "Unexpected error. ")
 	}
 
 	if !matched {
 		msg := fmt.Sprintf("area code is invalid, expected regex: %s but code: %s", AreaRegex, areaCode)
-		return xerror.NewError(err, xerror.Code.CParamsError, msg)
+		return aerror.NewError(err, aerror.Code.CParamsError, msg)
 	}
 
 	return nil
 }
 
-func NicknameValid(nickname string) *xerror.Error {
+func NicknameValid(nickname string) aerror.Error {
 	matched, err := regexp.MatchString(NicknameRegex, nickname)
 	if err != nil {
-		return xerror.NewError(err, xerror.Code.SUnexpectedErr, "Unexpected error. ")
+		return aerror.NewError(err, aerror.Code.SUnexpectedErr, "Unexpected error. ")
 	}
 
 	if !matched {
-		return xerror.NewError(err, xerror.Code.CParamsError, "昵称由 5 到 20 位字母、数字、下划线或者汉子组成")
+		return aerror.NewError(err, aerror.Code.CParamsError, "昵称由 5 到 20 位字母、数字、下划线或者汉子组成")
 	}
 
 	return nil
 }
 
-func VerificationCodeValid(code string) *xerror.Error {
+func VerificationCodeValid(code string) aerror.Error {
 	matched, err := regexp.MatchString(VerificationCodeRegex, code)
 	if err != nil {
-		return xerror.NewError(err, xerror.Code.SUnexpectedErr, "Unexpected error. ")
+		return aerror.NewError(err, aerror.Code.SUnexpectedErr, "Unexpected error. ")
 	}
 
 	if !matched {
-		return xerror.NewError(err, xerror.Code.CParamsError, "验证码不正确")
+		return aerror.NewError(err, aerror.Code.CParamsError, "验证码不正确")
 	}
 
 	return nil
 }
 
-func PasswordValid(str string) *xerror.Error {
+func PasswordValid(str string) aerror.Error {
 	var (
 		isUpper   = false
 		isLower   = false
@@ -118,7 +118,7 @@ func PasswordValid(str string) *xerror.Error {
 	)
 
 	if len(str) < 6 || len(str) > 16 {
-		return xerror.NewError(nil, xerror.Code.CParamsError,
+		return aerror.NewError(nil, aerror.Code.CParamsError,
 			"密码由 6-16 位字母、数字、特殊字符(~!@#$%^&*)组成，至少包含一个数字和字母")
 	}
 
@@ -140,6 +140,6 @@ func PasswordValid(str string) *xerror.Error {
 		return nil
 	}
 
-	return xerror.NewError(nil, xerror.Code.CParamsError,
+	return aerror.NewError(nil, aerror.Code.CParamsError,
 		"密码由 6-16 位字母、数字、特殊字符(~!@#$%^&*)组成，至少包含一个数字和字母")
 }

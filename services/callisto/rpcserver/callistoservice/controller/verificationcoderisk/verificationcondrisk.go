@@ -4,12 +4,12 @@ import (
 	"amusingx.fit/amusingx/protos/callisto/service"
 	"amusingx.fit/amusingx/services/callisto/rpcserver/callistoservice/model/verificationcontrolmodel"
 	"context"
-	"github.com/ItsWewin/superfactory/xerror"
+	"github.com/ItsWewin/superfactory/aerror"
 )
 
-func LoginRiskControl(ctx context.Context, req *riskservice.LoginRiskRequest) *xerror.Error {
+func LoginRiskControl(ctx context.Context, req *riskservice.LoginRiskRequest) aerror.Error {
 	if req == nil {
-		return xerror.NewError(nil, xerror.Code.CParamsError, "request is nil")
+		return aerror.NewError(nil, aerror.Code.CParamsError, "request is nil")
 	}
 
 	switch req.StrategyType {
@@ -17,10 +17,10 @@ func LoginRiskControl(ctx context.Context, req *riskservice.LoginRiskRequest) *x
 		return verificationCodeRiskControl(ctx, req)
 	}
 
-	return xerror.NewError(nil, xerror.Code.CUnexpectRequestDate, "strategy_type is invalid")
+	return aerror.NewError(nil, aerror.Code.CUnexpectRequestDate, "strategy_type is invalid")
 }
 
-func verificationCodeRiskControl(ctx context.Context, req *riskservice.LoginRiskRequest) *xerror.Error {
+func verificationCodeRiskControl(ctx context.Context, req *riskservice.LoginRiskRequest) aerror.Error {
 	verificationCodeModel := verificationcontrolmodel.NewModel()
 
 	err := verificationCodeModel.SetPhoneNumber(req.Phone)
@@ -46,13 +46,13 @@ func verificationCodeRiskControl(ctx context.Context, req *riskservice.LoginRisk
 		}
 
 		if !canUsed {
-			return xerror.NewError(nil, xerror.Code.BDataIsNotAllow, "不能使用验证码服务，可能是超过次数限制")
+			return aerror.NewError(nil, aerror.Code.BDataIsNotAllow, "不能使用验证码服务，可能是超过次数限制")
 		}
 
 		return nil
 	case req.IsValueAddAction():
 		return verificationCodeModel.VerificationUsedTimeAdd(ctx)
 	default:
-		return xerror.NewError(nil, xerror.Code.CUnexpectRequestDate, "非法封 action")
+		return aerror.NewError(nil, aerror.Code.CUnexpectRequestDate, "非法封 action")
 	}
 }

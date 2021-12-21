@@ -4,7 +4,7 @@ import (
 	riskservice2 "amusingx.fit/amusingx/protos/callisto/service"
 	"amusingx.fit/amusingx/services/callisto/conf"
 	"amusingx.fit/amusingx/services/callisto/rpcserver/callistoservice"
-	"github.com/ItsWewin/superfactory/xerror"
+	"github.com/ItsWewin/superfactory/aerror"
 	"google.golang.org/grpc"
 	"net"
 )
@@ -15,7 +15,7 @@ type RPCService struct {
 
 var Server *RPCService
 
-func InitRPCServer() *xerror.Error {
+func InitRPCServer() aerror.Error {
 	rpcServ := grpc.NewServer()
 
 	riskservice2.RegisterRiskServiceServer(rpcServ, new(callistoservice.LoginRiskService))
@@ -23,12 +23,12 @@ func InitRPCServer() *xerror.Error {
 	rpcConf := conf.Conf.Server.GrpcServer
 	lis, err := net.Listen(rpcConf.Network, rpcConf.Address)
 	if err != nil {
-		return xerror.NewErrorf(err, xerror.Code.SUnexpectedErr, "RPC Listen failed:  %s", err)
+		return aerror.NewErrorf(err, aerror.Code.SUnexpectedErr, "RPC Listen failed:  %s", err)
 	}
 
 	err = rpcServ.Serve(lis)
 	if err != nil {
-		return xerror.NewErrorf(err, xerror.Code.SUnexpectedErr, "RPC Server failed: %s", err)
+		return aerror.NewErrorf(err, aerror.Code.SUnexpectedErr, "RPC Server failed: %s", err)
 	}
 
 	Server = &RPCService{Server: rpcServ}

@@ -5,8 +5,8 @@ import (
 	"amusingx.fit/amusingx/services/pluto/xredis"
 	"context"
 	"fmt"
+	"github.com/ItsWewin/superfactory/aerror"
 	"github.com/ItsWewin/superfactory/logger"
-	"github.com/ItsWewin/superfactory/xerror"
 	"github.com/go-redis/redis/v8"
 	"strconv"
 )
@@ -27,20 +27,20 @@ func NewBookInventoryCache() *BookInventoryCache {
 	return &BookInventoryCache{key: booksInventoryCacheKey}
 }
 
-func (bc *BookInventoryCache) GetInventory(ctx context.Context, bookID int64) (int64, *xerror.Error) {
+func (bc *BookInventoryCache) GetInventory(ctx context.Context, bookID int64) (int64, aerror.Error) {
 	result := xredis.Client.HGet(ctx, bc.key, strconv.FormatInt(bookID, 10))
 
 	iv, err := result.Int64()
 	if err != nil {
-		return -1, xerror.NewErrorf(err, xerror.Code.SRedisExecuteErr, "")
+		return -1, aerror.NewErrorf(err, aerror.Code.SRedisExecuteErr, "")
 	}
 
 	return iv, nil
 }
 
-func (bc *BookInventoryCache) SetInventory(ctx context.Context, bookID int64, inventory ...int64) (int64, *xerror.Error) {
+func (bc *BookInventoryCache) SetInventory(ctx context.Context, bookID int64, inventory ...int64) (int64, aerror.Error) {
 	if xredis.Client == nil {
-		return -1, xerror.NewErrorf(nil, xerror.Code.SRedisExecuteErr, "redis client is nil")
+		return -1, aerror.NewErrorf(nil, aerror.Code.SRedisExecuteErr, "redis client is nil")
 	}
 
 	xredis.Client.Del(ctx, bc.key)
@@ -68,20 +68,20 @@ func (bc *BookInventoryCache) SetInventory(ctx context.Context, bookID int64, in
 
 	err := xredis.Client.HSet(ctx, bc.key, bookID, iv).Err()
 	if err != nil {
-		return -1, xerror.NewErrorf(err, xerror.Code.SRedisExecuteErr, "redis hset failed, key: %s, filed: %d, value: %d", bc.key, bookID, iv)
+		return -1, aerror.NewErrorf(err, aerror.Code.SRedisExecuteErr, "redis hset failed, key: %s, filed: %d, value: %d", bc.key, bookID, iv)
 	}
 
 	return iv, nil
 }
 
 // redis load: book inventory
-func (bc *BookInventoryCache) AllBookInventoryCacheInit(ctx context.Context) *xerror.Error {
+func (bc *BookInventoryCache) AllBookInventoryCacheInit(ctx context.Context) aerror.Error {
 	if xredis.Client == nil {
-		return xerror.NewErrorf(nil, xerror.Code.SRedisExecuteErr, "redis client is nil")
+		return aerror.NewErrorf(nil, aerror.Code.SRedisExecuteErr, "redis client is nil")
 	}
-	
+
 	xredis.Client.Del(ctx, bc.key)
-	
+
 	dataSource, xErr := inventorycachedatasource.NewDataSource(inventorycachedatasource.LocalVariableSource)
 	if xErr != nil {
 		return xErr
@@ -100,7 +100,7 @@ func (bc *BookInventoryCache) AllBookInventoryCacheInit(ctx context.Context) *xe
 
 	_, err := pipe.Exec(ctx)
 	if err != nil {
-		return xerror.NewErrorf(err, xerror.Code.SRedisExecuteErr, "Redis command exec failed")
+		return aerror.NewErrorf(err, aerror.Code.SRedisExecuteErr, "Redis command exec failed")
 	}
 
 	errMap := map[int64]error{}
@@ -112,13 +112,13 @@ func (bc *BookInventoryCache) AllBookInventoryCacheInit(ctx context.Context) *xe
 	}
 
 	if len(errMap) != 0 {
-		return xerror.NewErrorf(err, xerror.Code.SRedisExecuteErr, fmt.Sprintf("%v", errMap))
+		return aerror.NewErrorf(err, aerror.Code.SRedisExecuteErr, fmt.Sprintf("%v", errMap))
 	}
 
 	return nil
 }
 
-func (bc *BookInventoryCache) InventoryDecrBy(ctx context.Context, bookID int64, decr int) (int64, *xerror.Error) {
+func (bc *BookInventoryCache) InventoryDecrBy(ctx context.Context, bookID int64, decr int) (int64, aerror.Error) {
 	// -1 参数错误
 	// -2 库存不足
 	// >= 0 操作成功，返回剩余库存
@@ -140,25 +140,25 @@ end
 	cmd := xredis.Client.Eval(ctx, script, []string{bc.key}, bookID, decr)
 	r, err := cmd.Result()
 	if err != nil {
-		return 0, xerror.NewError(err, xerror.Code.SRedisExecuteErr, "减库存失败")
+		return 0, aerror.NewError(err, aerror.Code.SRedisExecuteErr, "减库存失败")
 	}
 	code, ok := r.(int64)
 	if !ok {
-		return 0, xerror.NewErrorf(err, xerror.Code.SRedisExecuteErr, "减库存失败")
+		return 0, aerror.NewErrorf(err, aerror.Code.SRedisExecuteErr, "减库存失败")
 	}
-	
+
 	switch code {
 	case InventoryDecrScriptCodeParamsErr:
-		return 0, xerror.NewErrorf(err, xerror.Code.SRedisExecuteErr, "参数错误")
+		return 0, aerror.NewErrorf(err, aerror.Code.SRedisExecuteErr, "参数错误")
 	case InventoryDecrScriptCodeInventoryShortage:
-		return 0, xerror.NewErrorf(err, xerror.Code.SRedisExecuteErr, "库存不足")
+		return 0, aerror.NewErrorf(err, aerror.Code.SRedisExecuteErr, "库存不足")
 	default:
 		logger.Infof("减库存成功，剩余库存 %d", code)
 		return code, nil
 	}
 }
 
-func (bc *BookInventoryCache) InventoryIncrBy(ctx context.Context, bookID int64, incr int) (int64, *xerror.Error) {
+func (bc *BookInventoryCache) InventoryIncrBy(ctx context.Context, bookID int64, incr int) (int64, aerror.Error) {
 	// -1 参数错误
 	// -2 库存不足
 	// >= 0 操作成功，返回剩余库存
@@ -179,18 +179,18 @@ return redis.call('HINCRBY', KEYS[1], ARGV[1], incr)
 	cmd := xredis.Client.Eval(ctx, script, []string{bc.key}, bookID, incr)
 	r, err := cmd.Result()
 	if err != nil {
-		return -1, xerror.NewError(err, xerror.Code.SRedisExecuteErr, "加库存失败")
+		return -1, aerror.NewError(err, aerror.Code.SRedisExecuteErr, "加库存失败")
 	}
 	code, ok := r.(int64)
 	if !ok {
-		return -1, xerror.NewErrorf(err, xerror.Code.SRedisExecuteErr, "加库存失败")
+		return -1, aerror.NewErrorf(err, aerror.Code.SRedisExecuteErr, "加库存失败")
 	}
 
 	switch code {
 	case InventoryDecrScriptCodeParamsErr:
-		return -1, xerror.NewErrorf(err, xerror.Code.SRedisExecuteErr, "参数错误")
+		return -1, aerror.NewErrorf(err, aerror.Code.SRedisExecuteErr, "参数错误")
 	case InventoryDecrScriptCodeInventoryShortage:
-		return -1, xerror.NewErrorf(err, xerror.Code.SRedisExecuteErr, "原本库存小于 0")
+		return -1, aerror.NewErrorf(err, aerror.Code.SRedisExecuteErr, "原本库存小于 0")
 	default:
 		return code, nil
 	}

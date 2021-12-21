@@ -3,8 +3,8 @@ package model
 import (
 	"amusingx.fit/amusingx/services/pluto/mysql"
 	"context"
+	"github.com/ItsWewin/superfactory/aerror"
 	"github.com/ItsWewin/superfactory/logger"
-	"github.com/ItsWewin/superfactory/xerror"
 	"time"
 )
 
@@ -18,7 +18,7 @@ type BookInventory struct {
 	UpdateTime         time.Time `db:"update_time"`
 }
 
-func QueryBookInventoryByLimit(ctx context.Context, offSet, limit int64) ([]*BookInventory, *xerror.Error) {
+func QueryBookInventoryByLimit(ctx context.Context, offSet, limit int64) ([]*BookInventory, aerror.Error) {
 	sqlStr := `SELECT id, book_id, real_inventory, available_inventory, locked_inventory
 		FROM book_inventory
 		ORDER BY id
@@ -32,13 +32,13 @@ func QueryBookInventoryByLimit(ctx context.Context, offSet, limit int64) ([]*Boo
 	var ivs []*BookInventory
 	err := mysql.PlutoDB.SelectContext(ctx, &ivs, sqlStr, offSet, limit)
 	if err != nil {
-		return nil, xerror.NewErrorf(err, xerror.Code.SSqlExecuteErr, "query book_inventory failed")
+		return nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "query book_inventory failed")
 	}
 
 	return ivs, nil
 }
 
-func QueryBookInventoryByID(ctx context.Context, bookID int64) (*BookInventory, *xerror.Error) {
+func QueryBookInventoryByID(ctx context.Context, bookID int64) (*BookInventory, aerror.Error) {
 	sqlStr := `SELECT id, book_id, real_inventory, available_inventory, locked_inventory
 		FROM book_inventory
 		where book_id = ?
@@ -51,7 +51,7 @@ func QueryBookInventoryByID(ctx context.Context, bookID int64) (*BookInventory, 
 	var ivs BookInventory
 	err := mysql.PlutoDB.GetContext(ctx, &ivs, sqlStr, bookID)
 	if err != nil {
-		return nil, xerror.NewErrorf(err, xerror.Code.SSqlExecuteErr, "query book_inventory failed")
+		return nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "query book_inventory failed")
 	}
 
 	return &ivs, nil

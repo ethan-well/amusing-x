@@ -2,7 +2,7 @@ package session
 
 import (
 	"context"
-	"github.com/ItsWewin/superfactory/xerror"
+	"github.com/ItsWewin/superfactory/aerror"
 )
 
 type RedisSession struct {
@@ -13,7 +13,7 @@ type RedisSession struct {
 
 func (s *RedisSession) Set(ctx context.Context, key string, value interface{}) error {
 	if len(s.Sid) == 0 {
-		return xerror.NewError(nil, xerror.Code.BUnexpectedBlankVariable, "session is not init")
+		return aerror.NewError(nil, aerror.Code.BUnexpectedBlankVariable, "session is not init")
 	}
 
 	if s.Value == nil {
@@ -33,13 +33,13 @@ func (s *RedisSession) Set(ctx context.Context, key string, value interface{}) e
 
 func (s *RedisSession) Get(ctx context.Context, key string) (interface{}, error) {
 	if len(s.Sid) == 0 {
-		return nil, xerror.NewError(nil, xerror.Code.BUnexpectedBlankVariable, "session is not init")
+		return nil, aerror.NewError(nil, aerror.Code.BUnexpectedBlankVariable, "session is not init")
 	}
 
 	if s.Value == nil {
 		session, err := s.Store.SessionRead(ctx, s.Sid)
 		if err != nil {
-			return nil, xerror.NewError(err, xerror.Code.SRedisExecuteErr, "sessionRead failed")
+			return nil, aerror.NewError(err, aerror.Code.SRedisExecuteErr, "sessionRead failed")
 		}
 
 		return session.(*RedisSession).Value[key], nil
@@ -50,7 +50,7 @@ func (s *RedisSession) Get(ctx context.Context, key string) (interface{}, error)
 
 func (s *RedisSession) Delete(ctx context.Context, key string) error {
 	if len(s.Sid) == 0 {
-		return xerror.NewError(nil, xerror.Code.BUnexpectedBlankVariable, "session is not init")
+		return aerror.NewError(nil, aerror.Code.BUnexpectedBlankVariable, "session is not init")
 	}
 
 	if s.Value != nil {

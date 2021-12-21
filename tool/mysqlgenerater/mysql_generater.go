@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/ItsWewin/superfactory/xerror"
+	"github.com/ItsWewin/superfactory/aerror"
 	"os"
 	"strings"
 	"time"
@@ -18,11 +18,11 @@ func main() {
 
 	err := ValidAndExecute(args)
 	if err != nil {
-		fmt.Println("execute failed", err.Message)
+		fmt.Println("execute failed", err.Message())
 	}
 }
 
-func ValidAndExecute(args []string) *xerror.Error {
+func ValidAndExecute(args []string) aerror.Error {
 	command := args[1]
 	object := args[2]
 	objectName := args[3]
@@ -33,11 +33,11 @@ func ValidAndExecute(args []string) *xerror.Error {
 	case CREATE:
 		return dealWith(command, object, objectName)
 	default:
-		return xerror.NewError(nil, xerror.Code.CParamsError, "unkown command")
+		return aerror.NewError(nil, aerror.Code.CParamsError, "unkown command")
 	}
 }
 
-func dealWith(command, object, objectName string) *xerror.Error {
+func dealWith(command, object, objectName string) aerror.Error {
 	c := newCreateCommand(command, object, objectName)
 	return c.Execute()
 }
@@ -56,26 +56,26 @@ func newCreateCommand(command, object, objectName string) *CreateCommand {
 	}
 }
 
-func (c *CreateCommand) Execute() *xerror.Error {
+func (c *CreateCommand) Execute() aerror.Error {
 	switch strings.ToUpper(c.Object) {
 	case TABLE:
 		return createTable(c.ObjectName)
 	default:
-		return xerror.NewErrorf(nil, xerror.Code.BUnexpectedData, "args is err")
+		return aerror.NewErrorf(nil, aerror.Code.BUnexpectedData, "args is err")
 	}
 
 	return nil
 }
 
-func createTable(table string) *xerror.Error {
+func createTable(table string) aerror.Error {
 	fileName := fmt.Sprintf("create_table_%s_%d.sql", table, time.Now().Unix())
 
 	if _, err := os.Stat(fileName); !os.IsNotExist(err) {
-		return xerror.NewError(nil, xerror.Code.SFileExisted, "file is existed")
+		return aerror.NewError(nil, aerror.Code.SFileExisted, "file is existed")
 	}
 
 	if _, err := os.Create(fileName); err != nil {
-		return xerror.NewErrorf(err, xerror.Code.BCreateFileFailed, "create failed failed")
+		return aerror.NewErrorf(err, aerror.Code.BCreateFileFailed, "create failed failed")
 	}
 
 	return nil

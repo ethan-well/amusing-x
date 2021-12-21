@@ -2,7 +2,7 @@ package europa
 
 import (
 	"amusingx.fit/amusingx/regexp"
-	"github.com/ItsWewin/superfactory/xerror"
+	"github.com/ItsWewin/superfactory/aerror"
 )
 
 type VerificationCodeRequest struct {
@@ -25,7 +25,7 @@ func (r *VerificationCodeRequest) IsJoin() bool {
 	return r.Action == join
 }
 
-func (r *VerificationCodeRequest) Valid() *xerror.Error {
+func (r *VerificationCodeRequest) Valid() aerror.Error {
 	if err := regexp.PhoneNumberValid(r.Phone); err != nil {
 		return err
 	}
@@ -42,7 +42,7 @@ func (r *VerificationCodeRequest) Valid() *xerror.Error {
 		}
 	}
 	if !actionValid {
-		return xerror.NewError(nil, xerror.Code.CParamsError, "'action' s is invalid")
+		return aerror.NewError(nil, aerror.Code.CParamsError, "'action' s is invalid")
 	}
 
 	return nil
