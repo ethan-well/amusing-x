@@ -2,14 +2,18 @@ syntax = "proto3";
 
 option go_package = "amusing-x.com/pangu/panguservice";
 
-package panguservice;
+//import "google/api/annotations.proto";
 
-service PanGuService {
-  rpc Pong(BlankParams) returns (PongResponse) {}
-}
+package panguservice;
 
 message BlankParams{}
 
 message PongResponse {
   string serverName = 1;
 }
+
+service PanGuService {
+  rpc Pong(BlankParams) returns (PongResponse) {
+  }
+}
+

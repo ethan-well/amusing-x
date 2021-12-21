@@ -5,6 +5,7 @@ import (
 	"amusingx.fit/amusingx/services/pangu/conf"
 	"amusingx.fit/amusingx/services/pangu/mysql/pangu"
 	"amusingx.fit/amusingx/services/pangu/router"
+	"amusingx.fit/amusingx/services/pangu/rpcserver"
 	"amusingx.fit/amusingx/services/pangu/xredis"
 	"github.com/ItsWewin/superfactory/powertrain"
 	_ "github.com/go-sql-driver/mysql"
@@ -15,7 +16,7 @@ func main() {
 	powertrain.Run(conf.Conf, func(o *powertrain.Options) {
 		o.InitFunc = InitFunc
 		o.DeferFunc = DeferFunc
-		o.InitHttpServer = true
+		o.InitHttpServer = false
 		o.RegisterRouter = func(mux *mux.Router) {
 			router.Register(mux)
 		}
@@ -31,10 +32,10 @@ func InitFunc() {
 	redis0 := conf.Conf.Redis.RedisO
 	xredis.InitRedis(redis0.Addr, redis0.Password, redis0.DBNo)
 
-	//err := rpcserver.InitRPCServer()
-	//if err != nil {
-	//	panic(err)
-	//}
+	err := rpcserver.InitRPCServer()
+	if err != nil {
+		panic(err)
+	}
 }
 
 // DeferFunc 服务执行完毕时候执行
