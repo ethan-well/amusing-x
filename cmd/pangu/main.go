@@ -1,11 +1,13 @@
 package main
 
 import (
+	"amusingx.fit/amusingx/rpcclient/charonclient"
 	pangu2 "amusingx.fit/amusingx/rpcclient/pangu"
 	"amusingx.fit/amusingx/services/pangu/conf"
 	"amusingx.fit/amusingx/services/pangu/mysql/pangu"
 	"amusingx.fit/amusingx/services/pangu/rpcserver"
 	"amusingx.fit/amusingx/services/pangu/xredis"
+	"github.com/ItsWewin/superfactory/logger"
 	"github.com/ItsWewin/superfactory/powertrain"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
@@ -31,7 +33,15 @@ func InitFunc() {
 	redis0 := conf.Conf.Redis.RedisO
 	xredis.InitRedis(redis0.Addr, redis0.Password, redis0.DBNo)
 
-	err := rpcserver.InitRPCServer()
+	logger.Infof("conf.Conf.GrpcClient.Charon.Addr: %s", conf.Conf.GrpcClient.Charon.Addr)
+	err := charonclient.InitClient(":20004")
+	if err != nil {
+		panic(err)
+	}
+
+	logger.Infof("ddddddddxxxxxxxxxx")
+
+	err = rpcserver.InitRPCServer()
 	if err != nil {
 		panic(err)
 	}

@@ -55,8 +55,8 @@ func _create(ctx context.Context, client charonservice.CharonServClient, w *sync
 		return
 	case <-ticker.C:
 		resp, err := client.Create(context.Background(), &charonservice.CategoryCreateRequest{
-			Name: "name 5",
-			Desc: "desc 5",
+			Name: "name 8",
+			Desc: "desc 8",
 		})
 		if err != nil {
 			fmt.Println(err)

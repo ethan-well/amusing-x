@@ -5,13 +5,13 @@ option go_package = "amusing-x.com/pangu/panguservice";
 package panguservice;
 
 message CategoryCreateRequest {
-  int64 ID = 1;
-  string Name = 2;
-  string Desc = 3;
+  int64 ID = 1 [json_name="id"];
+  string Name = 2 [json_name="name"];
+  string Desc = 3 [json_name="desc"];
 }
 
 message CategoryCreateResponse {
-  int64 ID = 1;
-  string Name = 2;
-  string Desc = 3;
+  int64 ID = 1 [json_name="id"];
+  string Name = 2 [json_name="name"];
+  string Desc = 3 [json_name="desc"];
 }
