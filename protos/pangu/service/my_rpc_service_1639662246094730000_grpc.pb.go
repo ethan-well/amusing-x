@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 type PanGuServiceClient interface {
 	Pong(ctx context.Context, in *BlankParams, opts ...grpc.CallOption) (*PongResponse, error)
 	CategoryCreate(ctx context.Context, in *CategoryCreateRequest, opts ...grpc.CallOption) (*CategoryCreateResponse, error)
+	CategoryList(ctx context.Context, in *CategoryListRequest, opts ...grpc.CallOption) (*CategoryListResponse, error)
 }
 
 type panGuServiceClient struct {
@@ -48,12 +49,22 @@ func (c *panGuServiceClient) CategoryCreate(ctx context.Context, in *CategoryCre
 	return out, nil
 }
 
+func (c *panGuServiceClient) CategoryList(ctx context.Context, in *CategoryListRequest, opts ...grpc.CallOption) (*CategoryListResponse, error) {
+	out := new(CategoryListResponse)
+	err := c.cc.Invoke(ctx, "/panguservice.PanGuService/CategoryList", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PanGuServiceServer is the server API for PanGuService service.
 // All implementations must embed UnimplementedPanGuServiceServer
 // for forward compatibility
 type PanGuServiceServer interface {
 	Pong(context.Context, *BlankParams) (*PongResponse, error)
 	CategoryCreate(context.Context, *CategoryCreateRequest) (*CategoryCreateResponse, error)
+	CategoryList(context.Context, *CategoryListRequest) (*CategoryListResponse, error)
 	mustEmbedUnimplementedPanGuServiceServer()
 }
 
@@ -66,6 +77,9 @@ func (UnimplementedPanGuServiceServer) Pong(context.Context, *BlankParams) (*Pon
 }
 func (UnimplementedPanGuServiceServer) CategoryCreate(context.Context, *CategoryCreateRequest) (*CategoryCreateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CategoryCreate not implemented")
+}
+func (UnimplementedPanGuServiceServer) CategoryList(context.Context, *CategoryListRequest) (*CategoryListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CategoryList not implemented")
 }
 func (UnimplementedPanGuServiceServer) mustEmbedUnimplementedPanGuServiceServer() {}
 
@@ -116,6 +130,24 @@ func _PanGuService_CategoryCreate_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PanGuService_CategoryList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CategoryListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PanGuServiceServer).CategoryList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/panguservice.PanGuService/CategoryList",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PanGuServiceServer).CategoryList(ctx, req.(*CategoryListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PanGuService_ServiceDesc is the grpc.ServiceDesc for PanGuService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -130,6 +162,10 @@ var PanGuService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CategoryCreate",
 			Handler:    _PanGuService_CategoryCreate_Handler,
+		},
+		{
+			MethodName: "CategoryList",
+			Handler:    _PanGuService_CategoryList_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -5,10 +5,12 @@ option go_package = "amusing-x.com/charon/charonservice";
 package charonservice;
 
 import "category.proto";
+import "categories.proto";
 
 service CharonServ {
   rpc Pong(BlankParams) returns (PongResponse) {}
   rpc Create(CategoryCreateRequest) returns (CategoryCreateResponse) {}
+  rpc Categories(CategoryListRequest) returns (CategoryListResponse) {}
 }
 
 message BlankParams{}

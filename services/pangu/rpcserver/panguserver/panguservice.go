@@ -18,6 +18,19 @@ func (s *PanguServer) Pong(ctx context.Context, in *panguservice.BlankParams) (*
 }
 
 func (s *PanguServer) CategoryCreate(ctx context.Context, in *panguservice.CategoryCreateRequest) (*panguservice.CategoryCreateResponse, error) {
-	logger.Errorf("info: %s", logger.ToJson(in))
+	if err := in.Valid(); err != nil {
+		return nil, err
+	}
+
 	return category.HandlerCreateCategoryCreate(ctx, in)
+}
+
+func (s *PanguServer) CategoryList(ctx context.Context, in *panguservice.CategoryListRequest) (*panguservice.CategoryListResponse, error) {
+	logger.Infof("xxxxxxx: %s", logger.ToJson(in))
+
+	if err := in.Valid(); err != nil {
+		return nil, err
+	}
+
+	return category.HandlerCategoryList(ctx, in)
 }

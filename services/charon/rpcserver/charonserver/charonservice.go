@@ -23,3 +23,7 @@ func (s *CharonServer) Create(ctx context.Context, in *charonservice.CategoryCre
 
 	return category.HandlerCreateCategory(ctx, in)
 }
+
+func (s *CharonServer) Categories(ctx context.Context, in *charonservice.CategoryListRequest) (*charonservice.CategoryListResponse, error) {
+	return category.HandlerCategoryList(ctx, in)
+}

@@ -4,6 +4,7 @@ option go_package = "amusing-x.com/pangu/panguservice";
 
 import "google/api/annotations.proto";
 import "category_create.proto";
+import "category_list.proto";
 
 package panguservice;
 
@@ -24,6 +25,12 @@ service PanGuService {
     option (google.api.http) = {
       post: "/v1/pangu/category"
       body: "*"
+    };
+  }
+
+  rpc CategoryList(CategoryListRequest) returns (CategoryListResponse) {
+    option(google.api.http) = {
+      get: "/v1/pangu/categories"
     };
   }
 }

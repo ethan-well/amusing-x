@@ -22,3 +22,26 @@ func TestInsetCategory(t *testing.T) {
 
 	t.Logf("category: %s", logger.ToJson(category))
 }
+
+func TestCategoryQuery(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip current func")
+	}
+
+	charon.Mock()
+	var (
+		ctx          = context.Background()
+		id     int64 = 0
+		name         = ""
+		desc         = ""
+		offSet int64 = 1
+		limit  int64 = 2
+	)
+	category, total, err := CategoryQuery(ctx, id, name, desc, offSet, limit)
+	if err != nil {
+		t.Fatalf("some err: %s", err)
+	}
+
+	t.Logf("total: %d", total)
+	t.Logf("category: %s", logger.ToJson(category))
+}
