@@ -6,11 +6,13 @@ package charonservice;
 
 import "category.proto";
 import "categories.proto";
+import "category_delete.proto";
 
 service CharonServ {
   rpc Pong(BlankParams) returns (PongResponse) {}
   rpc Create(CategoryCreateRequest) returns (CategoryCreateResponse) {}
   rpc Categories(CategoryListRequest) returns (CategoryListResponse) {}
+  rpc Delete(CategoryDeleteRequest) returns (CategoryDeleteResponse) {}
 }
 
 message BlankParams{}

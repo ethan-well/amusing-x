@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+option go_package = "amusing-x.com/charon/charonservice";
+
+package charonservice;
+
+message CategoryDeleteRequest {
+  repeated int64 ids = 1;
+}
+
+message CategoryDeleteResponse {
+  bool succeed = 1;
+}
