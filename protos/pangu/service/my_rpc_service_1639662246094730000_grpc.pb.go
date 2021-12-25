@@ -21,6 +21,7 @@ type PanGuServiceClient interface {
 	Pong(ctx context.Context, in *BlankParams, opts ...grpc.CallOption) (*PongResponse, error)
 	CategoryCreate(ctx context.Context, in *CategoryCreateRequest, opts ...grpc.CallOption) (*CategoryCreateResponse, error)
 	CategoryList(ctx context.Context, in *CategoryListRequest, opts ...grpc.CallOption) (*CategoryListResponse, error)
+	CategoryDelete(ctx context.Context, in *CategoryDeleteRequest, opts ...grpc.CallOption) (*CategoryDeleteResponse, error)
 }
 
 type panGuServiceClient struct {
@@ -58,6 +59,15 @@ func (c *panGuServiceClient) CategoryList(ctx context.Context, in *CategoryListR
 	return out, nil
 }
 
+func (c *panGuServiceClient) CategoryDelete(ctx context.Context, in *CategoryDeleteRequest, opts ...grpc.CallOption) (*CategoryDeleteResponse, error) {
+	out := new(CategoryDeleteResponse)
+	err := c.cc.Invoke(ctx, "/panguservice.PanGuService/CategoryDelete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PanGuServiceServer is the server API for PanGuService service.
 // All implementations must embed UnimplementedPanGuServiceServer
 // for forward compatibility
@@ -65,6 +75,7 @@ type PanGuServiceServer interface {
 	Pong(context.Context, *BlankParams) (*PongResponse, error)
 	CategoryCreate(context.Context, *CategoryCreateRequest) (*CategoryCreateResponse, error)
 	CategoryList(context.Context, *CategoryListRequest) (*CategoryListResponse, error)
+	CategoryDelete(context.Context, *CategoryDeleteRequest) (*CategoryDeleteResponse, error)
 	mustEmbedUnimplementedPanGuServiceServer()
 }
 
@@ -80,6 +91,9 @@ func (UnimplementedPanGuServiceServer) CategoryCreate(context.Context, *Category
 }
 func (UnimplementedPanGuServiceServer) CategoryList(context.Context, *CategoryListRequest) (*CategoryListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CategoryList not implemented")
+}
+func (UnimplementedPanGuServiceServer) CategoryDelete(context.Context, *CategoryDeleteRequest) (*CategoryDeleteResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CategoryDelete not implemented")
 }
 func (UnimplementedPanGuServiceServer) mustEmbedUnimplementedPanGuServiceServer() {}
 
@@ -148,6 +162,24 @@ func _PanGuService_CategoryList_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PanGuService_CategoryDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CategoryDeleteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PanGuServiceServer).CategoryDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/panguservice.PanGuService/CategoryDelete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PanGuServiceServer).CategoryDelete(ctx, req.(*CategoryDeleteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PanGuService_ServiceDesc is the grpc.ServiceDesc for PanGuService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -166,6 +198,10 @@ var PanGuService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CategoryList",
 			Handler:    _PanGuService_CategoryList_Handler,
+		},
+		{
+			MethodName: "CategoryDelete",
+			Handler:    _PanGuService_CategoryDelete_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

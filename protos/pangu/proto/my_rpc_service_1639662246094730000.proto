@@ -5,6 +5,7 @@ option go_package = "amusing-x.com/pangu/panguservice";
 import "google/api/annotations.proto";
 import "category_create.proto";
 import "category_list.proto";
+import "category_destroy.proto";
 
 package panguservice;
 
@@ -31,6 +32,12 @@ service PanGuService {
   rpc CategoryList(CategoryListRequest) returns (CategoryListResponse) {
     option(google.api.http) = {
       get: "/v1/pangu/categories"
+    };
+  }
+
+  rpc CategoryDelete(CategoryDeleteRequest) returns (CategoryDeleteResponse) {
+    option(google.api.http) = {
+      delete: "/v1/pangu/delete"
     };
   }
 }
