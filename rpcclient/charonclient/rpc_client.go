@@ -1,7 +1,7 @@
 package charonclient
 
 import (
-	"amusingx.fit/amusingx/protos/charons/service"
+	charonservice "amusingx.fit/amusingx/protos/charon/service/charon/proto"
 	"amusingx.fit/amusingx/rpcclient"
 	"github.com/ItsWewin/superfactory/aerror"
 	"google.golang.org/grpc"

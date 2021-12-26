@@ -1,7 +1,8 @@
 package category
 
 import (
-	charonservice "amusingx.fit/amusingx/protos/charons/service"
+	charonservice "amusingx.fit/amusingx/protos/charon/service/charon/proto"
+	"amusingx.fit/amusingx/services/charon/mysql/charon/model"
 	"amusingx.fit/amusingx/services/charon/rpcserver/controller/app/categoryapp"
 	"context"
 	"github.com/ItsWewin/superfactory/aerror"
@@ -21,4 +22,21 @@ func HandlerCreateCategory(ctx context.Context, request *charonservice.CategoryC
 	}
 
 	return resp, nil
+}
+
+func HandlerCategory(ctx context.Context, req *charonservice.CategoryRequest) (*charonservice.CategoryResponse, aerror.Error) {
+	if req.Id <= 0 {
+		return nil, aerror.NewErrorf(nil, aerror.Code.CParamsError, "params 'id' is invalid")
+	}
+
+	category, err := model.QueryCategoryByID(ctx, req.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	return &charonservice.CategoryResponse{Result: true, Category: &charonservice.Category{
+		Id:   category.ID,
+		Name: category.Name,
+		Desc: category.Desc,
+	}}, nil
 }

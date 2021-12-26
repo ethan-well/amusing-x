@@ -27,3 +27,7 @@ func (s *PanguServer) CategoryList(ctx context.Context, in *panguservice.Categor
 func (s *PanguServer) CategoryDelete(ctx context.Context, in *panguservice.CategoryDeleteRequest) (*panguservice.CategoryDeleteResponse, error) {
 	return category.HandlerCategoryDelete(ctx, in)
 }
+
+func (s *PanguServer) Category(ctx context.Context, in *panguservice.CategoryRequest) (*panguservice.CategoryResponse, error) {
+	return category.HandlerCategory(ctx, in)
+}

@@ -4,15 +4,16 @@ option go_package = "amusing-x.com/charon/charonservice";
 
 package charonservice;
 
-import "category.proto";
-import "categories.proto";
-import "category_delete.proto";
+import "charon/proto/category.proto";
+import "charon/proto/categories.proto";
+import "charon/proto/category_delete.proto";
 
 service CharonServ {
   rpc Pong(BlankParams) returns (PongResponse) {}
   rpc Create(CategoryCreateRequest) returns (CategoryCreateResponse) {}
   rpc Categories(CategoryListRequest) returns (CategoryListResponse) {}
   rpc Delete(CategoryDeleteRequest) returns (CategoryDeleteResponse) {}
+  rpc Category(CategoryRequest) returns (CategoryResponse) {}
 }
 
 message BlankParams{}

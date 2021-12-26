@@ -1,7 +1,7 @@
 package category
 
 import (
-	charonservice "amusingx.fit/amusingx/protos/charons/service"
+	charonservice "amusingx.fit/amusingx/protos/charon/service/charon/proto"
 	"amusingx.fit/amusingx/services/charon/mysql/charon/model"
 	"context"
 	"github.com/ItsWewin/superfactory/aerror"

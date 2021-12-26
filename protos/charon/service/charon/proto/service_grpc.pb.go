@@ -22,6 +22,7 @@ type CharonServClient interface {
 	Create(ctx context.Context, in *CategoryCreateRequest, opts ...grpc.CallOption) (*CategoryCreateResponse, error)
 	Categories(ctx context.Context, in *CategoryListRequest, opts ...grpc.CallOption) (*CategoryListResponse, error)
 	Delete(ctx context.Context, in *CategoryDeleteRequest, opts ...grpc.CallOption) (*CategoryDeleteResponse, error)
+	Category(ctx context.Context, in *CategoryRequest, opts ...grpc.CallOption) (*CategoryResponse, error)
 }
 
 type charonServClient struct {
@@ -68,6 +69,15 @@ func (c *charonServClient) Delete(ctx context.Context, in *CategoryDeleteRequest
 	return out, nil
 }
 
+func (c *charonServClient) Category(ctx context.Context, in *CategoryRequest, opts ...grpc.CallOption) (*CategoryResponse, error) {
+	out := new(CategoryResponse)
+	err := c.cc.Invoke(ctx, "/charonservice.CharonServ/Category", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CharonServServer is the server API for CharonServ service.
 // All implementations must embed UnimplementedCharonServServer
 // for forward compatibility
@@ -76,6 +86,7 @@ type CharonServServer interface {
 	Create(context.Context, *CategoryCreateRequest) (*CategoryCreateResponse, error)
 	Categories(context.Context, *CategoryListRequest) (*CategoryListResponse, error)
 	Delete(context.Context, *CategoryDeleteRequest) (*CategoryDeleteResponse, error)
+	Category(context.Context, *CategoryRequest) (*CategoryResponse, error)
 	mustEmbedUnimplementedCharonServServer()
 }
 
@@ -94,6 +105,9 @@ func (UnimplementedCharonServServer) Categories(context.Context, *CategoryListRe
 }
 func (UnimplementedCharonServServer) Delete(context.Context, *CategoryDeleteRequest) (*CategoryDeleteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+}
+func (UnimplementedCharonServServer) Category(context.Context, *CategoryRequest) (*CategoryResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Category not implemented")
 }
 func (UnimplementedCharonServServer) mustEmbedUnimplementedCharonServServer() {}
 
@@ -180,6 +194,24 @@ func _CharonServ_Delete_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CharonServ_Category_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CategoryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CharonServServer).Category(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/charonservice.CharonServ/Category",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CharonServServer).Category(ctx, req.(*CategoryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CharonServ_ServiceDesc is the grpc.ServiceDesc for CharonServ service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -203,7 +235,11 @@ var CharonServ_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "Delete",
 			Handler:    _CharonServ_Delete_Handler,
 		},
+		{
+			MethodName: "Category",
+			Handler:    _CharonServ_Category_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "service.proto",
+	Metadata: "charon/proto/service.proto",
 }

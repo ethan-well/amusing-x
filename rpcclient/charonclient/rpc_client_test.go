@@ -1,7 +1,7 @@
 package charonclient
 
 import (
-	"amusingx.fit/amusingx/protos/charons/service"
+	charonservice "amusingx.fit/amusingx/protos/charon/service/charon/proto"
 	"context"
 	"fmt"
 	"github.com/ItsWewin/superfactory/logger"
@@ -20,7 +20,8 @@ func TestInitClient(t *testing.T) {
 	go _ping(ctx, Client, &w)
 	//go _create(ctx, Client, &w)
 	//go _categories(ctx, Client, &w)
-	go _del(ctx, Client, &w)
+	//go _del(ctx, Client, &w)
+	go _category(ctx, Client, &w)
 
 	w.Wait()
 }
@@ -104,6 +105,25 @@ func _del(ctx context.Context, client charonservice.CharonServClient, w *sync.Wa
 		return
 	case <-ticker.C:
 		resp, err := client.Delete(context.Background(), &charonservice.CategoryDeleteRequest{Ids: []int64{1, 3, 4, 5}})
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		fmt.Printf("resp: %s", logger.ToJson(resp))
+	}
+}
+func _category(ctx context.Context, client charonservice.CharonServClient, w *sync.WaitGroup) {
+	defer w.Done()
+
+	ticker := time.NewTicker(1 * time.Second)
+	defer ticker.Stop()
+
+	select {
+	case <-ctx.Done():
+		fmt.Println("time out")
+		return
+	case <-ticker.C:
+		resp, err := client.Category(context.Background(), &charonservice.CategoryRequest{Id: 11})
 		if err != nil {
 			fmt.Println(err)
 		}

@@ -1,7 +1,7 @@
 package rpcserver
 
 import (
-	charonservice "amusingx.fit/amusingx/protos/charons/service"
+	charonservice "amusingx.fit/amusingx/protos/charon/service/charon/proto"
 	"amusingx.fit/amusingx/services/charon/conf"
 	"amusingx.fit/amusingx/services/charon/rpcserver/charonserver"
 	"amusingx.fit/amusingx/services/charon/rpcserver/servermiddleware"

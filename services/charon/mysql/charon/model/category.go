@@ -100,3 +100,18 @@ func Delete(ctx context.Context, ids []int64) aerror.Error {
 
 	return nil
 }
+
+func QueryCategoryByID(ctx context.Context, id int64) (*charon.Category, aerror.Error) {
+	sqlStr := `SELECT id, name, description FROM category WHERE id = ?`
+
+	var category charon.Category
+	err := charon2.CharonDB.GetContext(ctx, &category, sqlStr, id)
+	switch {
+	case err == sql.ErrNoRows:
+		return nil, nil
+	case err != nil:
+		return nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "select failed")
+	}
+
+	return &category, nil
+}

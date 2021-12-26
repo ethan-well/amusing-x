@@ -1,7 +1,7 @@
 package pangu
 
 import (
-	panguservice "amusingx.fit/amusingx/protos/pangu/service"
+	panguservice "amusingx.fit/amusingx/protos/pangu/service/pangu"
 	"amusingx.fit/amusingx/services/pangu/conf"
 	"amusingx.fit/amusingx/services/pangu/mysql/pangu"
 	"fmt"
@@ -23,7 +23,8 @@ func TestInitClient(t *testing.T) {
 	go _ping(ctx, Client, &w)
 	//go _create(ctx, Client, &w)
 	//go _categoryList(ctx, Client, &w)
-	go _del(ctx, Client, &w)
+	//go _del(ctx, Client, &w)
+	go _category(ctx, Client, &w)
 
 	w.Wait()
 }
@@ -107,6 +108,26 @@ func _del(ctx context.Context, client panguservice.PanGuServiceClient, w *sync.W
 		return
 	case <-ticker.C:
 		resp, err := client.CategoryDelete(context.Background(), &panguservice.CategoryDeleteRequest{Ids: []int64{1, 3, 4, 5, 6}})
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		fmt.Println("del succeed", resp)
+	}
+}
+
+func _category(ctx context.Context, client panguservice.PanGuServiceClient, w *sync.WaitGroup) {
+	defer w.Done()
+
+	ticker := time.NewTicker(1 * time.Second)
+	defer ticker.Stop()
+
+	select {
+	case <-ctx.Done():
+		fmt.Println("time out")
+		return
+	case <-ticker.C:
+		resp, err := client.Category(context.Background(), &panguservice.CategoryRequest{Id: 11})
 		if err != nil {
 			fmt.Println(err)
 		}

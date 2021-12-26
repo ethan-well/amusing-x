@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+option go_package = "amusing-x.com/charon/charonservice";
+
+package charonservice;
+
+message Category {
+  int64 id = 1;
+  string name = 2;
+  string desc = 3;
+}
+

@@ -60,3 +60,19 @@ func TestDelete(t *testing.T) {
 
 	t.Log("succeed")
 }
+
+func TestQueryCategoryByID(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip current func")
+	}
+
+	charon.Mock()
+	ctx := context.Background()
+
+	category, err := QueryCategoryByID(ctx, 11)
+	if err != nil {
+		t.Fatalf("err: %s", err)
+	}
+
+	t.Logf("category: %s", logger.ToJson(category))
+}

@@ -4,6 +4,8 @@ option go_package = "amusing-x.com/charon/charonservice";
 
 package charonservice;
 
+import "charon/proto/category_info.proto";
+
 message CategoryCreateRequest {
   string name = 1;
   string desc = 2;
@@ -14,4 +16,13 @@ message CategoryCreateResponse {
   int64 id = 2;
   string name = 3;
   string desc = 4;
+}
+
+message CategoryRequest {
+  int64 id = 1;
+}
+
+message CategoryResponse {
+  bool result = 1;
+  Category category = 2;
 }

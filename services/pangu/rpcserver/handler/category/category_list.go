@@ -1,7 +1,7 @@
 package category
 
 import (
-	charonservice "amusingx.fit/amusingx/protos/charons/service"
+	charonservice "amusingx.fit/amusingx/protos/charon/service/charon/proto"
 	panguservice "amusingx.fit/amusingx/protos/pangu/service/pangu"
 	"amusingx.fit/amusingx/rpcclient/charonclient"
 	"context"

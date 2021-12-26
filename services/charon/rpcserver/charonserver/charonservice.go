@@ -1,7 +1,7 @@
 package charonserver
 
 import (
-	"amusingx.fit/amusingx/protos/charons/service"
+	charonservice "amusingx.fit/amusingx/protos/charon/service/charon/proto"
 	"amusingx.fit/amusingx/services/charon/conf"
 	"amusingx.fit/amusingx/services/charon/rpcserver/controller/category"
 	"context"
@@ -30,4 +30,8 @@ func (s *CharonServer) Categories(ctx context.Context, in *charonservice.Categor
 
 func (s *CharonServer) Delete(ctx context.Context, in *charonservice.CategoryDeleteRequest) (*charonservice.CategoryDeleteResponse, error) {
 	return category.HandlerCategoryDelete(ctx, in)
+}
+
+func (s *CharonServer) Category(ctx context.Context, in *charonservice.CategoryRequest) (*charonservice.CategoryResponse, error) {
+	return category.HandlerCategory(ctx, in)
 }
