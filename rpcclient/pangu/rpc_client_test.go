@@ -24,7 +24,8 @@ func TestInitClient(t *testing.T) {
 	//go _create(ctx, Client, &w)
 	//go _categoryList(ctx, Client, &w)
 	//go _del(ctx, Client, &w)
-	go _category(ctx, Client, &w)
+	//go _category(ctx, Client, &w)
+	go _update(ctx, Client, &w)
 
 	w.Wait()
 }
@@ -133,5 +134,34 @@ func _category(ctx context.Context, client panguservice.PanGuServiceClient, w *s
 		}
 
 		fmt.Println("del succeed", resp)
+	}
+}
+
+func _update(ctx context.Context, client panguservice.PanGuServiceClient, w *sync.WaitGroup) {
+	defer w.Done()
+
+	ticker := time.NewTicker(1 * time.Second)
+	defer ticker.Stop()
+
+	select {
+	case <-ctx.Done():
+		fmt.Println("time out")
+		return
+	case <-ticker.C:
+		resp, err := client.CategoryUpdate(context.Background(),
+			&panguservice.CategoryUpdateRequest{Category: &panguservice.Category{
+				ID:   11,
+				Name: "new name update",
+				Desc: "new desc update",
+			}})
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		if !resp.Result {
+			fmt.Println("update failed")
+		} else {
+			fmt.Println("update succeed", resp)
+		}
 	}
 }
