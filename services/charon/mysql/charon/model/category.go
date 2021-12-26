@@ -115,3 +115,14 @@ func QueryCategoryByID(ctx context.Context, id int64) (*charon.Category, aerror.
 
 	return &category, nil
 }
+
+func UpdateCategory(ctx context.Context, category *charon.Category) aerror.Error {
+	sqlStr := `UPDATE category SET name = :name, description = :description WHERE id = :id`
+
+	_, err := charon2.CharonDB.NamedExecContext(ctx, sqlStr, category)
+	if err != nil {
+		return aerror.NewErrorf(nil, aerror.Code.BUnexpectedData, "update failed")
+	}
+
+	return nil
+}

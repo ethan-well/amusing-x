@@ -23,6 +23,7 @@ type CharonServClient interface {
 	Categories(ctx context.Context, in *CategoryListRequest, opts ...grpc.CallOption) (*CategoryListResponse, error)
 	Delete(ctx context.Context, in *CategoryDeleteRequest, opts ...grpc.CallOption) (*CategoryDeleteResponse, error)
 	Category(ctx context.Context, in *CategoryRequest, opts ...grpc.CallOption) (*CategoryResponse, error)
+	Update(ctx context.Context, in *CategoryUpdateRequest, opts ...grpc.CallOption) (*CategoryUpdateResponse, error)
 }
 
 type charonServClient struct {
@@ -78,6 +79,15 @@ func (c *charonServClient) Category(ctx context.Context, in *CategoryRequest, op
 	return out, nil
 }
 
+func (c *charonServClient) Update(ctx context.Context, in *CategoryUpdateRequest, opts ...grpc.CallOption) (*CategoryUpdateResponse, error) {
+	out := new(CategoryUpdateResponse)
+	err := c.cc.Invoke(ctx, "/charonservice.CharonServ/Update", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CharonServServer is the server API for CharonServ service.
 // All implementations must embed UnimplementedCharonServServer
 // for forward compatibility
@@ -87,6 +97,7 @@ type CharonServServer interface {
 	Categories(context.Context, *CategoryListRequest) (*CategoryListResponse, error)
 	Delete(context.Context, *CategoryDeleteRequest) (*CategoryDeleteResponse, error)
 	Category(context.Context, *CategoryRequest) (*CategoryResponse, error)
+	Update(context.Context, *CategoryUpdateRequest) (*CategoryUpdateResponse, error)
 	mustEmbedUnimplementedCharonServServer()
 }
 
@@ -108,6 +119,9 @@ func (UnimplementedCharonServServer) Delete(context.Context, *CategoryDeleteRequ
 }
 func (UnimplementedCharonServServer) Category(context.Context, *CategoryRequest) (*CategoryResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Category not implemented")
+}
+func (UnimplementedCharonServServer) Update(context.Context, *CategoryUpdateRequest) (*CategoryUpdateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
 }
 func (UnimplementedCharonServServer) mustEmbedUnimplementedCharonServServer() {}
 
@@ -212,6 +226,24 @@ func _CharonServ_Category_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CharonServ_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CategoryUpdateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CharonServServer).Update(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/charonservice.CharonServ/Update",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CharonServServer).Update(ctx, req.(*CategoryUpdateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CharonServ_ServiceDesc is the grpc.ServiceDesc for CharonServ service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -238,6 +270,10 @@ var CharonServ_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Category",
 			Handler:    _CharonServ_Category_Handler,
+		},
+		{
+			MethodName: "Update",
+			Handler:    _CharonServ_Update_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

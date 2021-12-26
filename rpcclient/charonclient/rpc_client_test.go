@@ -21,7 +21,8 @@ func TestInitClient(t *testing.T) {
 	//go _create(ctx, Client, &w)
 	//go _categories(ctx, Client, &w)
 	//go _del(ctx, Client, &w)
-	go _category(ctx, Client, &w)
+	//go _category(ctx, Client, &w)
+	go _update(ctx, Client, &w)
 
 	w.Wait()
 }
@@ -124,6 +125,27 @@ func _category(ctx context.Context, client charonservice.CharonServClient, w *sy
 		return
 	case <-ticker.C:
 		resp, err := client.Category(context.Background(), &charonservice.CategoryRequest{Id: 11})
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		fmt.Printf("resp: %s", logger.ToJson(resp))
+	}
+}
+
+func _update(ctx context.Context, client charonservice.CharonServClient, w *sync.WaitGroup) {
+	defer w.Done()
+
+	ticker := time.NewTicker(1 * time.Second)
+	defer ticker.Stop()
+
+	select {
+	case <-ctx.Done():
+		fmt.Println("time out")
+		return
+	case <-ticker.C:
+		resp, err := client.Update(context.Background(),
+			&charonservice.CategoryUpdateRequest{Category: &charonservice.Category{Id: 11, Name: "new name", Desc: "new desc"}})
 		if err != nil {
 			fmt.Println(err)
 		}

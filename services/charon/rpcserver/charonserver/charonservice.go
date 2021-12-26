@@ -35,3 +35,7 @@ func (s *CharonServer) Delete(ctx context.Context, in *charonservice.CategoryDel
 func (s *CharonServer) Category(ctx context.Context, in *charonservice.CategoryRequest) (*charonservice.CategoryResponse, error) {
 	return category.HandlerCategory(ctx, in)
 }
+
+func (s *CharonServer) Update(ctx context.Context, in *charonservice.CategoryUpdateRequest) (*charonservice.CategoryUpdateResponse, error) {
+	return category.HandlerUpdate(ctx, in)
+}

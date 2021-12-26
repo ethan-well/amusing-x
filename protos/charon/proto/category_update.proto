@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option go_package = "amusing-x.com/charon/charonservice";
+
+package charonservice;
+
+import "charon/proto/category_info.proto";
+
+message CategoryUpdateRequest {
+  Category Category = 1;
+}
+
+message CategoryUpdateResponse {
+  bool Result = 1;
+}
