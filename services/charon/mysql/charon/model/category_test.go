@@ -45,3 +45,18 @@ func TestCategoryQuery(t *testing.T) {
 	t.Logf("total: %d", total)
 	t.Logf("category: %s", logger.ToJson(category))
 }
+
+func TestDelete(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip current func")
+	}
+
+	charon.Mock()
+	ctx := context.Background()
+	err := Delete(ctx, []int64{1})
+	if err != nil {
+		t.Fatalf("some err: %s", err)
+	}
+
+	t.Log("succeed")
+}

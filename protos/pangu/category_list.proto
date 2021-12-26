@@ -4,6 +4,8 @@ option go_package = "amusing-x.com/pangu/panguservice";
 
 package panguservice;
 
+import "pangu/category_info.proto";
+
 message CategoryListRequest {
   string Query = 1 [json_name="query"];
   int64 Page = 2  [json_name="page"];
@@ -17,10 +19,3 @@ message CategoryListResponse {
   bool hasNext = 4 [json_name="has_next"];
   repeated Category Categories = 5 [json_name="categories"];
 }
-
-message Category {
-  int64 ID = 1 [json_name="id"];
-  string Name = 2 [json_name="name"];
-  string Desc = 3 [json_name="desc"];
-}
-

@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option go_package = "amusingx-com/protos/global/category;category";
+
+package global.category;
+
+message CategoryComm {
+  int64 ID = 1 [json_name="id"];
+  string Name = 2 [json_name="name"];
+  string Desc = 3 [json_name="desc"];
+}

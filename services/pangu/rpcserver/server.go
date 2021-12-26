@@ -1,7 +1,7 @@
 package rpcserver
 
 import (
-	"amusingx.fit/amusingx/protos/pangu/service"
+	panguservice "amusingx.fit/amusingx/protos/pangu/service/pangu"
 	"amusingx.fit/amusingx/services/pangu/conf"
 	"amusingx.fit/amusingx/services/pangu/rpcserver/panguserver"
 	"amusingx.fit/amusingx/services/pangu/rpcserver/servermiddleware"

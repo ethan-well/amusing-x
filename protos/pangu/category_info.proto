@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option go_package = "amusing-x.com/pangu/panguservice";
+
+package panguservice;
+
+message Category {
+  int64 ID = 1 [json_name="id"];
+  string Name = 2 [json_name="name"];
+  string Desc = 3 [json_name="desc"];
+}

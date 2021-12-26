@@ -39,8 +39,6 @@ func InitFunc() {
 		panic(err)
 	}
 
-	logger.Infof("ddddddddxxxxxxxxxx")
-
 	err = rpcserver.InitRPCServer()
 	if err != nil {
 		panic(err)

@@ -22,7 +22,8 @@ func TestInitClient(t *testing.T) {
 	w.Add(2)
 	go _ping(ctx, Client, &w)
 	//go _create(ctx, Client, &w)
-	go _categoryList(ctx, Client, &w)
+	//go _categoryList(ctx, Client, &w)
+	go _del(ctx, Client, &w)
 
 	w.Wait()
 }
@@ -91,5 +92,25 @@ func _categoryList(ctx context.Context, client panguservice.PanGuServiceClient, 
 		}
 
 		fmt.Println("pong succeed", resp)
+	}
+}
+
+func _del(ctx context.Context, client panguservice.PanGuServiceClient, w *sync.WaitGroup) {
+	defer w.Done()
+
+	ticker := time.NewTicker(1 * time.Second)
+	defer ticker.Stop()
+
+	select {
+	case <-ctx.Done():
+		fmt.Println("time out")
+		return
+	case <-ticker.C:
+		resp, err := client.CategoryDelete(context.Background(), &panguservice.CategoryDeleteRequest{Ids: []int64{1, 3, 4, 5, 6}})
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		fmt.Println("del succeed", resp)
 	}
 }

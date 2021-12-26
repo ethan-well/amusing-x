@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 type PanGuServiceClient interface {
 	Pong(ctx context.Context, in *BlankParams, opts ...grpc.CallOption) (*PongResponse, error)
 	CategoryCreate(ctx context.Context, in *CategoryCreateRequest, opts ...grpc.CallOption) (*CategoryCreateResponse, error)
+	Category(ctx context.Context, in *CategoryRequest, opts ...grpc.CallOption) (*CategoryResponse, error)
 	CategoryList(ctx context.Context, in *CategoryListRequest, opts ...grpc.CallOption) (*CategoryListResponse, error)
 	CategoryDelete(ctx context.Context, in *CategoryDeleteRequest, opts ...grpc.CallOption) (*CategoryDeleteResponse, error)
 }
@@ -50,6 +51,15 @@ func (c *panGuServiceClient) CategoryCreate(ctx context.Context, in *CategoryCre
 	return out, nil
 }
 
+func (c *panGuServiceClient) Category(ctx context.Context, in *CategoryRequest, opts ...grpc.CallOption) (*CategoryResponse, error) {
+	out := new(CategoryResponse)
+	err := c.cc.Invoke(ctx, "/panguservice.PanGuService/Category", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *panGuServiceClient) CategoryList(ctx context.Context, in *CategoryListRequest, opts ...grpc.CallOption) (*CategoryListResponse, error) {
 	out := new(CategoryListResponse)
 	err := c.cc.Invoke(ctx, "/panguservice.PanGuService/CategoryList", in, out, opts...)
@@ -74,6 +84,7 @@ func (c *panGuServiceClient) CategoryDelete(ctx context.Context, in *CategoryDel
 type PanGuServiceServer interface {
 	Pong(context.Context, *BlankParams) (*PongResponse, error)
 	CategoryCreate(context.Context, *CategoryCreateRequest) (*CategoryCreateResponse, error)
+	Category(context.Context, *CategoryRequest) (*CategoryResponse, error)
 	CategoryList(context.Context, *CategoryListRequest) (*CategoryListResponse, error)
 	CategoryDelete(context.Context, *CategoryDeleteRequest) (*CategoryDeleteResponse, error)
 	mustEmbedUnimplementedPanGuServiceServer()
@@ -88,6 +99,9 @@ func (UnimplementedPanGuServiceServer) Pong(context.Context, *BlankParams) (*Pon
 }
 func (UnimplementedPanGuServiceServer) CategoryCreate(context.Context, *CategoryCreateRequest) (*CategoryCreateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CategoryCreate not implemented")
+}
+func (UnimplementedPanGuServiceServer) Category(context.Context, *CategoryRequest) (*CategoryResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Category not implemented")
 }
 func (UnimplementedPanGuServiceServer) CategoryList(context.Context, *CategoryListRequest) (*CategoryListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CategoryList not implemented")
@@ -144,6 +158,24 @@ func _PanGuService_CategoryCreate_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PanGuService_Category_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CategoryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PanGuServiceServer).Category(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/panguservice.PanGuService/Category",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PanGuServiceServer).Category(ctx, req.(*CategoryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _PanGuService_CategoryList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CategoryListRequest)
 	if err := dec(in); err != nil {
@@ -196,6 +228,10 @@ var PanGuService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _PanGuService_CategoryCreate_Handler,
 		},
 		{
+			MethodName: "Category",
+			Handler:    _PanGuService_Category_Handler,
+		},
+		{
 			MethodName: "CategoryList",
 			Handler:    _PanGuService_CategoryList_Handler,
 		},
@@ -205,5 +241,5 @@ var PanGuService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "my_rpc_service_1639662246094730000.proto",
+	Metadata: "pangu/my_rpc_service_1639662246094730000.proto",
 }

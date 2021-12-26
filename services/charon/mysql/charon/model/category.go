@@ -7,6 +7,7 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/ItsWewin/superfactory/aerror"
+	"github.com/jmoiron/sqlx"
 	"strings"
 )
 
@@ -82,4 +83,20 @@ func CategoryQuery(ctx context.Context, id int64, name, desc string, offSet, lim
 	}
 
 	return categories, count, nil
+}
+
+func Delete(ctx context.Context, ids []int64) aerror.Error {
+	delSql := `DELETE FROM category WHERE id IN (?)`
+
+	delSql, args, err := sqlx.In(delSql, ids)
+	if err != nil {
+		return aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql in failed")
+	}
+
+	_, err = charon2.CharonDB.ExecContext(ctx, delSql, args...)
+	if err != nil {
+		return aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "del category failed")
+	}
+
+	return nil
 }

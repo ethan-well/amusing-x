@@ -19,7 +19,8 @@ func TestInitClient(t *testing.T) {
 	w.Add(2)
 	go _ping(ctx, Client, &w)
 	//go _create(ctx, Client, &w)
-	go _categories(ctx, Client, &w)
+	//go _categories(ctx, Client, &w)
+	go _del(ctx, Client, &w)
 
 	w.Wait()
 }
@@ -83,6 +84,26 @@ func _categories(ctx context.Context, client charonservice.CharonServClient, w *
 			Page:  1,
 			Limit: 10,
 		})
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		fmt.Printf("resp: %s", logger.ToJson(resp))
+	}
+}
+
+func _del(ctx context.Context, client charonservice.CharonServClient, w *sync.WaitGroup) {
+	defer w.Done()
+
+	ticker := time.NewTicker(1 * time.Second)
+	defer ticker.Stop()
+
+	select {
+	case <-ctx.Done():
+		fmt.Println("time out")
+		return
+	case <-ticker.C:
+		resp, err := client.Delete(context.Background(), &charonservice.CategoryDeleteRequest{Ids: []int64{1, 3, 4, 5}})
 		if err != nil {
 			fmt.Println(err)
 		}
