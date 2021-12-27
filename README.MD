@@ -13,3 +13,11 @@
 protoc-gen-go v1.26.0
 protoc        v3.12.3
 ```
+
+## 数据库部署
+
+
+## proto 编译
+```shell
+cd protos && make all
+```
