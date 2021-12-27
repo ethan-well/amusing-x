@@ -7,6 +7,7 @@ import (
 	"amusingx.fit/amusingx/services/ganymede/mysql/ganymededb/model"
 	"amusingx.fit/amusingx/services/ganymede/oauth"
 	"amusingx.fit/amusingx/services/ganymede/oauth/oauthstruct"
+	model2 "amusingx.fit/amusingx/services/ganymede/rpcserver/userservice/model"
 	"amusingx.fit/amusingx/services/ganymede/rpcserver/userservice/session"
 	session2 "amusingx.fit/amusingx/services/ganymede/session"
 	"context"
@@ -25,6 +26,8 @@ func HandlerOAuthLogin(ctx context.Context, req *ganymedeservice.OAuthLoginReque
 	if err != nil {
 		return &ganymedeservice.OAuthLoginResponse{Result: false}, err
 	}
+
+	model2.InitCurrentUser(loginInfo.UserInfo)
 
 	return &ganymedeservice.OAuthLoginResponse{Result: true, LoginInfo: loginInfo}, nil
 }
