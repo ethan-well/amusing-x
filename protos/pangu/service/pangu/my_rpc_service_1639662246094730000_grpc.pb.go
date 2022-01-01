@@ -24,6 +24,7 @@ type PanGuServiceClient interface {
 	CategoryList(ctx context.Context, in *CategoryListRequest, opts ...grpc.CallOption) (*CategoryListResponse, error)
 	CategoryDelete(ctx context.Context, in *CategoryDeleteRequest, opts ...grpc.CallOption) (*CategoryDeleteResponse, error)
 	CategoryUpdate(ctx context.Context, in *CategoryUpdateRequest, opts ...grpc.CallOption) (*CategoryUpdateResponse, error)
+	Login(ctx context.Context, in *OAuthLoginRequest, opts ...grpc.CallOption) (*OAuthLoginResponse, error)
 }
 
 type panGuServiceClient struct {
@@ -88,6 +89,15 @@ func (c *panGuServiceClient) CategoryUpdate(ctx context.Context, in *CategoryUpd
 	return out, nil
 }
 
+func (c *panGuServiceClient) Login(ctx context.Context, in *OAuthLoginRequest, opts ...grpc.CallOption) (*OAuthLoginResponse, error) {
+	out := new(OAuthLoginResponse)
+	err := c.cc.Invoke(ctx, "/panguservice.PanGuService/Login", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PanGuServiceServer is the server API for PanGuService service.
 // All implementations must embed UnimplementedPanGuServiceServer
 // for forward compatibility
@@ -98,6 +108,7 @@ type PanGuServiceServer interface {
 	CategoryList(context.Context, *CategoryListRequest) (*CategoryListResponse, error)
 	CategoryDelete(context.Context, *CategoryDeleteRequest) (*CategoryDeleteResponse, error)
 	CategoryUpdate(context.Context, *CategoryUpdateRequest) (*CategoryUpdateResponse, error)
+	Login(context.Context, *OAuthLoginRequest) (*OAuthLoginResponse, error)
 	mustEmbedUnimplementedPanGuServiceServer()
 }
 
@@ -122,6 +133,9 @@ func (UnimplementedPanGuServiceServer) CategoryDelete(context.Context, *Category
 }
 func (UnimplementedPanGuServiceServer) CategoryUpdate(context.Context, *CategoryUpdateRequest) (*CategoryUpdateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CategoryUpdate not implemented")
+}
+func (UnimplementedPanGuServiceServer) Login(context.Context, *OAuthLoginRequest) (*OAuthLoginResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
 }
 func (UnimplementedPanGuServiceServer) mustEmbedUnimplementedPanGuServiceServer() {}
 
@@ -244,6 +258,24 @@ func _PanGuService_CategoryUpdate_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PanGuService_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OAuthLoginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PanGuServiceServer).Login(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/panguservice.PanGuService/Login",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PanGuServiceServer).Login(ctx, req.(*OAuthLoginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PanGuService_ServiceDesc is the grpc.ServiceDesc for PanGuService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -274,6 +306,10 @@ var PanGuService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CategoryUpdate",
 			Handler:    _PanGuService_CategoryUpdate_Handler,
+		},
+		{
+			MethodName: "Login",
+			Handler:    _PanGuService_Login_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

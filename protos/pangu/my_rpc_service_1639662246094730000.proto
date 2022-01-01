@@ -8,6 +8,7 @@ import "pangu/category_list.proto";
 import "pangu/category_destroy.proto";
 import "pangu/category.proto";
 import "pangu/category_update.proto";
+import "pangu/login.proto";
 
 package panguservice;
 
@@ -45,13 +46,20 @@ service PanGuService {
 
   rpc CategoryDelete(CategoryDeleteRequest) returns (CategoryDeleteResponse) {
     option(google.api.http) = {
-      delete: "/v1/pangu/delete"
+      delete: "/v1/pangu/category/delete"
     };
   }
 
   rpc CategoryUpdate(CategoryUpdateRequest) returns (CategoryUpdateResponse) {
     option(google.api.http) = {
-      put: "/v1/pangu/update"
+      put: "/v1/pangu/category/update"
+      body: "*"
+    };
+  }
+
+  rpc Login(OAuthLoginRequest) returns (OAuthLoginResponse) {
+    option(google.api.http) = {
+      put: "/v1/pangu/oauth/login"
       body: "*"
     };
   }
