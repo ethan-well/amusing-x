@@ -7,7 +7,7 @@ import (
 	"github.com/ItsWewin/superfactory/set/intset"
 )
 
-func HavePermission(ctx context.Context, userID int64, action string) (bool, aerror.Error) {
+func Permission(ctx context.Context, userID int64, action string) (bool, aerror.Error) {
 	actionRoles, err := authentication.QueryRolesByAction(ctx, action)
 	if err != nil {
 		return false, err

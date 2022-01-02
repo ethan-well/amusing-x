@@ -40,6 +40,6 @@ func (u *User) GetUserInfoByID(ctx context.Context, id int64) (*ganymede.User, a
 }
 
 func (u *User) HavePermission(ctx context.Context, action string) bool {
-	ok, _ := authentication.HavePermission(ctx, u.UserInfo.ID, action)
+	ok, _ := authentication.Permission(ctx, u.UserInfo.ID, action)
 	return ok
 }

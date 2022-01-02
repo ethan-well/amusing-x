@@ -4,10 +4,10 @@ option go_package = "amusing-x.com/pluto/plutoservice";
 
 package plutoservice;
 
-import "inventory_query.proto";
-import "inventory_lock.proto";
-import "inventory_unlock.proto";
-import "inventory_cache_init.proto";
+import "pluto/inventory_query.proto";
+import "pluto/inventory_lock.proto";
+import "pluto/inventory_unlock.proto";
+import "pluto/inventory_cache_init.proto";
 
 service AmusingxPlutoService {
   rpc Pong(BlankParams) returns (PongResponse) {}

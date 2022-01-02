@@ -18,3 +18,10 @@ generate-charon:
               --grpc-gateway_out ./charon/service --grpc-gateway_opt paths=source_relative \
               ./charon/proto/*.proto
 
+genreate-pluto:
+	protoc -I . \
+              --go_out ./pluto/service \
+              --go_opt paths=source_relative \
+              --go-grpc_out ./pluto/service --go-grpc_opt paths=source_relative \
+              --grpc-gateway_out ./pluto/service --grpc-gateway_opt paths=source_relative \
+              ./pluto/*.proto

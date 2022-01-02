@@ -21,7 +21,7 @@ func TestHavePermission(t *testing.T) {
 
 	for e, r := range tester {
 		for u, a := range r {
-			ok, _ := HavePermission(context.Background(), u, a)
+			ok, _ := Permission(context.Background(), u, a)
 			if ok != e {
 				t.Logf("expected: %t, get: %t", e, ok)
 			}
