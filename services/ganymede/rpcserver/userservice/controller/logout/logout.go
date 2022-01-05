@@ -1,7 +1,7 @@
 package logout
 
 import (
-	ganymedeservice "amusingx.fit/amusingx/protos/ganymede/service"
+	ganymedeservice "amusingx.fit/amusingx/protos/ganymede/service/ganymede/proto"
 	"amusingx.fit/amusingx/services/ganymede/rpcserver/userservice/session"
 	"context"
 	"github.com/ItsWewin/superfactory/aerror"

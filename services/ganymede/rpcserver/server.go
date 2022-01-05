@@ -1,7 +1,7 @@
 package rpcserver
 
 import (
-	"amusingx.fit/amusingx/protos/ganymede/service"
+	"amusingx.fit/amusingx/protos/ganymede/service/ganymede/proto"
 	"amusingx.fit/amusingx/services/ganymede/conf"
 	"amusingx.fit/amusingx/services/ganymede/rpcserver/userservice"
 	"github.com/ItsWewin/superfactory/aerror"
@@ -17,8 +17,6 @@ type RPCService struct {
 var Server *RPCService
 
 func InitRPCService() aerror.Error {
-	logger.Infof("InitRPCService")
-
 	rpcService := grpc.NewServer()
 
 	ganymedeservice.RegisterGanymedeServiceServer(rpcService, new(userservice.UserService))
@@ -28,11 +26,9 @@ func InitRPCService() aerror.Error {
 	if err != nil {
 		return aerror.NewError(err, aerror.Code.SUnexpectedErr, "RPC net listen failed")
 	}
-	logger.Infof("Listen")
 
 	err = rpcService.Serve(lis)
 	if err != nil {
-		logger.Infof("Serve")
 		return aerror.NewError(err, aerror.Code.SUnexpectedErr, "RPC serve failed")
 	} else {
 		logger.Info("Init RPCService succeed")

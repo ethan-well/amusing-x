@@ -1,7 +1,7 @@
 package join
 
 import (
-	"amusingx.fit/amusingx/protos/ganymede/service"
+	"amusingx.fit/amusingx/protos/ganymede/service/ganymede/proto"
 	"amusingx.fit/amusingx/services/ganymede/rpcserver/userservice/app/joinapp"
 	"context"
 	"github.com/ItsWewin/superfactory/aerror"

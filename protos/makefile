@@ -24,4 +24,12 @@ genreate-pluto:
               --go_opt paths=source_relative \
               --go-grpc_out ./pluto/service --go-grpc_opt paths=source_relative \
               --grpc-gateway_out ./pluto/service --grpc-gateway_opt paths=source_relative \
-              ./pluto/*.proto
+              ./pluto/proto/*.proto
+
+genreate-ganymede:
+	protoc -I . \
+              --go_out ./ganymede/service \
+              --go_opt paths=source_relative \
+              --go-grpc_out ./ganymede/service --go-grpc_opt paths=source_relative \
+              --grpc-gateway_out ./ganymede/service --grpc-gateway_opt paths=source_relative \
+              ./ganymede/proto/*.proto

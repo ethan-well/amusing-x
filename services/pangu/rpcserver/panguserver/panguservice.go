@@ -4,6 +4,7 @@ import (
 	panguservice "amusingx.fit/amusingx/protos/pangu/service/pangu"
 	"amusingx.fit/amusingx/services/pangu/conf"
 	"amusingx.fit/amusingx/services/pangu/rpcserver/handler/category"
+	"amusingx.fit/amusingx/services/pangu/rpcserver/handler/login"
 	"context"
 )
 
@@ -34,4 +35,8 @@ func (s *PanguServer) Category(ctx context.Context, in *panguservice.CategoryReq
 
 func (s *PanguServer) CategoryUpdate(ctx context.Context, in *panguservice.CategoryUpdateRequest) (*panguservice.CategoryUpdateResponse, error) {
 	return category.HandlerCategoryUpdate(ctx, in)
+}
+
+func (s *PanguServer) Login(ctx context.Context, in *panguservice.OAuthLoginRequest) (*panguservice.OAuthLoginResponse, error) {
+	return login.HandlerLogin(ctx, in)
 }

@@ -15,7 +15,8 @@ type Config struct {
 }
 
 type GrpcClients struct {
-	Charon *GrpcClient `yaml:"charon"`
+	Charon   *GrpcClient `yaml:"charon"`
+	Ganymede *GrpcClient `yaml:"ganymede"`
 }
 
 type GrpcClient struct {

@@ -2,7 +2,7 @@ package oauth
 
 import (
 	"amusingx.fit/amusingx/apistruct/europa"
-	ganymedeservice "amusingx.fit/amusingx/protos/ganymede/service"
+	ganymedeservice "amusingx.fit/amusingx/protos/ganymede/service/ganymede/proto"
 	"amusingx.fit/amusingx/services/europa/rpcclient/ganymede"
 	"context"
 	"github.com/ItsWewin/superfactory/aerror"

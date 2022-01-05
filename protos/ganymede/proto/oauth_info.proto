@@ -16,4 +16,5 @@ message OAuthInfoResponse {
 
 message OAuthInfoRequest {
   string provider = 1;
+  string service = 2;
 }

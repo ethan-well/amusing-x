@@ -1,6 +1,8 @@
 package ganymedeservice
 
-import "github.com/ItsWewin/superfactory/aerror"
+import (
+	"github.com/ItsWewin/superfactory/aerror"
+)
 
 func (req *OAuthInfoRequest) Valid() aerror.Error {
 	if req == nil || len(req.Provider) == 0 {

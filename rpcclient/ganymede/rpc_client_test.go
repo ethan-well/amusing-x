@@ -1,7 +1,7 @@
 package ganymede
 
 import (
-	ganymedeservice "amusingx.fit/amusingx/protos/ganymede/service"
+	ganymedeservice "amusingx.fit/amusingx/protos/ganymede/service/ganymede/proto"
 	"context"
 	"fmt"
 	"sync"

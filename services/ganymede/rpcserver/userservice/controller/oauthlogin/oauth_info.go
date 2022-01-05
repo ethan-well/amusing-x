@@ -1,7 +1,7 @@
 package oauthlogin
 
 import (
-	ganymedeservice "amusingx.fit/amusingx/protos/ganymede/service"
+	ganymedeservice "amusingx.fit/amusingx/protos/ganymede/service/ganymede/proto"
 	"amusingx.fit/amusingx/services/ganymede/conf"
 	"amusingx.fit/amusingx/services/ganymede/oauth"
 	"amusingx.fit/amusingx/services/ganymede/oauth/oauthstruct"

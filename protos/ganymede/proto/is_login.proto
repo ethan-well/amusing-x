@@ -4,7 +4,7 @@ option  go_package = "amusing-x.com/ganymede/ganymedeservice";
 
 package ganymde;
 
-import "oauth_login.proto";
+import "ganymede/proto/oauth_login.proto";
 
 message IsLoginRequest {
   string sessionID = 1;

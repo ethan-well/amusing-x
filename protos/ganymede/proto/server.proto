@@ -4,17 +4,17 @@ option go_package="amusing-x.com/ganymede/ganymedeservice";
 
 package ganymde;
 
-import "regexp.proto";
-import "login.proto";
-import "join.proto";
-import "country_code.proto";
-import "verification_code.proto";
-import "verification_code_check.proto";
-import "reset_password.proto";
-import "oauth_login.proto";
-import "oauth_info.proto";
-import "is_login.proto";
-import "logout.proto";
+import "ganymede/proto/regexp.proto";
+import "ganymede/proto/login.proto";
+import "ganymede/proto/join.proto";
+import "ganymede/proto/country_code.proto";
+import "ganymede/proto/verification_code.proto";
+import "ganymede/proto/verification_code_check.proto";
+import "ganymede/proto/reset_password.proto";
+import "ganymede/proto/oauth_login.proto";
+import "ganymede/proto/oauth_info.proto";
+import "ganymede/proto/is_login.proto";
+import "ganymede/proto/logout.proto";
 
 service GanymedeService {
   rpc Pong(BlankParams) returns (PongResponse) {}

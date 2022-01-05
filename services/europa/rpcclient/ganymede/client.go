@@ -1,7 +1,7 @@
 package ganymede
 
 import (
-	"amusingx.fit/amusingx/protos/ganymede/service"
+	"amusingx.fit/amusingx/protos/ganymede/service/ganymede/proto"
 	"github.com/ItsWewin/superfactory/aerror"
 	"google.golang.org/grpc"
 	"sync"

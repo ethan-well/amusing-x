@@ -11,7 +11,8 @@ import (
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the grpc package it is being compiled against.
-const _ = grpc.SupportPackageIsVersion6
+// Requires gRPC-Go v1.32.0 or later.
+const _ = grpc.SupportPackageIsVersion7
 
 // GanymedeServiceClient is the client API for GanymedeService service.
 //
@@ -170,46 +171,53 @@ type GanymedeServiceServer interface {
 type UnimplementedGanymedeServiceServer struct {
 }
 
-func (*UnimplementedGanymedeServiceServer) Pong(context.Context, *BlankParams) (*PongResponse, error) {
+func (UnimplementedGanymedeServiceServer) Pong(context.Context, *BlankParams) (*PongResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Pong not implemented")
 }
-func (*UnimplementedGanymedeServiceServer) Regexps(context.Context, *BlankParams) (*RegexpResponse, error) {
+func (UnimplementedGanymedeServiceServer) Regexps(context.Context, *BlankParams) (*RegexpResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Regexps not implemented")
 }
-func (*UnimplementedGanymedeServiceServer) Login(context.Context, *LoginRequest) (*LoginResponse, error) {
+func (UnimplementedGanymedeServiceServer) Login(context.Context, *LoginRequest) (*LoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
 }
-func (*UnimplementedGanymedeServiceServer) Join(context.Context, *JoinRequest) (*JoinResponse, error) {
+func (UnimplementedGanymedeServiceServer) Join(context.Context, *JoinRequest) (*JoinResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Join not implemented")
 }
-func (*UnimplementedGanymedeServiceServer) CountryCodes(context.Context, *BlankParams) (*CountryCodeList, error) {
+func (UnimplementedGanymedeServiceServer) CountryCodes(context.Context, *BlankParams) (*CountryCodeList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CountryCodes not implemented")
 }
-func (*UnimplementedGanymedeServiceServer) GetVerificationCode(context.Context, *VerificationCodeRequest) (*VerificationCodeResponse, error) {
+func (UnimplementedGanymedeServiceServer) GetVerificationCode(context.Context, *VerificationCodeRequest) (*VerificationCodeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetVerificationCode not implemented")
 }
-func (*UnimplementedGanymedeServiceServer) VerificationCodeCheck(context.Context, *VerificationCodeCheckRequest) (*VerificationCodeCheckResponse, error) {
+func (UnimplementedGanymedeServiceServer) VerificationCodeCheck(context.Context, *VerificationCodeCheckRequest) (*VerificationCodeCheckResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method VerificationCodeCheck not implemented")
 }
-func (*UnimplementedGanymedeServiceServer) ResetPassword(context.Context, *ResetPasswordRequest) (*ResetPasswordResponse, error) {
+func (UnimplementedGanymedeServiceServer) ResetPassword(context.Context, *ResetPasswordRequest) (*ResetPasswordResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ResetPassword not implemented")
 }
-func (*UnimplementedGanymedeServiceServer) OAuthLogin(context.Context, *OAuthLoginRequest) (*OAuthLoginResponse, error) {
+func (UnimplementedGanymedeServiceServer) OAuthLogin(context.Context, *OAuthLoginRequest) (*OAuthLoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method OAuthLogin not implemented")
 }
-func (*UnimplementedGanymedeServiceServer) OAuthInfo(context.Context, *OAuthInfoRequest) (*OAuthInfoResponse, error) {
+func (UnimplementedGanymedeServiceServer) OAuthInfo(context.Context, *OAuthInfoRequest) (*OAuthInfoResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method OAuthInfo not implemented")
 }
-func (*UnimplementedGanymedeServiceServer) IsLogin(context.Context, *IsLoginRequest) (*IsLoginResponse, error) {
+func (UnimplementedGanymedeServiceServer) IsLogin(context.Context, *IsLoginRequest) (*IsLoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method IsLogin not implemented")
 }
-func (*UnimplementedGanymedeServiceServer) LogOut(context.Context, *LogoutRequest) (*LogoutResponse, error) {
+func (UnimplementedGanymedeServiceServer) LogOut(context.Context, *LogoutRequest) (*LogoutResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LogOut not implemented")
 }
-func (*UnimplementedGanymedeServiceServer) mustEmbedUnimplementedGanymedeServiceServer() {}
+func (UnimplementedGanymedeServiceServer) mustEmbedUnimplementedGanymedeServiceServer() {}
 
-func RegisterGanymedeServiceServer(s *grpc.Server, srv GanymedeServiceServer) {
-	s.RegisterService(&_GanymedeService_serviceDesc, srv)
+// UnsafeGanymedeServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to GanymedeServiceServer will
+// result in compilation errors.
+type UnsafeGanymedeServiceServer interface {
+	mustEmbedUnimplementedGanymedeServiceServer()
+}
+
+func RegisterGanymedeServiceServer(s grpc.ServiceRegistrar, srv GanymedeServiceServer) {
+	s.RegisterService(&GanymedeService_ServiceDesc, srv)
 }
 
 func _GanymedeService_Pong_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -428,7 +436,10 @@ func _GanymedeService_LogOut_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
-var _GanymedeService_serviceDesc = grpc.ServiceDesc{
+// GanymedeService_ServiceDesc is the grpc.ServiceDesc for GanymedeService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var GanymedeService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "ganymde.GanymedeService",
 	HandlerType: (*GanymedeServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
@@ -482,5 +493,5 @@ var _GanymedeService_serviceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "server.proto",
+	Metadata: "ganymede/proto/server.proto",
 }

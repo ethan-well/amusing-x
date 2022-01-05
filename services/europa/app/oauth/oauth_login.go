@@ -1,7 +1,7 @@
 package oauth
 
 import (
-	"amusingx.fit/amusingx/protos/ganymede/service"
+	"amusingx.fit/amusingx/protos/ganymede/service/ganymede/proto"
 	"amusingx.fit/amusingx/services/europa/rpcclient/ganymede"
 	"amusingx.fit/amusingx/services/europa/session"
 	"context"

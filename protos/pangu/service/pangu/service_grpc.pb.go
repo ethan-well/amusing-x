@@ -313,5 +313,5 @@ var PanGuService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "pangu/my_rpc_service_1639662246094730000.proto",
+	Metadata: "pangu/service.proto",
 }

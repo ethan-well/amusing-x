@@ -2,15 +2,14 @@ package main
 
 import (
 	"amusingx.fit/amusingx/rpcclient/charonclient"
+	"amusingx.fit/amusingx/rpcclient/ganymede"
 	pangu2 "amusingx.fit/amusingx/rpcclient/pangu"
 	"amusingx.fit/amusingx/services/pangu/conf"
 	"amusingx.fit/amusingx/services/pangu/mysql/pangu"
 	"amusingx.fit/amusingx/services/pangu/rpcserver"
 	"amusingx.fit/amusingx/services/pangu/xredis"
-	"github.com/ItsWewin/superfactory/logger"
 	"github.com/ItsWewin/superfactory/powertrain"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/gorilla/mux"
 )
 
 func main() {
@@ -18,9 +17,9 @@ func main() {
 		o.InitFunc = InitFunc
 		o.DeferFunc = DeferFunc
 		o.InitHttpServer = false
-		o.RegisterRouter = func(mux *mux.Router) {
-			//router.Register(mux)
-		}
+		//o.RegisterRouter = func(mux *mux.Router) {
+		//	//router.Register(mux)
+		//}
 	})
 
 	conf.Conf.Print()
@@ -33,8 +32,12 @@ func InitFunc() {
 	redis0 := conf.Conf.Redis.RedisO
 	xredis.InitRedis(redis0.Addr, redis0.Password, redis0.DBNo)
 
-	logger.Infof("conf.Conf.GrpcClient.Charon.Addr: %s", conf.Conf.GrpcClient.Charon.Addr)
-	err := charonclient.InitClient(":20004")
+	err := charonclient.InitClient(conf.Conf.GrpcClient.Charon.Addr)
+	if err != nil {
+		panic(err)
+	}
+
+	err = ganymede.InitClient(conf.Conf.GrpcClient.Ganymede.Addr)
 	if err != nil {
 		panic(err)
 	}

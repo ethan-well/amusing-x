@@ -1,7 +1,7 @@
 package login
 
 import (
-	"amusingx.fit/amusingx/protos/ganymede/service"
+	"amusingx.fit/amusingx/protos/ganymede/service/ganymede/proto"
 	"amusingx.fit/amusingx/regexp"
 	"amusingx.fit/amusingx/services/ganymede/rpcserver/userservice/app/loginapp"
 	"context"
