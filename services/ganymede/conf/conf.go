@@ -28,9 +28,14 @@ type Server struct {
 }
 
 type OAuth struct {
-	Store  *Store             `yaml:"store"`
-	Github *OAuthProviderInfo `yaml:"github"`
-	WeChat *OAuthProviderInfo `yaml:"wechat"`
+	Store  *Store       `yaml:"store"`
+	Github *GitHubOAuth `yaml:"github"`
+	WeChat *GitHubOAuth `yaml:"wechat"`
+}
+
+type GitHubOAuth struct {
+	ForAmusingX *OAuthProviderInfo `yaml:"for_amusing_x"`
+	ForPanGu    *OAuthProviderInfo `yaml:"for_pan_gu"`
 }
 
 type Store struct {
@@ -50,6 +55,7 @@ type OAuthProviderInfo struct {
 	RefreshTokenUrl string `yaml:"refresh_token_url"`
 	GrantType       string `yaml:"grant_type"`
 	Scope           string `yaml:"scope"`
+	ClientServer    string `yaml:"client_server"`
 }
 
 type HttpServer struct {

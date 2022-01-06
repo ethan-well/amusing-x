@@ -9,5 +9,9 @@ func (req *OAuthInfoRequest) Valid() aerror.Error {
 		return aerror.NewErrorf(nil, aerror.Code.CParamsError, "'provider' is invalid")
 	}
 
+	if len(req.Service) == 0 {
+		return aerror.NewErrorf(nil, aerror.Code.CParamsError, "'service' is invalid")
+	}
+
 	return nil
 }

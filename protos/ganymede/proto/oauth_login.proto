@@ -25,6 +25,7 @@ message LoginInfo {
 message OAuthLoginRequest {
   string provider = 1;
   string code = 2;
+  string service = 3;
 }
 
 message OAuthLoginResponse {

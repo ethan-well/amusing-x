@@ -9,8 +9,8 @@ import (
 	"net/url"
 )
 
-func GetOAuthInfo(ctx context.Context, provider string) (*europa.OAuthInfo, aerror.Error) {
-	in := &ganymedeservice.OAuthInfoRequest{Provider: provider}
+func GetOAuthInfo(ctx context.Context, provider, service string) (*europa.OAuthInfo, aerror.Error) {
+	in := &ganymedeservice.OAuthInfoRequest{Provider: provider, Service: service}
 
 	resp, err := ganymede.RPCClient.Client.OAuthInfo(ctx, in)
 	if err != nil {

@@ -45,7 +45,7 @@ func oauthLogin(ctx context.Context, req *ganymedeservice.OAuthLoginRequest) (*g
 
 	var loginInfo = &ganymedeservice.LoginInfo{}
 
-	clientID, clientSecret, redirectUrl, accessTokenUrl, refreshTokenUrl, userProfileUrl, grantType, err := getOauthConf(req.Provider)
+	clientID, clientSecret, redirectUrl, accessTokenUrl, refreshTokenUrl, userProfileUrl, grantType, err := getOauthConf(ctx, req.Provider, req.Service)
 	if err != nil {
 		return loginInfo, err
 	}
@@ -101,33 +101,21 @@ type LoginDomain struct {
 	Provider string
 }
 
-func getOauthConf(provider string) (clientID, clientSecret, redirectUrl, accessTokenUrl, refreshTokenUrl, userProfileUrl, grantType string, err aerror.Error) {
-	switch provider {
-	case oauthstruct.ProviderGitHub:
-		p := conf.Conf.OAuth.Github
-		clientID = p.ClientID
-		clientSecret = p.ClientSecret
-		redirectUrl = p.RedirectUrl
-		accessTokenUrl = p.AccessTokenUrl
-		userProfileUrl = p.UserProfileUrl
-		grantType = p.GrantType
-
-		return
-	case oauthstruct.ProviderWeChat:
-		p := conf.Conf.OAuth.WeChat
-		clientID = p.ClientID
-		clientSecret = p.ClientSecret
-		redirectUrl = p.RedirectUrl
-		accessTokenUrl = p.AccessTokenUrl
-		userProfileUrl = p.UserProfileUrl
-		refreshTokenUrl = p.RefreshTokenUrl
-		grantType = p.GrantType
-
-		return
-	default:
-		err = aerror.NewError(nil, aerror.Code.CParamsError, "provider is invalid")
+func getOauthConf(ctx context.Context, provider, service string) (clientID, clientSecret, redirectUrl, accessTokenUrl, refreshTokenUrl, userProfileUrl, grantType string, err aerror.Error) {
+	var p *conf.OAuthProviderInfo
+	p, err = GetProvider(ctx, provider, service)
+	if err != nil {
 		return
 	}
+	clientID = p.ClientID
+	clientSecret = p.ClientSecret
+	redirectUrl = p.RedirectUrl
+	accessTokenUrl = p.AccessTokenUrl
+	userProfileUrl = p.UserProfileUrl
+	refreshTokenUrl = p.RefreshTokenUrl
+	grantType = p.GrantType
+
+	return
 }
 
 func saveUserInfo(ctx context.Context, provider, code string, token *oauthstruct.AccessToken, profile *oauthstruct.UserProfile) (*ganymede.User, aerror.Error) {
