@@ -22,8 +22,8 @@ func getGithubProvider(server string) (*conf.OAuthProviderInfo, aerror.Error) {
 	switch server {
 	case conf.Conf.OAuth.Github.ForAmusingX.ClientServer:
 		return conf.Conf.OAuth.Github.ForAmusingX, nil
-	case conf.Conf.OAuth.WeChat.ForPanGu.ClientSecret:
-		return conf.Conf.OAuth.WeChat.ForPanGu, nil
+	case conf.Conf.OAuth.Github.ForPanGu.ClientServer:
+		return conf.Conf.OAuth.Github.ForPanGu, nil
 	default:
 		return nil, aerror.NewErrorf(nil, aerror.Code.CParamsError, "client server is invalid")
 	}

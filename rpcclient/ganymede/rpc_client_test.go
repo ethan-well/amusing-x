@@ -16,8 +16,9 @@ func TestInitClient(t *testing.T) {
 
 	w := sync.WaitGroup{}
 	w.Add(1)
-	//go _ping(ctx, Client, &w)
-	go _githubOAth(ctx, Client, &w)
+	go _ping(ctx, Client, &w)
+	//go _githubOAth(ctx, Client, &w)
+	go _OAthInfo(ctx, Client, &w)
 
 	w.Wait()
 }
@@ -58,6 +59,30 @@ func _githubOAth(ctx context.Context, client ganymedeservice.GanymedeServiceClie
 			Code:     "958b85c5a03c5d92f66e",
 		}
 		resp, err := client.OAuthLogin(context.Background(), req)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		fmt.Println("resp", resp)
+	}
+}
+
+func _OAthInfo(ctx context.Context, client ganymedeservice.GanymedeServiceClient, w *sync.WaitGroup) {
+	defer w.Done()
+
+	ticker := time.NewTicker(1 * time.Second)
+	defer ticker.Stop()
+
+	select {
+	case <-ctx.Done():
+		fmt.Println("time out")
+		return
+	case <-ticker.C:
+		req := &ganymedeservice.OAuthInfoRequest{
+			Provider: "github",
+			Service:  "pangu",
+		}
+		resp, err := client.OAuthInfo(context.Background(), req)
 		if err != nil {
 			fmt.Println(err)
 		}

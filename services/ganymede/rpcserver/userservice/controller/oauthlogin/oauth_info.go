@@ -7,7 +7,7 @@ import (
 	"github.com/ItsWewin/superfactory/aerror"
 )
 
-func HandlerGetOAuthInfo(ctx context.Context, in *ganymedeservice.OAuthInfoRequest) (*ganymedeservice.OAuthInfoResponse, error) {
+func HandlerGetOAuthInfo(ctx context.Context, in *ganymedeservice.OAuthInfoRequest) (*ganymedeservice.OAuthInfoResponse, aerror.Error) {
 	if in == nil {
 		return nil, aerror.NewError(nil, aerror.Code.CParamsError, "requst info is invalid")
 	}
@@ -21,9 +21,9 @@ func HandlerGetOAuthInfo(ctx context.Context, in *ganymedeservice.OAuthInfoReque
 		return nil, err
 	}
 
-	provider, err := GetProvider(ctx, in.Provider, in.Service)
-	if err != nil {
-		return nil, err
+	provider, err2 := GetProvider(ctx, in.Provider, in.Service)
+	if err2 != nil {
+		return nil, err2
 	}
 
 	return &ganymedeservice.OAuthInfoResponse{
