@@ -1,14 +1,14 @@
 .DEFAULT_GOAL := all
 
-all: generate-proto-pangu generate-charon
+all: generate-pangu generate-charon genreate-pluto genreate-ganymede
 
-generate-proto-pangu:
+generate-pangu:
 	protoc -I . \
           --go_out ./pangu/service \
           --go_opt paths=source_relative \
           --go-grpc_out ./pangu/service --go-grpc_opt paths=source_relative \
           --grpc-gateway_out ./pangu/service --grpc-gateway_opt paths=source_relative \
-          ./pangu/*.proto
+          ./pangu/proto/*.proto
 
 generate-charon:
 	protoc -I . \

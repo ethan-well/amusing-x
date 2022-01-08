@@ -8,7 +8,8 @@ message UserInfo {
 	int64 id = 1;
 	string name = 2;
 	string login = 3;
-    string email = 4;
+  string email = 4;
+  repeated string roles = 5;
 }
 
 message SessionInfo {

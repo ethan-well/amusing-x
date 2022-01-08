@@ -1,6 +1,7 @@
 package authentication
 
 import (
+	"amusingx.fit/amusingx/mysqlstruct/ganymede"
 	"amusingx.fit/amusingx/services/ganymede/mysql/ganymededb/model"
 	"context"
 	"github.com/ItsWewin/superfactory/aerror"
@@ -35,4 +36,19 @@ func QueryRolesByUserIDAndService(ctx context.Context, userID int64, service str
 	}
 
 	return roleIds, nil
+}
+
+func QueryRolesByUserIdAndService(ctx context.Context, userID int64, service string) ([]*ganymede.Role, aerror.Error) {
+	sqlStr := `SELECT r.id as id, r.name as name , r.service, r.desc FROM role r
+		LEFT JOIN user_role ur ON ur.role_id = r.id
+		LEFT JOIN user u ON u.id = ur.user_id
+		WHERE u.id = ? AND r.service = ?`
+
+	var roles []*ganymede.Role
+	err := model.GanymedeDB.SelectContext(ctx, &roles, sqlStr, userID, service)
+	if err != nil {
+		return nil, aerror.NewError(err, aerror.Code.SSqlExecuteErr, "query roles failed")
+	}
+
+	return roles, nil
 }

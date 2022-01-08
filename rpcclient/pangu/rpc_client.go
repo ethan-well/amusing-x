@@ -1,7 +1,7 @@
 package pangu
 
 import (
-	panguservice "amusingx.fit/amusingx/protos/pangu/service/pangu"
+	"amusingx.fit/amusingx/protos/pangu/service/pangu/proto"
 	"amusingx.fit/amusingx/rpcclient"
 	"github.com/ItsWewin/superfactory/aerror"
 	"google.golang.org/grpc"

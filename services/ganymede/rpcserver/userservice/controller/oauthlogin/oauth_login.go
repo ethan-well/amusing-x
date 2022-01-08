@@ -27,6 +27,10 @@ func HandlerOAuthLogin(ctx context.Context, req *ganymedeservice.OAuthLoginReque
 		return &ganymedeservice.OAuthLoginResponse{Result: false}, err
 	}
 
+	if err := setRoles(ctx, loginInfo, req.Service); err != nil {
+		return &ganymedeservice.OAuthLoginResponse{Result: false}, err
+	}
+
 	model2.InitCurrentUser(loginInfo.UserInfo)
 
 	return &ganymedeservice.OAuthLoginResponse{Result: true, LoginInfo: loginInfo}, nil
@@ -190,4 +194,15 @@ func setSession(ctx context.Context, userID int64) (string, aerror.Error) {
 
 	model := session.New()
 	return model.SetSession(ctx, info)
+}
+
+func setRoles(ctx context.Context, info *ganymedeservice.LoginInfo, service string) aerror.Error {
+	model := model2.NewUserModel()
+	roles, err := model.GetUserRoles(ctx, info.UserInfo.Id, service)
+	if err != nil {
+		return aerror.NewErrorf(nil, err.Code(), "set roles failed")
+	}
+	info.UserInfo.Roles = roles
+
+	return nil
 }

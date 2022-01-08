@@ -3,12 +3,13 @@ syntax = "proto3";
 option go_package = "amusing-x.com/pangu/panguservice";
 
 import "google/api/annotations.proto";
-import "pangu/category_create.proto";
-import "pangu/category_list.proto";
-import "pangu/category_destroy.proto";
-import "pangu/category.proto";
-import "pangu/category_update.proto";
-import "pangu/login.proto";
+import "pangu/proto/category_create.proto";
+import "pangu/proto/category_list.proto";
+import "pangu/proto/category_destroy.proto";
+import "pangu/proto/category.proto";
+import "pangu/proto/category_update.proto";
+import "pangu/proto/oauth_login.proto";
+import "pangu/proto/oauth_provider_info.proto";
 
 package panguservice;
 
@@ -57,11 +58,17 @@ service PanGuService {
     };
   }
 
-  rpc Login(OAuthLoginRequest) returns (OAuthLoginResponse) {
+  rpc OauthLogin(OAuthLoginRequest) returns (OAuthLoginResponse) {
     option(google.api.http) = {
-      put: "/v1/pangu/oauth/login"
+      post: "/v1/pangu/oauth/login"
       body: "*"
     };
   }
+
+  rpc OauthProviderInfo(OauthProviderInfoRequest) returns (OAuthProviderInfoResponse) {
+      option(google.api.http) = {
+        get: "/v1/pangu/oauth/provider/info"
+      };
+    }
 }
 

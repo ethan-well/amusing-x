@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option go_package = "amusing-x.com/pangu/panguservice";
+
+package panguservice;
+
+message OauthProviderInfoRequest {
+  string provider = 1;
+  string server = 2;
+}
+
+message OAuthProviderInfoResponse {
+  string Provider = 1;
+  string OauthUrl = 2;
+  string ClientID = 3;
+  string Scope = 4;
+  string State = 5;
+  string GrantType = 6;
+  string RedirectUrl = 7;
+  string CompletePath = 8;
+}

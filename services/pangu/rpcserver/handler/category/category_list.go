@@ -2,7 +2,7 @@ package category
 
 import (
 	charonservice "amusingx.fit/amusingx/protos/charon/service/charon/proto"
-	panguservice "amusingx.fit/amusingx/protos/pangu/service/pangu"
+	panguservice "amusingx.fit/amusingx/protos/pangu/service/pangu/proto"
 	"amusingx.fit/amusingx/rpcclient/charonclient"
 	"context"
 	"github.com/ItsWewin/superfactory/aerror"

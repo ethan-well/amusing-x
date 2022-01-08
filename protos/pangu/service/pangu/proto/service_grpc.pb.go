@@ -24,7 +24,8 @@ type PanGuServiceClient interface {
 	CategoryList(ctx context.Context, in *CategoryListRequest, opts ...grpc.CallOption) (*CategoryListResponse, error)
 	CategoryDelete(ctx context.Context, in *CategoryDeleteRequest, opts ...grpc.CallOption) (*CategoryDeleteResponse, error)
 	CategoryUpdate(ctx context.Context, in *CategoryUpdateRequest, opts ...grpc.CallOption) (*CategoryUpdateResponse, error)
-	Login(ctx context.Context, in *OAuthLoginRequest, opts ...grpc.CallOption) (*OAuthLoginResponse, error)
+	OauthLogin(ctx context.Context, in *OAuthLoginRequest, opts ...grpc.CallOption) (*OAuthLoginResponse, error)
+	OauthProviderInfo(ctx context.Context, in *OauthProviderInfoRequest, opts ...grpc.CallOption) (*OAuthProviderInfoResponse, error)
 }
 
 type panGuServiceClient struct {
@@ -89,9 +90,18 @@ func (c *panGuServiceClient) CategoryUpdate(ctx context.Context, in *CategoryUpd
 	return out, nil
 }
 
-func (c *panGuServiceClient) Login(ctx context.Context, in *OAuthLoginRequest, opts ...grpc.CallOption) (*OAuthLoginResponse, error) {
+func (c *panGuServiceClient) OauthLogin(ctx context.Context, in *OAuthLoginRequest, opts ...grpc.CallOption) (*OAuthLoginResponse, error) {
 	out := new(OAuthLoginResponse)
-	err := c.cc.Invoke(ctx, "/panguservice.PanGuService/Login", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/panguservice.PanGuService/OauthLogin", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *panGuServiceClient) OauthProviderInfo(ctx context.Context, in *OauthProviderInfoRequest, opts ...grpc.CallOption) (*OAuthProviderInfoResponse, error) {
+	out := new(OAuthProviderInfoResponse)
+	err := c.cc.Invoke(ctx, "/panguservice.PanGuService/OauthProviderInfo", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -108,7 +118,8 @@ type PanGuServiceServer interface {
 	CategoryList(context.Context, *CategoryListRequest) (*CategoryListResponse, error)
 	CategoryDelete(context.Context, *CategoryDeleteRequest) (*CategoryDeleteResponse, error)
 	CategoryUpdate(context.Context, *CategoryUpdateRequest) (*CategoryUpdateResponse, error)
-	Login(context.Context, *OAuthLoginRequest) (*OAuthLoginResponse, error)
+	OauthLogin(context.Context, *OAuthLoginRequest) (*OAuthLoginResponse, error)
+	OauthProviderInfo(context.Context, *OauthProviderInfoRequest) (*OAuthProviderInfoResponse, error)
 	mustEmbedUnimplementedPanGuServiceServer()
 }
 
@@ -134,8 +145,11 @@ func (UnimplementedPanGuServiceServer) CategoryDelete(context.Context, *Category
 func (UnimplementedPanGuServiceServer) CategoryUpdate(context.Context, *CategoryUpdateRequest) (*CategoryUpdateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CategoryUpdate not implemented")
 }
-func (UnimplementedPanGuServiceServer) Login(context.Context, *OAuthLoginRequest) (*OAuthLoginResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
+func (UnimplementedPanGuServiceServer) OauthLogin(context.Context, *OAuthLoginRequest) (*OAuthLoginResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method OauthLogin not implemented")
+}
+func (UnimplementedPanGuServiceServer) OauthProviderInfo(context.Context, *OauthProviderInfoRequest) (*OAuthProviderInfoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method OauthProviderInfo not implemented")
 }
 func (UnimplementedPanGuServiceServer) mustEmbedUnimplementedPanGuServiceServer() {}
 
@@ -258,20 +272,38 @@ func _PanGuService_CategoryUpdate_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _PanGuService_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _PanGuService_OauthLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(OAuthLoginRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PanGuServiceServer).Login(ctx, in)
+		return srv.(PanGuServiceServer).OauthLogin(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/panguservice.PanGuService/Login",
+		FullMethod: "/panguservice.PanGuService/OauthLogin",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PanGuServiceServer).Login(ctx, req.(*OAuthLoginRequest))
+		return srv.(PanGuServiceServer).OauthLogin(ctx, req.(*OAuthLoginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PanGuService_OauthProviderInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OauthProviderInfoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PanGuServiceServer).OauthProviderInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/panguservice.PanGuService/OauthProviderInfo",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PanGuServiceServer).OauthProviderInfo(ctx, req.(*OauthProviderInfoRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -308,10 +340,14 @@ var PanGuService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _PanGuService_CategoryUpdate_Handler,
 		},
 		{
-			MethodName: "Login",
-			Handler:    _PanGuService_Login_Handler,
+			MethodName: "OauthLogin",
+			Handler:    _PanGuService_OauthLogin_Handler,
+		},
+		{
+			MethodName: "OauthProviderInfo",
+			Handler:    _PanGuService_OauthProviderInfo_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "pangu/service.proto",
+	Metadata: "pangu/proto/service.proto",
 }

@@ -5,6 +5,7 @@ import (
 	ganymedeservice "amusingx.fit/amusingx/protos/ganymede/service/ganymede/proto"
 	"amusingx.fit/amusingx/services/ganymede/authentication"
 	"amusingx.fit/amusingx/services/ganymede/mysql/ganymededb/model"
+	authentication2 "amusingx.fit/amusingx/services/ganymede/mysql/ganymededb/model/authentication"
 	"context"
 	"github.com/ItsWewin/superfactory/aerror"
 )
@@ -60,6 +61,20 @@ func (u *User) InitUserInfoByID(ctx context.Context, id int64) aerror.Error {
 	u.UserInfo = user
 
 	return nil
+}
+
+func (u *User) GetUserRoles(ctx context.Context, id int64, service string) ([]string, aerror.Error) {
+	roles, err := authentication2.QueryRolesByUserIdAndService(ctx, id, service)
+	if err != nil {
+		return nil, err
+	}
+
+	var roleNames []string
+	for _, role := range roles {
+		roleNames = append(roleNames, role.Name)
+	}
+
+	return roleNames, nil
 }
 
 func (u *User) HavePermission(ctx context.Context, userId int64, action, service string) bool {

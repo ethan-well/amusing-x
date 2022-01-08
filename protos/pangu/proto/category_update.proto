@@ -4,7 +4,7 @@ option go_package = "amusing-x.com/pangu/panguservice";
 
 package panguservice;
 
-import "pangu/category_info.proto";
+import "pangu/proto/category_info.proto";
 
 message CategoryUpdateRequest {
   Category Category = 1;
