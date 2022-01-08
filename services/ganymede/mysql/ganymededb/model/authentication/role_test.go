@@ -14,7 +14,7 @@ func TestQueryRolesByAction(t *testing.T) {
 	conf.Mock()
 	model.Mock()
 
-	roleIds, err := QueryRolesByAction(context.Background(), "all-action")
+	roleIds, err := QueryRolesByActionAndService(context.Background(), "all-action", "pangu")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -29,7 +29,7 @@ func TestQueryRolesByUserID(t *testing.T) {
 	conf.Mock()
 	model.Mock()
 
-	roleIds, err := QueryRolesByUserID(context.Background(), 21)
+	roleIds, err := QueryRolesByUserIDAndService(context.Background(), 21, "pangu")
 	if err != nil {
 		t.Fatal(err)
 	}

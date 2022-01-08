@@ -7,8 +7,8 @@ import (
 	"github.com/ItsWewin/superfactory/set/intset"
 )
 
-func Permission(ctx context.Context, userID int64, action string) (bool, aerror.Error) {
-	actionRoles, err := authentication.QueryRolesByAction(ctx, action)
+func Permission(ctx context.Context, userID int64, action, service string) (bool, aerror.Error) {
+	actionRoles, err := authentication.QueryRolesByActionAndService(ctx, action, service)
 	if err != nil {
 		return false, err
 	}
@@ -17,7 +17,7 @@ func Permission(ctx context.Context, userID int64, action string) (bool, aerror.
 		return false, nil
 	}
 
-	userRoles, err := authentication.QueryRolesByUserID(ctx, userID)
+	userRoles, err := authentication.QueryRolesByUserIDAndService(ctx, userID, service)
 	if err != nil {
 		return false, err
 	}

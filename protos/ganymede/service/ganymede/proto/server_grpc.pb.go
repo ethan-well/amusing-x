@@ -30,6 +30,7 @@ type GanymedeServiceClient interface {
 	OAuthInfo(ctx context.Context, in *OAuthInfoRequest, opts ...grpc.CallOption) (*OAuthInfoResponse, error)
 	IsLogin(ctx context.Context, in *IsLoginRequest, opts ...grpc.CallOption) (*IsLoginResponse, error)
 	LogOut(ctx context.Context, in *LogoutRequest, opts ...grpc.CallOption) (*LogoutResponse, error)
+	Authentication(ctx context.Context, in *AuthenticationRequest, opts ...grpc.CallOption) (*AuthenticationResponse, error)
 }
 
 type ganymedeServiceClient struct {
@@ -148,6 +149,15 @@ func (c *ganymedeServiceClient) LogOut(ctx context.Context, in *LogoutRequest, o
 	return out, nil
 }
 
+func (c *ganymedeServiceClient) Authentication(ctx context.Context, in *AuthenticationRequest, opts ...grpc.CallOption) (*AuthenticationResponse, error) {
+	out := new(AuthenticationResponse)
+	err := c.cc.Invoke(ctx, "/ganymde.GanymedeService/Authentication", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // GanymedeServiceServer is the server API for GanymedeService service.
 // All implementations must embed UnimplementedGanymedeServiceServer
 // for forward compatibility
@@ -164,6 +174,7 @@ type GanymedeServiceServer interface {
 	OAuthInfo(context.Context, *OAuthInfoRequest) (*OAuthInfoResponse, error)
 	IsLogin(context.Context, *IsLoginRequest) (*IsLoginResponse, error)
 	LogOut(context.Context, *LogoutRequest) (*LogoutResponse, error)
+	Authentication(context.Context, *AuthenticationRequest) (*AuthenticationResponse, error)
 	mustEmbedUnimplementedGanymedeServiceServer()
 }
 
@@ -206,6 +217,9 @@ func (UnimplementedGanymedeServiceServer) IsLogin(context.Context, *IsLoginReque
 }
 func (UnimplementedGanymedeServiceServer) LogOut(context.Context, *LogoutRequest) (*LogoutResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LogOut not implemented")
+}
+func (UnimplementedGanymedeServiceServer) Authentication(context.Context, *AuthenticationRequest) (*AuthenticationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Authentication not implemented")
 }
 func (UnimplementedGanymedeServiceServer) mustEmbedUnimplementedGanymedeServiceServer() {}
 
@@ -436,6 +450,24 @@ func _GanymedeService_LogOut_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _GanymedeService_Authentication_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AuthenticationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GanymedeServiceServer).Authentication(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ganymde.GanymedeService/Authentication",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GanymedeServiceServer).Authentication(ctx, req.(*AuthenticationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // GanymedeService_ServiceDesc is the grpc.ServiceDesc for GanymedeService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -490,6 +522,10 @@ var GanymedeService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "LogOut",
 			Handler:    _GanymedeService_LogOut_Handler,
+		},
+		{
+			MethodName: "Authentication",
+			Handler:    _GanymedeService_Authentication_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

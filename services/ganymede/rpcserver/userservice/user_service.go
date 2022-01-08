@@ -3,6 +3,7 @@ package userservice
 import (
 	"amusingx.fit/amusingx/protos/ganymede/service/ganymede/proto"
 	"amusingx.fit/amusingx/regexp"
+	"amusingx.fit/amusingx/services/ganymede/rpcserver/userservice/controller/authentication"
 	"amusingx.fit/amusingx/services/ganymede/rpcserver/userservice/controller/countrycode"
 	password "amusingx.fit/amusingx/services/ganymede/rpcserver/userservice/controller/findpassword"
 	"amusingx.fit/amusingx/services/ganymede/rpcserver/userservice/controller/join"
@@ -126,6 +127,15 @@ func (s *UserService) IsLogin(ctx context.Context, req *ganymedeservice.IsLoginR
 
 func (s *UserService) LogOut(ctx context.Context, req *ganymedeservice.LogoutRequest) (*ganymedeservice.LogoutResponse, error) {
 	resp, err := logout.HandlerIsLogOut(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, err
+}
+
+func (s *UserService) Authentication(ctx context.Context, req *ganymedeservice.AuthenticationRequest) (*ganymedeservice.AuthenticationResponse, error) {
+	resp, err := authentication.HandlerAuthentication(ctx, req)
 	if err != nil {
 		return nil, err
 	}

@@ -15,10 +15,11 @@ func TestInitClient(t *testing.T) {
 	ctx, _ := context.WithTimeout(context.Background(), 100*time.Second)
 
 	w := sync.WaitGroup{}
-	w.Add(1)
+	w.Add(2)
 	go _ping(ctx, Client, &w)
 	//go _githubOAth(ctx, Client, &w)
-	go _OAthInfo(ctx, Client, &w)
+	//go _OAthInfo(ctx, Client, &w)
+	go _Authentication(ctx, Client, &w)
 
 	w.Wait()
 }
@@ -88,5 +89,32 @@ func _OAthInfo(ctx context.Context, client ganymedeservice.GanymedeServiceClient
 		}
 
 		fmt.Println("resp", resp)
+	}
+}
+
+func _Authentication(ctx context.Context, client ganymedeservice.GanymedeServiceClient, w *sync.WaitGroup) {
+	defer w.Done()
+
+	ticker := time.NewTicker(1 * time.Second)
+	defer ticker.Stop()
+
+	select {
+	case <-ctx.Done():
+		fmt.Println("time out")
+		return
+	case <-ticker.C:
+		req := &ganymedeservice.AuthenticationRequest{
+			Server:  "pangu",
+			UserId:  21,
+			Actions: []string{"all-action", "no-action"},
+		}
+		resp, err := client.Authentication(context.Background(), req)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		for _, p := range resp.Result {
+			fmt.Printf("action: %s, has permission: %t", p.Action, p.HasPermission)
+		}
 	}
 }

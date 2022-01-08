@@ -15,6 +15,7 @@ import "ganymede/proto/oauth_login.proto";
 import "ganymede/proto/oauth_info.proto";
 import "ganymede/proto/is_login.proto";
 import "ganymede/proto/logout.proto";
+import "ganymede/proto/authentication.proto";
 
 service GanymedeService {
   rpc Pong(BlankParams) returns (PongResponse) {}
@@ -29,6 +30,7 @@ service GanymedeService {
   rpc OAuthInfo(OAuthInfoRequest) returns (OAuthInfoResponse) {}
   rpc IsLogin(IsLoginRequest) returns (IsLoginResponse) {}
   rpc LogOut(LogoutRequest) returns (LogoutResponse) {}
+  rpc Authentication(AuthenticationRequest) returns (AuthenticationResponse) {}
 }
 
 

@@ -39,7 +39,30 @@ func (u *User) GetUserInfoByID(ctx context.Context, id int64) (*ganymede.User, a
 	return model.QueryUserByID(ctx, tx, id)
 }
 
-func (u *User) HavePermission(ctx context.Context, action string) bool {
-	ok, _ := authentication.Permission(ctx, u.UserInfo.ID, action)
+func (u *User) InitUserInfoByID(ctx context.Context, id int64) aerror.Error {
+	tx, err := model.GanymedeDB.BeginTxx(ctx, nil)
+	if err != nil {
+		return aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "query user info failed")
+	}
+	defer tx.Rollback()
+
+	tx.Commit()
+
+	user, err := model.QueryUserByID(ctx, tx, id)
+	if err != nil {
+		return err.(aerror.Error)
+	}
+
+	if user == nil {
+		return aerror.NewErrorf(nil, aerror.Code.BUnexpectedData, "user is not existed")
+	}
+
+	u.UserInfo = user
+
+	return nil
+}
+
+func (u *User) HavePermission(ctx context.Context, userId int64, action, service string) bool {
+	ok, _ := authentication.Permission(ctx, userId, action, service)
 	return ok
 }
