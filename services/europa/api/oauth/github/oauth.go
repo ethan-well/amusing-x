@@ -22,9 +22,9 @@ func HandlerOauthLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp, err := oauth.Login(ctx, w, req.Provider, req.Code)
+	resp, err := oauth.Login(ctx, w, req.Provider, req.Code, req.Service)
 	if err != nil {
-		logger.Infof("oAuth login failed: %s", err)
+		logger.Errorf("oAuth login failed: %s", err)
 		rest.FailJsonResponse(w, err.Code(), err.Error())
 		return
 	}

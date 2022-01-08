@@ -9,10 +9,11 @@ import (
 	"net/http"
 )
 
-func Login(ctx context.Context, w http.ResponseWriter, provider, code string) (*ganymedeservice.OAuthLoginResponse, aerror.Error) {
+func Login(ctx context.Context, w http.ResponseWriter, provider, code, service string) (*ganymedeservice.OAuthLoginResponse, aerror.Error) {
 	rpcReq := &ganymedeservice.OAuthLoginRequest{
 		Provider: provider,
 		Code:     code,
+		Service:  service,
 	}
 
 	// grpc 调用 ganymede 服务登陆接口

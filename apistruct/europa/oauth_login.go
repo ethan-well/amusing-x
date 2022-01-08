@@ -5,6 +5,7 @@ import "github.com/ItsWewin/superfactory/aerror"
 type OAuthLogin struct {
 	Code     string `json:"code"`
 	Provider string `json:"provider"`
+	Service  string `json:"service"`
 }
 
 func (login *OAuthLogin) Valid() aerror.Error {
