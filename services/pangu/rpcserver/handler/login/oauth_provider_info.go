@@ -3,7 +3,7 @@ package login
 import (
 	ganymedeservice "amusingx.fit/amusingx/protos/ganymede/service/ganymede/proto"
 	"amusingx.fit/amusingx/protos/pangu/service/pangu/proto"
-	"amusingx.fit/amusingx/services/europa/rpcclient/ganymede"
+	"amusingx.fit/amusingx/rpcclient/ganymede"
 	"context"
 	"github.com/ItsWewin/superfactory/aerror"
 	"net/url"
@@ -12,10 +12,10 @@ import (
 func HandlerOauthProviderInfo(ctx context.Context, req *panguservice.OauthProviderInfoRequest) (*panguservice.OAuthProviderInfoResponse, aerror.Error) {
 	rpcReq := &ganymedeservice.OAuthInfoRequest{
 		Provider: req.Provider,
-		Service:  req.Server,
+		Service:  req.Service,
 	}
 
-	resp, err := ganymede.RPCClient.Client.OAuthInfo(ctx, rpcReq)
+	resp, err := ganymede.Client.OAuthInfo(ctx, rpcReq)
 	if err != nil || resp == nil {
 		return nil, aerror.NewErrorf(err, aerror.Code.BUnexpectedData, "login failed")
 	}
@@ -38,7 +38,7 @@ func HandlerOauthProviderInfo(ctx context.Context, req *panguservice.OauthProvid
 	q.Set("grant_type", resp.GrantType)
 	u.RawQuery = q.Encode()
 
-	return &panguservice.OAuthProviderInfoResponse{
+	providerInfo := &panguservice.OAuthProviderInfo{
 		Provider:     resp.Provider,
 		OauthUrl:     resp.OauthUrl,
 		ClientID:     resp.ClientId,
@@ -47,5 +47,10 @@ func HandlerOauthProviderInfo(ctx context.Context, req *panguservice.OauthProvid
 		GrantType:    resp.GrantType,
 		RedirectUrl:  resp.RedirectUrl,
 		CompletePath: u.String(),
+	}
+
+	return &panguservice.OAuthProviderInfoResponse{
+		Succeed: true,
+		Result:  providerInfo,
 	}, nil
 }

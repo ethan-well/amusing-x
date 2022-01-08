@@ -25,7 +25,8 @@ func TestInitClient(t *testing.T) {
 	//go _categoryList(ctx, Client, &w)
 	//go _del(ctx, Client, &w)
 	//go _category(ctx, Client, &w)
-	go _update(ctx, Client, &w)
+	//go _update(ctx, Client, &w)
+	go _oauthProviderInfo(ctx, Client, &w)
 
 	w.Wait()
 }
@@ -163,5 +164,28 @@ func _update(ctx context.Context, client panguservice.PanGuServiceClient, w *syn
 		} else {
 			fmt.Println("update succeed", resp)
 		}
+	}
+}
+
+func _oauthProviderInfo(ctx context.Context, client panguservice.PanGuServiceClient, w *sync.WaitGroup) {
+	defer w.Done()
+
+	ticker := time.NewTicker(1 * time.Second)
+	defer ticker.Stop()
+
+	select {
+	case <-ctx.Done():
+		fmt.Println("time out")
+		return
+	case <-ticker.C:
+		resp, err := client.OauthProviderInfo(context.Background(), &panguservice.OauthProviderInfoRequest{
+			Provider: "github",
+			Server:   "pangu",
+		})
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		fmt.Println("get oauth provider succeed", resp)
 	}
 }

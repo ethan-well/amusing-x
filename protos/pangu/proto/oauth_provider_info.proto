@@ -6,16 +6,21 @@ package panguservice;
 
 message OauthProviderInfoRequest {
   string provider = 1;
-  string server = 2;
+  string service = 2;
 }
 
 message OAuthProviderInfoResponse {
-  string Provider = 1;
-  string OauthUrl = 2;
-  string ClientID = 3;
-  string Scope = 4;
-  string State = 5;
-  string GrantType = 6;
-  string RedirectUrl = 7;
-  string CompletePath = 8;
+  bool succeed = 1;
+  OAuthProviderInfo result = 2;
+}
+
+message OAuthProviderInfo {
+  string Provider = 1 [json_name="provider"];
+  string OauthUrl = 2 [json_name="oauth_url"];
+  string ClientID = 3 [json_name="client_id"];
+  string Scope = 4 [json_name="scope"];
+  string State = 5 [json_name="state"];
+  string GrantType = 6 [json_name="grant_type"];
+  string RedirectUrl = 7 [json_name="redirect_url"];
+  string CompletePath = 8 [json_name="complete_path"];
 }

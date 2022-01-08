@@ -3,7 +3,7 @@ package login
 import (
 	ganymedeservice "amusingx.fit/amusingx/protos/ganymede/service/ganymede/proto"
 	panguservice "amusingx.fit/amusingx/protos/pangu/service/pangu/proto"
-	"amusingx.fit/amusingx/services/europa/rpcclient/ganymede"
+	"amusingx.fit/amusingx/rpcclient/ganymede"
 	"context"
 	"github.com/ItsWewin/superfactory/aerror"
 )
@@ -15,7 +15,7 @@ func HandlerOauthLogin(ctx context.Context, req *panguservice.OAuthLoginRequest)
 		Service:  req.Service,
 	}
 
-	resp, err := ganymede.RPCClient.Client.OAuthLogin(ctx, rpcReq)
+	resp, err := ganymede.Client.OAuthLogin(ctx, rpcReq)
 	if err != nil || !resp.Result || resp.LoginInfo == nil {
 		return nil, aerror.NewErrorf(err, aerror.Code.BUnexpectedData, "login failed")
 	}

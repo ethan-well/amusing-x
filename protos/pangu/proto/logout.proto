@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+option go_package = "amusing-x.com/pangu/panguservice";
+
+package panguservice;
+
+message LogoutRequest {
+    string sessionID = 1;
+}
+
+message LogoutResponse {
+    bool logout = 1;
+}

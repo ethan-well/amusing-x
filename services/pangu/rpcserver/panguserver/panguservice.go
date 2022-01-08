@@ -44,3 +44,7 @@ func (s *PanguServer) OauthLogin(ctx context.Context, in *panguservice.OAuthLogi
 func (s *PanguServer) OauthProviderInfo(ctx context.Context, in *panguservice.OauthProviderInfoRequest) (*panguservice.OAuthProviderInfoResponse, error) {
 	return login.HandlerOauthProviderInfo(ctx, in)
 }
+
+func (s *PanguServer) Logout(ctx context.Context, in *panguservice.LogoutRequest) (*panguservice.LogoutResponse, error) {
+	return login.HandlerLogout(ctx, in)
+}

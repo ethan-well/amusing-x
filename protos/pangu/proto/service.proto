@@ -10,6 +10,7 @@ import "pangu/proto/category.proto";
 import "pangu/proto/category_update.proto";
 import "pangu/proto/oauth_login.proto";
 import "pangu/proto/oauth_provider_info.proto";
+import "pangu/proto/logout.proto";
 
 package panguservice;
 
@@ -66,9 +67,16 @@ service PanGuService {
   }
 
   rpc OauthProviderInfo(OauthProviderInfoRequest) returns (OAuthProviderInfoResponse) {
-      option(google.api.http) = {
-        get: "/v1/pangu/oauth/provider/info"
-      };
-    }
+    option(google.api.http) = {
+      get: "/v1/pangu/oauth/provider/info"
+    };
+  }
+
+   rpc Logout(LogoutRequest) returns (LogoutResponse) {
+    option(google.api.http) = {
+      post: "/v1/pangu/logout"
+      body: "*"
+    };
+  }
 }
 
