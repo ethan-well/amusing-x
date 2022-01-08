@@ -21,9 +21,8 @@ func HandlerOauthLogin(ctx context.Context, req *panguservice.OAuthLoginRequest)
 	}
 
 	return &panguservice.OAuthLoginResponse{
-		Result: true,
-		LoginInfo: &panguservice.LoginInfo{
-			SessionId: resp.LoginInfo.SessionId,
+		Succeed: true,
+		Result: &panguservice.LoginInfo{
 			UserInfo: &panguservice.UserInfo{
 				Id:    resp.LoginInfo.UserInfo.Id,
 				Name:  resp.LoginInfo.UserInfo.Name,

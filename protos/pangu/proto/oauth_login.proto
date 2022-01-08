@@ -30,6 +30,6 @@ message OAuthLoginRequest {
 }
 
 message OAuthLoginResponse {
-	bool result = 1;
-	LoginInfo login_info  = 2;
+	bool succeed = 1;
+	LoginInfo result  = 2;
 }
