@@ -3,6 +3,7 @@ package rpcserver
 import (
 	panguservice "amusingx.fit/amusingx/protos/pangu/service/pangu/proto"
 	"amusingx.fit/amusingx/services/pangu/conf"
+	"amusingx.fit/amusingx/services/pangu/rpcserver/getway"
 	"amusingx.fit/amusingx/services/pangu/rpcserver/panguserver"
 	"amusingx.fit/amusingx/services/pangu/rpcserver/servermiddleware"
 	"context"
@@ -64,24 +65,29 @@ func InitRPCServer() aerror.Error {
 		return aerror.NewErrorf(err, aerror.Code.SUnexpectedErr, "Failed to dial server: %s", err)
 	}
 
-	gwmux := runtime.NewServeMux()
+	mux := runtime.NewServeMux(runtime.WithIncomingHeaderMatcher(getway.CustomMatcher), runtime.WithForwardResponseOption(getway.HttpResponseModifier), runtime.WithMetadata(getway.GatewayMetadataAnnotator))
 	// Register Greeter
-	err = panguservice.RegisterPanGuServiceHandler(context.Background(), gwmux, conn)
+	err = panguservice.RegisterPanGuServiceHandler(context.Background(), mux, conn)
 	if err != nil {
 		return aerror.NewErrorf(err, aerror.Code.SUnexpectedErr, "Failed register panGu service handler err")
 	}
 
-	httpServ := conf.Conf.Server.HttpServer
-	gwServer := &http.Server{
-		Addr:    httpServ.Addr,
-		Handler: gwmux,
-	}
-
-	logger.Infof("Serving gRPC-Gateway on %s", httpServ.Addr)
-	err = gwServer.ListenAndServe()
+	err = http.ListenAndServe(conf.Conf.Server.HttpServer.Addr, mux)
 	if err != nil {
 		return aerror.NewErrorf(err, aerror.Code.SUnexpectedErr, "Failed ListenAndServe")
 	}
+
+	//httpServ := conf.Conf.Server.HttpServer
+	//gwServer := &http.Server{
+	//	Addr:    httpServ.Addr,
+	//	Handler: mux,
+	//}
+	//
+	//logger.Infof("Serving gRPC-Gateway on %s", httpServ.Addr)
+	//err = gwServer.ListenAndServe()
+	//if err != nil {
+	//	return aerror.NewErrorf(err, aerror.Code.SUnexpectedErr, "Failed ListenAndServe")
+	//}
 
 	return nil
 }

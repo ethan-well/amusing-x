@@ -3,9 +3,13 @@ package panguserver
 import (
 	panguservice "amusingx.fit/amusingx/protos/pangu/service/pangu/proto"
 	"amusingx.fit/amusingx/services/pangu/conf"
+	"amusingx.fit/amusingx/services/pangu/rpcserver/getway"
 	"amusingx.fit/amusingx/services/pangu/rpcserver/handler/category"
 	"amusingx.fit/amusingx/services/pangu/rpcserver/handler/login"
 	"context"
+	"github.com/ItsWewin/superfactory/aerror"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 )
 
 type PanguServer struct {
@@ -38,7 +42,17 @@ func (s *PanguServer) CategoryUpdate(ctx context.Context, in *panguservice.Categ
 }
 
 func (s *PanguServer) OauthLogin(ctx context.Context, in *panguservice.OAuthLoginRequest) (*panguservice.OAuthLoginResponse, error) {
-	return login.HandlerOauthLogin(ctx, in)
+	login, err := login.HandlerOauthLogin(ctx, in)
+	if err != nil || login == nil || login.Result.UserInfo == nil || login.Result.SessionInfo == nil {
+		return nil, aerror.NewError(err, aerror.Code.BUnexpectedData, "login failed")
+	}
+
+	header := metadata.Pairs(
+		getway.SessionIdKey, login.Result.SessionInfo.SessionID,
+	)
+	grpc.SetHeader(ctx, header)
+
+	return login, nil
 }
 
 func (s *PanguServer) OauthProviderInfo(ctx context.Context, in *panguservice.OauthProviderInfoRequest) (*panguservice.OAuthProviderInfoResponse, error) {
@@ -46,5 +60,17 @@ func (s *PanguServer) OauthProviderInfo(ctx context.Context, in *panguservice.Oa
 }
 
 func (s *PanguServer) Logout(ctx context.Context, in *panguservice.LogoutRequest) (*panguservice.LogoutResponse, error) {
-	return login.HandlerLogout(ctx, in)
+	result, err := login.HandlerLogout(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+
+	if result.Logout {
+		header := metadata.Pairs(
+			getway.DeleteSessionKey, "true",
+		)
+		grpc.SetHeader(ctx, header)
+	}
+
+	return result, nil
 }
