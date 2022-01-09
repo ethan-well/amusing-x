@@ -296,7 +296,7 @@ func local_request_PanGuService_OauthProviderInfo_0(ctx context.Context, marshal
 }
 
 func request_PanGuService_Logout_0(ctx context.Context, marshaler runtime.Marshaler, client PanGuServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq LogoutRequest
+	var protoReq BlankParams
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -313,7 +313,7 @@ func request_PanGuService_Logout_0(ctx context.Context, marshaler runtime.Marsha
 }
 
 func local_request_PanGuService_Logout_0(ctx context.Context, marshaler runtime.Marshaler, server PanGuServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq LogoutRequest
+	var protoReq BlankParams
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)

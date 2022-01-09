@@ -72,7 +72,7 @@ service PanGuService {
     };
   }
 
-   rpc Logout(LogoutRequest) returns (LogoutResponse) {
+   rpc Logout(BlankParams) returns (LogoutResponse) {
     option(google.api.http) = {
       post: "/v1/pangu/logout"
       body: "*"

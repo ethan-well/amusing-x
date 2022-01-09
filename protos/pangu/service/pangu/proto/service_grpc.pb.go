@@ -26,7 +26,7 @@ type PanGuServiceClient interface {
 	CategoryUpdate(ctx context.Context, in *CategoryUpdateRequest, opts ...grpc.CallOption) (*CategoryUpdateResponse, error)
 	OauthLogin(ctx context.Context, in *OAuthLoginRequest, opts ...grpc.CallOption) (*OAuthLoginResponse, error)
 	OauthProviderInfo(ctx context.Context, in *OauthProviderInfoRequest, opts ...grpc.CallOption) (*OAuthProviderInfoResponse, error)
-	Logout(ctx context.Context, in *LogoutRequest, opts ...grpc.CallOption) (*LogoutResponse, error)
+	Logout(ctx context.Context, in *BlankParams, opts ...grpc.CallOption) (*LogoutResponse, error)
 }
 
 type panGuServiceClient struct {
@@ -109,7 +109,7 @@ func (c *panGuServiceClient) OauthProviderInfo(ctx context.Context, in *OauthPro
 	return out, nil
 }
 
-func (c *panGuServiceClient) Logout(ctx context.Context, in *LogoutRequest, opts ...grpc.CallOption) (*LogoutResponse, error) {
+func (c *panGuServiceClient) Logout(ctx context.Context, in *BlankParams, opts ...grpc.CallOption) (*LogoutResponse, error) {
 	out := new(LogoutResponse)
 	err := c.cc.Invoke(ctx, "/panguservice.PanGuService/Logout", in, out, opts...)
 	if err != nil {
@@ -130,7 +130,7 @@ type PanGuServiceServer interface {
 	CategoryUpdate(context.Context, *CategoryUpdateRequest) (*CategoryUpdateResponse, error)
 	OauthLogin(context.Context, *OAuthLoginRequest) (*OAuthLoginResponse, error)
 	OauthProviderInfo(context.Context, *OauthProviderInfoRequest) (*OAuthProviderInfoResponse, error)
-	Logout(context.Context, *LogoutRequest) (*LogoutResponse, error)
+	Logout(context.Context, *BlankParams) (*LogoutResponse, error)
 	mustEmbedUnimplementedPanGuServiceServer()
 }
 
@@ -162,7 +162,7 @@ func (UnimplementedPanGuServiceServer) OauthLogin(context.Context, *OAuthLoginRe
 func (UnimplementedPanGuServiceServer) OauthProviderInfo(context.Context, *OauthProviderInfoRequest) (*OAuthProviderInfoResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method OauthProviderInfo not implemented")
 }
-func (UnimplementedPanGuServiceServer) Logout(context.Context, *LogoutRequest) (*LogoutResponse, error) {
+func (UnimplementedPanGuServiceServer) Logout(context.Context, *BlankParams) (*LogoutResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Logout not implemented")
 }
 func (UnimplementedPanGuServiceServer) mustEmbedUnimplementedPanGuServiceServer() {}
@@ -323,7 +323,7 @@ func _PanGuService_OauthProviderInfo_Handler(srv interface{}, ctx context.Contex
 }
 
 func _PanGuService_Logout_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(LogoutRequest)
+	in := new(BlankParams)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -335,7 +335,7 @@ func _PanGuService_Logout_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: "/panguservice.PanGuService/Logout",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PanGuServiceServer).Logout(ctx, req.(*LogoutRequest))
+		return srv.(PanGuServiceServer).Logout(ctx, req.(*BlankParams))
 	}
 	return interceptor(ctx, in, info, handler)
 }

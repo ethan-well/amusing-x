@@ -6,10 +6,15 @@ import (
 	"amusingx.fit/amusingx/services/pangu/rpcserver/getway"
 	"amusingx.fit/amusingx/services/pangu/rpcserver/handler/category"
 	"amusingx.fit/amusingx/services/pangu/rpcserver/handler/login"
+	"bufio"
 	"context"
+	"fmt"
 	"github.com/ItsWewin/superfactory/aerror"
+	"github.com/ItsWewin/superfactory/logger"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
+	"net/http"
+	"strings"
 )
 
 type PanguServer struct {
@@ -18,6 +23,9 @@ type PanguServer struct {
 
 // 	Pong(context.Context, *BlankParams) (*PongResponse, error)
 func (s *PanguServer) Pong(ctx context.Context, in *panguservice.BlankParams) (*panguservice.PongResponse, error) {
+	md, _ := metadata.FromIncomingContext(ctx)
+	logger.Infof("cookie: %#v", md.Get("grpcgateway-cookie"))
+
 	return &panguservice.PongResponse{ServerName: conf.Conf.Server.Name}, nil
 }
 
@@ -59,13 +67,20 @@ func (s *PanguServer) OauthProviderInfo(ctx context.Context, in *panguservice.Oa
 	return login.HandlerOauthProviderInfo(ctx, in)
 }
 
-func (s *PanguServer) Logout(ctx context.Context, in *panguservice.LogoutRequest) (*panguservice.LogoutResponse, error) {
-	result, err := login.HandlerLogout(ctx, in)
+func (s *PanguServer) Logout(ctx context.Context, in *panguservice.BlankParams) (*panguservice.LogoutResponse, error) {
+	sessionID, err := getSessionID(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	if result.Logout {
+	logger.Infof("sessionID from cookie: %s", sessionID)
+
+	result, err := login.HandlerLogout(ctx, sessionID)
+	if err != nil {
+		return nil, err
+	}
+
+	if result.Succeed {
 		header := metadata.Pairs(
 			getway.DeleteSessionKey, "true",
 		)
@@ -73,4 +88,31 @@ func (s *PanguServer) Logout(ctx context.Context, in *panguservice.LogoutRequest
 	}
 
 	return result, nil
+}
+
+func getSessionID(ctx context.Context) (string, aerror.Error) {
+	md, ok := metadata.FromIncomingContext(ctx)
+	if !ok {
+		return "", aerror.NewErrorf(nil, aerror.Code.CParamsError, "get session id failed")
+	}
+
+	rawCookies := strings.Join(md.Get(getway.GrpcGatewayCookieKey), "")
+	if len(rawCookies) == 0 {
+		return "", aerror.NewErrorf(nil, aerror.Code.CParamsError, "get session id failed")
+	}
+
+	rawRequest := fmt.Sprintf("GET / HTTP/1.0\r\nCookie: %s\r\n\r\n", rawCookies)
+	req, err := http.ReadRequest(bufio.NewReader(strings.NewReader(rawRequest)))
+	if err != nil {
+		return "", aerror.NewErrorf(nil, aerror.Code.CParamsError, "get session id failed, cookie info is invalid")
+	}
+
+	cookies := req.Cookies()
+	for _, cookie := range cookies {
+		if cookie.Name == getway.GrpcGatewayCookieSessionKey {
+			return cookie.Value, nil
+		}
+	}
+
+	return "", nil
 }

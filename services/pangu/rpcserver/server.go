@@ -76,21 +76,19 @@ func InitRPCServer() aerror.Error {
 	if err != nil {
 		return aerror.NewErrorf(err, aerror.Code.SUnexpectedErr, "Failed ListenAndServe")
 	}
-
-	//httpServ := conf.Conf.Server.HttpServer
-	//gwServer := &http.Server{
-	//	Addr:    httpServ.Addr,
-	//	Handler: mux,
-	//}
-	//
-	//logger.Infof("Serving gRPC-Gateway on %s", httpServ.Addr)
-	//err = gwServer.ListenAndServe()
-	//if err != nil {
-	//	return aerror.NewErrorf(err, aerror.Code.SUnexpectedErr, "Failed ListenAndServe")
-	//}
-
 	return nil
 }
+
+//func prettier(h http.Handler) http.Handler {
+//	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+//		session, err := r.Cookie("user_session")
+//		if err == nil && session != nil {
+//			r.Header.Set("user_session", session.Value)
+//		}
+//
+//		h.ServeHTTP(w, r)
+//	})
+//}
 
 func CloseRPCServer() {
 	if Server != nil && Server.Server != nil {

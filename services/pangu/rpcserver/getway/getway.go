@@ -12,8 +12,10 @@ import (
 )
 
 const (
-	DeleteSessionKey = "delete-session"
-	SessionIdKey     = "session_id"
+	DeleteSessionKey            = "delete-session"
+	SessionIdKey                = "session_id"
+	GrpcGatewayCookieKey        = "grpcgateway-cookie"
+	GrpcGatewayCookieSessionKey = "user_session"
 )
 
 func CustomMatcher(key string) (string, bool) {
