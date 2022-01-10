@@ -8,7 +8,6 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/protobuf/proto"
 	"net/http"
-	"strconv"
 )
 
 const (
@@ -58,30 +57,6 @@ func setSession(w http.ResponseWriter, md runtime.ServerMetadata) {
 		MaxAge:    1000,
 	}
 	session.SetSession(w, sessionInfo)
-}
-
-func getUserIDFromServerMetadata(md runtime.ServerMetadata) (int, error) {
-	userIDString := firstMetadataWithName(md, "gateway-user-id")
-	if userIDString == "" {
-		return 0, nil
-	}
-	if userIDString != "" {
-		userID, err := strconv.Atoi(userIDString)
-		if err != nil {
-			return 0, err
-		}
-		return userID, nil
-	}
-	return 0, nil
-}
-
-// get the first metadata value with the given name
-func firstMetadataWithName(md runtime.ServerMetadata, name string) string {
-	values := md.HeaderMD.Get(name)
-	if len(values) == 0 {
-		return ""
-	}
-	return values[0]
 }
 
 // look up session and pass userId in to context if it exists
