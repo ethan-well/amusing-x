@@ -75,6 +75,10 @@ func (s *PanguServer) Logout(ctx context.Context, in *panguservice.BlankParams) 
 
 	logger.Infof("sessionID from cookie: %s", sessionID)
 
+	if len(sessionID) == 0 {
+		return &panguservice.LogoutResponse{Succeed: true}, nil
+	}
+
 	result, err := login.HandlerLogout(ctx, sessionID)
 	if err != nil {
 		return nil, err
