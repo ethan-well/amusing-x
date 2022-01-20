@@ -102,7 +102,7 @@ func getSessionID(ctx context.Context) (string, aerror.Error) {
 
 	rawCookies := strings.Join(md.Get(getway.GrpcGatewayCookieKey), "")
 	if len(rawCookies) == 0 {
-		return "", aerror.NewErrorf(nil, aerror.Code.CParamsError, "get session id failed")
+		return "", nil
 	}
 
 	rawRequest := fmt.Sprintf("GET / HTTP/1.0\r\nCookie: %s\r\n\r\n", rawCookies)

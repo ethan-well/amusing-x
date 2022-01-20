@@ -25,7 +25,7 @@ func getGithubProvider(server string) (*conf.OAuthProviderInfo, aerror.Error) {
 	case conf.Conf.OAuth.Github.ForPanGu.ClientServer:
 		return conf.Conf.OAuth.Github.ForPanGu, nil
 	default:
-		return nil, aerror.NewErrorf(nil, aerror.Code.CParamsError, "client server is invalid")
+		return nil, aerror.NewErrorf(nil, aerror.Code.CParamsError, "client server: %s is invalid", server)
 	}
 }
 
