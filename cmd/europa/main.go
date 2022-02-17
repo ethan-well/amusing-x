@@ -1,6 +1,7 @@
 package main
 
 import (
+	"amusingx.fit/amusingx/rpcclient/charonclient"
 	"amusingx.fit/amusingx/services/europa/conf"
 	"amusingx.fit/amusingx/services/europa/mysql/amusingxwebapi"
 	"amusingx.fit/amusingx/services/europa/router"
@@ -50,6 +51,11 @@ func initRPCClient() {
 	}
 
 	err = rpcclient.InitGanymedeRPCClient()
+	if err != nil {
+		panic(err)
+	}
+
+	err = charonclient.InitClient(conf.Conf.GrpcClient.Charon.Addr)
 	if err != nil {
 		panic(err)
 	}

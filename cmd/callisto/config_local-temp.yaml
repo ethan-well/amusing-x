@@ -1,0 +1,27 @@
+server:
+  name: "amusing-x/callisto"
+  http_server:
+    addr: :10002
+  grpc_server:
+    network: tcp
+    address: :20002
+mysql:
+  callistodb:
+    db: callistodb
+    user: test111
+    password: pass123456
+    host: localhost
+    port: 3306
+    protocol: tcp
+    max_life_time: 3600
+    max_open_conns: 100
+    max_idle_conns: 10
+redis:
+  redis1:
+    addr: 127.0.0.1:6379
+    db_no: 1
+session:
+  redis_strore:
+    redis_addr: localhost:6379
+    redis_no: 2
+    key_prefix: uid

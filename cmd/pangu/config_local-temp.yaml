@@ -1,0 +1,55 @@
+server:
+  name: amusing-x/pangu
+  http_server:
+    addr: :10006
+  grpc_server:
+    network: tcp
+    address: :20006
+grpc_client:
+  charon:
+    addr: :20004
+  ganymede:
+    addr: :20005
+mysql:
+  pangudb:
+    db: pangudb
+    user: test111
+    password: pass123456
+    host: localhost
+    port: 3306
+    protocol: tcp
+    max_life_time: 3600
+    max_open_conns: 100
+    max_idle_conns: 10
+oauth:
+  store:
+    prefix: oauth:prefix
+    max_life_time: 600
+    redis:
+      addr: 127.0.0.1:6379
+      db_no: 4
+  github:
+    provider: github
+    client_id: 829182a40c33d7e560a8
+    client_secrets: f19a51b5d93d13a2ec431e4b959f0ca5e81834de
+    redirect_url: http://localhost:3000/login/oauth
+    access_token_url: https://github.com/login/oauth/access_token
+    user_profile_url: https://api.github.com/user
+    oauth_url: https://github.com/login/oauth/authorize
+    scope: user
+  wechat:
+    provider: wechat
+    client_id: 829182a40c33d7e560a8
+    client_secrets: f19a51b5d93d13a2ec431e4b959f0ca5e81834de
+    redirect_url: http://localhost:3000/login/oauth
+    access_token_url: https://github.com/login/oauth/access_token
+    user_profile_url: https://api.github.com/user
+redis:
+  redis1:
+    addr: 127.0.0.1:6379
+    db_no: 1
+session_store:
+  prefix: "sid2"
+  redis:
+    addr: 127.0.0.1:6379
+    db_no: 2

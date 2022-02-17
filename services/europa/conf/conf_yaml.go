@@ -33,6 +33,7 @@ type HttpServer struct {
 type GrpcClients struct {
 	Callisto *GrpcClient `yaml:"callisto"`
 	Ganymede *GrpcClient `yaml:"ganymede"`
+	Charon   *GrpcClient `yaml:"charon"`
 }
 
 type GrpcClient struct {

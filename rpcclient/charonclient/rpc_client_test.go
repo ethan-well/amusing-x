@@ -19,10 +19,10 @@ func TestInitClient(t *testing.T) {
 	w.Add(2)
 	go _ping(ctx, Client, &w)
 	//go _create(ctx, Client, &w)
-	//go _categories(ctx, Client, &w)
+	go _categories(ctx, Client, &w)
 	//go _del(ctx, Client, &w)
 	//go _category(ctx, Client, &w)
-	go _update(ctx, Client, &w)
+	// go _update(ctx, Client, &w)
 
 	w.Wait()
 }
@@ -82,7 +82,7 @@ func _categories(ctx context.Context, client charonservice.CharonServClient, w *
 		return
 	case <-ticker.C:
 		resp, err := client.Categories(context.Background(), &charonservice.CategoryListRequest{
-			Query: "4",
+			Query: "14",
 			Page:  1,
 			Limit: 10,
 		})
