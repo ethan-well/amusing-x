@@ -6,6 +6,7 @@ import (
 	"context"
 	"github.com/ItsWewin/superfactory/aerror"
 	"github.com/ItsWewin/superfactory/aregexp"
+	"github.com/ItsWewin/superfactory/logger"
 	"strconv"
 )
 
@@ -14,8 +15,17 @@ func HandlerCategoryList(ctx context.Context, req *charonservice.CategoryListReq
 	if err != nil {
 		return nil, err
 	}
+	if req.Limit <= 0 || req.Limit >= 1000 {
+		req.Limit = 100
+	}
+	if req.Page <= 0 {
+		req.Page = 1
+	}
 
 	offset := (req.Page - 1) * req.Limit
+
+	logger.Infof("req: %s", logger.ToJson(req))
+
 	categories, total, err := model.CategoryQuery(ctx, id, name, desc, offset, req.Limit)
 	if err != nil {
 		return nil, err

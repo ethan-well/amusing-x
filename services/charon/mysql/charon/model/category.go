@@ -31,7 +31,7 @@ func InsetCategory(ctx context.Context, category *charon.Category) (*charon.Cate
 
 func CategoryQuery(ctx context.Context, id int64, name, desc string, offSet, limit int64) ([]*charon.Category, int64, aerror.Error) {
 	wherePlaceholder := `{{whereCondition}}`
-	sqlStr := fmt.Sprintf(`SELECT id, name, description FROM category  %s limit ?, ?`, wherePlaceholder)
+	sqlStr := fmt.Sprintf(`SELECT id, name, description FROM category %s limit ?, ?`, wherePlaceholder)
 	countStr := fmt.Sprintf(`SELECT count(*) FROM category  %s limit ?, ?`, wherePlaceholder)
 
 	var whereConditions []string

@@ -72,23 +72,19 @@ func InitRPCServer() aerror.Error {
 		return aerror.NewErrorf(err, aerror.Code.SUnexpectedErr, "Failed register panGu service handler err")
 	}
 
-	err = http.ListenAndServe(conf.Conf.Server.HttpServer.Addr, mux)
+	err = http.ListenAndServe(conf.Conf.Server.HttpServer.Addr, prettier(mux))
 	if err != nil {
 		return aerror.NewErrorf(err, aerror.Code.SUnexpectedErr, "Failed ListenAndServe")
 	}
 	return nil
 }
 
-//func prettier(h http.Handler) http.Handler {
-//	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-//		session, err := r.Cookie("user_session")
-//		if err == nil && session != nil {
-//			r.Header.Set("user_session", session.Value)
-//		}
-//
-//		h.ServeHTTP(w, r)
-//	})
-//}
+func prettier(h http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		r.Header.Set("Content-Range", "posts 0-24/319")
+		h.ServeHTTP(w, r)
+	})
+}
 
 func CloseRPCServer() {
 	if Server != nil && Server.Server != nil {
