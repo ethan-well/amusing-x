@@ -18,4 +18,5 @@ message CategoryListResponse {
   int64 total = 3 [json_name="total"];
   bool hasNext = 4 [json_name="has_next"];
   repeated Category Categories = 5 [json_name="categories"];
+  repeated Category Data = 6 [json_name="data"];
 }
