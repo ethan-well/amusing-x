@@ -34,7 +34,12 @@ func (s *PanguServer) CategoryCreate(ctx context.Context, in *panguservice.Categ
 }
 
 func (s *PanguServer) CategoryList(ctx context.Context, in *panguservice.CategoryListRequest) (*panguservice.CategoryListResponse, error) {
-	return category.HandlerCategoryList(ctx, in)
+	resp, err := category.HandlerCategoryList(ctx, in)
+	if err != nil {
+		logger.Errorf("CategoryList err: %s", err)
+	}
+
+	return resp, err
 }
 
 func (s *PanguServer) CategoryDelete(ctx context.Context, in *panguservice.CategoryDeleteRequest) (*panguservice.CategoryDeleteResponse, error) {

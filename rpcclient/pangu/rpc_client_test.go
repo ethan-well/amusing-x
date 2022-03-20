@@ -24,9 +24,9 @@ func TestInitClient(t *testing.T) {
 	//go _create(ctx, Client, &w)
 	//go _categoryList(ctx, Client, &w)
 	//go _del(ctx, Client, &w)
-	//go _category(ctx, Client, &w)
+	go _category(ctx, Client, &w)
 	//go _update(ctx, Client, &w)
-	go _oauthProviderInfo(ctx, Client, &w)
+	//go _oauthProviderInfo(ctx, Client, &w)
 
 	w.Wait()
 }
@@ -180,7 +180,7 @@ func _oauthProviderInfo(ctx context.Context, client panguservice.PanGuServiceCli
 	case <-ticker.C:
 		resp, err := client.OauthProviderInfo(context.Background(), &panguservice.OauthProviderInfoRequest{
 			Provider: "github",
-			Server:   "pangu",
+			Service:  "pangu",
 		})
 		if err != nil {
 			fmt.Println(err)
