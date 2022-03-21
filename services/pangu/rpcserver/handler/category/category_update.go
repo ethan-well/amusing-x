@@ -10,7 +10,7 @@ import (
 
 func HandlerCategoryUpdate(ctx context.Context, req *panguservice.CategoryUpdateRequest) (*panguservice.CategoryUpdateResponse, aerror.Error) {
 	resp, err := charonclient.Client.Update(ctx, &charonservice.CategoryUpdateRequest{
-		Category: &charonservice.Category{Id: req.Category.ID, Name: req.Category.Name, Desc: req.Category.Desc}})
+		Category: &charonservice.Category{Id: req.Id, Name: req.Name, Desc: req.Desc}})
 
 	if err != nil {
 		return nil, aerror.NewErrorf(err, aerror.Code.BUnexpectedData, "create category failed")

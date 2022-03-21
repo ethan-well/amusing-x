@@ -12,5 +12,6 @@ message CategoryRequest {
 
 message CategoryResponse {
   bool result = 1;
-  Category CategoryInfo = 2;
+  Category CategoryInfo = 2 [json_name="category"];
+  Category Data = 3 [json_name="data"];
 }

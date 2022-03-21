@@ -8,6 +8,9 @@ import "pangu/proto/category_info.proto";
 
 message CategoryUpdateRequest {
   Category Category = 1;
+  int64  id = 2;
+  string name = 3;
+  string desc = 4;
 }
 
 message CategoryUpdateResponse {

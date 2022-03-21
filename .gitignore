@@ -3,3 +3,4 @@ bin/
 sql.sql
 cmd/**/*local.yaml
 **test**local**
+.DS_Store

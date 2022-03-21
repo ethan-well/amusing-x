@@ -21,5 +21,10 @@ func HandlerCategory(ctx context.Context, req *panguservice.CategoryRequest) (*p
 			Name: category.Category.Name,
 			Desc: category.Category.Desc,
 		},
+		Data: &panguservice.Category{
+			ID:   category.Category.Id,
+			Name: category.Category.Name,
+			Desc: category.Category.Desc,
+		},
 	}, nil
 }

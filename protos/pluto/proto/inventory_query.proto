@@ -4,7 +4,7 @@ option go_package = "amusing-x.com/pluto/plutoservice";
 
 package plutoservice;
 
-import "pluto/inventory_cache_init.proto";
+import "pluto/proto/inventory_cache_init.proto";
 
 message InventoryQueryRequest {
   int64 id = 1;

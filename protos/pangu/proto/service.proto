@@ -36,7 +36,7 @@ service PanGuService {
 
   rpc Category(CategoryRequest) returns (CategoryResponse) {
     option (google.api.http) = {
-      get: "/v1/pangu/category"
+      get: "/v1/pangu/categories/{id}"
     };
   }
 
@@ -48,13 +48,13 @@ service PanGuService {
 
   rpc CategoryDelete(CategoryDeleteRequest) returns (CategoryDeleteResponse) {
     option(google.api.http) = {
-      delete: "/v1/pangu/category/delete"
+      delete: "/v1/pangu/categories/{id}"
     };
   }
 
   rpc CategoryUpdate(CategoryUpdateRequest) returns (CategoryUpdateResponse) {
     option(google.api.http) = {
-      put: "/v1/pangu/category/update"
+      put: "/v1/pangu/categories/{id}"
       body: "*"
     };
   }

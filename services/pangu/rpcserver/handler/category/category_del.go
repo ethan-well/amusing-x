@@ -9,11 +9,11 @@ import (
 )
 
 func HandlerCategoryDelete(ctx context.Context, req *panguservice.CategoryDeleteRequest) (*panguservice.CategoryDeleteResponse, aerror.Error) {
-	if len(req.Ids) == 0 {
+	if req.Id == 0 {
 		return &panguservice.CategoryDeleteResponse{Result: true}, nil
 	}
 
-	resp, err := charonclient.Client.Delete(ctx, &charonservice.CategoryDeleteRequest{Ids: req.Ids})
+	resp, err := charonclient.Client.Delete(ctx, &charonservice.CategoryDeleteRequest{Id: req.Id})
 	if err != nil {
 		return nil, aerror.NewErrorf(err, aerror.Code.BUnexpectedData, "delete category failed")
 	}
