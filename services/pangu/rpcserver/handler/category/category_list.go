@@ -6,9 +6,12 @@ import (
 	"amusingx.fit/amusingx/rpcclient/charonclient"
 	"context"
 	"github.com/ItsWewin/superfactory/aerror"
+	"github.com/ItsWewin/superfactory/logger"
 )
 
 func HandlerCategoryList(ctx context.Context, req *panguservice.CategoryListRequest) (*panguservice.CategoryListResponse, aerror.Error) {
+	logger.Errorf("HandlerCategoryList s, req: %s", logger.ToJson(req))
+
 	resp, err := charonclient.Client.Categories(ctx, &charonservice.CategoryListRequest{
 		Query: req.Query,
 		Page:  req.Page,

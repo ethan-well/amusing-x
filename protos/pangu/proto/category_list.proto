@@ -10,6 +10,8 @@ message CategoryListRequest {
   string Query = 1 [json_name="query"];
   int64 Page = 2  [json_name="page"];
   int64 limit = 3 [json_name="limit"];
+  string range = 4 [json_name="range"];
+  string sort = 5 [json_name="sort"];
 }
 
 message CategoryListResponse {

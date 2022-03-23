@@ -430,7 +430,7 @@ func RegisterPanGuServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/panguservice.PanGuService/CategoryCreate", runtime.WithHTTPPathPattern("/v1/pangu/category"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/panguservice.PanGuService/CategoryCreate", runtime.WithHTTPPathPattern("/v1/pangu/categories"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -673,7 +673,7 @@ func RegisterPanGuServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/panguservice.PanGuService/CategoryCreate", runtime.WithHTTPPathPattern("/v1/pangu/category"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/panguservice.PanGuService/CategoryCreate", runtime.WithHTTPPathPattern("/v1/pangu/categories"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -835,7 +835,7 @@ func RegisterPanGuServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 var (
 	pattern_PanGuService_Pong_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "pangu", "pong"}, ""))
 
-	pattern_PanGuService_CategoryCreate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "pangu", "category"}, ""))
+	pattern_PanGuService_CategoryCreate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "pangu", "categories"}, ""))
 
 	pattern_PanGuService_Category_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "pangu", "categories", "id"}, ""))
 

@@ -29,7 +29,7 @@ service PanGuService {
 
   rpc CategoryCreate(CategoryCreateRequest) returns (CategoryCreateResponse) {
     option (google.api.http) = {
-      post: "/v1/pangu/category"
+      post: "/v1/pangu/categories"
       body: "*"
     };
   }
