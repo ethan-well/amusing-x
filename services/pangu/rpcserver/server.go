@@ -81,7 +81,8 @@ func InitRPCServer() aerror.Error {
 
 func prettier(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		r.Header.Set("content-range", "posts 0-24/319")
+		w.Header().Set("Content-Range", "categories 0-9/20")
+		w.Header().Set("Access-Control-Expose-Headers", "Content-Range")
 		h.ServeHTTP(w, r)
 	})
 }

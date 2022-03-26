@@ -2,6 +2,7 @@ package model
 
 import (
 	"amusingx.fit/amusingx/mysqlstruct/charon"
+	charonservice "amusingx.fit/amusingx/protos/charon/service/charon/proto"
 	charon2 "amusingx.fit/amusingx/services/charon/mysql/charon"
 	"context"
 	"database/sql"
@@ -29,29 +30,29 @@ func InsetCategory(ctx context.Context, category *charon.Category) (*charon.Cate
 	return category, nil
 }
 
-func CategoryQuery(ctx context.Context, id int64, name, desc string, offSet, limit int64) ([]*charon.Category, int64, aerror.Error) {
+func CategoryQuery(ctx context.Context, req *charonservice.CategoryListRequest) ([]*charon.Category, int64, aerror.Error) {
 	wherePlaceholder := `{{whereCondition}}`
 	sqlStr := fmt.Sprintf(`SELECT id, name, description FROM category %s limit ?, ?`, wherePlaceholder)
-	countStr := fmt.Sprintf(`SELECT count(*) FROM category  %s limit ?, ?`, wherePlaceholder)
+	countStr := fmt.Sprintf(`SELECT count(*) FROM category  %s`, wherePlaceholder)
 
 	var whereConditions []string
 	var params []interface{}
-	if id > 0 {
+	if req.Filter.Id > 0 {
 		whereConditions = append(whereConditions, `id = ?`)
-		params = append(params, id)
+		params = append(params, req.Filter.Id)
 	}
 
-	if len(name) != 0 {
+	if len(req.Filter.Name) != 0 {
 		whereConditions = append(whereConditions, "name = ?")
-		params = append(params, name)
+		params = append(params, req.Filter.Name)
 	}
 
-	if len(desc) != 0 {
+	if len(req.Filter.Desc) != 0 {
 		whereConditions = append(whereConditions, "description = ?")
-		params = append(params, desc)
+		params = append(params, req.Filter.Desc)
 	}
 
-	params = append(params, offSet, limit)
+	params = append(params, req.Offset, req.Limit)
 
 	if len(whereConditions) != 0 {
 		whereSQl := "WHERE " + strings.Join(whereConditions, " AND ")
@@ -68,7 +69,7 @@ func CategoryQuery(ctx context.Context, id int64, name, desc string, offSet, lim
 	}
 
 	var count int64
-	err = tx.QueryRowx(countStr, params...).Scan(&count)
+	err = tx.QueryRowx(countStr, params[:len(params)-2]...).Scan(&count)
 	switch {
 	case err == sql.ErrNoRows:
 		count = 0
@@ -125,4 +126,19 @@ func UpdateCategory(ctx context.Context, category *charon.Category) aerror.Error
 	}
 
 	return nil
+}
+
+func QueryCategoryByName(ctx context.Context, name string) (*charon.Category, aerror.Error) {
+	sqlStr := `SELECT id, name, description FROM category WHERE name = ?`
+
+	var category charon.Category
+	err := charon2.CharonDB.GetContext(ctx, &category, sqlStr, name)
+	switch {
+	case err == sql.ErrNoRows:
+		return nil, nil
+	case err != nil:
+		return nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "select failed")
+	}
+
+	return &category, nil
 }

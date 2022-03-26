@@ -9,7 +9,16 @@ import (
 )
 
 func CreateCategory(ctx context.Context, category *charonservice.CategoryCreateRequest) (*charon.Category, aerror.Error) {
-	c, err := model.InsetCategory(ctx, &charon.Category{
+	c, err := model.QueryCategoryByName(ctx, category.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	if c != nil {
+		return nil, aerror.NewErrorf(nil, aerror.Code.CParamsError, "category '%s' is already existed", category.Name)
+	}
+
+	c, err = model.InsetCategory(ctx, &charon.Category{
 		Name: category.Name,
 		Desc: category.Desc,
 	})

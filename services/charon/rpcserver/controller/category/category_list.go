@@ -10,23 +10,15 @@ import (
 	"strconv"
 )
 
-func HandlerCategoryList(ctx context.Context, req *charonservice.CategoryListRequest) (*charonservice.CategoryListResponse, aerror.Error) {
-	id, name, desc, err := getQuery(req.Query)
+func HandlerCategoryListV2(ctx context.Context, req *charonservice.CategoryListRequest) (*charonservice.CategoryListResponse, aerror.Error) {
+	err := getParams(req)
 	if err != nil {
 		return nil, err
 	}
-	if req.Limit <= 0 || req.Limit >= 1000 {
-		req.Limit = 100
-	}
-	if req.Page <= 0 {
-		req.Page = 1
-	}
 
-	offset := (req.Page - 1) * req.Limit
+	logger.Infof("HandlerCategoryListV2 req: %s", logger.ToJson(req))
 
-	logger.Infof("req: %s", logger.ToJson(req))
-
-	categories, total, err := model.CategoryQuery(ctx, id, name, desc, offset, req.Limit)
+	categories, total, err := model.CategoryQuery(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -44,11 +36,27 @@ func HandlerCategoryList(ctx context.Context, req *charonservice.CategoryListReq
 		Page:       req.Page,
 		Limit:      req.Limit,
 		Total:      total,
-		HasNext:    false, // req.Page*req.Limit < total,
+		HasNext:    (req.Page-1)*req.Limit+int64(len(categoryList)) < total,
 		Categories: categoryList,
 	}
 
 	return resp, nil
+}
+
+func getParams(req *charonservice.CategoryListRequest) aerror.Error {
+	id, name, desc, err := getQuery(req.Query)
+	if err != nil {
+		return err
+	}
+
+	req.Filter = &charonservice.Filter{
+		Id:   id,
+		Name: name,
+		Desc: desc,
+	}
+
+	req.Offset = (req.Page - 1) * req.Limit
+	return nil
 }
 
 func getQuery(query string) (id int64, name string, desc string, aErr aerror.Error) {

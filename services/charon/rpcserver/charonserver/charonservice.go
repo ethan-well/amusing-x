@@ -25,7 +25,7 @@ func (s *CharonServer) Create(ctx context.Context, in *charonservice.CategoryCre
 }
 
 func (s *CharonServer) Categories(ctx context.Context, in *charonservice.CategoryListRequest) (*charonservice.CategoryListResponse, error) {
-	return category.HandlerCategoryList(ctx, in)
+	return category.HandlerCategoryListV2(ctx, in)
 }
 
 func (s *CharonServer) Delete(ctx context.Context, in *charonservice.CategoryDeleteRequest) (*charonservice.CategoryDeleteResponse, error) {

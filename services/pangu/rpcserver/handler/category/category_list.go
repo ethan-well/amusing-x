@@ -6,16 +6,15 @@ import (
 	"amusingx.fit/amusingx/rpcclient/charonclient"
 	"context"
 	"github.com/ItsWewin/superfactory/aerror"
-	"github.com/ItsWewin/superfactory/logger"
 )
 
 func HandlerCategoryList(ctx context.Context, req *panguservice.CategoryListRequest) (*panguservice.CategoryListResponse, aerror.Error) {
-	logger.Errorf("HandlerCategoryList s, req: %s", logger.ToJson(req))
-
 	resp, err := charonclient.Client.Categories(ctx, &charonservice.CategoryListRequest{
 		Query: req.Query,
 		Page:  req.Page,
 		Limit: req.Limit,
+		Range: req.Range,
+		Sort:  req.Sort,
 	})
 	if err != nil {
 		return nil, aerror.NewErrorf(err, aerror.Code.BUnexpectedData, "get category list failed")
@@ -31,10 +30,10 @@ func HandlerCategoryList(ctx context.Context, req *panguservice.CategoryListRequ
 	}
 
 	return &panguservice.CategoryListResponse{
-		Page:       req.Page,
-		Limit:      req.Limit,
+		Page:       resp.Page,
+		Limit:      resp.Limit,
 		Total:      resp.Total,
-		HasNext:    resp.Limit*resp.Page < resp.Total,
+		HasNext:    resp.HasNext,
 		Categories: categoryList,
 		Data:       categoryList,
 	}, nil

@@ -2,6 +2,7 @@ package model
 
 import (
 	charon2 "amusingx.fit/amusingx/mysqlstruct/charon"
+	charonservice "amusingx.fit/amusingx/protos/charon/service/charon/proto"
 	"amusingx.fit/amusingx/services/charon/mysql/charon"
 	"context"
 	"github.com/ItsWewin/superfactory/logger"
@@ -30,14 +31,20 @@ func TestCategoryQuery(t *testing.T) {
 
 	charon.Mock()
 	var (
-		ctx          = context.Background()
-		id     int64 = 0
-		name         = ""
-		desc         = ""
-		offSet int64 = 1
-		limit  int64 = 2
+		ctx = context.Background()
+		req = &charonservice.CategoryListRequest{
+			Query:  "",
+			Page:   0,
+			Limit:  0,
+			Range:  "",
+			Sort:   "",
+			Offset: 0,
+			Filter: nil,
+			Ranges: nil,
+		}
 	)
-	category, total, err := CategoryQuery(ctx, id, name, desc, offSet, limit)
+
+	category, total, err := CategoryQuery(ctx, req)
 	if err != nil {
 		t.Fatalf("some err: %s", err)
 	}
@@ -70,6 +77,22 @@ func TestQueryCategoryByID(t *testing.T) {
 	ctx := context.Background()
 
 	category, err := QueryCategoryByID(ctx, 11)
+	if err != nil {
+		t.Fatalf("err: %s", err)
+	}
+
+	t.Logf("category: %s", logger.ToJson(category))
+}
+
+func TestQueryCategoryByName(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip current func")
+	}
+
+	charon.Mock()
+	ctx := context.Background()
+
+	category, err := QueryCategoryByName(ctx, "name1")
 	if err != nil {
 		t.Fatalf("err: %s", err)
 	}
