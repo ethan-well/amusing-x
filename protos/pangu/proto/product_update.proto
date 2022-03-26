@@ -7,8 +7,7 @@ package panguservice;
 import "pangu/proto/category_info.proto";
 
 message ProductUpdateRequest {
-  Category Category = 1;
-  int64  id = 2;
-  string name = 3;
-  string desc = 4;
+  int64  id = 1;
+  string name = 2;
+  string desc = 3;
 }

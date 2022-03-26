@@ -74,3 +74,18 @@ func TestProductUpdate(t *testing.T) {
 
 	t.Logf("product: %s", logger.ToJson(product))
 }
+
+func TestProductListQuery(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip ...")
+	}
+
+	charon.Mock()
+
+	products, err := ProductSearch(context.Background(), "name", 1, 10)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	t.Logf("products: %s", logger.ToJson(products))
+}

@@ -27,7 +27,7 @@ type CharonServClient interface {
 	Update(ctx context.Context, in *CategoryUpdateRequest, opts ...grpc.CallOption) (*CategoryUpdateResponse, error)
 	ProductCreate(ctx context.Context, in *proto.ProductCreateRequest, opts ...grpc.CallOption) (*proto.Product, error)
 	ProductDelete(ctx context.Context, in *proto.ProductDeleteRequest, opts ...grpc.CallOption) (*proto.ProductDeleteResponse, error)
-	Products(ctx context.Context, in *proto.ProductListRequest, opts ...grpc.CallOption) (*proto.ProductListResponse, error)
+	Products(ctx context.Context, in *proto.ProductListRequest, opts ...grpc.CallOption) (*proto.ProductList, error)
 	Product(ctx context.Context, in *proto.ProductRequest, opts ...grpc.CallOption) (*proto.Product, error)
 	ProductUpdate(ctx context.Context, in *proto.ProductUpdateRequest, opts ...grpc.CallOption) (*proto.Product, error)
 }
@@ -112,8 +112,8 @@ func (c *charonServClient) ProductDelete(ctx context.Context, in *proto.ProductD
 	return out, nil
 }
 
-func (c *charonServClient) Products(ctx context.Context, in *proto.ProductListRequest, opts ...grpc.CallOption) (*proto.ProductListResponse, error) {
-	out := new(proto.ProductListResponse)
+func (c *charonServClient) Products(ctx context.Context, in *proto.ProductListRequest, opts ...grpc.CallOption) (*proto.ProductList, error) {
+	out := new(proto.ProductList)
 	err := c.cc.Invoke(ctx, "/charonservice.CharonServ/Products", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -151,7 +151,7 @@ type CharonServServer interface {
 	Update(context.Context, *CategoryUpdateRequest) (*CategoryUpdateResponse, error)
 	ProductCreate(context.Context, *proto.ProductCreateRequest) (*proto.Product, error)
 	ProductDelete(context.Context, *proto.ProductDeleteRequest) (*proto.ProductDeleteResponse, error)
-	Products(context.Context, *proto.ProductListRequest) (*proto.ProductListResponse, error)
+	Products(context.Context, *proto.ProductListRequest) (*proto.ProductList, error)
 	Product(context.Context, *proto.ProductRequest) (*proto.Product, error)
 	ProductUpdate(context.Context, *proto.ProductUpdateRequest) (*proto.Product, error)
 	mustEmbedUnimplementedCharonServServer()
@@ -185,7 +185,7 @@ func (UnimplementedCharonServServer) ProductCreate(context.Context, *proto.Produ
 func (UnimplementedCharonServServer) ProductDelete(context.Context, *proto.ProductDeleteRequest) (*proto.ProductDeleteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProductDelete not implemented")
 }
-func (UnimplementedCharonServServer) Products(context.Context, *proto.ProductListRequest) (*proto.ProductListResponse, error) {
+func (UnimplementedCharonServServer) Products(context.Context, *proto.ProductListRequest) (*proto.ProductList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Products not implemented")
 }
 func (UnimplementedCharonServServer) Product(context.Context, *proto.ProductRequest) (*proto.Product, error) {

@@ -19,6 +19,11 @@ func Response(data proto.Message, e aerror.Error) *response.CommResponse {
 		return resp
 	}
 
+	if data == nil {
+		resp.Succeed = true
+		return resp
+	}
+
 	any, err := anypb.New(data)
 	if err != nil {
 		resp.Succeed = false
