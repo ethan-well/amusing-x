@@ -7,6 +7,7 @@ import (
 )
 
 func HandlerCreate(ctx context.Context, in *proto.ProductCreateRequest) (*proto.Product, aerror.Error) {
+
 	return &proto.Product{
 		ID:   0,
 		Name: "",

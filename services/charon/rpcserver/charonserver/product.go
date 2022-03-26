@@ -6,22 +6,22 @@ import (
 	"context"
 )
 
-func ProductCreate(ctx context.Context, in *proto.ProductCreateRequest) (*proto.Product, error) {
+func (s *CharonServer) ProductCreate(ctx context.Context, in *proto.ProductCreateRequest) (*proto.Product, error) {
 	return product.HandlerCreate(ctx, in)
 }
 
-func ProductDelete(ctx context.Context, in *proto.ProductDeleteRequest) (*proto.ProductDeleteResponse, error) {
+func (s *CharonServer) ProductDelete(ctx context.Context, in *proto.ProductDeleteRequest) (*proto.ProductDeleteResponse, error) {
 	return product.HandlerDelete(ctx, in)
 }
 
-func Products(ctx context.Context, in *proto.ProductListRequest) (*proto.ProductListResponse, error) {
+func (s *CharonServer) Products(ctx context.Context, in *proto.ProductListRequest) (*proto.ProductListResponse, error) {
 	return product.HandlerList(ctx, in)
 }
 
-func Product(ctx context.Context, in *proto.ProductRequest) (*proto.Product, error) {
+func (s *CharonServer) Product(ctx context.Context, in *proto.ProductRequest) (*proto.Product, error) {
 	return product.HandlerQuery(ctx, in)
 }
 
-func ProductUpdate(ctx context.Context, in *proto.ProductUpdateRequest) (*proto.Product, error) {
+func (s *CharonServer) ProductUpdate(ctx context.Context, in *proto.ProductUpdateRequest) (*proto.Product, error) {
 	return product.HandlerUpdate(ctx, in)
 }

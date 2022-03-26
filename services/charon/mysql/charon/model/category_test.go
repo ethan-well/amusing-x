@@ -10,6 +10,10 @@ import (
 )
 
 func TestInsetCategory(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip ...")
+	}
+
 	charon.Mock()
 
 	category := &charon2.Category{
