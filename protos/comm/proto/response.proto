@@ -1,0 +1,22 @@
+syntax="proto3";
+
+option  go_package = "amusing-x.com/amusing-x/comm";
+
+package response;
+
+import "google/protobuf/any.proto";
+
+message error {
+  string  code = 1;
+  string message = 2;
+}
+
+message response {
+  bool succeed = 1;
+  error error = 2;
+  google.protobuf.Any result = 3;
+}
+
+
+
+
