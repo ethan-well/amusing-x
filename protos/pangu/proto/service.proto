@@ -11,6 +11,7 @@ import "pangu/proto/category_update.proto";
 import "pangu/proto/oauth_login.proto";
 import "pangu/proto/oauth_provider_info.proto";
 import "pangu/proto/logout.proto";
+import "comm/response/response.proto";
 
 package panguservice;
 
@@ -46,7 +47,7 @@ service PanGuService {
     };
   }
 
-  rpc CategoryDelete(CategoryDeleteRequest) returns (CategoryDeleteResponse) {
+  rpc CategoryDelete(CategoryDeleteRequest) returns (comm.response.CommResponse) {
     option(google.api.http) = {
       delete: "/v1/pangu/categories/{id}"
     };

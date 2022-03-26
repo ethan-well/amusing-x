@@ -1,6 +1,7 @@
 package panguserver
 
 import (
+	"amusingx.fit/amusingx/protos/comm/response"
 	panguservice "amusingx.fit/amusingx/protos/pangu/service/pangu/proto"
 	"amusingx.fit/amusingx/services/pangu/conf"
 	"amusingx.fit/amusingx/services/pangu/rpcserver/getway"
@@ -13,6 +14,8 @@ import (
 	"github.com/ItsWewin/superfactory/logger"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/anypb"
 	"net/http"
 	"strings"
 )
@@ -42,8 +45,39 @@ func (s *PanguServer) CategoryList(ctx context.Context, in *panguservice.Categor
 	return resp, err
 }
 
-func (s *PanguServer) CategoryDelete(ctx context.Context, in *panguservice.CategoryDeleteRequest) (*panguservice.CategoryDeleteResponse, error) {
-	return category.HandlerCategoryDelete(ctx, in)
+func (s *PanguServer) CategoryDelete(ctx context.Context, in *panguservice.CategoryDeleteRequest) (*response.CommResponse, error) {
+	response, err := category.HandlerCategoryDelete(ctx, in)
+	return commResponse(response, err), nil
+}
+
+func commResponse(data proto.Message, aErr aerror.Error) *response.CommResponse {
+	resp := &response.CommResponse{}
+	if aErr != nil {
+		resp.Succeed = false
+		resp.Error = &response.Error{
+			Code:    aErr.Code(),
+			Message: aErr.Message(),
+		}
+
+		return resp
+	}
+
+	option := proto.MarshalOptions{
+		AllowPartial:  false,
+		Deterministic: false,
+		UseCachedSize: false,
+	}
+
+	any, err := anypb.New(data)
+	if err != nil {
+		resp.Succeed = false
+		resp.Error = &response.Error{
+			Code:    aerror.Code.BObjectToAnyFailed,
+			Message: "unexpected data",
+		}
+	}
+
+	return &response.CommResponse{Data: any, Succeed: true}
 }
 
 func (s *PanguServer) Category(ctx context.Context, in *panguservice.CategoryRequest) (*panguservice.CategoryResponse, error) {

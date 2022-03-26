@@ -1,0 +1,19 @@
+syntax="proto3";
+package comm.response;
+
+option  go_package = "amusingx.fit/amusingx/protos/comm/response";
+
+import "google/protobuf/any.proto";
+
+message Error {
+  string  Code = 1;
+  string Message = 2;
+}
+
+message CommResponse {
+  bool Succeed = 1 [json_name="succeed"];
+  Error Error = 2 [json_name="error"];
+  google.protobuf.Any Data = 3 [json_name="data"];
+  bytes NewData = 4 [json_name="new_data"];
+}
+

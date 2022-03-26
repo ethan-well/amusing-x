@@ -3,6 +3,7 @@
 package panguservice
 
 import (
+	response "amusingx.fit/amusingx/protos/comm/response"
 	context "context"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
@@ -22,7 +23,7 @@ type PanGuServiceClient interface {
 	CategoryCreate(ctx context.Context, in *CategoryCreateRequest, opts ...grpc.CallOption) (*CategoryCreateResponse, error)
 	Category(ctx context.Context, in *CategoryRequest, opts ...grpc.CallOption) (*CategoryResponse, error)
 	CategoryList(ctx context.Context, in *CategoryListRequest, opts ...grpc.CallOption) (*CategoryListResponse, error)
-	CategoryDelete(ctx context.Context, in *CategoryDeleteRequest, opts ...grpc.CallOption) (*CategoryDeleteResponse, error)
+	CategoryDelete(ctx context.Context, in *CategoryDeleteRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
 	CategoryUpdate(ctx context.Context, in *CategoryUpdateRequest, opts ...grpc.CallOption) (*CategoryUpdateResponse, error)
 	OauthLogin(ctx context.Context, in *OAuthLoginRequest, opts ...grpc.CallOption) (*OAuthLoginResponse, error)
 	OauthProviderInfo(ctx context.Context, in *OauthProviderInfoRequest, opts ...grpc.CallOption) (*OAuthProviderInfoResponse, error)
@@ -73,8 +74,8 @@ func (c *panGuServiceClient) CategoryList(ctx context.Context, in *CategoryListR
 	return out, nil
 }
 
-func (c *panGuServiceClient) CategoryDelete(ctx context.Context, in *CategoryDeleteRequest, opts ...grpc.CallOption) (*CategoryDeleteResponse, error) {
-	out := new(CategoryDeleteResponse)
+func (c *panGuServiceClient) CategoryDelete(ctx context.Context, in *CategoryDeleteRequest, opts ...grpc.CallOption) (*response.CommResponse, error) {
+	out := new(response.CommResponse)
 	err := c.cc.Invoke(ctx, "/panguservice.PanGuService/CategoryDelete", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -126,7 +127,7 @@ type PanGuServiceServer interface {
 	CategoryCreate(context.Context, *CategoryCreateRequest) (*CategoryCreateResponse, error)
 	Category(context.Context, *CategoryRequest) (*CategoryResponse, error)
 	CategoryList(context.Context, *CategoryListRequest) (*CategoryListResponse, error)
-	CategoryDelete(context.Context, *CategoryDeleteRequest) (*CategoryDeleteResponse, error)
+	CategoryDelete(context.Context, *CategoryDeleteRequest) (*response.CommResponse, error)
 	CategoryUpdate(context.Context, *CategoryUpdateRequest) (*CategoryUpdateResponse, error)
 	OauthLogin(context.Context, *OAuthLoginRequest) (*OAuthLoginResponse, error)
 	OauthProviderInfo(context.Context, *OauthProviderInfoRequest) (*OAuthProviderInfoResponse, error)
@@ -150,7 +151,7 @@ func (UnimplementedPanGuServiceServer) Category(context.Context, *CategoryReques
 func (UnimplementedPanGuServiceServer) CategoryList(context.Context, *CategoryListRequest) (*CategoryListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CategoryList not implemented")
 }
-func (UnimplementedPanGuServiceServer) CategoryDelete(context.Context, *CategoryDeleteRequest) (*CategoryDeleteResponse, error) {
+func (UnimplementedPanGuServiceServer) CategoryDelete(context.Context, *CategoryDeleteRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CategoryDelete not implemented")
 }
 func (UnimplementedPanGuServiceServer) CategoryUpdate(context.Context, *CategoryUpdateRequest) (*CategoryUpdateResponse, error) {
