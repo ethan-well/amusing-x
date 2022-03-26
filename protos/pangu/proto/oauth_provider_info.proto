@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "amusing-x.com/pangu/panguservice";
+option go_package = "amusingx.fit/amusingx/protos/pangu/service/pangu/proto";
 
 package panguservice;
 

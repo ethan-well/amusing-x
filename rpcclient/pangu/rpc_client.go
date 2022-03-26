@@ -9,7 +9,7 @@ import (
 
 var (
 	Conn   *grpc.ClientConn
-	Client panguservice.PanGuServiceClient
+	Client proto.PanGuServiceClient
 )
 
 func InitClient(addr string) aerror.Error {
@@ -27,7 +27,7 @@ func InitClient(addr string) aerror.Error {
 		return err
 	}
 
-	Client = panguservice.NewPanGuServiceClient(Conn)
+	Client = proto.NewPanGuServiceClient(Conn)
 
 	return nil
 }

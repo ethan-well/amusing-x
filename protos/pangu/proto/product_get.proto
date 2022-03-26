@@ -1,9 +1,8 @@
-syntax = "proto3";
-
+syntax="proto3";
 option go_package = "amusingx.fit/amusingx/protos/pangu/service/pangu/proto";
 
 package panguservice;
 
-message LogoutResponse {
-    bool succeed = 1;
+message ProductRequest {
+  int64  id = 1;
 }

@@ -2,7 +2,7 @@ package login
 
 import (
 	ganymedeservice "amusingx.fit/amusingx/protos/ganymede/service/ganymede/proto"
-	"amusingx.fit/amusingx/protos/pangu/service/pangu/proto"
+	panguservice "amusingx.fit/amusingx/protos/pangu/service/pangu/proto"
 	"amusingx.fit/amusingx/rpcclient/ganymede"
 	"context"
 	"github.com/ItsWewin/superfactory/aerror"

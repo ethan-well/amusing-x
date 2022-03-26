@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "amusing-x.com/pangu/panguservice";
+option go_package = "amusingx.fit/amusingx/protos/pangu/service/pangu/proto";
 
 import "google/api/annotations.proto";
 import "pangu/proto/category_create.proto";
@@ -12,6 +12,12 @@ import "pangu/proto/oauth_login.proto";
 import "pangu/proto/oauth_provider_info.proto";
 import "pangu/proto/logout.proto";
 import "comm/response/response.proto";
+
+import "pangu/proto/product_create.proto";
+import "pangu/proto/product_get.proto";
+import "pangu/proto/product_delete.proto";
+import "pangu/proto/product_list.proto";
+import "pangu/proto/product_update.proto";
 
 package panguservice;
 
@@ -79,5 +85,37 @@ service PanGuService {
       body: "*"
     };
   }
+
+  rpc ProductCreate(ProductCreateRequest) returns (comm.response.CommResponse) {
+      option (google.api.http) = {
+        post: "/v1/pangu/products"
+        body: "*"
+      };
+    }
+
+  rpc Product(ProductRequest) returns (comm.response.CommResponse) {
+      option (google.api.http) = {
+        get: "/v1/pangu/products/{id}"
+      };
+  }
+
+  rpc Products(ProductListRequest) returns (comm.response.CommResponse) {
+      option(google.api.http) = {
+        get: "/v1/pangu/productss"
+      };
+    }
+
+  rpc ProductDelete(ProductDeleteRequest) returns (comm.response.CommResponse) {
+      option(google.api.http) = {
+        delete: "/v1/pangu/products/{id}"
+      };
+    }
+
+  rpc ProductUpdate(ProductUpdateRequest) returns (comm.response.CommResponse) {
+      option(google.api.http) = {
+        put: "/v1/pangu/products/{id}"
+        body: "*"
+      };
+    }
 }
 

@@ -4,7 +4,7 @@ option go_package = "amusingx.fit/amusingx/protos/pangu/service/pangu/proto";
 
 package panguservice;
 
-message Category {
+message Product {
   int64 ID = 1 [json_name="id"];
   string Name = 2 [json_name="name"];
   string Desc = 3 [json_name="desc"];
