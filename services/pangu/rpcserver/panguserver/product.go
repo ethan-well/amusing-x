@@ -12,17 +12,17 @@ func (s *PanguServer) ProductCreate(ctx context.Context, in *panguservice.Produc
 	return resp, nil
 }
 
-func (s *PanguServer) ProductList(ctx context.Context, in *panguservice.ProductListRequest) (*response.CommResponse, error) {
+func (s *PanguServer) Product(ctx context.Context, in *panguservice.ProductRequest) (*response.CommResponse, error) {
+	return product.HandlerProduct(ctx, in), nil
+}
+
+func (s *PanguServer) Products(ctx context.Context, in *panguservice.ProductListRequest) (*response.CommResponse, error) {
 	resp := product.HandlerProducts(ctx, in)
 	return resp, nil
 }
 
 func (s *PanguServer) ProductDelete(ctx context.Context, in *panguservice.ProductDeleteRequest) (*response.CommResponse, error) {
 	return product.HandlerProductDelete(ctx, in), nil
-}
-
-func (s *PanguServer) Product(ctx context.Context, in *panguservice.ProductRequest) (*response.CommResponse, error) {
-	return product.HandlerProduct(ctx, in), nil
 }
 
 func (s *PanguServer) ProductUpdate(ctx context.Context, in *panguservice.ProductUpdateRequest) (*response.CommResponse, error) {

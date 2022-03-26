@@ -105,7 +105,7 @@ func _del(ctx context.Context, client charonservice.CharonServClient, w *sync.Wa
 		fmt.Println("time out")
 		return
 	case <-ticker.C:
-		resp, err := client.Delete(context.Background(), &charonservice.CategoryDeleteRequest{Ids: []int64{1, 3, 4, 5}})
+		resp, err := client.Delete(context.Background(), &charonservice.CategoryDeleteRequest{Id: 1})
 		if err != nil {
 			fmt.Println(err)
 		}

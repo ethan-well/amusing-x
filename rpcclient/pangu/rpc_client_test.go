@@ -109,7 +109,7 @@ func _del(ctx context.Context, client panguservice.PanGuServiceClient, w *sync.W
 		fmt.Println("time out")
 		return
 	case <-ticker.C:
-		resp, err := client.CategoryDelete(context.Background(), &panguservice.CategoryDeleteRequest{Ids: []int64{1, 3, 4, 5, 6}})
+		resp, err := client.CategoryDelete(context.Background(), &panguservice.CategoryDeleteRequest{Id: 1})
 		if err != nil {
 			fmt.Println(err)
 		}

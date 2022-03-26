@@ -902,7 +902,7 @@ func RegisterPanGuServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/panguservice.PanGuService/Products", runtime.WithHTTPPathPattern("/v1/pangu/productss"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/panguservice.PanGuService/Products", runtime.WithHTTPPathPattern("/v1/pangu/products"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1230,7 +1230,7 @@ func RegisterPanGuServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/panguservice.PanGuService/Products", runtime.WithHTTPPathPattern("/v1/pangu/productss"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/panguservice.PanGuService/Products", runtime.WithHTTPPathPattern("/v1/pangu/products"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1312,7 +1312,7 @@ var (
 
 	pattern_PanGuService_Product_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "pangu", "products", "id"}, ""))
 
-	pattern_PanGuService_Products_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "pangu", "productss"}, ""))
+	pattern_PanGuService_Products_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "pangu", "products"}, ""))
 
 	pattern_PanGuService_ProductDelete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "pangu", "products", "id"}, ""))
 

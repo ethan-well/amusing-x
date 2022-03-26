@@ -79,7 +79,7 @@ service PanGuService {
     };
   }
 
-   rpc Logout(BlankParams) returns (LogoutResponse) {
+  rpc Logout(BlankParams) returns (LogoutResponse) {
     option(google.api.http) = {
       post: "/v1/pangu/logout"
       body: "*"
@@ -101,21 +101,21 @@ service PanGuService {
 
   rpc Products(ProductListRequest) returns (comm.response.CommResponse) {
       option(google.api.http) = {
-        get: "/v1/pangu/productss"
+        get: "/v1/pangu/products"
       };
-    }
+  }
 
   rpc ProductDelete(ProductDeleteRequest) returns (comm.response.CommResponse) {
       option(google.api.http) = {
         delete: "/v1/pangu/products/{id}"
       };
-    }
+  }
 
   rpc ProductUpdate(ProductUpdateRequest) returns (comm.response.CommResponse) {
       option(google.api.http) = {
         put: "/v1/pangu/products/{id}"
         body: "*"
       };
-    }
+  }
 }
 
