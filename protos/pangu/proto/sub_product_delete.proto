@@ -4,8 +4,10 @@ option go_package = "amusingx.fit/amusingx/protos/pangu/service/pangu/proto";
 
 package panguservice;
 
-message ProductUpdateRequest {
-  int64  id = 1;
-  string name = 2;
-  string desc = 3;
+message SubProductDeleteRequest {
+  int64 id = 1;
+}
+
+message SubProductDeleteResponse {
+  bool Result = 1;
 }

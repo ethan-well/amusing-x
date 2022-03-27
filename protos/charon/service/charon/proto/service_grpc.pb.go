@@ -30,6 +30,11 @@ type CharonServClient interface {
 	Products(ctx context.Context, in *proto.ProductListRequest, opts ...grpc.CallOption) (*proto.ProductListResponse, error)
 	Product(ctx context.Context, in *proto.ProductRequest, opts ...grpc.CallOption) (*proto.Product, error)
 	ProductUpdate(ctx context.Context, in *proto.ProductUpdateRequest, opts ...grpc.CallOption) (*proto.Product, error)
+	SubProductCreate(ctx context.Context, in *proto.SubProductCreateRequest, opts ...grpc.CallOption) (*proto.SubProduct, error)
+	SubProductDelete(ctx context.Context, in *proto.SubProductDeleteRequest, opts ...grpc.CallOption) (*proto.SubProductDeleteResponse, error)
+	SubProducts(ctx context.Context, in *proto.SubProductListRequest, opts ...grpc.CallOption) (*proto.SubProductListResponse, error)
+	SubProduct(ctx context.Context, in *proto.SubProductRequest, opts ...grpc.CallOption) (*proto.SubProduct, error)
+	SubProductUpdate(ctx context.Context, in *proto.SubProductUpdateRequest, opts ...grpc.CallOption) (*proto.SubProduct, error)
 }
 
 type charonServClient struct {
@@ -139,6 +144,51 @@ func (c *charonServClient) ProductUpdate(ctx context.Context, in *proto.ProductU
 	return out, nil
 }
 
+func (c *charonServClient) SubProductCreate(ctx context.Context, in *proto.SubProductCreateRequest, opts ...grpc.CallOption) (*proto.SubProduct, error) {
+	out := new(proto.SubProduct)
+	err := c.cc.Invoke(ctx, "/charonservice.CharonServ/SubProductCreate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *charonServClient) SubProductDelete(ctx context.Context, in *proto.SubProductDeleteRequest, opts ...grpc.CallOption) (*proto.SubProductDeleteResponse, error) {
+	out := new(proto.SubProductDeleteResponse)
+	err := c.cc.Invoke(ctx, "/charonservice.CharonServ/SubProductDelete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *charonServClient) SubProducts(ctx context.Context, in *proto.SubProductListRequest, opts ...grpc.CallOption) (*proto.SubProductListResponse, error) {
+	out := new(proto.SubProductListResponse)
+	err := c.cc.Invoke(ctx, "/charonservice.CharonServ/SubProducts", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *charonServClient) SubProduct(ctx context.Context, in *proto.SubProductRequest, opts ...grpc.CallOption) (*proto.SubProduct, error) {
+	out := new(proto.SubProduct)
+	err := c.cc.Invoke(ctx, "/charonservice.CharonServ/SubProduct", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *charonServClient) SubProductUpdate(ctx context.Context, in *proto.SubProductUpdateRequest, opts ...grpc.CallOption) (*proto.SubProduct, error) {
+	out := new(proto.SubProduct)
+	err := c.cc.Invoke(ctx, "/charonservice.CharonServ/SubProductUpdate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CharonServServer is the server API for CharonServ service.
 // All implementations must embed UnimplementedCharonServServer
 // for forward compatibility
@@ -154,6 +204,11 @@ type CharonServServer interface {
 	Products(context.Context, *proto.ProductListRequest) (*proto.ProductListResponse, error)
 	Product(context.Context, *proto.ProductRequest) (*proto.Product, error)
 	ProductUpdate(context.Context, *proto.ProductUpdateRequest) (*proto.Product, error)
+	SubProductCreate(context.Context, *proto.SubProductCreateRequest) (*proto.SubProduct, error)
+	SubProductDelete(context.Context, *proto.SubProductDeleteRequest) (*proto.SubProductDeleteResponse, error)
+	SubProducts(context.Context, *proto.SubProductListRequest) (*proto.SubProductListResponse, error)
+	SubProduct(context.Context, *proto.SubProductRequest) (*proto.SubProduct, error)
+	SubProductUpdate(context.Context, *proto.SubProductUpdateRequest) (*proto.SubProduct, error)
 	mustEmbedUnimplementedCharonServServer()
 }
 
@@ -193,6 +248,21 @@ func (UnimplementedCharonServServer) Product(context.Context, *proto.ProductRequ
 }
 func (UnimplementedCharonServServer) ProductUpdate(context.Context, *proto.ProductUpdateRequest) (*proto.Product, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProductUpdate not implemented")
+}
+func (UnimplementedCharonServServer) SubProductCreate(context.Context, *proto.SubProductCreateRequest) (*proto.SubProduct, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubProductCreate not implemented")
+}
+func (UnimplementedCharonServServer) SubProductDelete(context.Context, *proto.SubProductDeleteRequest) (*proto.SubProductDeleteResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubProductDelete not implemented")
+}
+func (UnimplementedCharonServServer) SubProducts(context.Context, *proto.SubProductListRequest) (*proto.SubProductListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubProducts not implemented")
+}
+func (UnimplementedCharonServServer) SubProduct(context.Context, *proto.SubProductRequest) (*proto.SubProduct, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubProduct not implemented")
+}
+func (UnimplementedCharonServServer) SubProductUpdate(context.Context, *proto.SubProductUpdateRequest) (*proto.SubProduct, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubProductUpdate not implemented")
 }
 func (UnimplementedCharonServServer) mustEmbedUnimplementedCharonServServer() {}
 
@@ -405,6 +475,96 @@ func _CharonServ_ProductUpdate_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CharonServ_SubProductCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(proto.SubProductCreateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CharonServServer).SubProductCreate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/charonservice.CharonServ/SubProductCreate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CharonServServer).SubProductCreate(ctx, req.(*proto.SubProductCreateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CharonServ_SubProductDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(proto.SubProductDeleteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CharonServServer).SubProductDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/charonservice.CharonServ/SubProductDelete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CharonServServer).SubProductDelete(ctx, req.(*proto.SubProductDeleteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CharonServ_SubProducts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(proto.SubProductListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CharonServServer).SubProducts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/charonservice.CharonServ/SubProducts",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CharonServServer).SubProducts(ctx, req.(*proto.SubProductListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CharonServ_SubProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(proto.SubProductRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CharonServServer).SubProduct(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/charonservice.CharonServ/SubProduct",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CharonServServer).SubProduct(ctx, req.(*proto.SubProductRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CharonServ_SubProductUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(proto.SubProductUpdateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CharonServServer).SubProductUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/charonservice.CharonServ/SubProductUpdate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CharonServServer).SubProductUpdate(ctx, req.(*proto.SubProductUpdateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CharonServ_ServiceDesc is the grpc.ServiceDesc for CharonServ service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -455,6 +615,26 @@ var CharonServ_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ProductUpdate",
 			Handler:    _CharonServ_ProductUpdate_Handler,
+		},
+		{
+			MethodName: "SubProductCreate",
+			Handler:    _CharonServ_SubProductCreate_Handler,
+		},
+		{
+			MethodName: "SubProductDelete",
+			Handler:    _CharonServ_SubProductDelete_Handler,
+		},
+		{
+			MethodName: "SubProducts",
+			Handler:    _CharonServ_SubProducts_Handler,
+		},
+		{
+			MethodName: "SubProduct",
+			Handler:    _CharonServ_SubProduct_Handler,
+		},
+		{
+			MethodName: "SubProductUpdate",
+			Handler:    _CharonServ_SubProductUpdate_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

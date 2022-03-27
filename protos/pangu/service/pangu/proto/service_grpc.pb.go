@@ -33,6 +33,11 @@ type PanGuServiceClient interface {
 	Products(ctx context.Context, in *ProductListRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
 	ProductDelete(ctx context.Context, in *ProductDeleteRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
 	ProductUpdate(ctx context.Context, in *ProductUpdateRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
+	SubProductCreate(ctx context.Context, in *SubProductCreateRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
+	SubProduct(ctx context.Context, in *SubProductRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
+	SubProducts(ctx context.Context, in *SubProductListRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
+	SubProductDelete(ctx context.Context, in *SubProductDeleteRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
+	SubProductUpdate(ctx context.Context, in *SubProductUpdateRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
 }
 
 type panGuServiceClient struct {
@@ -169,6 +174,51 @@ func (c *panGuServiceClient) ProductUpdate(ctx context.Context, in *ProductUpdat
 	return out, nil
 }
 
+func (c *panGuServiceClient) SubProductCreate(ctx context.Context, in *SubProductCreateRequest, opts ...grpc.CallOption) (*response.CommResponse, error) {
+	out := new(response.CommResponse)
+	err := c.cc.Invoke(ctx, "/panguservice.PanGuService/SubProductCreate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *panGuServiceClient) SubProduct(ctx context.Context, in *SubProductRequest, opts ...grpc.CallOption) (*response.CommResponse, error) {
+	out := new(response.CommResponse)
+	err := c.cc.Invoke(ctx, "/panguservice.PanGuService/SubProduct", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *panGuServiceClient) SubProducts(ctx context.Context, in *SubProductListRequest, opts ...grpc.CallOption) (*response.CommResponse, error) {
+	out := new(response.CommResponse)
+	err := c.cc.Invoke(ctx, "/panguservice.PanGuService/SubProducts", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *panGuServiceClient) SubProductDelete(ctx context.Context, in *SubProductDeleteRequest, opts ...grpc.CallOption) (*response.CommResponse, error) {
+	out := new(response.CommResponse)
+	err := c.cc.Invoke(ctx, "/panguservice.PanGuService/SubProductDelete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *panGuServiceClient) SubProductUpdate(ctx context.Context, in *SubProductUpdateRequest, opts ...grpc.CallOption) (*response.CommResponse, error) {
+	out := new(response.CommResponse)
+	err := c.cc.Invoke(ctx, "/panguservice.PanGuService/SubProductUpdate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PanGuServiceServer is the server API for PanGuService service.
 // All implementations must embed UnimplementedPanGuServiceServer
 // for forward compatibility
@@ -187,6 +237,11 @@ type PanGuServiceServer interface {
 	Products(context.Context, *ProductListRequest) (*response.CommResponse, error)
 	ProductDelete(context.Context, *ProductDeleteRequest) (*response.CommResponse, error)
 	ProductUpdate(context.Context, *ProductUpdateRequest) (*response.CommResponse, error)
+	SubProductCreate(context.Context, *SubProductCreateRequest) (*response.CommResponse, error)
+	SubProduct(context.Context, *SubProductRequest) (*response.CommResponse, error)
+	SubProducts(context.Context, *SubProductListRequest) (*response.CommResponse, error)
+	SubProductDelete(context.Context, *SubProductDeleteRequest) (*response.CommResponse, error)
+	SubProductUpdate(context.Context, *SubProductUpdateRequest) (*response.CommResponse, error)
 	mustEmbedUnimplementedPanGuServiceServer()
 }
 
@@ -235,6 +290,21 @@ func (UnimplementedPanGuServiceServer) ProductDelete(context.Context, *ProductDe
 }
 func (UnimplementedPanGuServiceServer) ProductUpdate(context.Context, *ProductUpdateRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProductUpdate not implemented")
+}
+func (UnimplementedPanGuServiceServer) SubProductCreate(context.Context, *SubProductCreateRequest) (*response.CommResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubProductCreate not implemented")
+}
+func (UnimplementedPanGuServiceServer) SubProduct(context.Context, *SubProductRequest) (*response.CommResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubProduct not implemented")
+}
+func (UnimplementedPanGuServiceServer) SubProducts(context.Context, *SubProductListRequest) (*response.CommResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubProducts not implemented")
+}
+func (UnimplementedPanGuServiceServer) SubProductDelete(context.Context, *SubProductDeleteRequest) (*response.CommResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubProductDelete not implemented")
+}
+func (UnimplementedPanGuServiceServer) SubProductUpdate(context.Context, *SubProductUpdateRequest) (*response.CommResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubProductUpdate not implemented")
 }
 func (UnimplementedPanGuServiceServer) mustEmbedUnimplementedPanGuServiceServer() {}
 
@@ -501,6 +571,96 @@ func _PanGuService_ProductUpdate_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PanGuService_SubProductCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SubProductCreateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PanGuServiceServer).SubProductCreate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/panguservice.PanGuService/SubProductCreate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PanGuServiceServer).SubProductCreate(ctx, req.(*SubProductCreateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PanGuService_SubProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SubProductRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PanGuServiceServer).SubProduct(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/panguservice.PanGuService/SubProduct",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PanGuServiceServer).SubProduct(ctx, req.(*SubProductRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PanGuService_SubProducts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SubProductListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PanGuServiceServer).SubProducts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/panguservice.PanGuService/SubProducts",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PanGuServiceServer).SubProducts(ctx, req.(*SubProductListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PanGuService_SubProductDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SubProductDeleteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PanGuServiceServer).SubProductDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/panguservice.PanGuService/SubProductDelete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PanGuServiceServer).SubProductDelete(ctx, req.(*SubProductDeleteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PanGuService_SubProductUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SubProductUpdateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PanGuServiceServer).SubProductUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/panguservice.PanGuService/SubProductUpdate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PanGuServiceServer).SubProductUpdate(ctx, req.(*SubProductUpdateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PanGuService_ServiceDesc is the grpc.ServiceDesc for PanGuService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -563,6 +723,26 @@ var PanGuService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ProductUpdate",
 			Handler:    _PanGuService_ProductUpdate_Handler,
+		},
+		{
+			MethodName: "SubProductCreate",
+			Handler:    _PanGuService_SubProductCreate_Handler,
+		},
+		{
+			MethodName: "SubProduct",
+			Handler:    _PanGuService_SubProduct_Handler,
+		},
+		{
+			MethodName: "SubProducts",
+			Handler:    _PanGuService_SubProducts_Handler,
+		},
+		{
+			MethodName: "SubProductDelete",
+			Handler:    _PanGuService_SubProductDelete_Handler,
+		},
+		{
+			MethodName: "SubProductUpdate",
+			Handler:    _PanGuService_SubProductUpdate_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option go_package = "amusingx.fit/amusingx/protos/pangu/service/pangu/proto";
+
+package panguservice;
+
+message SubProduct {
+  int64  ID = 1 [json_name="id"];
+  string Name = 2 [json_name="name"];
+  string Desc = 3 [json_name="desc"];
+  int64 ProductId = 4 [json_name="product_id"];
+  string Currency = 5 [json_name="currency"];
+  int64 Price = 6 [json_name="price"];
+  int64 stock = 7 [json_name="stock"];
+}

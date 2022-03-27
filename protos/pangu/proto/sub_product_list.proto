@@ -4,19 +4,19 @@ option go_package = "amusingx.fit/amusingx/protos/pangu/service/pangu/proto";
 
 package panguservice;
 
-import "pangu/proto/product.proto";
+import "pangu/proto/sub_product.proto";
 
-message ProductListRequest {
+message SubProductListRequest {
   string Query = 1 [json_name="query"];
   int64 Page = 2  [json_name="page"];
   int64 Limit = 3 [json_name="limit"];
   string sort = 5 [json_name="sort"];
 }
 
-message ProductListResponse {
+message SubProductListResponse {
   int64 Page = 1 [json_name="page"];
   int64 Limit = 2 [json_name="limit"];
   int64 Total = 3 [json_name="total"];
   bool hasNext = 4 [json_name="has_next"];
-  repeated Product Data = 6 [json_name="data"];
+  repeated SubProduct Data = 6 [json_name="data"];
 }

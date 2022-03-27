@@ -19,6 +19,12 @@ import "pangu/proto/product_delete.proto";
 import "pangu/proto/product_list.proto";
 import "pangu/proto/product_update.proto";
 
+import "pangu/proto/sub_product_create.proto";
+import "pangu/proto/sub_product_get.proto";
+import "pangu/proto/sub_product_delete.proto";
+import "pangu/proto/sub_product_list.proto";
+import "pangu/proto/sub_product_update.proto";
+
 package panguservice;
 
 message BlankParams{}
@@ -117,5 +123,36 @@ service PanGuService {
         body: "*"
       };
   }
-}
 
+  rpc SubProductCreate(SubProductCreateRequest) returns (comm.response.CommResponse) {
+        option (google.api.http) = {
+          post: "/v1/pangu/sub_products"
+          body: "*"
+        };
+  }
+
+  rpc SubProduct(SubProductRequest) returns (comm.response.CommResponse) {
+        option (google.api.http) = {
+          get: "/v1/pangu/sub_products/{id}"
+        };
+    }
+
+    rpc SubProducts(SubProductListRequest) returns (comm.response.CommResponse) {
+        option(google.api.http) = {
+          get: "/v1/pangu/sub_products"
+        };
+    }
+
+    rpc SubProductDelete(SubProductDeleteRequest) returns (comm.response.CommResponse) {
+        option(google.api.http) = {
+          delete: "/v1/pangu/sub_products/{id}"
+        };
+    }
+
+    rpc SubProductUpdate(SubProductUpdateRequest) returns (comm.response.CommResponse) {
+        option(google.api.http) = {
+          put: "/v1/pangu/sub_products/{id}"
+          body: "*"
+        };
+    }
+}
