@@ -26,7 +26,7 @@ func ProductInsert(ctx context.Context, product *charon.Product) (*charon.Produc
 }
 
 func ProductQueryById(ctx context.Context, id int64) (*charon.Product, aerror.Error) {
-	querySql := `SELECT name, description FROM product WHERE id = ?`
+	querySql := `SELECT id, name, description FROM product WHERE id = ?`
 	var products []*charon.Product
 	err := charon2.CharonDB.SelectContext(ctx, &products, querySql, id)
 	if err != nil {

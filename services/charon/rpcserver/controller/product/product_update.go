@@ -10,7 +10,7 @@ import (
 
 func HandlerUpdate(ctx context.Context, in *proto.ProductUpdateRequest) (*proto.Product, aerror.Error) {
 	if in == nil || in.Id == 0 {
-		return nil, aerror.NewErrorf(nil, aerror.Code.CParamsError, "request info is nil")
+		return nil, aerror.NewErrorf(nil, aerror.Code.CParamsError, "id in request info is 0")
 	}
 
 	err := model.ProductUpdate(ctx, &charon.Product{
