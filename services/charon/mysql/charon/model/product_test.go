@@ -82,10 +82,11 @@ func TestProductListQuery(t *testing.T) {
 
 	charon.Mock()
 
-	products, err := ProductSearch(context.Background(), "name", 1, 10)
+	total, products, err := ProductSearch(context.Background(), "name", 1, 1)
 	if err != nil {
 		t.Fatal(err)
 	}
 
+	t.Logf("total: %d", total)
 	t.Logf("products: %s", logger.ToJson(products))
 }

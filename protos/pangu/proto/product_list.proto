@@ -18,7 +18,7 @@ message ProductListResponse {
   int64 Limit = 2 [json_name="limit"];
   int64 Total = 3 [json_name="total"];
   bool hasNext = 4 [json_name="has_next"];
-  ProductList Data = 6 [json_name="data"];
+  repeated Product Data = 6 [json_name="data"];
 }
 
 message ProductList {

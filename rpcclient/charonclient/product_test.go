@@ -28,6 +28,7 @@ func TestProduct(t *testing.T) {
 	_query(ctx, Client, product, t)
 	_productUpdate(ctx, Client, product, t)
 	_productDel(ctx, Client, product, t)
+	_queryProductList(ctx, Client, product, t)
 }
 
 func _query(ctx context.Context, client charonservice.CharonServClient, product *proto.Product, t *testing.T) {
@@ -138,5 +139,27 @@ func _productDel(ctx context.Context, Client charonservice.CharonServClient, pro
 		if resp == nil || !resp.Result {
 			t.Fatal("delete failed")
 		}
+	}
+}
+
+func _queryProductList(ctx context.Context, client charonservice.CharonServClient, product *proto.Product, t *testing.T) {
+	ticker := time.NewTicker(1 * time.Second)
+	defer ticker.Stop()
+
+	select {
+	case <-ctx.Done():
+		fmt.Println("time out")
+		return
+	case <-ticker.C:
+		resp, err := client.Products(ctx, &proto.ProductListRequest{
+			Query: "name",
+			Page:  1,
+			Limit: 10,
+		})
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		t.Logf("product list: %s", logger.ToJson(resp))
 	}
 }

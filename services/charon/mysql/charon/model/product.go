@@ -65,17 +65,29 @@ func ProductUpdate(ctx context.Context, product *charon.Product) aerror.Error {
 	return nil
 }
 
-func ProductSearch(ctx context.Context, query string, offset, limit int64) ([]*charon.Product, aerror.Error) {
-	querySql := `SELECT id, name, description
-		FROM product
-		WHERE name LIKE ? OR description LIKE ?
-		limit ?, ?`
+func ProductSearch(ctx context.Context, query string, offset, limit int64) (int64, []*charon.Product, aerror.Error) {
+	formSql := `FROM product `
+	whereSql := `WHERE name LIKE ? OR description LIKE ? `
+	searchSelect := `SELECT id, name, description `
+	countSelect := `SELECT count(*) `
 
-	var products []*charon.Product
-	err := charon2.CharonDB.SelectContext(ctx, &products, querySql, "%"+query, "%s"+query, offset, limit)
+	countSelectSql := countSelect + formSql + whereSql
+	var total int64
+	err := charon2.CharonDB.QueryRowx(countSelectSql, "%"+query, "%s"+query).Scan(&total)
 	if err != nil {
-		return nil, aerror.NewErrorf(err, aerror.Code.BUnexpectedData, "select product failed")
+		return 0, nil, aerror.NewErrorf(err, aerror.Code.BUnexpectedData, "select product failed")
 	}
 
-	return products, nil
+	if total == 0 {
+		return 0, nil, nil
+	}
+
+	searchSelectSql := searchSelect + formSql + whereSql + "limit ?, ?"
+	var products []*charon.Product
+	err = charon2.CharonDB.SelectContext(ctx, &products, searchSelectSql, "%"+query, "%s"+query, offset, limit)
+	if err != nil {
+		return 0, nil, aerror.NewErrorf(err, aerror.Code.BUnexpectedData, "select product failed")
+	}
+
+	return total, products, nil
 }

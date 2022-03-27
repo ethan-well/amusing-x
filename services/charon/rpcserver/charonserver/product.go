@@ -14,12 +14,8 @@ func (s *CharonServer) ProductDelete(ctx context.Context, in *proto.ProductDelet
 	return product.HandlerDelete(ctx, in)
 }
 
-func (s *CharonServer) Products(ctx context.Context, in *proto.ProductListRequest) (*proto.ProductList, error) {
-	products, err := product.HandlerList(ctx, in)
-	if err != nil {
-		return nil, err
-	}
-	return &proto.ProductList{Products: products}, nil
+func (s *CharonServer) Products(ctx context.Context, in *proto.ProductListRequest) (*proto.ProductListResponse, error) {
+	return product.HandlerList(ctx, in)
 }
 
 func (s *CharonServer) Product(ctx context.Context, in *proto.ProductRequest) (*proto.Product, error) {

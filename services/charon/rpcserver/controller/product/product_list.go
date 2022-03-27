@@ -7,12 +7,12 @@ import (
 	"github.com/ItsWewin/superfactory/aerror"
 )
 
-func HandlerList(ctx context.Context, in *proto.ProductListRequest) ([]*proto.Product, aerror.Error) {
+func HandlerList(ctx context.Context, in *proto.ProductListRequest) (*proto.ProductListResponse, aerror.Error) {
 	if in == nil {
 		return nil, aerror.NewErrorf(nil, aerror.Code.CParamsError, "request is invalid")
 	}
 
-	products, err := model.ProductSearch(ctx, in.Query, (in.Page-1)*in.Limit, in.Limit)
+	total, products, err := model.ProductSearch(ctx, in.Query, (in.Page-1)*in.Limit, in.Limit)
 	if err != nil {
 		return nil, err
 	}
@@ -26,5 +26,13 @@ func HandlerList(ctx context.Context, in *proto.ProductListRequest) ([]*proto.Pr
 		})
 	}
 
-	return productList, nil
+	resp := &proto.ProductListResponse{
+		Page:    in.Page,
+		Limit:   in.Limit,
+		Total:   total,
+		HasNext: (in.Page-1)*in.Limit+int64(len(productList)) < total,
+		Data:    productList,
+	}
+
+	return resp, nil
 }
