@@ -20,3 +20,16 @@ func HandlerCategoryDelete(ctx context.Context, req *panguservice.CategoryDelete
 
 	return &panguservice.CategoryDeleteResponse{Result: resp.Succeed}, nil
 }
+
+func HandlerCategoriesDelete(ctx context.Context, req *panguservice.CategoriesDeleteRequest) (*panguservice.CategoriesDeleteResponse, aerror.Error) {
+	if req.Filter == "" {
+		return &panguservice.CategoriesDeleteResponse{Result: true}, nil
+	}
+
+	resp, err := charonclient.Client.CategoriesDelete(ctx, req)
+	if err != nil {
+		return nil, aerror.NewErrorf(err, aerror.Code.BUnexpectedData, "delete category failed")
+	}
+
+	return resp, nil
+}

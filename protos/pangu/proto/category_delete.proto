@@ -11,3 +11,13 @@ message CategoryDeleteRequest {
 message CategoryDeleteResponse {
   bool result = 1;
 }
+
+
+message CategoriesDeleteRequest {
+  string filter = 1;
+}
+
+message CategoriesDeleteResponse {
+  bool result = 1;
+  repeated int64 ids = 2;
+}

@@ -24,6 +24,11 @@ func (s *PanguServer) CategoryList(ctx context.Context, in *panguservice.Categor
 	return resp, err
 }
 
+func (s *PanguServer) CategoriesDelete(ctx context.Context, in *panguservice.CategoriesDeleteRequest) (*response.CommResponse, error) {
+	response, err := category.HandlerCategoriesDelete(ctx, in)
+	return comm.Response(response, err), nil
+}
+
 func (s *PanguServer) CategoryDelete(ctx context.Context, in *panguservice.CategoryDeleteRequest) (*response.CommResponse, error) {
 	response, err := category.HandlerCategoryDelete(ctx, in)
 	return comm.Response(response, err), nil

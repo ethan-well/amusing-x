@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion7
 type PanGuServiceClient interface {
 	Pong(ctx context.Context, in *BlankParams, opts ...grpc.CallOption) (*PongResponse, error)
 	CategoryCreate(ctx context.Context, in *CategoryCreateRequest, opts ...grpc.CallOption) (*CategoryCreateResponse, error)
+	CategoriesDelete(ctx context.Context, in *CategoriesDeleteRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
 	Category(ctx context.Context, in *CategoryRequest, opts ...grpc.CallOption) (*CategoryResponse, error)
 	CategoryList(ctx context.Context, in *CategoryListRequest, opts ...grpc.CallOption) (*CategoryListResponse, error)
 	CategoryDelete(ctx context.Context, in *CategoryDeleteRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
@@ -60,6 +61,15 @@ func (c *panGuServiceClient) Pong(ctx context.Context, in *BlankParams, opts ...
 func (c *panGuServiceClient) CategoryCreate(ctx context.Context, in *CategoryCreateRequest, opts ...grpc.CallOption) (*CategoryCreateResponse, error) {
 	out := new(CategoryCreateResponse)
 	err := c.cc.Invoke(ctx, "/panguservice.PanGuService/CategoryCreate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *panGuServiceClient) CategoriesDelete(ctx context.Context, in *CategoriesDeleteRequest, opts ...grpc.CallOption) (*response.CommResponse, error) {
+	out := new(response.CommResponse)
+	err := c.cc.Invoke(ctx, "/panguservice.PanGuService/CategoriesDelete", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -225,6 +235,7 @@ func (c *panGuServiceClient) SubProductUpdate(ctx context.Context, in *SubProduc
 type PanGuServiceServer interface {
 	Pong(context.Context, *BlankParams) (*PongResponse, error)
 	CategoryCreate(context.Context, *CategoryCreateRequest) (*CategoryCreateResponse, error)
+	CategoriesDelete(context.Context, *CategoriesDeleteRequest) (*response.CommResponse, error)
 	Category(context.Context, *CategoryRequest) (*CategoryResponse, error)
 	CategoryList(context.Context, *CategoryListRequest) (*CategoryListResponse, error)
 	CategoryDelete(context.Context, *CategoryDeleteRequest) (*response.CommResponse, error)
@@ -254,6 +265,9 @@ func (UnimplementedPanGuServiceServer) Pong(context.Context, *BlankParams) (*Pon
 }
 func (UnimplementedPanGuServiceServer) CategoryCreate(context.Context, *CategoryCreateRequest) (*CategoryCreateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CategoryCreate not implemented")
+}
+func (UnimplementedPanGuServiceServer) CategoriesDelete(context.Context, *CategoriesDeleteRequest) (*response.CommResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CategoriesDelete not implemented")
 }
 func (UnimplementedPanGuServiceServer) Category(context.Context, *CategoryRequest) (*CategoryResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Category not implemented")
@@ -351,6 +365,24 @@ func _PanGuService_CategoryCreate_Handler(srv interface{}, ctx context.Context, 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PanGuServiceServer).CategoryCreate(ctx, req.(*CategoryCreateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PanGuService_CategoriesDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CategoriesDeleteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PanGuServiceServer).CategoriesDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/panguservice.PanGuService/CategoriesDelete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PanGuServiceServer).CategoriesDelete(ctx, req.(*CategoriesDeleteRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -675,6 +707,10 @@ var PanGuService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CategoryCreate",
 			Handler:    _PanGuService_CategoryCreate_Handler,
+		},
+		{
+			MethodName: "CategoriesDelete",
+			Handler:    _PanGuService_CategoriesDelete_Handler,
 		},
 		{
 			MethodName: "Category",

@@ -14,8 +14,9 @@ func HandlerQuery(ctx context.Context, in *proto.ProductRequest) (*proto.Product
 	}
 
 	return &proto.Product{
-		ID:   product.ID,
-		Name: product.Name,
-		Desc: product.Desc,
+		ID:         product.ID,
+		Name:       product.Name,
+		Desc:       product.Desc,
+		CategoryId: product.CategoryId,
 	}, nil
 }

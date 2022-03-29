@@ -25,6 +25,7 @@ type CharonServClient interface {
 	Delete(ctx context.Context, in *CategoryDeleteRequest, opts ...grpc.CallOption) (*CategoryDeleteResponse, error)
 	Category(ctx context.Context, in *CategoryRequest, opts ...grpc.CallOption) (*CategoryResponse, error)
 	Update(ctx context.Context, in *CategoryUpdateRequest, opts ...grpc.CallOption) (*CategoryUpdateResponse, error)
+	CategoriesDelete(ctx context.Context, in *proto.CategoriesDeleteRequest, opts ...grpc.CallOption) (*proto.CategoriesDeleteResponse, error)
 	ProductCreate(ctx context.Context, in *proto.ProductCreateRequest, opts ...grpc.CallOption) (*proto.Product, error)
 	ProductDelete(ctx context.Context, in *proto.ProductDeleteRequest, opts ...grpc.CallOption) (*proto.ProductDeleteResponse, error)
 	Products(ctx context.Context, in *proto.ProductListRequest, opts ...grpc.CallOption) (*proto.ProductListResponse, error)
@@ -93,6 +94,15 @@ func (c *charonServClient) Category(ctx context.Context, in *CategoryRequest, op
 func (c *charonServClient) Update(ctx context.Context, in *CategoryUpdateRequest, opts ...grpc.CallOption) (*CategoryUpdateResponse, error) {
 	out := new(CategoryUpdateResponse)
 	err := c.cc.Invoke(ctx, "/charonservice.CharonServ/Update", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *charonServClient) CategoriesDelete(ctx context.Context, in *proto.CategoriesDeleteRequest, opts ...grpc.CallOption) (*proto.CategoriesDeleteResponse, error) {
+	out := new(proto.CategoriesDeleteResponse)
+	err := c.cc.Invoke(ctx, "/charonservice.CharonServ/CategoriesDelete", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -199,6 +209,7 @@ type CharonServServer interface {
 	Delete(context.Context, *CategoryDeleteRequest) (*CategoryDeleteResponse, error)
 	Category(context.Context, *CategoryRequest) (*CategoryResponse, error)
 	Update(context.Context, *CategoryUpdateRequest) (*CategoryUpdateResponse, error)
+	CategoriesDelete(context.Context, *proto.CategoriesDeleteRequest) (*proto.CategoriesDeleteResponse, error)
 	ProductCreate(context.Context, *proto.ProductCreateRequest) (*proto.Product, error)
 	ProductDelete(context.Context, *proto.ProductDeleteRequest) (*proto.ProductDeleteResponse, error)
 	Products(context.Context, *proto.ProductListRequest) (*proto.ProductListResponse, error)
@@ -233,6 +244,9 @@ func (UnimplementedCharonServServer) Category(context.Context, *CategoryRequest)
 }
 func (UnimplementedCharonServServer) Update(context.Context, *CategoryUpdateRequest) (*CategoryUpdateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+}
+func (UnimplementedCharonServServer) CategoriesDelete(context.Context, *proto.CategoriesDeleteRequest) (*proto.CategoriesDeleteResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CategoriesDelete not implemented")
 }
 func (UnimplementedCharonServServer) ProductCreate(context.Context, *proto.ProductCreateRequest) (*proto.Product, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProductCreate not implemented")
@@ -381,6 +395,24 @@ func _CharonServ_Update_Handler(srv interface{}, ctx context.Context, dec func(i
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CharonServServer).Update(ctx, req.(*CategoryUpdateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CharonServ_CategoriesDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(proto.CategoriesDeleteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CharonServServer).CategoriesDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/charonservice.CharonServ/CategoriesDelete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CharonServServer).CategoriesDelete(ctx, req.(*proto.CategoriesDeleteRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -595,6 +627,10 @@ var CharonServ_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Update",
 			Handler:    _CharonServ_Update_Handler,
+		},
+		{
+			MethodName: "CategoriesDelete",
+			Handler:    _CharonServ_CategoriesDelete_Handler,
 		},
 		{
 			MethodName: "ProductCreate",

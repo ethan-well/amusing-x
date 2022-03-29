@@ -5,7 +5,7 @@ option go_package = "amusingx.fit/amusingx/protos/pangu/service/pangu/proto";
 import "google/api/annotations.proto";
 import "pangu/proto/category_create.proto";
 import "pangu/proto/category_list.proto";
-import "pangu/proto/category_destroy.proto";
+import "pangu/proto/category_delete.proto";
 import "pangu/proto/category.proto";
 import "pangu/proto/category_update.proto";
 import "pangu/proto/oauth_login.proto";
@@ -46,6 +46,12 @@ service PanGuService {
       body: "*"
     };
   }
+
+   rpc CategoriesDelete(CategoriesDeleteRequest) returns (comm.response.CommResponse) {
+      option (google.api.http) = {
+        delete: "/v1/pangu/categories"
+      };
+    }
 
   rpc Category(CategoryRequest) returns (CategoryResponse) {
     option (google.api.http) = {
