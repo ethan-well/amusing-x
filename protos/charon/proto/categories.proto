@@ -6,27 +6,8 @@ package charonservice;
 
 import "charon/proto/category_info.proto";
 
-message Filter {
-  int64 id = 1;
-  string name = 2;
-  string desc = 3;
-}
-
-message CategoryListRequest {
-  string query = 1;
-  int64 page = 2;
-  int64 limit = 3;
-  string range = 4 [json_name="range"];
-  string sort = 5 [json_name="sort"];
-  int64 offset = 6;
-  Filter filter = 7;
-  repeated int64 ranges = 8;
-}
-
-message CategoryListResponse {
-  int64 page = 1;
-  int64 limit = 2;
-  int64 total = 3;
-  bool hasNext = 4;
-  repeated Category categories = 5;
+message SearchFilter {
+  repeated int64 id = 1;
+  repeated string name = 2;
+  repeated string desc = 3;
 }

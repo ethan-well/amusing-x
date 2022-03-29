@@ -1,7 +1,6 @@
 package category
 
 import (
-	charonservice "amusingx.fit/amusingx/protos/charon/service/charon/proto"
 	panguservice "amusingx.fit/amusingx/protos/pangu/service/pangu/proto"
 	"amusingx.fit/amusingx/rpcclient/charonclient"
 	"context"
@@ -9,13 +8,7 @@ import (
 )
 
 func HandlerCategoryList(ctx context.Context, req *panguservice.CategoryListRequest) (*panguservice.CategoryListResponse, aerror.Error) {
-	resp, err := charonclient.Client.Categories(ctx, &charonservice.CategoryListRequest{
-		Query: req.Query,
-		Page:  req.Page,
-		Limit: req.Limit,
-		Range: req.Range,
-		Sort:  req.Sort,
-	})
+	resp, err := charonclient.Client.Categories(ctx, req)
 	if err != nil {
 		return nil, aerror.NewErrorf(err, aerror.Code.BUnexpectedData, "get category list failed")
 	}
@@ -23,7 +16,7 @@ func HandlerCategoryList(ctx context.Context, req *panguservice.CategoryListRequ
 	var categoryList []*panguservice.Category
 	for _, c := range resp.Categories {
 		categoryList = append(categoryList, &panguservice.Category{
-			ID:   c.Id,
+			ID:   c.ID,
 			Name: c.Name,
 			Desc: c.Desc,
 		})

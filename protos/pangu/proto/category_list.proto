@@ -13,13 +13,19 @@ message CategoryListRequest {
   string range = 4 [json_name="range"];
   string sort = 5 [json_name="sort"];
   repeated int64 ranges = 6;
+  string filter = 7 [json_name="filter"];
+  int64 Offset = 8 [json_name="offset"];
+}
+
+message Filter {
+  repeated string id = 1 [json_name="id"];
 }
 
 message CategoryListResponse {
-  int64 Page = 1 [json_name="page"];
-  int64 Limit = 2 [json_name="limit"];
-  int64 Total = 3 [json_name="total"];
+  int64 page = 1 [json_name="page"];
+  int64 limit = 2 [json_name="limit"];
+  int64 total = 3 [json_name="total"];
   bool hasNext = 4 [json_name="has_next"];
-  repeated Category Categories = 5 [json_name="categories"];
-  repeated Category Data = 6 [json_name="data"];
+  repeated Category categories = 5 [json_name="categories"];
+  repeated Category data = 6 [json_name="data"];
 }

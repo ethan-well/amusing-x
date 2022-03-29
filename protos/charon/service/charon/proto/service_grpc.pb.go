@@ -21,7 +21,7 @@ const _ = grpc.SupportPackageIsVersion7
 type CharonServClient interface {
 	Pong(ctx context.Context, in *BlankParams, opts ...grpc.CallOption) (*PongResponse, error)
 	Create(ctx context.Context, in *CategoryCreateRequest, opts ...grpc.CallOption) (*CategoryCreateResponse, error)
-	Categories(ctx context.Context, in *CategoryListRequest, opts ...grpc.CallOption) (*CategoryListResponse, error)
+	Categories(ctx context.Context, in *proto.CategoryListRequest, opts ...grpc.CallOption) (*proto.CategoryListResponse, error)
 	Delete(ctx context.Context, in *CategoryDeleteRequest, opts ...grpc.CallOption) (*CategoryDeleteResponse, error)
 	Category(ctx context.Context, in *CategoryRequest, opts ...grpc.CallOption) (*CategoryResponse, error)
 	Update(ctx context.Context, in *CategoryUpdateRequest, opts ...grpc.CallOption) (*CategoryUpdateResponse, error)
@@ -63,8 +63,8 @@ func (c *charonServClient) Create(ctx context.Context, in *CategoryCreateRequest
 	return out, nil
 }
 
-func (c *charonServClient) Categories(ctx context.Context, in *CategoryListRequest, opts ...grpc.CallOption) (*CategoryListResponse, error) {
-	out := new(CategoryListResponse)
+func (c *charonServClient) Categories(ctx context.Context, in *proto.CategoryListRequest, opts ...grpc.CallOption) (*proto.CategoryListResponse, error) {
+	out := new(proto.CategoryListResponse)
 	err := c.cc.Invoke(ctx, "/charonservice.CharonServ/Categories", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -195,7 +195,7 @@ func (c *charonServClient) SubProductUpdate(ctx context.Context, in *proto.SubPr
 type CharonServServer interface {
 	Pong(context.Context, *BlankParams) (*PongResponse, error)
 	Create(context.Context, *CategoryCreateRequest) (*CategoryCreateResponse, error)
-	Categories(context.Context, *CategoryListRequest) (*CategoryListResponse, error)
+	Categories(context.Context, *proto.CategoryListRequest) (*proto.CategoryListResponse, error)
 	Delete(context.Context, *CategoryDeleteRequest) (*CategoryDeleteResponse, error)
 	Category(context.Context, *CategoryRequest) (*CategoryResponse, error)
 	Update(context.Context, *CategoryUpdateRequest) (*CategoryUpdateResponse, error)
@@ -222,7 +222,7 @@ func (UnimplementedCharonServServer) Pong(context.Context, *BlankParams) (*PongR
 func (UnimplementedCharonServServer) Create(context.Context, *CategoryCreateRequest) (*CategoryCreateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
 }
-func (UnimplementedCharonServServer) Categories(context.Context, *CategoryListRequest) (*CategoryListResponse, error) {
+func (UnimplementedCharonServServer) Categories(context.Context, *proto.CategoryListRequest) (*proto.CategoryListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Categories not implemented")
 }
 func (UnimplementedCharonServServer) Delete(context.Context, *CategoryDeleteRequest) (*CategoryDeleteResponse, error) {
@@ -314,7 +314,7 @@ func _CharonServ_Create_Handler(srv interface{}, ctx context.Context, dec func(i
 }
 
 func _CharonServ_Categories_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CategoryListRequest)
+	in := new(proto.CategoryListRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -326,7 +326,7 @@ func _CharonServ_Categories_Handler(srv interface{}, ctx context.Context, dec fu
 		FullMethod: "/charonservice.CharonServ/Categories",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CharonServServer).Categories(ctx, req.(*CategoryListRequest))
+		return srv.(CharonServServer).Categories(ctx, req.(*proto.CategoryListRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

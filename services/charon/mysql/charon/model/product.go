@@ -39,6 +39,30 @@ func ProductQueryById(ctx context.Context, id int64) (*charon.Product, aerror.Er
 	return products[0], nil
 }
 
+func ProductWideInfoById(ctx context.Context, id int64) (*charon.ProductWide, aerror.Error) {
+	querySql := `SELECT p.id as id,
+    	c.id as category_id,
+    	p.name as name,
+       	p.description as description,
+		p.create_time as create_time,
+		p.update_time as update_time
+	FROM product p
+	LEFT JOIN category_product_mapping map ON map.product_id = p.id
+	LEFT JOIN category c ON map.category_id = c.id
+	WHERE p.id = ?;`
+
+	var products []*charon.ProductWide
+	err := charon2.CharonDB.SelectContext(ctx, &products, querySql, id)
+	if err != nil {
+		return nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql execute error")
+	}
+	if len(products) == 0 {
+		return nil, nil
+	}
+
+	return products[0], nil
+}
+
 func ProductDelete(ctx context.Context, ids []int64) aerror.Error {
 	delSql := `DELETE FROM product WHERE id IN (?)`
 

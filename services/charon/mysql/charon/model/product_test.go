@@ -90,3 +90,18 @@ func TestProductListQuery(t *testing.T) {
 	t.Logf("total: %d", total)
 	t.Logf("products: %s", logger.ToJson(products))
 }
+
+func TestProductWideInfoById(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip ...")
+	}
+
+	charon.Mock()
+
+	products, err := ProductWideInfoById(context.Background(), 4)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	t.Logf("products: %s", logger.ToJson(products))
+}

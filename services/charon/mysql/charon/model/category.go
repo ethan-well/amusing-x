@@ -3,6 +3,7 @@ package model
 import (
 	"amusingx.fit/amusingx/mysqlstruct/charon"
 	charonservice "amusingx.fit/amusingx/protos/charon/service/charon/proto"
+	"amusingx.fit/amusingx/protos/pangu/service/pangu/proto"
 	charon2 "amusingx.fit/amusingx/services/charon/mysql/charon"
 	"context"
 	"database/sql"
@@ -30,26 +31,26 @@ func InsetCategory(ctx context.Context, category *charon.Category) (*charon.Cate
 	return category, nil
 }
 
-func CategoryQuery(ctx context.Context, req *charonservice.CategoryListRequest) ([]*charon.Category, int64, aerror.Error) {
+func CategoryQuery(ctx context.Context, req *proto.CategoryListRequest, filter *charonservice.SearchFilter) ([]*charon.Category, int64, aerror.Error) {
 	wherePlaceholder := `{{whereCondition}}`
 	sqlStr := fmt.Sprintf(`SELECT id, name, description FROM category %s limit ?, ?`, wherePlaceholder)
 	countStr := fmt.Sprintf(`SELECT count(*) FROM category  %s`, wherePlaceholder)
 
 	var whereConditions []string
 	var params []interface{}
-	if req.Filter.Id > 0 {
-		whereConditions = append(whereConditions, `id = ?`)
-		params = append(params, req.Filter.Id)
+	if len(filter.Id) > 0 {
+		whereConditions = append(whereConditions, `id in (?)`)
+		params = append(params, filter.Id)
 	}
 
-	if len(req.Filter.Name) != 0 {
-		whereConditions = append(whereConditions, "name = ?")
-		params = append(params, req.Filter.Name)
+	if len(filter.Name) > 0 {
+		whereConditions = append(whereConditions, "name in in (?)")
+		params = append(params, filter.Name)
 	}
 
-	if len(req.Filter.Desc) != 0 {
-		whereConditions = append(whereConditions, "description = ?")
-		params = append(params, req.Filter.Desc)
+	if len(filter.Desc) != 0 {
+		whereConditions = append(whereConditions, "description in (?)")
+		params = append(params, filter.Desc)
 	}
 
 	params = append(params, req.Offset, req.Limit)
@@ -67,9 +68,15 @@ func CategoryQuery(ctx context.Context, req *charonservice.CategoryListRequest) 
 	if err != nil {
 		return nil, 0, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "begin transaction failed")
 	}
+	defer tx.Rollback()
 
 	var count int64
-	err = tx.QueryRowx(countStr, params[:len(params)-2]...).Scan(&count)
+	countStr, args, err := sqlx.In(countStr, params[:len(params)-2]...)
+	if err != nil {
+		return nil, 0, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql in failed")
+	}
+
+	err = tx.QueryRowx(countStr, args...).Scan(&count)
 	switch {
 	case err == sql.ErrNoRows:
 		count = 0
@@ -78,9 +85,18 @@ func CategoryQuery(ctx context.Context, req *charonservice.CategoryListRequest) 
 	}
 
 	var categories []*charon.Category
-	err = tx.SelectContext(ctx, &categories, sqlStr, params...)
+	sqlStr, args, err = sqlx.In(sqlStr, params...)
+	if err != nil {
+		return nil, 0, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql in failed")
+	}
+
+	err = tx.SelectContext(ctx, &categories, sqlStr, args...)
 	if err != nil {
 		return nil, 0, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "select total category list failed")
+	}
+
+	if err := tx.Commit(); err != nil {
+		return nil, 0, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql commit error")
 	}
 
 	return categories, count, nil
@@ -141,4 +157,25 @@ func QueryCategoryByName(ctx context.Context, name string) (*charon.Category, ae
 	}
 
 	return &category, nil
+}
+
+func SearchCategoryByProductIds(ctx context.Context, productIds []int64) ([]*charon.CategoryWide, aerror.Error) {
+	querySql := `SELECT c.id as id, c.parent_id as parent_id, p.id as product_id, c.name as name, c.description as description
+		FROM category c
+		LEFT JOIN category_product_mapping map on c.id = map.category_id
+		LEFT JOIN product p on p.id = map.product_id
+		WHERE p.id in (?) AND c.id > 0`
+
+	querySql, args, err := sqlx.In(querySql, productIds)
+	if err != nil {
+		return nil, aerror.NewErrorf(nil, aerror.Code.SSqlExecuteErr, "sql in failed")
+	}
+
+	var categories []*charon.CategoryWide
+	err = charon2.CharonDB.SelectContext(ctx, &categories, querySql, args...)
+	if err != nil {
+		return nil, aerror.NewErrorf(nil, aerror.Code.BUnexpectedData, "search category by product_id failed")
+	}
+
+	return categories, nil
 }

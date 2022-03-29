@@ -9,6 +9,8 @@ import "charon/proto/categories.proto";
 import "charon/proto/category_delete.proto";
 import "charon/proto/category_update.proto";
 
+import "pangu/proto/category_list.proto";
+
 import "pangu/proto/product.proto";
 import "pangu/proto/product_create.proto";
 import "pangu/proto/product_update.proto";
@@ -27,7 +29,7 @@ service CharonServ {
   rpc Pong(BlankParams) returns (PongResponse) {}
 
   rpc Create(CategoryCreateRequest) returns (CategoryCreateResponse) {}
-  rpc Categories(CategoryListRequest) returns (CategoryListResponse) {}
+  rpc Categories(panguservice.CategoryListRequest) returns (panguservice.CategoryListResponse) {}
   rpc Delete(CategoryDeleteRequest) returns (CategoryDeleteResponse) {}
   rpc Category(CategoryRequest) returns (CategoryResponse) {}
   rpc Update(CategoryUpdateRequest) returns (CategoryUpdateResponse) {}

@@ -5,7 +5,6 @@ import (
 	charon2 "amusingx.fit/amusingx/services/charon/mysql/charon"
 	"context"
 	"github.com/ItsWewin/superfactory/aerror"
-	"github.com/ItsWewin/superfactory/logger"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -93,7 +92,6 @@ func SubProductSearch(ctx context.Context, query string, offset, limit int64) (i
 
 	searchSelectSql := searchSelect + formSql + whereSql + "limit ?, ?"
 	var products []*charon.SubProduct
-	logger.Errorf("\n sql: %s", searchSelectSql)
 	err = charon2.CharonDB.SelectContext(ctx, &products, searchSelectSql, query, query, offset, limit)
 	if err != nil {
 		return 0, nil, aerror.NewErrorf(err, aerror.Code.BUnexpectedData, "select sub product failed")

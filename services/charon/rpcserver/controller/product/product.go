@@ -8,7 +8,7 @@ import (
 )
 
 func HandlerQuery(ctx context.Context, in *proto.ProductRequest) (*proto.Product, aerror.Error) {
-	product, err := model.ProductQueryById(ctx, in.Id)
+	product, err := model.ProductWideInfoById(ctx, in.Id)
 	if err != nil {
 		return nil, err
 	}

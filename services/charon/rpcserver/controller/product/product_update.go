@@ -22,7 +22,7 @@ func HandlerUpdate(ctx context.Context, in *proto.ProductUpdateRequest) (*proto.
 		return nil, err
 	}
 
-	product, err := model.ProductQueryById(ctx, in.Id)
+	product, err := model.ProductWideInfoById(ctx, in.Id)
 	if err != nil {
 		return nil, err
 	}
