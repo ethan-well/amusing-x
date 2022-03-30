@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option go_package = "amusingx.fit/amusingx/protos/pangu/service/pangu/proto";
+
+package panguservice;
+
+message AttributeUpdateRequest {
+  int64  id = 1;
+  string name = 2;
+  string desc = 3;
+  int64 product_id = 4;
+  string currency = 5;
+  int64 price = 6;
+  int64 stock = 7;
+}

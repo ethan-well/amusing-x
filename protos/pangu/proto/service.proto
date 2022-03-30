@@ -25,6 +25,12 @@ import "pangu/proto/sub_product_delete.proto";
 import "pangu/proto/sub_product_list.proto";
 import "pangu/proto/sub_product_update.proto";
 
+import "pangu/proto/attribute_create.proto";
+import "pangu/proto/attribute_get.proto";
+import "pangu/proto/attribute_delete.proto";
+import "pangu/proto/attribute_list.proto";
+import "pangu/proto/attribute_update.proto";
+
 package panguservice;
 
 message BlankParams{}
@@ -158,6 +164,39 @@ service PanGuService {
     rpc SubProductUpdate(SubProductUpdateRequest) returns (comm.response.CommResponse) {
         option(google.api.http) = {
           put: "/v1/pangu/sub_products/{id}"
+          body: "*"
+        };
+    }
+
+
+  rpc AttributeCreate(AttributeCreateRequest) returns (comm.response.CommResponse) {
+        option (google.api.http) = {
+          post: "/v1/pangu/attributes"
+          body: "*"
+        };
+  }
+
+  rpc Attribute(AttributeRequest) returns (comm.response.CommResponse) {
+    option (google.api.http) = {
+      get: "/v1/pangu/attributes/{id}"
+    };
+  }
+
+    rpc Attributes(AttributeListRequest) returns (comm.response.CommResponse) {
+        option(google.api.http) = {
+          get: "/v1/pangu/attributes"
+        };
+    }
+
+    rpc AttributeDelete(AttributeDeleteRequest) returns (comm.response.CommResponse) {
+        option(google.api.http) = {
+          delete: "/v1/pangu/attributes/{id}"
+        };
+    }
+
+    rpc AttributeUpdate(AttributeUpdateRequest) returns (comm.response.CommResponse) {
+        option(google.api.http) = {
+          put: "/v1/pangu/attributes/{id}"
           body: "*"
         };
     }

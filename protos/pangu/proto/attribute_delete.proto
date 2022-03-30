@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+option go_package = "amusingx.fit/amusingx/protos/pangu/service/pangu/proto";
+
+package panguservice;
+
+message AttributeDeleteRequest {
+   int64 id = 1;
+}
+
+message AttributeDeleteResponse {
+  bool Result = 1;
+}

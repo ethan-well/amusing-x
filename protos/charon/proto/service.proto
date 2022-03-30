@@ -5,7 +5,6 @@ option go_package = "amusing-x.com/charon/charonservice";
 package charonservice;
 
 import "charon/proto/category.proto";
-import "charon/proto/categories.proto";
 import "charon/proto/category_delete.proto";
 import "charon/proto/category_update.proto";
 

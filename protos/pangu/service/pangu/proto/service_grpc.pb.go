@@ -39,6 +39,11 @@ type PanGuServiceClient interface {
 	SubProducts(ctx context.Context, in *SubProductListRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
 	SubProductDelete(ctx context.Context, in *SubProductDeleteRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
 	SubProductUpdate(ctx context.Context, in *SubProductUpdateRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
+	AttributeCreate(ctx context.Context, in *AttributeCreateRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
+	Attribute(ctx context.Context, in *AttributeRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
+	Attributes(ctx context.Context, in *AttributeListRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
+	AttributeDelete(ctx context.Context, in *AttributeDeleteRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
+	AttributeUpdate(ctx context.Context, in *AttributeUpdateRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
 }
 
 type panGuServiceClient struct {
@@ -229,6 +234,51 @@ func (c *panGuServiceClient) SubProductUpdate(ctx context.Context, in *SubProduc
 	return out, nil
 }
 
+func (c *panGuServiceClient) AttributeCreate(ctx context.Context, in *AttributeCreateRequest, opts ...grpc.CallOption) (*response.CommResponse, error) {
+	out := new(response.CommResponse)
+	err := c.cc.Invoke(ctx, "/panguservice.PanGuService/AttributeCreate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *panGuServiceClient) Attribute(ctx context.Context, in *AttributeRequest, opts ...grpc.CallOption) (*response.CommResponse, error) {
+	out := new(response.CommResponse)
+	err := c.cc.Invoke(ctx, "/panguservice.PanGuService/Attribute", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *panGuServiceClient) Attributes(ctx context.Context, in *AttributeListRequest, opts ...grpc.CallOption) (*response.CommResponse, error) {
+	out := new(response.CommResponse)
+	err := c.cc.Invoke(ctx, "/panguservice.PanGuService/Attributes", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *panGuServiceClient) AttributeDelete(ctx context.Context, in *AttributeDeleteRequest, opts ...grpc.CallOption) (*response.CommResponse, error) {
+	out := new(response.CommResponse)
+	err := c.cc.Invoke(ctx, "/panguservice.PanGuService/AttributeDelete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *panGuServiceClient) AttributeUpdate(ctx context.Context, in *AttributeUpdateRequest, opts ...grpc.CallOption) (*response.CommResponse, error) {
+	out := new(response.CommResponse)
+	err := c.cc.Invoke(ctx, "/panguservice.PanGuService/AttributeUpdate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PanGuServiceServer is the server API for PanGuService service.
 // All implementations must embed UnimplementedPanGuServiceServer
 // for forward compatibility
@@ -253,6 +303,11 @@ type PanGuServiceServer interface {
 	SubProducts(context.Context, *SubProductListRequest) (*response.CommResponse, error)
 	SubProductDelete(context.Context, *SubProductDeleteRequest) (*response.CommResponse, error)
 	SubProductUpdate(context.Context, *SubProductUpdateRequest) (*response.CommResponse, error)
+	AttributeCreate(context.Context, *AttributeCreateRequest) (*response.CommResponse, error)
+	Attribute(context.Context, *AttributeRequest) (*response.CommResponse, error)
+	Attributes(context.Context, *AttributeListRequest) (*response.CommResponse, error)
+	AttributeDelete(context.Context, *AttributeDeleteRequest) (*response.CommResponse, error)
+	AttributeUpdate(context.Context, *AttributeUpdateRequest) (*response.CommResponse, error)
 	mustEmbedUnimplementedPanGuServiceServer()
 }
 
@@ -319,6 +374,21 @@ func (UnimplementedPanGuServiceServer) SubProductDelete(context.Context, *SubPro
 }
 func (UnimplementedPanGuServiceServer) SubProductUpdate(context.Context, *SubProductUpdateRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubProductUpdate not implemented")
+}
+func (UnimplementedPanGuServiceServer) AttributeCreate(context.Context, *AttributeCreateRequest) (*response.CommResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AttributeCreate not implemented")
+}
+func (UnimplementedPanGuServiceServer) Attribute(context.Context, *AttributeRequest) (*response.CommResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Attribute not implemented")
+}
+func (UnimplementedPanGuServiceServer) Attributes(context.Context, *AttributeListRequest) (*response.CommResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Attributes not implemented")
+}
+func (UnimplementedPanGuServiceServer) AttributeDelete(context.Context, *AttributeDeleteRequest) (*response.CommResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AttributeDelete not implemented")
+}
+func (UnimplementedPanGuServiceServer) AttributeUpdate(context.Context, *AttributeUpdateRequest) (*response.CommResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AttributeUpdate not implemented")
 }
 func (UnimplementedPanGuServiceServer) mustEmbedUnimplementedPanGuServiceServer() {}
 
@@ -693,6 +763,96 @@ func _PanGuService_SubProductUpdate_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PanGuService_AttributeCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AttributeCreateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PanGuServiceServer).AttributeCreate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/panguservice.PanGuService/AttributeCreate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PanGuServiceServer).AttributeCreate(ctx, req.(*AttributeCreateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PanGuService_Attribute_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AttributeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PanGuServiceServer).Attribute(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/panguservice.PanGuService/Attribute",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PanGuServiceServer).Attribute(ctx, req.(*AttributeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PanGuService_Attributes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AttributeListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PanGuServiceServer).Attributes(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/panguservice.PanGuService/Attributes",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PanGuServiceServer).Attributes(ctx, req.(*AttributeListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PanGuService_AttributeDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AttributeDeleteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PanGuServiceServer).AttributeDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/panguservice.PanGuService/AttributeDelete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PanGuServiceServer).AttributeDelete(ctx, req.(*AttributeDeleteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PanGuService_AttributeUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AttributeUpdateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PanGuServiceServer).AttributeUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/panguservice.PanGuService/AttributeUpdate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PanGuServiceServer).AttributeUpdate(ctx, req.(*AttributeUpdateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PanGuService_ServiceDesc is the grpc.ServiceDesc for PanGuService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -779,6 +939,26 @@ var PanGuService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SubProductUpdate",
 			Handler:    _PanGuService_SubProductUpdate_Handler,
+		},
+		{
+			MethodName: "AttributeCreate",
+			Handler:    _PanGuService_AttributeCreate_Handler,
+		},
+		{
+			MethodName: "Attribute",
+			Handler:    _PanGuService_Attribute_Handler,
+		},
+		{
+			MethodName: "Attributes",
+			Handler:    _PanGuService_Attributes_Handler,
+		},
+		{
+			MethodName: "AttributeDelete",
+			Handler:    _PanGuService_AttributeDelete_Handler,
+		},
+		{
+			MethodName: "AttributeUpdate",
+			Handler:    _PanGuService_AttributeUpdate_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

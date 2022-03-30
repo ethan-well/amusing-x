@@ -4,8 +4,6 @@ option go_package = "amusing-x.com/charon/charonservice";
 
 package charonservice;
 
-import "charon/proto/category_info.proto";
-
 message SearchFilter {
   repeated int64 id = 1;
   repeated string name = 2;
