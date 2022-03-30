@@ -7,7 +7,7 @@ import (
 )
 
 func (s *CharonServer) ProductCreate(ctx context.Context, in *proto.ProductCreateRequest) (*proto.Product, error) {
-	return product.HandlerCreate(ctx, in)
+	return product.HandlerCreateWithCategory(ctx, in)
 }
 
 func (s *CharonServer) ProductDelete(ctx context.Context, in *proto.ProductDeleteRequest) (*proto.ProductDeleteResponse, error) {

@@ -19,6 +19,9 @@ func HandlerList(ctx context.Context, in *proto.ProductListRequest) (*proto.Prod
 		return nil, err
 	}
 
+	logger.Infof("total: %d", total)
+	logger.Infof("products: %s", logger.ToJson(products))
+
 	productCategoryMap, err := getProductIdCategoryMap(ctx, products)
 	if err != nil {
 		return nil, err

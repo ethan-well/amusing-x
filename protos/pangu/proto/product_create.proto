@@ -8,4 +8,5 @@ message ProductCreateRequest {
   int64 ID = 1 [json_name="id"];
   string Name = 2 [json_name="name"];
   string Desc = 3 [json_name="desc"];
+  int64  CategoryId = 4 [json_name="category_id"];
 }

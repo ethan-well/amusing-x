@@ -27,6 +27,31 @@ func TestProductInsert(t *testing.T) {
 	t.Logf("product: %s", logger.ToJson(product))
 }
 
+func TestProductInsertWithTx(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip ...")
+	}
+
+	charon.Mock()
+
+	tx, err := charon.CharonDB.Beginx()
+	if err != nil {
+		t.Fatalf("err: %s", err)
+	}
+	defer tx.Rollback()
+
+	product, err := ProductInsertWithTx(context.Background(), tx, &charon2.Product{
+		Name: "name",
+		Desc: "desc",
+	})
+	if err != nil {
+		t.Fatalf("some err: %s", err)
+	}
+	tx.Commit()
+
+	t.Logf("product: %s", logger.ToJson(product))
+}
+
 func TestProductQueryById(t *testing.T) {
 	if testing.Short() {
 		t.Skip("skip ...")

@@ -25,6 +25,23 @@ func ProductInsert(ctx context.Context, product *charon.Product) (*charon.Produc
 	return product, nil
 }
 
+func ProductInsertWithTx(ctx context.Context, tx *sqlx.Tx, product *charon.Product) (*charon.Product, aerror.Error) {
+	insertSql := `INSERT INTO product (name, description) VALUES (:name, :description)`
+	result, err := tx.NamedExecContext(ctx, insertSql, product)
+	if err != nil {
+		return nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql execute error")
+	}
+
+	id, err := result.LastInsertId()
+	if err != nil {
+		return nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "get last insert id failed")
+	}
+
+	product.ID = id
+
+	return product, nil
+}
+
 func ProductQueryById(ctx context.Context, id int64) (*charon.Product, aerror.Error) {
 	querySql := `SELECT id, name, description FROM product WHERE id = ?`
 	var products []*charon.Product
