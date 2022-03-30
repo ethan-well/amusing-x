@@ -12,8 +12,7 @@ import (
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the grpc package it is being compiled against.
-// Requires gRPC-Go v1.32.0 or later.
-const _ = grpc.SupportPackageIsVersion7
+const _ = grpc.SupportPackageIsVersion6
 
 // PanGuServiceClient is the client API for PanGuService service.
 //
@@ -315,92 +314,85 @@ type PanGuServiceServer interface {
 type UnimplementedPanGuServiceServer struct {
 }
 
-func (UnimplementedPanGuServiceServer) Pong(context.Context, *BlankParams) (*PongResponse, error) {
+func (*UnimplementedPanGuServiceServer) Pong(context.Context, *BlankParams) (*PongResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Pong not implemented")
 }
-func (UnimplementedPanGuServiceServer) CategoryCreate(context.Context, *CategoryCreateRequest) (*CategoryCreateResponse, error) {
+func (*UnimplementedPanGuServiceServer) CategoryCreate(context.Context, *CategoryCreateRequest) (*CategoryCreateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CategoryCreate not implemented")
 }
-func (UnimplementedPanGuServiceServer) CategoriesDelete(context.Context, *CategoriesDeleteRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) CategoriesDelete(context.Context, *CategoriesDeleteRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CategoriesDelete not implemented")
 }
-func (UnimplementedPanGuServiceServer) Category(context.Context, *CategoryRequest) (*CategoryResponse, error) {
+func (*UnimplementedPanGuServiceServer) Category(context.Context, *CategoryRequest) (*CategoryResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Category not implemented")
 }
-func (UnimplementedPanGuServiceServer) CategoryList(context.Context, *CategoryListRequest) (*CategoryListResponse, error) {
+func (*UnimplementedPanGuServiceServer) CategoryList(context.Context, *CategoryListRequest) (*CategoryListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CategoryList not implemented")
 }
-func (UnimplementedPanGuServiceServer) CategoryDelete(context.Context, *CategoryDeleteRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) CategoryDelete(context.Context, *CategoryDeleteRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CategoryDelete not implemented")
 }
-func (UnimplementedPanGuServiceServer) CategoryUpdate(context.Context, *CategoryUpdateRequest) (*CategoryUpdateResponse, error) {
+func (*UnimplementedPanGuServiceServer) CategoryUpdate(context.Context, *CategoryUpdateRequest) (*CategoryUpdateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CategoryUpdate not implemented")
 }
-func (UnimplementedPanGuServiceServer) OauthLogin(context.Context, *OAuthLoginRequest) (*OAuthLoginResponse, error) {
+func (*UnimplementedPanGuServiceServer) OauthLogin(context.Context, *OAuthLoginRequest) (*OAuthLoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method OauthLogin not implemented")
 }
-func (UnimplementedPanGuServiceServer) OauthProviderInfo(context.Context, *OauthProviderInfoRequest) (*OAuthProviderInfoResponse, error) {
+func (*UnimplementedPanGuServiceServer) OauthProviderInfo(context.Context, *OauthProviderInfoRequest) (*OAuthProviderInfoResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method OauthProviderInfo not implemented")
 }
-func (UnimplementedPanGuServiceServer) Logout(context.Context, *BlankParams) (*LogoutResponse, error) {
+func (*UnimplementedPanGuServiceServer) Logout(context.Context, *BlankParams) (*LogoutResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Logout not implemented")
 }
-func (UnimplementedPanGuServiceServer) ProductCreate(context.Context, *ProductCreateRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) ProductCreate(context.Context, *ProductCreateRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProductCreate not implemented")
 }
-func (UnimplementedPanGuServiceServer) Product(context.Context, *ProductRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) Product(context.Context, *ProductRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Product not implemented")
 }
-func (UnimplementedPanGuServiceServer) Products(context.Context, *ProductListRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) Products(context.Context, *ProductListRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Products not implemented")
 }
-func (UnimplementedPanGuServiceServer) ProductDelete(context.Context, *ProductDeleteRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) ProductDelete(context.Context, *ProductDeleteRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProductDelete not implemented")
 }
-func (UnimplementedPanGuServiceServer) ProductUpdate(context.Context, *ProductUpdateRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) ProductUpdate(context.Context, *ProductUpdateRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProductUpdate not implemented")
 }
-func (UnimplementedPanGuServiceServer) SubProductCreate(context.Context, *SubProductCreateRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) SubProductCreate(context.Context, *SubProductCreateRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubProductCreate not implemented")
 }
-func (UnimplementedPanGuServiceServer) SubProduct(context.Context, *SubProductRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) SubProduct(context.Context, *SubProductRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubProduct not implemented")
 }
-func (UnimplementedPanGuServiceServer) SubProducts(context.Context, *SubProductListRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) SubProducts(context.Context, *SubProductListRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubProducts not implemented")
 }
-func (UnimplementedPanGuServiceServer) SubProductDelete(context.Context, *SubProductDeleteRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) SubProductDelete(context.Context, *SubProductDeleteRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubProductDelete not implemented")
 }
-func (UnimplementedPanGuServiceServer) SubProductUpdate(context.Context, *SubProductUpdateRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) SubProductUpdate(context.Context, *SubProductUpdateRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubProductUpdate not implemented")
 }
-func (UnimplementedPanGuServiceServer) AttributeCreate(context.Context, *AttributeCreateRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) AttributeCreate(context.Context, *AttributeCreateRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AttributeCreate not implemented")
 }
-func (UnimplementedPanGuServiceServer) Attribute(context.Context, *AttributeRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) Attribute(context.Context, *AttributeRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Attribute not implemented")
 }
-func (UnimplementedPanGuServiceServer) Attributes(context.Context, *AttributeListRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) Attributes(context.Context, *AttributeListRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Attributes not implemented")
 }
-func (UnimplementedPanGuServiceServer) AttributeDelete(context.Context, *AttributeDeleteRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) AttributeDelete(context.Context, *AttributeDeleteRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AttributeDelete not implemented")
 }
-func (UnimplementedPanGuServiceServer) AttributeUpdate(context.Context, *AttributeUpdateRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) AttributeUpdate(context.Context, *AttributeUpdateRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AttributeUpdate not implemented")
 }
-func (UnimplementedPanGuServiceServer) mustEmbedUnimplementedPanGuServiceServer() {}
+func (*UnimplementedPanGuServiceServer) mustEmbedUnimplementedPanGuServiceServer() {}
 
-// UnsafePanGuServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to PanGuServiceServer will
-// result in compilation errors.
-type UnsafePanGuServiceServer interface {
-	mustEmbedUnimplementedPanGuServiceServer()
-}
-
-func RegisterPanGuServiceServer(s grpc.ServiceRegistrar, srv PanGuServiceServer) {
-	s.RegisterService(&PanGuService_ServiceDesc, srv)
+func RegisterPanGuServiceServer(s *grpc.Server, srv PanGuServiceServer) {
+	s.RegisterService(&_PanGuService_serviceDesc, srv)
 }
 
 func _PanGuService_Pong_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -853,10 +845,7 @@ func _PanGuService_AttributeUpdate_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
-// PanGuService_ServiceDesc is the grpc.ServiceDesc for PanGuService service.
-// It's only intended for direct use with grpc.RegisterService,
-// and not to be introspected or modified (even as a copy)
-var PanGuService_ServiceDesc = grpc.ServiceDesc{
+var _PanGuService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "panguservice.PanGuService",
 	HandlerType: (*PanGuServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
