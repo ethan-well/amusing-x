@@ -11,7 +11,8 @@ import (
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the grpc package it is being compiled against.
-const _ = grpc.SupportPackageIsVersion6
+// Requires gRPC-Go v1.32.0 or later.
+const _ = grpc.SupportPackageIsVersion7
 
 // AmusingxPlutoServiceClient is the client API for AmusingxPlutoService service.
 //
@@ -93,25 +94,32 @@ type AmusingxPlutoServiceServer interface {
 type UnimplementedAmusingxPlutoServiceServer struct {
 }
 
-func (*UnimplementedAmusingxPlutoServiceServer) Pong(context.Context, *BlankParams) (*PongResponse, error) {
+func (UnimplementedAmusingxPlutoServiceServer) Pong(context.Context, *BlankParams) (*PongResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Pong not implemented")
 }
-func (*UnimplementedAmusingxPlutoServiceServer) InventoryCacheInit(context.Context, *InventoryCacheInitRequest) (*InventoryCacheInitResponse, error) {
+func (UnimplementedAmusingxPlutoServiceServer) InventoryCacheInit(context.Context, *InventoryCacheInitRequest) (*InventoryCacheInitResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method InventoryCacheInit not implemented")
 }
-func (*UnimplementedAmusingxPlutoServiceServer) InventoryQuery(context.Context, *InventoryQueryRequest) (*InventoryQueryResponse, error) {
+func (UnimplementedAmusingxPlutoServiceServer) InventoryQuery(context.Context, *InventoryQueryRequest) (*InventoryQueryResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method InventoryQuery not implemented")
 }
-func (*UnimplementedAmusingxPlutoServiceServer) InventoryLock(context.Context, *InventoryLockRequest) (*InventoryLockResponse, error) {
+func (UnimplementedAmusingxPlutoServiceServer) InventoryLock(context.Context, *InventoryLockRequest) (*InventoryLockResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method InventoryLock not implemented")
 }
-func (*UnimplementedAmusingxPlutoServiceServer) InventoryUnlock(context.Context, *InventoryUnlockRequest) (*InventoryUnlockResponse, error) {
+func (UnimplementedAmusingxPlutoServiceServer) InventoryUnlock(context.Context, *InventoryUnlockRequest) (*InventoryUnlockResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method InventoryUnlock not implemented")
 }
-func (*UnimplementedAmusingxPlutoServiceServer) mustEmbedUnimplementedAmusingxPlutoServiceServer() {}
+func (UnimplementedAmusingxPlutoServiceServer) mustEmbedUnimplementedAmusingxPlutoServiceServer() {}
 
-func RegisterAmusingxPlutoServiceServer(s *grpc.Server, srv AmusingxPlutoServiceServer) {
-	s.RegisterService(&_AmusingxPlutoService_serviceDesc, srv)
+// UnsafeAmusingxPlutoServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to AmusingxPlutoServiceServer will
+// result in compilation errors.
+type UnsafeAmusingxPlutoServiceServer interface {
+	mustEmbedUnimplementedAmusingxPlutoServiceServer()
+}
+
+func RegisterAmusingxPlutoServiceServer(s grpc.ServiceRegistrar, srv AmusingxPlutoServiceServer) {
+	s.RegisterService(&AmusingxPlutoService_ServiceDesc, srv)
 }
 
 func _AmusingxPlutoService_Pong_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -204,7 +212,10 @@ func _AmusingxPlutoService_InventoryUnlock_Handler(srv interface{}, ctx context.
 	return interceptor(ctx, in, info, handler)
 }
 
-var _AmusingxPlutoService_serviceDesc = grpc.ServiceDesc{
+// AmusingxPlutoService_ServiceDesc is the grpc.ServiceDesc for AmusingxPlutoService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var AmusingxPlutoService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "plutoservice.AmusingxPlutoService",
 	HandlerType: (*AmusingxPlutoServiceServer)(nil),
 	Methods: []grpc.MethodDesc{

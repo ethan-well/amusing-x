@@ -44,7 +44,6 @@ func TestCategoryQuery(t *testing.T) {
 			Range:  "",
 			Sort:   "",
 			Offset: 0,
-			Filter: nil,
 			Ranges: nil,
 		}
 	)

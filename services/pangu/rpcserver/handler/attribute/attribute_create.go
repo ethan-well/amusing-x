@@ -7,9 +7,11 @@ import (
 	"amusingx.fit/amusingx/services/comm"
 	"context"
 	"github.com/ItsWewin/superfactory/aerror"
+	"github.com/ItsWewin/superfactory/logger"
 )
 
 func HandlerAttributeCreate(ctx context.Context, req *panguservice.AttributeCreateRequest) *response.CommResponse {
+	logger.Errorf("req: %s", logger.ToJson(req))
 	resp, e := charonclient.Client.AttributeCreate(ctx, req)
 	var err aerror.Error
 	if e != nil {

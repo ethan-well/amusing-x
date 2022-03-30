@@ -58,12 +58,12 @@ func AttributeDelete(ctx context.Context, ids []int64) aerror.Error {
 func AttributeUpdate(ctx context.Context, product *charon.Attribute) aerror.Error {
 	sqlStr := `UPDATE attribute
 		SET name = :name,
-		description = :description,
+		description = :description
 		WHERE id = :id
 `
 	_, err := charon2.CharonDB.NamedExecContext(ctx, sqlStr, product)
 	if err != nil {
-		return aerror.NewErrorf(nil, aerror.Code.BUnexpectedData, "update failed")
+		return aerror.NewErrorf(err, aerror.Code.BUnexpectedData, "update failed")
 	}
 
 	return nil

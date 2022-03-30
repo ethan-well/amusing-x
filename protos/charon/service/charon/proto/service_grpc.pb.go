@@ -12,7 +12,8 @@ import (
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the grpc package it is being compiled against.
-const _ = grpc.SupportPackageIsVersion6
+// Requires gRPC-Go v1.32.0 or later.
+const _ = grpc.SupportPackageIsVersion7
 
 // CharonServClient is the client API for CharonServ service.
 //
@@ -281,76 +282,83 @@ type CharonServServer interface {
 type UnimplementedCharonServServer struct {
 }
 
-func (*UnimplementedCharonServServer) Pong(context.Context, *BlankParams) (*PongResponse, error) {
+func (UnimplementedCharonServServer) Pong(context.Context, *BlankParams) (*PongResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Pong not implemented")
 }
-func (*UnimplementedCharonServServer) Create(context.Context, *CategoryCreateRequest) (*CategoryCreateResponse, error) {
+func (UnimplementedCharonServServer) Create(context.Context, *CategoryCreateRequest) (*CategoryCreateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
 }
-func (*UnimplementedCharonServServer) Categories(context.Context, *proto.CategoryListRequest) (*proto.CategoryListResponse, error) {
+func (UnimplementedCharonServServer) Categories(context.Context, *proto.CategoryListRequest) (*proto.CategoryListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Categories not implemented")
 }
-func (*UnimplementedCharonServServer) Delete(context.Context, *CategoryDeleteRequest) (*CategoryDeleteResponse, error) {
+func (UnimplementedCharonServServer) Delete(context.Context, *CategoryDeleteRequest) (*CategoryDeleteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
 }
-func (*UnimplementedCharonServServer) Category(context.Context, *CategoryRequest) (*CategoryResponse, error) {
+func (UnimplementedCharonServServer) Category(context.Context, *CategoryRequest) (*CategoryResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Category not implemented")
 }
-func (*UnimplementedCharonServServer) Update(context.Context, *CategoryUpdateRequest) (*CategoryUpdateResponse, error) {
+func (UnimplementedCharonServServer) Update(context.Context, *CategoryUpdateRequest) (*CategoryUpdateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
 }
-func (*UnimplementedCharonServServer) CategoriesDelete(context.Context, *proto.CategoriesDeleteRequest) (*proto.CategoriesDeleteResponse, error) {
+func (UnimplementedCharonServServer) CategoriesDelete(context.Context, *proto.CategoriesDeleteRequest) (*proto.CategoriesDeleteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CategoriesDelete not implemented")
 }
-func (*UnimplementedCharonServServer) ProductCreate(context.Context, *proto.ProductCreateRequest) (*proto.Product, error) {
+func (UnimplementedCharonServServer) ProductCreate(context.Context, *proto.ProductCreateRequest) (*proto.Product, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProductCreate not implemented")
 }
-func (*UnimplementedCharonServServer) ProductDelete(context.Context, *proto.ProductDeleteRequest) (*proto.ProductDeleteResponse, error) {
+func (UnimplementedCharonServServer) ProductDelete(context.Context, *proto.ProductDeleteRequest) (*proto.ProductDeleteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProductDelete not implemented")
 }
-func (*UnimplementedCharonServServer) Products(context.Context, *proto.ProductListRequest) (*proto.ProductListResponse, error) {
+func (UnimplementedCharonServServer) Products(context.Context, *proto.ProductListRequest) (*proto.ProductListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Products not implemented")
 }
-func (*UnimplementedCharonServServer) Product(context.Context, *proto.ProductRequest) (*proto.Product, error) {
+func (UnimplementedCharonServServer) Product(context.Context, *proto.ProductRequest) (*proto.Product, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Product not implemented")
 }
-func (*UnimplementedCharonServServer) ProductUpdate(context.Context, *proto.ProductUpdateRequest) (*proto.Product, error) {
+func (UnimplementedCharonServServer) ProductUpdate(context.Context, *proto.ProductUpdateRequest) (*proto.Product, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProductUpdate not implemented")
 }
-func (*UnimplementedCharonServServer) SubProductCreate(context.Context, *proto.SubProductCreateRequest) (*proto.SubProduct, error) {
+func (UnimplementedCharonServServer) SubProductCreate(context.Context, *proto.SubProductCreateRequest) (*proto.SubProduct, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubProductCreate not implemented")
 }
-func (*UnimplementedCharonServServer) SubProductDelete(context.Context, *proto.SubProductDeleteRequest) (*proto.SubProductDeleteResponse, error) {
+func (UnimplementedCharonServServer) SubProductDelete(context.Context, *proto.SubProductDeleteRequest) (*proto.SubProductDeleteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubProductDelete not implemented")
 }
-func (*UnimplementedCharonServServer) SubProducts(context.Context, *proto.SubProductListRequest) (*proto.SubProductListResponse, error) {
+func (UnimplementedCharonServServer) SubProducts(context.Context, *proto.SubProductListRequest) (*proto.SubProductListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubProducts not implemented")
 }
-func (*UnimplementedCharonServServer) SubProduct(context.Context, *proto.SubProductRequest) (*proto.SubProduct, error) {
+func (UnimplementedCharonServServer) SubProduct(context.Context, *proto.SubProductRequest) (*proto.SubProduct, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubProduct not implemented")
 }
-func (*UnimplementedCharonServServer) SubProductUpdate(context.Context, *proto.SubProductUpdateRequest) (*proto.SubProduct, error) {
+func (UnimplementedCharonServServer) SubProductUpdate(context.Context, *proto.SubProductUpdateRequest) (*proto.SubProduct, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubProductUpdate not implemented")
 }
-func (*UnimplementedCharonServServer) AttributeCreate(context.Context, *proto.AttributeCreateRequest) (*proto.Attribute, error) {
+func (UnimplementedCharonServServer) AttributeCreate(context.Context, *proto.AttributeCreateRequest) (*proto.Attribute, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AttributeCreate not implemented")
 }
-func (*UnimplementedCharonServServer) AttributeDelete(context.Context, *proto.AttributeDeleteRequest) (*proto.AttributeDeleteResponse, error) {
+func (UnimplementedCharonServServer) AttributeDelete(context.Context, *proto.AttributeDeleteRequest) (*proto.AttributeDeleteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AttributeDelete not implemented")
 }
-func (*UnimplementedCharonServServer) Attributes(context.Context, *proto.AttributeListRequest) (*proto.AttributeListResponse, error) {
+func (UnimplementedCharonServServer) Attributes(context.Context, *proto.AttributeListRequest) (*proto.AttributeListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Attributes not implemented")
 }
-func (*UnimplementedCharonServServer) Attribute(context.Context, *proto.AttributeRequest) (*proto.Attribute, error) {
+func (UnimplementedCharonServServer) Attribute(context.Context, *proto.AttributeRequest) (*proto.Attribute, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Attribute not implemented")
 }
-func (*UnimplementedCharonServServer) AttributeUpdate(context.Context, *proto.AttributeUpdateRequest) (*proto.Attribute, error) {
+func (UnimplementedCharonServServer) AttributeUpdate(context.Context, *proto.AttributeUpdateRequest) (*proto.Attribute, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AttributeUpdate not implemented")
 }
-func (*UnimplementedCharonServServer) mustEmbedUnimplementedCharonServServer() {}
+func (UnimplementedCharonServServer) mustEmbedUnimplementedCharonServServer() {}
 
-func RegisterCharonServServer(s *grpc.Server, srv CharonServServer) {
-	s.RegisterService(&_CharonServ_serviceDesc, srv)
+// UnsafeCharonServServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to CharonServServer will
+// result in compilation errors.
+type UnsafeCharonServServer interface {
+	mustEmbedUnimplementedCharonServServer()
+}
+
+func RegisterCharonServServer(s grpc.ServiceRegistrar, srv CharonServServer) {
+	s.RegisterService(&CharonServ_ServiceDesc, srv)
 }
 
 func _CharonServ_Pong_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -749,7 +757,10 @@ func _CharonServ_AttributeUpdate_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
-var _CharonServ_serviceDesc = grpc.ServiceDesc{
+// CharonServ_ServiceDesc is the grpc.ServiceDesc for CharonServ service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var CharonServ_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "charonservice.CharonServ",
 	HandlerType: (*CharonServServer)(nil),
 	Methods: []grpc.MethodDesc{
