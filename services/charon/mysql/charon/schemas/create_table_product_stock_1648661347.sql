@@ -1,7 +1,7 @@
-CREATE TABLE `product_price` (
+CREATE TABLE `product_stock` (
                                  `id` bigint NOT NULL AUTO_INCREMENT,
-                                 `sub_product_id` bigint NOT NULL DEFAULT '0' COMMENT 'sbu product id',
-                                 `value` bigint NOT NULL DEFAULT '0' COMMENT 'price * 100',
+                                 `sub_product_id` bigint NOT NULL DEFAULT '0' COMMENT 'sub product id',
+                                 `value` bigint NOT NULL DEFAULT '0' COMMENT 'sub product stock',
                                  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
                                  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                                  PRIMARY KEY (`id`),
