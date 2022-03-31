@@ -135,3 +135,28 @@ func TestCategoryProductMappingUpdateByProductIdWithTx(t *testing.T) {
 		t.Fatalf("tx commit failed")
 	}
 }
+
+func TestCategoryProductMappingDeleteByProductIdWithTX(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip ...")
+	}
+
+	charon.Mock()
+
+	ctx := context.Background()
+
+	tx, e := charon.CharonDB.Beginx()
+	if e != nil {
+		t.Fatalf("beginx failed: %s", e)
+	}
+	defer tx.Rollback()
+
+	err := CategoryProductMappingDeleteByProductIdWithTX(ctx, tx, []int64{4, 9})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if e := tx.Commit(); e != nil {
+		t.Fatal(err)
+	}
+}

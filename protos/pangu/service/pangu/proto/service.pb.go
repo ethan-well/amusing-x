@@ -169,7 +169,7 @@ var file_pangu_proto_service_proto_rawDesc = []byte{
 	0x6b, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x22, 0x2e, 0x0a, 0x0c, 0x50, 0x6f, 0x6e, 0x67, 0x52,
 	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1e, 0x0a, 0x0a, 0x73, 0x65, 0x72, 0x76, 0x65,
 	0x72, 0x4e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x73, 0x65, 0x72,
-	0x76, 0x65, 0x72, 0x4e, 0x61, 0x6d, 0x65, 0x32, 0xe0, 0x16, 0x0a, 0x0c, 0x50, 0x61, 0x6e, 0x47,
+	0x76, 0x65, 0x72, 0x4e, 0x61, 0x6d, 0x65, 0x32, 0xd0, 0x17, 0x0a, 0x0c, 0x50, 0x61, 0x6e, 0x47,
 	0x75, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x55, 0x0a, 0x04, 0x50, 0x6f, 0x6e, 0x67,
 	0x12, 0x19, 0x2e, 0x70, 0x61, 0x6e, 0x67, 0x75, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2e,
 	0x42, 0x6c, 0x61, 0x6e, 0x6b, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x1a, 0x1a, 0x2e, 0x70, 0x61,
@@ -270,7 +270,14 @@ var file_pangu_proto_service_proto_rawDesc = []byte{
 	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e, 0x43, 0x6f, 0x6d, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x6f,
 	0x6e, 0x73, 0x65, 0x22, 0x1f, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x19, 0x2a, 0x17, 0x2f, 0x76, 0x31,
 	0x2f, 0x70, 0x61, 0x6e, 0x67, 0x75, 0x2f, 0x70, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x73, 0x2f,
-	0x7b, 0x69, 0x64, 0x7d, 0x12, 0x74, 0x0a, 0x0d, 0x50, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x55,
+	0x7b, 0x69, 0x64, 0x7d, 0x12, 0x6e, 0x0a, 0x0e, 0x50, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x73,
+	0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x12, 0x23, 0x2e, 0x70, 0x61, 0x6e, 0x67, 0x75, 0x73, 0x65,
+	0x72, 0x76, 0x69, 0x63, 0x65, 0x2e, 0x50, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x73, 0x44, 0x65,
+	0x6c, 0x65, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1b, 0x2e, 0x63, 0x6f,
+	0x6d, 0x6d, 0x2e, 0x72, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e, 0x43, 0x6f, 0x6d, 0x6d,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x1a, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x14,
+	0x2a, 0x12, 0x2f, 0x76, 0x31, 0x2f, 0x70, 0x61, 0x6e, 0x67, 0x75, 0x2f, 0x70, 0x72, 0x6f, 0x64,
+	0x75, 0x63, 0x74, 0x73, 0x12, 0x74, 0x0a, 0x0d, 0x50, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x55,
 	0x70, 0x64, 0x61, 0x74, 0x65, 0x12, 0x22, 0x2e, 0x70, 0x61, 0x6e, 0x67, 0x75, 0x73, 0x65, 0x72,
 	0x76, 0x69, 0x63, 0x65, 0x2e, 0x50, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x55, 0x70, 0x64, 0x61,
 	0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1b, 0x2e, 0x63, 0x6f, 0x6d, 0x6d,
@@ -386,25 +393,26 @@ var file_pangu_proto_service_proto_goTypes = []interface{}{
 	(*ProductRequest)(nil),            // 11: panguservice.ProductRequest
 	(*ProductListRequest)(nil),        // 12: panguservice.ProductListRequest
 	(*ProductDeleteRequest)(nil),      // 13: panguservice.ProductDeleteRequest
-	(*ProductUpdateRequest)(nil),      // 14: panguservice.ProductUpdateRequest
-	(*SubProductCreateRequest)(nil),   // 15: panguservice.SubProductCreateRequest
-	(*SubProductRequest)(nil),         // 16: panguservice.SubProductRequest
-	(*SubProductListRequest)(nil),     // 17: panguservice.SubProductListRequest
-	(*SubProductDeleteRequest)(nil),   // 18: panguservice.SubProductDeleteRequest
-	(*SubProductUpdateRequest)(nil),   // 19: panguservice.SubProductUpdateRequest
-	(*AttributeCreateRequest)(nil),    // 20: panguservice.AttributeCreateRequest
-	(*AttributeRequest)(nil),          // 21: panguservice.AttributeRequest
-	(*AttributeListRequest)(nil),      // 22: panguservice.AttributeListRequest
-	(*AttributeDeleteRequest)(nil),    // 23: panguservice.AttributeDeleteRequest
-	(*AttributeUpdateRequest)(nil),    // 24: panguservice.AttributeUpdateRequest
-	(*CategoryCreateResponse)(nil),    // 25: panguservice.CategoryCreateResponse
-	(*response.CommResponse)(nil),     // 26: comm.response.CommResponse
-	(*CategoryResponse)(nil),          // 27: panguservice.CategoryResponse
-	(*CategoryListResponse)(nil),      // 28: panguservice.CategoryListResponse
-	(*CategoryUpdateResponse)(nil),    // 29: panguservice.CategoryUpdateResponse
-	(*OAuthLoginResponse)(nil),        // 30: panguservice.OAuthLoginResponse
-	(*OAuthProviderInfoResponse)(nil), // 31: panguservice.OAuthProviderInfoResponse
-	(*LogoutResponse)(nil),            // 32: panguservice.LogoutResponse
+	(*ProductsDeleteRequest)(nil),     // 14: panguservice.ProductsDeleteRequest
+	(*ProductUpdateRequest)(nil),      // 15: panguservice.ProductUpdateRequest
+	(*SubProductCreateRequest)(nil),   // 16: panguservice.SubProductCreateRequest
+	(*SubProductRequest)(nil),         // 17: panguservice.SubProductRequest
+	(*SubProductListRequest)(nil),     // 18: panguservice.SubProductListRequest
+	(*SubProductDeleteRequest)(nil),   // 19: panguservice.SubProductDeleteRequest
+	(*SubProductUpdateRequest)(nil),   // 20: panguservice.SubProductUpdateRequest
+	(*AttributeCreateRequest)(nil),    // 21: panguservice.AttributeCreateRequest
+	(*AttributeRequest)(nil),          // 22: panguservice.AttributeRequest
+	(*AttributeListRequest)(nil),      // 23: panguservice.AttributeListRequest
+	(*AttributeDeleteRequest)(nil),    // 24: panguservice.AttributeDeleteRequest
+	(*AttributeUpdateRequest)(nil),    // 25: panguservice.AttributeUpdateRequest
+	(*CategoryCreateResponse)(nil),    // 26: panguservice.CategoryCreateResponse
+	(*response.CommResponse)(nil),     // 27: comm.response.CommResponse
+	(*CategoryResponse)(nil),          // 28: panguservice.CategoryResponse
+	(*CategoryListResponse)(nil),      // 29: panguservice.CategoryListResponse
+	(*CategoryUpdateResponse)(nil),    // 30: panguservice.CategoryUpdateResponse
+	(*OAuthLoginResponse)(nil),        // 31: panguservice.OAuthLoginResponse
+	(*OAuthProviderInfoResponse)(nil), // 32: panguservice.OAuthProviderInfoResponse
+	(*LogoutResponse)(nil),            // 33: panguservice.LogoutResponse
 }
 var file_pangu_proto_service_proto_depIdxs = []int32{
 	0,  // 0: panguservice.PanGuService.Pong:input_type -> panguservice.BlankParams
@@ -421,44 +429,46 @@ var file_pangu_proto_service_proto_depIdxs = []int32{
 	11, // 11: panguservice.PanGuService.Product:input_type -> panguservice.ProductRequest
 	12, // 12: panguservice.PanGuService.Products:input_type -> panguservice.ProductListRequest
 	13, // 13: panguservice.PanGuService.ProductDelete:input_type -> panguservice.ProductDeleteRequest
-	14, // 14: panguservice.PanGuService.ProductUpdate:input_type -> panguservice.ProductUpdateRequest
-	15, // 15: panguservice.PanGuService.SubProductCreate:input_type -> panguservice.SubProductCreateRequest
-	16, // 16: panguservice.PanGuService.SubProduct:input_type -> panguservice.SubProductRequest
-	17, // 17: panguservice.PanGuService.SubProducts:input_type -> panguservice.SubProductListRequest
-	18, // 18: panguservice.PanGuService.SubProductDelete:input_type -> panguservice.SubProductDeleteRequest
-	19, // 19: panguservice.PanGuService.SubProductUpdate:input_type -> panguservice.SubProductUpdateRequest
-	20, // 20: panguservice.PanGuService.AttributeCreate:input_type -> panguservice.AttributeCreateRequest
-	21, // 21: panguservice.PanGuService.Attribute:input_type -> panguservice.AttributeRequest
-	22, // 22: panguservice.PanGuService.Attributes:input_type -> panguservice.AttributeListRequest
-	23, // 23: panguservice.PanGuService.AttributeDelete:input_type -> panguservice.AttributeDeleteRequest
-	24, // 24: panguservice.PanGuService.AttributeUpdate:input_type -> panguservice.AttributeUpdateRequest
-	1,  // 25: panguservice.PanGuService.Pong:output_type -> panguservice.PongResponse
-	25, // 26: panguservice.PanGuService.CategoryCreate:output_type -> panguservice.CategoryCreateResponse
-	26, // 27: panguservice.PanGuService.CategoriesDelete:output_type -> comm.response.CommResponse
-	27, // 28: panguservice.PanGuService.Category:output_type -> panguservice.CategoryResponse
-	28, // 29: panguservice.PanGuService.CategoryList:output_type -> panguservice.CategoryListResponse
-	26, // 30: panguservice.PanGuService.CategoryDelete:output_type -> comm.response.CommResponse
-	29, // 31: panguservice.PanGuService.CategoryUpdate:output_type -> panguservice.CategoryUpdateResponse
-	30, // 32: panguservice.PanGuService.OauthLogin:output_type -> panguservice.OAuthLoginResponse
-	31, // 33: panguservice.PanGuService.OauthProviderInfo:output_type -> panguservice.OAuthProviderInfoResponse
-	32, // 34: panguservice.PanGuService.Logout:output_type -> panguservice.LogoutResponse
-	26, // 35: panguservice.PanGuService.ProductCreate:output_type -> comm.response.CommResponse
-	26, // 36: panguservice.PanGuService.Product:output_type -> comm.response.CommResponse
-	26, // 37: panguservice.PanGuService.Products:output_type -> comm.response.CommResponse
-	26, // 38: panguservice.PanGuService.ProductDelete:output_type -> comm.response.CommResponse
-	26, // 39: panguservice.PanGuService.ProductUpdate:output_type -> comm.response.CommResponse
-	26, // 40: panguservice.PanGuService.SubProductCreate:output_type -> comm.response.CommResponse
-	26, // 41: panguservice.PanGuService.SubProduct:output_type -> comm.response.CommResponse
-	26, // 42: panguservice.PanGuService.SubProducts:output_type -> comm.response.CommResponse
-	26, // 43: panguservice.PanGuService.SubProductDelete:output_type -> comm.response.CommResponse
-	26, // 44: panguservice.PanGuService.SubProductUpdate:output_type -> comm.response.CommResponse
-	26, // 45: panguservice.PanGuService.AttributeCreate:output_type -> comm.response.CommResponse
-	26, // 46: panguservice.PanGuService.Attribute:output_type -> comm.response.CommResponse
-	26, // 47: panguservice.PanGuService.Attributes:output_type -> comm.response.CommResponse
-	26, // 48: panguservice.PanGuService.AttributeDelete:output_type -> comm.response.CommResponse
-	26, // 49: panguservice.PanGuService.AttributeUpdate:output_type -> comm.response.CommResponse
-	25, // [25:50] is the sub-list for method output_type
-	0,  // [0:25] is the sub-list for method input_type
+	14, // 14: panguservice.PanGuService.ProductsDelete:input_type -> panguservice.ProductsDeleteRequest
+	15, // 15: panguservice.PanGuService.ProductUpdate:input_type -> panguservice.ProductUpdateRequest
+	16, // 16: panguservice.PanGuService.SubProductCreate:input_type -> panguservice.SubProductCreateRequest
+	17, // 17: panguservice.PanGuService.SubProduct:input_type -> panguservice.SubProductRequest
+	18, // 18: panguservice.PanGuService.SubProducts:input_type -> panguservice.SubProductListRequest
+	19, // 19: panguservice.PanGuService.SubProductDelete:input_type -> panguservice.SubProductDeleteRequest
+	20, // 20: panguservice.PanGuService.SubProductUpdate:input_type -> panguservice.SubProductUpdateRequest
+	21, // 21: panguservice.PanGuService.AttributeCreate:input_type -> panguservice.AttributeCreateRequest
+	22, // 22: panguservice.PanGuService.Attribute:input_type -> panguservice.AttributeRequest
+	23, // 23: panguservice.PanGuService.Attributes:input_type -> panguservice.AttributeListRequest
+	24, // 24: panguservice.PanGuService.AttributeDelete:input_type -> panguservice.AttributeDeleteRequest
+	25, // 25: panguservice.PanGuService.AttributeUpdate:input_type -> panguservice.AttributeUpdateRequest
+	1,  // 26: panguservice.PanGuService.Pong:output_type -> panguservice.PongResponse
+	26, // 27: panguservice.PanGuService.CategoryCreate:output_type -> panguservice.CategoryCreateResponse
+	27, // 28: panguservice.PanGuService.CategoriesDelete:output_type -> comm.response.CommResponse
+	28, // 29: panguservice.PanGuService.Category:output_type -> panguservice.CategoryResponse
+	29, // 30: panguservice.PanGuService.CategoryList:output_type -> panguservice.CategoryListResponse
+	27, // 31: panguservice.PanGuService.CategoryDelete:output_type -> comm.response.CommResponse
+	30, // 32: panguservice.PanGuService.CategoryUpdate:output_type -> panguservice.CategoryUpdateResponse
+	31, // 33: panguservice.PanGuService.OauthLogin:output_type -> panguservice.OAuthLoginResponse
+	32, // 34: panguservice.PanGuService.OauthProviderInfo:output_type -> panguservice.OAuthProviderInfoResponse
+	33, // 35: panguservice.PanGuService.Logout:output_type -> panguservice.LogoutResponse
+	27, // 36: panguservice.PanGuService.ProductCreate:output_type -> comm.response.CommResponse
+	27, // 37: panguservice.PanGuService.Product:output_type -> comm.response.CommResponse
+	27, // 38: panguservice.PanGuService.Products:output_type -> comm.response.CommResponse
+	27, // 39: panguservice.PanGuService.ProductDelete:output_type -> comm.response.CommResponse
+	27, // 40: panguservice.PanGuService.ProductsDelete:output_type -> comm.response.CommResponse
+	27, // 41: panguservice.PanGuService.ProductUpdate:output_type -> comm.response.CommResponse
+	27, // 42: panguservice.PanGuService.SubProductCreate:output_type -> comm.response.CommResponse
+	27, // 43: panguservice.PanGuService.SubProduct:output_type -> comm.response.CommResponse
+	27, // 44: panguservice.PanGuService.SubProducts:output_type -> comm.response.CommResponse
+	27, // 45: panguservice.PanGuService.SubProductDelete:output_type -> comm.response.CommResponse
+	27, // 46: panguservice.PanGuService.SubProductUpdate:output_type -> comm.response.CommResponse
+	27, // 47: panguservice.PanGuService.AttributeCreate:output_type -> comm.response.CommResponse
+	27, // 48: panguservice.PanGuService.Attribute:output_type -> comm.response.CommResponse
+	27, // 49: panguservice.PanGuService.Attributes:output_type -> comm.response.CommResponse
+	27, // 50: panguservice.PanGuService.AttributeDelete:output_type -> comm.response.CommResponse
+	27, // 51: panguservice.PanGuService.AttributeUpdate:output_type -> comm.response.CommResponse
+	26, // [26:52] is the sub-list for method output_type
+	0,  // [0:26] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name
 	0,  // [0:0] is the sub-list for extension extendee
 	0,  // [0:0] is the sub-list for field type_name

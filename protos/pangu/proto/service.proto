@@ -129,6 +129,12 @@ service PanGuService {
       };
   }
 
+  rpc ProductsDelete(ProductsDeleteRequest) returns (comm.response.CommResponse) {
+        option(google.api.http) = {
+          delete: "/v1/pangu/products"
+        };
+    }
+
   rpc ProductUpdate(ProductUpdateRequest) returns (comm.response.CommResponse) {
       option(google.api.http) = {
         put: "/v1/pangu/products/{id}"

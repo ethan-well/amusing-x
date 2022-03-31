@@ -33,6 +33,7 @@ type PanGuServiceClient interface {
 	Product(ctx context.Context, in *ProductRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
 	Products(ctx context.Context, in *ProductListRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
 	ProductDelete(ctx context.Context, in *ProductDeleteRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
+	ProductsDelete(ctx context.Context, in *ProductsDeleteRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
 	ProductUpdate(ctx context.Context, in *ProductUpdateRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
 	SubProductCreate(ctx context.Context, in *SubProductCreateRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
 	SubProduct(ctx context.Context, in *SubProductRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
@@ -180,6 +181,15 @@ func (c *panGuServiceClient) ProductDelete(ctx context.Context, in *ProductDelet
 	return out, nil
 }
 
+func (c *panGuServiceClient) ProductsDelete(ctx context.Context, in *ProductsDeleteRequest, opts ...grpc.CallOption) (*response.CommResponse, error) {
+	out := new(response.CommResponse)
+	err := c.cc.Invoke(ctx, "/panguservice.PanGuService/ProductsDelete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *panGuServiceClient) ProductUpdate(ctx context.Context, in *ProductUpdateRequest, opts ...grpc.CallOption) (*response.CommResponse, error) {
 	out := new(response.CommResponse)
 	err := c.cc.Invoke(ctx, "/panguservice.PanGuService/ProductUpdate", in, out, opts...)
@@ -297,6 +307,7 @@ type PanGuServiceServer interface {
 	Product(context.Context, *ProductRequest) (*response.CommResponse, error)
 	Products(context.Context, *ProductListRequest) (*response.CommResponse, error)
 	ProductDelete(context.Context, *ProductDeleteRequest) (*response.CommResponse, error)
+	ProductsDelete(context.Context, *ProductsDeleteRequest) (*response.CommResponse, error)
 	ProductUpdate(context.Context, *ProductUpdateRequest) (*response.CommResponse, error)
 	SubProductCreate(context.Context, *SubProductCreateRequest) (*response.CommResponse, error)
 	SubProduct(context.Context, *SubProductRequest) (*response.CommResponse, error)
@@ -356,6 +367,9 @@ func (UnimplementedPanGuServiceServer) Products(context.Context, *ProductListReq
 }
 func (UnimplementedPanGuServiceServer) ProductDelete(context.Context, *ProductDeleteRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProductDelete not implemented")
+}
+func (UnimplementedPanGuServiceServer) ProductsDelete(context.Context, *ProductsDeleteRequest) (*response.CommResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ProductsDelete not implemented")
 }
 func (UnimplementedPanGuServiceServer) ProductUpdate(context.Context, *ProductUpdateRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProductUpdate not implemented")
@@ -655,6 +669,24 @@ func _PanGuService_ProductDelete_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PanGuService_ProductsDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProductsDeleteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PanGuServiceServer).ProductsDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/panguservice.PanGuService/ProductsDelete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PanGuServiceServer).ProductsDelete(ctx, req.(*ProductsDeleteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _PanGuService_ProductUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ProductUpdateRequest)
 	if err := dec(in); err != nil {
@@ -915,6 +947,10 @@ var PanGuService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ProductDelete",
 			Handler:    _PanGuService_ProductDelete_Handler,
+		},
+		{
+			MethodName: "ProductsDelete",
+			Handler:    _PanGuService_ProductsDelete_Handler,
 		},
 		{
 			MethodName: "ProductUpdate",

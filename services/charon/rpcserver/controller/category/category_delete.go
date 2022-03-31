@@ -26,8 +26,6 @@ func HandlerCategoryDelete(ctx context.Context, req *charonservice.CategoryDelet
 }
 
 func HandlerCategoriesDelete(ctx context.Context, req *proto.CategoriesDeleteRequest) (*proto.CategoriesDeleteResponse, aerror.Error) {
-	logger.Infof("req: %s", logger.ToJson(req))
-
 	if req.Filter == "" {
 		return nil, aerror.NewErrorf(nil, aerror.Code.CParamsError, "prams 'filter' is invalid")
 	}

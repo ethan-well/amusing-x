@@ -89,10 +89,15 @@ func CategoryProductMappingDeleteWithTX(ctx context.Context, tx *sql.Tx, ids []i
 	return nil
 }
 
-func CategoryProductMappingDeleteByProductIdWithTX(ctx context.Context, tx *sqlx.Tx, productId int64) aerror.Error {
-	delSql := `DELETE FROM category_product_mapping WHERE product_id = ?`
+func CategoryProductMappingDeleteByProductIdWithTX(ctx context.Context, tx *sqlx.Tx, productIds []int64) aerror.Error {
+	delSql := `DELETE FROM category_product_mapping WHERE product_id in (?)`
 
-	_, err := tx.ExecContext(ctx, delSql, productId)
+	delSql, args, err := sqlx.In(delSql, productIds)
+	if err != nil {
+		return aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql in failed")
+	}
+
+	_, err = tx.ExecContext(ctx, delSql, args...)
 	if err != nil {
 		return aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "delete category failed")
 	}

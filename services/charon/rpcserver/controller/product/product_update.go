@@ -60,7 +60,7 @@ func HandlerUpdateWithCategory(ctx context.Context, in *proto.ProductUpdateReque
 		return nil, err
 	}
 
-	err = model.CategoryProductMappingDeleteByProductIdWithTX(ctx, tx, in.Id)
+	err = model.CategoryProductMappingDeleteByProductIdWithTX(ctx, tx, []int64{in.Id})
 	if err != nil {
 		return nil, err
 	}

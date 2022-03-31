@@ -45,6 +45,7 @@ service CharonServ {
 
   rpc ProductCreate(panguservice.ProductCreateRequest) returns (panguservice.Product) {}
   rpc ProductDelete(panguservice.ProductDeleteRequest) returns (panguservice.ProductDeleteResponse) {}
+  rpc ProductsDelete(panguservice.ProductsDeleteRequest) returns (panguservice.ProductsDeleteResponse) {}
   rpc Products(panguservice.ProductListRequest) returns (panguservice.ProductListResponse) {}
   rpc Product(panguservice.ProductRequest) returns (panguservice.Product) {}
   rpc ProductUpdate(panguservice.ProductUpdateRequest) returns (panguservice.Product) {}

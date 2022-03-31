@@ -96,6 +96,22 @@ func ProductDelete(ctx context.Context, ids []int64) aerror.Error {
 	return nil
 }
 
+func ProductDeleteWithTx(ctx context.Context, tx *sqlx.Tx, ids []int64) aerror.Error {
+	delSql := `DELETE FROM product WHERE id IN (?)`
+
+	delSql, args, err := sqlx.In(delSql, ids)
+	if err != nil {
+		return aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql in failed")
+	}
+
+	_, err = tx.ExecContext(ctx, delSql, args...)
+	if err != nil {
+		return aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "del product failed")
+	}
+
+	return nil
+}
+
 func ProductUpdate(ctx context.Context, product *charon.Product) aerror.Error {
 	sqlStr := `UPDATE product SET name = :name, description = :description WHERE id = :id`
 	_, err := charon2.CharonDB.NamedExecContext(ctx, sqlStr, product)

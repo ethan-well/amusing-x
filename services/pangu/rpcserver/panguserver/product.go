@@ -25,6 +25,10 @@ func (s *PanguServer) ProductDelete(ctx context.Context, in *panguservice.Produc
 	return product.HandlerProductDelete(ctx, in), nil
 }
 
+func (s *PanguServer) ProductsDelete(ctx context.Context, in *panguservice.ProductsDeleteRequest) (*response.CommResponse, error) {
+	return product.HandlerProductsDelete(ctx, in), nil
+}
+
 func (s *PanguServer) ProductUpdate(ctx context.Context, in *panguservice.ProductUpdateRequest) (*response.CommResponse, error) {
 	return product.HandlerProductUpdate(ctx, in), nil
 }

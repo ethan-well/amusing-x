@@ -80,6 +80,28 @@ func TestProductDelete(t *testing.T) {
 	}
 }
 
+func TestProductDeleteWithTx(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip ...")
+	}
+
+	charon.Mock()
+	tx, err := charon.CharonDB.Beginx()
+	if err != nil {
+		t.Fatalf("err: %s", err)
+	}
+	defer tx.Rollback()
+
+	err = ProductDeleteWithTx(context.Background(), tx, []int64{4, 5})
+	if err != nil {
+		t.Fatalf("some err: %s", err)
+	}
+
+	if err := tx.Commit(); err != nil {
+		t.Fatalf("tx commit failed: %s", err)
+	}
+}
+
 func TestProductUpdate(t *testing.T) {
 	if testing.Short() {
 		t.Skip("skip ...")

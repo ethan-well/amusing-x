@@ -18,6 +18,16 @@ func HandlerList(ctx context.Context, in *proto.ProductListRequest) (*proto.Prod
 		return nil, err
 	}
 
+	if len(products) == 0 {
+		return &proto.ProductListResponse{
+			Page:    in.Page,
+			Limit:   in.Limit,
+			Total:   total,
+			HasNext: false,
+			Data:    make([]*proto.Product, 1),
+		}, nil
+	}
+
 	productCategoryMap, err := getProductIdCategoryMap(ctx, products)
 	if err != nil {
 		return nil, err

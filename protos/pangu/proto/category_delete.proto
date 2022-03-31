@@ -12,7 +12,6 @@ message CategoryDeleteResponse {
   bool result = 1;
 }
 
-
 message CategoriesDeleteRequest {
   string filter = 1;
 }

@@ -18,3 +18,18 @@ func HandlerProductDelete(ctx context.Context, req *panguservice.ProductDeleteRe
 
 	return comm.Response(resp, err)
 }
+
+func HandlerProductsDelete(ctx context.Context, req *panguservice.ProductsDeleteRequest) *response.CommResponse {
+	if req.Filter == "" {
+		err := aerror.NewErrorf(nil, aerror.Code.CParamsError, "params 'filter' is invalid")
+		return comm.Response(nil, err)
+	}
+
+	resp, e := charonclient.Client.ProductsDelete(ctx, req)
+	var err aerror.Error
+	if e != nil {
+		err = aerror.NewErrorf(err, aerror.Code.BUnexpectedData, "unexpected error")
+	}
+
+	return comm.Response(resp, err)
+}
