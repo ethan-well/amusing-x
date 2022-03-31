@@ -167,6 +167,12 @@ service PanGuService {
         };
     }
 
+    rpc SubProductsDelete(SubProductsDeleteRequest) returns (comm.response.CommResponse) {
+        option(google.api.http) = {
+            delete: "/v1/pangu/sub_products"
+        };
+    }
+
     rpc SubProductUpdate(SubProductUpdateRequest) returns (comm.response.CommResponse) {
         option(google.api.http) = {
           put: "/v1/pangu/sub_products/{id}"

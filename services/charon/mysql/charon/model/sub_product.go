@@ -55,6 +55,22 @@ func SubProductDelete(ctx context.Context, ids []int64) aerror.Error {
 	return nil
 }
 
+func SubProductDeleteWithTx(ctx context.Context, tx *sqlx.Tx, ids []int64) aerror.Error {
+	delSql := `DELETE FROM sub_product WHERE id IN (?)`
+
+	delSql, args, err := sqlx.In(delSql, ids)
+	if err != nil {
+		return aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql in failed")
+	}
+
+	_, err = tx.ExecContext(ctx, delSql, args...)
+	if err != nil {
+		return aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "del sub_product failed")
+	}
+
+	return nil
+}
+
 func SubProductUpdate(ctx context.Context, product *charon.SubProduct) aerror.Error {
 	sqlStr := `UPDATE sub_product
 		SET name = :name,

@@ -98,3 +98,25 @@ func TestSubProductDelete(t *testing.T) {
 		t.Fatalf("some err: %s", err)
 	}
 }
+
+func TestSubProductDeleteWithTx(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip ...")
+	}
+
+	charon.Mock()
+
+	tx, e := charon.CharonDB.Beginx()
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer tx.Rollback()
+
+	err := SubProductDeleteWithTx(context.Background(), tx, []int64{4})
+	if err != nil {
+		t.Fatalf("some err: %s", err)
+	}
+	if e := tx.Commit(); e != nil {
+		t.Fatal(e)
+	}
+}

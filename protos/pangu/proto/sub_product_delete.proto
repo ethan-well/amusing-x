@@ -11,3 +11,13 @@ message SubProductDeleteRequest {
 message SubProductDeleteResponse {
   bool Result = 1;
 }
+
+
+message SubProductsDeleteRequest {
+  string filter = 1;
+}
+
+message SubProductsDeleteResponse {
+  bool result = 1;
+  repeated int64 ids = 2;
+}

@@ -14,6 +14,10 @@ func (s *CharonServer) SubProductDelete(ctx context.Context, in *proto.SubProduc
 	return subproduct.HandlerDelete(ctx, in)
 }
 
+func (s *CharonServer) SubProductsDelete(ctx context.Context, in *proto.SubProductsDeleteRequest) (*proto.SubProductsDeleteResponse, error) {
+	return subproduct.HandlerDeleteMany(ctx, in)
+}
+
 func (s *CharonServer) SubProducts(ctx context.Context, in *proto.SubProductListRequest) (*proto.SubProductListResponse, error) {
 	return subproduct.HandlerList(ctx, in)
 }
