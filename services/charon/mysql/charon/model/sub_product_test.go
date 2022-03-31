@@ -54,7 +54,7 @@ func TestSubProductUpdate(t *testing.T) {
 	charon.Mock()
 
 	product := &charon2.SubProduct{
-		ID:        3,
+		ID:        4,
 		Name:      "name 2",
 		Desc:      "desc 2",
 		ProductId: 222,

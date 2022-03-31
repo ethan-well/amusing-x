@@ -59,9 +59,11 @@ func SubProductUpdate(ctx context.Context, product *charon.SubProduct) aerror.Er
 	sqlStr := `UPDATE sub_product
 		SET name = :name,
 		description = :description,
+		product_id = :product_id,
 		currency = :currency,
 		price = :price,
 		stock = :stock
+		
 		WHERE id = :id
 `
 	_, err := charon2.CharonDB.NamedExecContext(ctx, sqlStr, product)
