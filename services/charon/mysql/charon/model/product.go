@@ -58,7 +58,7 @@ func ProductQueryById(ctx context.Context, id int64) (*charon.Product, aerror.Er
 
 func ProductWideInfoById(ctx context.Context, id int64) (*charon.ProductWide, aerror.Error) {
 	querySql := `SELECT p.id as id,
-    	c.id as category_id,
+    	IFNULL(c.id, 0) as category_id,
     	p.name as name,
        	p.description as description,
 		p.create_time as create_time,

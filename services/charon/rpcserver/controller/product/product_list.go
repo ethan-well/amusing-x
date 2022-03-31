@@ -6,7 +6,6 @@ import (
 	"amusingx.fit/amusingx/services/charon/mysql/charon/model"
 	"context"
 	"github.com/ItsWewin/superfactory/aerror"
-	"github.com/ItsWewin/superfactory/logger"
 )
 
 func HandlerList(ctx context.Context, in *proto.ProductListRequest) (*proto.ProductListResponse, aerror.Error) {
@@ -19,9 +18,6 @@ func HandlerList(ctx context.Context, in *proto.ProductListRequest) (*proto.Prod
 		return nil, err
 	}
 
-	logger.Infof("total: %d", total)
-	logger.Infof("products: %s", logger.ToJson(products))
-
 	productCategoryMap, err := getProductIdCategoryMap(ctx, products)
 	if err != nil {
 		return nil, err
@@ -29,17 +25,17 @@ func HandlerList(ctx context.Context, in *proto.ProductListRequest) (*proto.Prod
 
 	var productList []*proto.Product
 	for _, p := range products {
+		var categoryId int64
 		category, ok := productCategoryMap[p.ID]
-		if !ok {
-			logger.Waringf("product: %d has no category", p.ID)
-			continue
+		if ok {
+			categoryId = category.ID
 		}
 
 		productList = append(productList, &proto.Product{
 			ID:         p.ID,
 			Name:       p.Name,
 			Desc:       p.Desc,
-			CategoryId: category.ID,
+			CategoryId: categoryId,
 		})
 	}
 

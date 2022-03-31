@@ -19,8 +19,6 @@ func (s *PanguServer) CategoryList(ctx context.Context, in *panguservice.Categor
 		logger.Errorf("CategoryList err: %s", err)
 	}
 
-	logger.Errorf("%S ")
-
 	return resp, err
 }
 

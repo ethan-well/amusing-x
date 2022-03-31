@@ -19,7 +19,12 @@ func (s *CharonServer) Products(ctx context.Context, in *proto.ProductListReques
 }
 
 func (s *CharonServer) Product(ctx context.Context, in *proto.ProductRequest) (*proto.Product, error) {
-	return product.HandlerQuery(ctx, in)
+	product, err := product.HandlerQuery(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+
+	return product, nil
 }
 
 func (s *CharonServer) ProductUpdate(ctx context.Context, in *proto.ProductUpdateRequest) (*proto.Product, error) {
