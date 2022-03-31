@@ -4,6 +4,7 @@ import (
 	"amusingx.fit/amusingx/mysqlstruct/charon"
 	charon2 "amusingx.fit/amusingx/services/charon/mysql/charon"
 	"context"
+	"database/sql"
 	"github.com/ItsWewin/superfactory/aerror"
 	"github.com/jmoiron/sqlx"
 )
@@ -72,13 +73,54 @@ func CategoryProductMappingDelete(ctx context.Context, ids []int64) aerror.Error
 	return nil
 }
 
-func CategoryProductMappingUpdate(ctx context.Context, product *charon.CategoryProductMapping) aerror.Error {
+func CategoryProductMappingDeleteWithTX(ctx context.Context, tx *sql.Tx, ids []int64) aerror.Error {
+	delSql := `DELETE FROM category_product_mapping WHERE id IN (?)`
+
+	delSql, args, err := sqlx.In(delSql, ids)
+	if err != nil {
+		return aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql in failed")
+	}
+
+	_, err = tx.ExecContext(ctx, delSql, args...)
+	if err != nil {
+		return aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "delete category failed")
+	}
+
+	return nil
+}
+
+func CategoryProductMappingDeleteByProductIdWithTX(ctx context.Context, tx *sqlx.Tx, productId int64) aerror.Error {
+	delSql := `DELETE FROM category_product_mapping WHERE product_id = ?`
+
+	_, err := tx.ExecContext(ctx, delSql, productId)
+	if err != nil {
+		return aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "delete category failed")
+	}
+
+	return nil
+}
+
+func CategoryProductMappingUpdate(ctx context.Context, mapping *charon.CategoryProductMapping) aerror.Error {
 	sqlStr := `UPDATE category_product_mapping
 		SET category_id = :category_id,
 		product_id = :product_id
 		WHERE id = :id
 `
-	_, err := charon2.CharonDB.NamedExecContext(ctx, sqlStr, product)
+	_, err := charon2.CharonDB.NamedExecContext(ctx, sqlStr, mapping)
+	if err != nil {
+		return aerror.NewErrorf(nil, aerror.Code.BUnexpectedData, "update failed")
+	}
+
+	return nil
+}
+
+func CategoryProductMappingUpdateByProductIdWithTx(ctx context.Context, tx *sqlx.Tx, mapping *charon.CategoryProductMapping) aerror.Error {
+	sqlStr := `UPDATE category_product_mapping
+		SET category_id = :category_id,
+		product_id = :product_id
+		WHERE product_id = :product_id
+`
+	_, err := tx.NamedExecContext(ctx, sqlStr, mapping)
 	if err != nil {
 		return aerror.NewErrorf(nil, aerror.Code.BUnexpectedData, "update failed")
 	}

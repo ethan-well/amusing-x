@@ -100,6 +100,35 @@ func TestProductUpdate(t *testing.T) {
 	t.Logf("product: %s", logger.ToJson(product))
 }
 
+func TestProductUpdateWithTx(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip ...")
+	}
+
+	charon.Mock()
+
+	product := &charon2.Product{
+		ID:   4,
+		Name: "name999",
+		Desc: "desc999",
+	}
+
+	tx, err := charon.CharonDB.Beginx()
+	if err != nil {
+		t.Fatalf("err: %s", err)
+	}
+	defer tx.Rollback()
+
+	err = ProductUpdateWithTx(context.Background(), tx, product)
+	if err != nil {
+		t.Fatalf("some err: %s", err)
+	}
+
+	tx.Commit()
+
+	t.Logf("product: %s", logger.ToJson(product))
+}
+
 func TestProductListQuery(t *testing.T) {
 	if testing.Short() {
 		t.Skip("skip ...")

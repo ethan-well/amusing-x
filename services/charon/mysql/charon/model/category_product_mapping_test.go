@@ -98,11 +98,40 @@ func TestCategoryProductMappingUpdate(t *testing.T) {
 
 	mapping := &charon2.CategoryProductMapping{
 		ID:         8,
-		CategoryId: 11,
-		ProductId:  22,
+		CategoryId: 27,
+		ProductId:  43,
 	}
 	err := CategoryProductMappingUpdate(ctx, mapping)
 	if err != nil {
 		t.Fatalf("err: %s", err)
+	}
+}
+
+func TestCategoryProductMappingUpdateByProductIdWithTx(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip ...")
+	}
+
+	charon.Mock()
+
+	ctx := context.Background()
+
+	mapping := &charon2.CategoryProductMapping{
+		CategoryId: 43,
+		ProductId:  27,
+	}
+	tx, e := charon.CharonDB.Beginx()
+	if e != nil {
+		t.Fatalf("beginx failed: %s", e)
+	}
+	defer tx.Rollback()
+
+	err := CategoryProductMappingUpdateByProductIdWithTx(ctx, tx, mapping)
+	if err != nil {
+		t.Fatalf("err: %s", err)
+	}
+
+	if e := tx.Commit(); e != nil {
+		t.Fatalf("tx commit failed")
 	}
 }

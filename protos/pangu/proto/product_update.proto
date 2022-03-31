@@ -8,4 +8,5 @@ message ProductUpdateRequest {
   int64  id = 1;
   string name = 2;
   string desc = 3;
+  int64 category_id = 4;
 }

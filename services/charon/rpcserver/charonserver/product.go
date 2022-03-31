@@ -28,5 +28,5 @@ func (s *CharonServer) Product(ctx context.Context, in *proto.ProductRequest) (*
 }
 
 func (s *CharonServer) ProductUpdate(ctx context.Context, in *proto.ProductUpdateRequest) (*proto.Product, error) {
-	return product.HandlerUpdate(ctx, in)
+	return product.HandlerUpdateWithCategory(ctx, in)
 }

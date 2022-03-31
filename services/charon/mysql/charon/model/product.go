@@ -106,6 +106,16 @@ func ProductUpdate(ctx context.Context, product *charon.Product) aerror.Error {
 	return nil
 }
 
+func ProductUpdateWithTx(ctx context.Context, tx *sqlx.Tx, product *charon.Product) aerror.Error {
+	sqlStr := `UPDATE product SET name = :name, description = :description WHERE id = :id`
+	_, err := tx.NamedExecContext(ctx, sqlStr, product)
+	if err != nil {
+		return aerror.NewErrorf(nil, aerror.Code.BUnexpectedData, "update failed")
+	}
+
+	return nil
+}
+
 func ProductSearch(ctx context.Context, query string, offset, limit int64) (int64, []*charon.Product, aerror.Error) {
 	formSql := `FROM product `
 	whereSql := `WHERE name LIKE ? OR description LIKE ? `
