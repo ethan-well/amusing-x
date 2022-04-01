@@ -17,9 +17,9 @@ func HandlerList(ctx context.Context, in *proto.AttributeListRequest) (*proto.At
 		return nil, err
 	}
 
-	var productList []*proto.Attribute
+	var attributes []*proto.Attribute
 	for _, p := range products {
-		productList = append(productList, &proto.Attribute{
+		attributes = append(attributes, &proto.Attribute{
 			ID:   p.ID,
 			Name: p.Name,
 			Desc: p.Desc,
@@ -30,8 +30,8 @@ func HandlerList(ctx context.Context, in *proto.AttributeListRequest) (*proto.At
 		Page:    in.Page,
 		Limit:   in.Limit,
 		Total:   total,
-		HasNext: (in.Page-1)*in.Limit+int64(len(productList)) < total,
-		Data:    productList,
+		HasNext: (in.Page-1)*in.Limit+int64(len(attributes)) < total,
+		Data:    attributes,
 	}
 
 	return resp, nil

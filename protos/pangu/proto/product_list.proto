@@ -11,6 +11,8 @@ message ProductListRequest {
   int64 Page = 2  [json_name="page"];
   int64 Limit = 3 [json_name="limit"];
   string sort = 5 [json_name="sort"];
+  string filter = 6 [json_name="filter"];
+  int64 offset = 7 [json_name="offset"];
 }
 
 message ProductListResponse {

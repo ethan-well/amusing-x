@@ -2,10 +2,16 @@ package model
 
 import (
 	"amusingx.fit/amusingx/mysqlstruct/charon"
+	charonservice "amusingx.fit/amusingx/protos/charon/service/charon/proto"
+	"amusingx.fit/amusingx/protos/pangu/service/pangu/proto"
 	charon2 "amusingx.fit/amusingx/services/charon/mysql/charon"
 	"context"
+	"database/sql"
+	"fmt"
 	"github.com/ItsWewin/superfactory/aerror"
+	"github.com/ItsWewin/superfactory/logger"
 	"github.com/jmoiron/sqlx"
+	"strings"
 )
 
 func ProductInsert(ctx context.Context, product *charon.Product) (*charon.Product, aerror.Error) {
@@ -130,6 +136,79 @@ func ProductUpdateWithTx(ctx context.Context, tx *sqlx.Tx, product *charon.Produ
 	}
 
 	return nil
+}
+
+func ProductSearchQuery(ctx context.Context, req *proto.ProductListRequest, filter *charonservice.SearchFilter) (int64, []*charon.Product, aerror.Error) {
+	wherePlaceholder := `{{whereCondition}}`
+	sqlStr := fmt.Sprintf(`SELECT id, name, description FROM product %s limit ?, ?`, wherePlaceholder)
+	countStr := fmt.Sprintf(`SELECT count(*) FROM product  %s`, wherePlaceholder)
+
+	var whereConditions []string
+	var params []interface{}
+	if len(filter.Id) > 0 {
+		whereConditions = append(whereConditions, `id in (?)`)
+		params = append(params, filter.Id)
+	}
+
+	if len(filter.Name) > 0 {
+		whereConditions = append(whereConditions, "name in in (?)")
+		params = append(params, filter.Name)
+	}
+
+	if len(filter.Desc) != 0 {
+		whereConditions = append(whereConditions, "description in (?)")
+		params = append(params, filter.Desc)
+	}
+
+	params = append(params, req.Offset, req.Limit)
+
+	if len(whereConditions) != 0 {
+		whereSQl := "WHERE " + strings.Join(whereConditions, " AND ")
+		sqlStr = strings.Replace(sqlStr, wherePlaceholder, whereSQl, -1)
+		countStr = strings.Replace(countStr, wherePlaceholder, whereSQl, -1)
+	} else {
+		sqlStr = strings.Replace(sqlStr, wherePlaceholder, "", -1)
+		countStr = strings.Replace(countStr, wherePlaceholder, "", -1)
+	}
+
+	tx, err := charon2.CharonDB.BeginTxx(ctx, nil)
+	if err != nil {
+		return 0, nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "begin transaction failed")
+	}
+	defer tx.Rollback()
+
+	var count int64
+	countStr, args, err := sqlx.In(countStr, params[:len(params)-2]...)
+	if err != nil {
+		return 0, nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql in failed")
+	}
+
+	logger.Errorf("countStr: %s, args: %v", countStr, args)
+
+	err = tx.QueryRowx(countStr, args...).Scan(&count)
+	switch {
+	case err == sql.ErrNoRows:
+		count = 0
+	case err != nil:
+		return 0, nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "query count error")
+	}
+
+	var categories []*charon.Product
+	sqlStr, args, err = sqlx.In(sqlStr, params...)
+	if err != nil {
+		return 0, nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql in failed")
+	}
+
+	err = tx.SelectContext(ctx, &categories, sqlStr, args...)
+	if err != nil {
+		return 0, nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "select total category list failed")
+	}
+
+	if err := tx.Commit(); err != nil {
+		return 0, nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql commit error")
+	}
+
+	return count, categories, nil
 }
 
 func ProductSearch(ctx context.Context, query string, offset, limit int64) (int64, []*charon.Product, aerror.Error) {
