@@ -19,7 +19,7 @@ func HandlerAttributeDelete(ctx context.Context, req *panguservice.AttributeDele
 	return comm.Response(resp, err)
 }
 
-func HandlerAttributesDe(ctx context.Context, req *panguservice.AttributesDeleteRequest) *response.CommResponse {
+func HandlerAttributesDelete(ctx context.Context, req *panguservice.AttributesDeleteRequest) *response.CommResponse {
 	if req.Filter == "" {
 		err := aerror.NewErrorf(nil, aerror.Code.CParamsError, "params 'filter' is invalid")
 		return comm.Response(nil, err)

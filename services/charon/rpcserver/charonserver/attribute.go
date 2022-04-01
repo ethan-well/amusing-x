@@ -14,6 +14,10 @@ func (s *CharonServer) AttributeDelete(ctx context.Context, in *proto.AttributeD
 	return attribute.HandlerDelete(ctx, in)
 }
 
+func (s *CharonServer) AttributesDelete(ctx context.Context, in *proto.AttributesDeleteRequest) (*proto.AttributesDeleteResponse, error) {
+	return attribute.HandlerDeletes(ctx, in)
+}
+
 func (s *CharonServer) Attributes(ctx context.Context, in *proto.AttributeListRequest) (*proto.AttributeListResponse, error) {
 	return attribute.HandlerList(ctx, in)
 }

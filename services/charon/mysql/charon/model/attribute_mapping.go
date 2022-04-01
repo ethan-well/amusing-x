@@ -87,6 +87,22 @@ func AttributeMappingDeleteBySubProductIdWithTx(ctx context.Context, tx *sqlx.Tx
 	return nil
 }
 
+func AttributeMappingDeleteByAttributeIdWithTx(ctx context.Context, tx *sqlx.Tx, attrIds []int64) aerror.Error {
+	delSql := `DELETE FROM attribute_mapping WHERE attr_id IN (?)`
+
+	delSql, args, err := sqlx.In(delSql, attrIds)
+	if err != nil {
+		return aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql in failed")
+	}
+
+	_, err = tx.ExecContext(ctx, delSql, args...)
+	if err != nil {
+		return aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "del attribute_mapping failed")
+	}
+
+	return nil
+}
+
 func AttributeMappingUpdate(ctx context.Context, product *charon.AttributeMapping) aerror.Error {
 	sqlStr := `UPDATE attribute_mapping
 		SET attr_id = :attr_id,

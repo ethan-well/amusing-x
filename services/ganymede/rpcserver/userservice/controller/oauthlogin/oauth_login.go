@@ -21,7 +21,6 @@ func HandlerOAuthLogin(ctx context.Context, req *ganymedeservice.OAuthLoginReque
 		return nil, err
 	}
 
-	logger.Infof("[HandlerOAuthLogin], req: %s", logger.ToJson(req))
 	loginInfo, err := oauthLogin(ctx, req)
 	if err != nil {
 		return &ganymedeservice.OAuthLoginResponse{Result: false}, err

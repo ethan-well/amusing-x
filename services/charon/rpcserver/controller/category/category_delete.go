@@ -7,13 +7,10 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/ItsWewin/superfactory/aerror"
-	"github.com/ItsWewin/superfactory/logger"
 	"strconv"
 )
 
 func HandlerCategoryDelete(ctx context.Context, req *charonservice.CategoryDeleteRequest) (*charonservice.CategoryDeleteResponse, aerror.Error) {
-	logger.Infof("req: %s", logger.ToJson(req))
-
 	if req.Id == 0 {
 		return nil, aerror.NewErrorf(nil, aerror.Code.CParamsError, "ids is invalid")
 	}

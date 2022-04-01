@@ -55,6 +55,22 @@ func AttributeDelete(ctx context.Context, ids []int64) aerror.Error {
 	return nil
 }
 
+func AttributeDeleteWithTx(ctx context.Context, tx *sqlx.Tx, ids []int64) aerror.Error {
+	delSql := `DELETE FROM attribute WHERE id IN (?)`
+
+	delSql, args, err := sqlx.In(delSql, ids)
+	if err != nil {
+		return aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql in failed")
+	}
+
+	_, err = tx.ExecContext(ctx, delSql, args...)
+	if err != nil {
+		return aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "del attribute failed")
+	}
+
+	return nil
+}
+
 func AttributeUpdate(ctx context.Context, product *charon.Attribute) aerror.Error {
 	sqlStr := `UPDATE attribute
 		SET name = :name,

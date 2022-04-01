@@ -13,18 +13,10 @@ message AttributeDeleteResponse {
 }
 
 message AttributesDeleteRequest {
-   int64 id = 1;
+   string filter = 1;
 }
 
 message AttributesDeleteResponse {
-  bool Result = 1;
-}
-
-message CategoriesDeleteRequest {
-  string filter = 1;
-}
-
-message CategoriesDeleteResponse {
   bool result = 1;
   repeated int64 ids = 2;
 }
