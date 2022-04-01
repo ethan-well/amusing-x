@@ -206,6 +206,12 @@ service PanGuService {
         };
     }
 
+    rpc AttributesDelete(AttributesDeleteRequest) returns (comm.response.CommResponse) {
+        option(google.api.http) = {
+          delete: "/v1/pangu/attributes"
+        };
+    }
+
     rpc AttributeUpdate(AttributeUpdateRequest) returns (comm.response.CommResponse) {
         option(google.api.http) = {
           put: "/v1/pangu/attributes/{id}"

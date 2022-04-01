@@ -45,6 +45,7 @@ type PanGuServiceClient interface {
 	Attribute(ctx context.Context, in *AttributeRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
 	Attributes(ctx context.Context, in *AttributeListRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
 	AttributeDelete(ctx context.Context, in *AttributeDeleteRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
+	AttributesDelete(ctx context.Context, in *AttributesDeleteRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
 	AttributeUpdate(ctx context.Context, in *AttributeUpdateRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
 }
 
@@ -290,6 +291,15 @@ func (c *panGuServiceClient) AttributeDelete(ctx context.Context, in *AttributeD
 	return out, nil
 }
 
+func (c *panGuServiceClient) AttributesDelete(ctx context.Context, in *AttributesDeleteRequest, opts ...grpc.CallOption) (*response.CommResponse, error) {
+	out := new(response.CommResponse)
+	err := c.cc.Invoke(ctx, "/panguservice.PanGuService/AttributesDelete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *panGuServiceClient) AttributeUpdate(ctx context.Context, in *AttributeUpdateRequest, opts ...grpc.CallOption) (*response.CommResponse, error) {
 	out := new(response.CommResponse)
 	err := c.cc.Invoke(ctx, "/panguservice.PanGuService/AttributeUpdate", in, out, opts...)
@@ -329,6 +339,7 @@ type PanGuServiceServer interface {
 	Attribute(context.Context, *AttributeRequest) (*response.CommResponse, error)
 	Attributes(context.Context, *AttributeListRequest) (*response.CommResponse, error)
 	AttributeDelete(context.Context, *AttributeDeleteRequest) (*response.CommResponse, error)
+	AttributesDelete(context.Context, *AttributesDeleteRequest) (*response.CommResponse, error)
 	AttributeUpdate(context.Context, *AttributeUpdateRequest) (*response.CommResponse, error)
 	mustEmbedUnimplementedPanGuServiceServer()
 }
@@ -414,6 +425,9 @@ func (UnimplementedPanGuServiceServer) Attributes(context.Context, *AttributeLis
 }
 func (UnimplementedPanGuServiceServer) AttributeDelete(context.Context, *AttributeDeleteRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AttributeDelete not implemented")
+}
+func (UnimplementedPanGuServiceServer) AttributesDelete(context.Context, *AttributesDeleteRequest) (*response.CommResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AttributesDelete not implemented")
 }
 func (UnimplementedPanGuServiceServer) AttributeUpdate(context.Context, *AttributeUpdateRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AttributeUpdate not implemented")
@@ -899,6 +913,24 @@ func _PanGuService_AttributeDelete_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PanGuService_AttributesDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AttributesDeleteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PanGuServiceServer).AttributesDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/panguservice.PanGuService/AttributesDelete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PanGuServiceServer).AttributesDelete(ctx, req.(*AttributesDeleteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _PanGuService_AttributeUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(AttributeUpdateRequest)
 	if err := dec(in); err != nil {
@@ -1027,6 +1059,10 @@ var PanGuService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AttributeDelete",
 			Handler:    _PanGuService_AttributeDelete_Handler,
+		},
+		{
+			MethodName: "AttributesDelete",
+			Handler:    _PanGuService_AttributesDelete_Handler,
 		},
 		{
 			MethodName: "AttributeUpdate",

@@ -40,6 +40,7 @@ type CharonServClient interface {
 	SubProductUpdate(ctx context.Context, in *proto.SubProductUpdateRequest, opts ...grpc.CallOption) (*proto.SubProduct, error)
 	AttributeCreate(ctx context.Context, in *proto.AttributeCreateRequest, opts ...grpc.CallOption) (*proto.Attribute, error)
 	AttributeDelete(ctx context.Context, in *proto.AttributeDeleteRequest, opts ...grpc.CallOption) (*proto.AttributeDeleteResponse, error)
+	AttributesDelete(ctx context.Context, in *proto.AttributesDeleteRequest, opts ...grpc.CallOption) (*proto.AttributesDeleteResponse, error)
 	Attributes(ctx context.Context, in *proto.AttributeListRequest, opts ...grpc.CallOption) (*proto.AttributeListResponse, error)
 	Attribute(ctx context.Context, in *proto.AttributeRequest, opts ...grpc.CallOption) (*proto.Attribute, error)
 	AttributeUpdate(ctx context.Context, in *proto.AttributeUpdateRequest, opts ...grpc.CallOption) (*proto.Attribute, error)
@@ -242,6 +243,15 @@ func (c *charonServClient) AttributeDelete(ctx context.Context, in *proto.Attrib
 	return out, nil
 }
 
+func (c *charonServClient) AttributesDelete(ctx context.Context, in *proto.AttributesDeleteRequest, opts ...grpc.CallOption) (*proto.AttributesDeleteResponse, error) {
+	out := new(proto.AttributesDeleteResponse)
+	err := c.cc.Invoke(ctx, "/charonservice.CharonServ/AttributesDelete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *charonServClient) Attributes(ctx context.Context, in *proto.AttributeListRequest, opts ...grpc.CallOption) (*proto.AttributeListResponse, error) {
 	out := new(proto.AttributeListResponse)
 	err := c.cc.Invoke(ctx, "/charonservice.CharonServ/Attributes", in, out, opts...)
@@ -294,6 +304,7 @@ type CharonServServer interface {
 	SubProductUpdate(context.Context, *proto.SubProductUpdateRequest) (*proto.SubProduct, error)
 	AttributeCreate(context.Context, *proto.AttributeCreateRequest) (*proto.Attribute, error)
 	AttributeDelete(context.Context, *proto.AttributeDeleteRequest) (*proto.AttributeDeleteResponse, error)
+	AttributesDelete(context.Context, *proto.AttributesDeleteRequest) (*proto.AttributesDeleteResponse, error)
 	Attributes(context.Context, *proto.AttributeListRequest) (*proto.AttributeListResponse, error)
 	Attribute(context.Context, *proto.AttributeRequest) (*proto.Attribute, error)
 	AttributeUpdate(context.Context, *proto.AttributeUpdateRequest) (*proto.Attribute, error)
@@ -366,6 +377,9 @@ func (UnimplementedCharonServServer) AttributeCreate(context.Context, *proto.Att
 }
 func (UnimplementedCharonServServer) AttributeDelete(context.Context, *proto.AttributeDeleteRequest) (*proto.AttributeDeleteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AttributeDelete not implemented")
+}
+func (UnimplementedCharonServServer) AttributesDelete(context.Context, *proto.AttributesDeleteRequest) (*proto.AttributesDeleteResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AttributesDelete not implemented")
 }
 func (UnimplementedCharonServServer) Attributes(context.Context, *proto.AttributeListRequest) (*proto.AttributeListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Attributes not implemented")
@@ -767,6 +781,24 @@ func _CharonServ_AttributeDelete_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CharonServ_AttributesDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(proto.AttributesDeleteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CharonServServer).AttributesDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/charonservice.CharonServ/AttributesDelete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CharonServServer).AttributesDelete(ctx, req.(*proto.AttributesDeleteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _CharonServ_Attributes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(proto.AttributeListRequest)
 	if err := dec(in); err != nil {
@@ -911,6 +943,10 @@ var CharonServ_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AttributeDelete",
 			Handler:    _CharonServ_AttributeDelete_Handler,
+		},
+		{
+			MethodName: "AttributesDelete",
+			Handler:    _CharonServ_AttributesDelete_Handler,
 		},
 		{
 			MethodName: "Attributes",

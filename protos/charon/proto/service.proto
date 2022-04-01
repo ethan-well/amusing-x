@@ -59,6 +59,7 @@ service CharonServ {
 
   rpc AttributeCreate(panguservice.AttributeCreateRequest) returns (panguservice.Attribute) {}
   rpc AttributeDelete(panguservice.AttributeDeleteRequest) returns (panguservice.AttributeDeleteResponse) {}
+  rpc AttributesDelete(panguservice.AttributesDeleteRequest) returns (panguservice.AttributesDeleteResponse) {}
   rpc Attributes(panguservice.AttributeListRequest) returns (panguservice.AttributeListResponse) {}
   rpc Attribute(panguservice.AttributeRequest) returns (panguservice.Attribute) {}
   rpc AttributeUpdate(panguservice.AttributeUpdateRequest) returns (panguservice.Attribute) {}

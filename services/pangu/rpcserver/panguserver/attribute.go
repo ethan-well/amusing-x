@@ -25,6 +25,10 @@ func (s *PanguServer) AttributeDelete(ctx context.Context, in *proto.AttributeDe
 	return attribute.HandlerAttributeDelete(ctx, in), nil
 }
 
+func (s *PanguServer) AttributesDelete(ctx context.Context, in *AttributesDeleteRequest) (*response.CommResponse, error) {
+	return attribute.HandlerAttributesDelete(ctx, in), nil
+}
+
 func (s *PanguServer) AttributeUpdate(ctx context.Context, in *proto.AttributeUpdateRequest) (*response.CommResponse, error) {
 	return attribute.HandlerAttributeUpdate(ctx, in), nil
 }
