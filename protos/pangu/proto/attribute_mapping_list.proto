@@ -11,6 +11,7 @@ message AttributeMappingListRequest {
     int64 page = 2;
     int64 limit = 3;
     string sort = 5;
+    string filter = 6;
 }
 
 message AttributeMappingListResponse {
@@ -18,5 +19,5 @@ message AttributeMappingListResponse {
     int64 limit = 2;
     int64 total = 3;
     bool hasNext = 4;
-    repeated AttributeMapping Data = 6;
+    repeated AttributeMapping data = 6;
 }

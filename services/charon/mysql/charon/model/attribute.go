@@ -2,6 +2,8 @@ package model
 
 import (
 	"amusingx.fit/amusingx/mysqlstruct/charon"
+	charonservice "amusingx.fit/amusingx/protos/charon/service/charon/proto"
+	"amusingx.fit/amusingx/protos/pangu/service/pangu/proto"
 	charon2 "amusingx.fit/amusingx/services/charon/mysql/charon"
 	"context"
 	"github.com/ItsWewin/superfactory/aerror"
@@ -106,6 +108,34 @@ func AttributeSearch(ctx context.Context, query string, offset, limit int64) (in
 	searchSelectSql := searchSelect + formSql + whereSql + "limit ?, ?"
 	var products []*charon.Attribute
 	err = charon2.CharonDB.SelectContext(ctx, &products, searchSelectSql, query, query, offset, limit)
+	if err != nil {
+		return 0, nil, aerror.NewErrorf(err, aerror.Code.BUnexpectedData, "select attribute failed")
+	}
+
+	return total, products, nil
+}
+
+func AttributeSearchV2(ctx context.Context, in *proto.AttributeListRequest, filter *charonservice.SearchFilter) (int64, []*charon.Attribute, aerror.Error) {
+	formSql := `FROM attribute `
+	whereSql := `WHERE name LIKE ? OR description LIKE ? `
+	searchSelect := `SELECT id, name, description `
+	countSelect := `SELECT count(*) `
+	query := in.Query + "%"
+
+	countSelectSql := countSelect + formSql + whereSql
+	var total int64
+	err := charon2.CharonDB.QueryRowx(countSelectSql, query, query).Scan(&total)
+	if err != nil {
+		return 0, nil, aerror.NewErrorf(err, aerror.Code.BUnexpectedData, "select attribute failed")
+	}
+
+	if total == 0 {
+		return 0, nil, nil
+	}
+
+	searchSelectSql := searchSelect + formSql + whereSql + "limit ?, ?"
+	var products []*charon.Attribute
+	err = charon2.CharonDB.SelectContext(ctx, &products, searchSelectSql, query, query, in.Offset, in.Limit)
 	if err != nil {
 		return 0, nil, aerror.NewErrorf(err, aerror.Code.BUnexpectedData, "select attribute failed")
 	}

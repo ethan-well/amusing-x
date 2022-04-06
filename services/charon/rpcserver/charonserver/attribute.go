@@ -19,7 +19,8 @@ func (s *CharonServer) AttributesDelete(ctx context.Context, in *proto.Attribute
 }
 
 func (s *CharonServer) Attributes(ctx context.Context, in *proto.AttributeListRequest) (*proto.AttributeListResponse, error) {
-	return attribute.HandlerList(ctx, in)
+	//return attribute.HandlerList(ctx, in)
+	return attribute.HandlerListV2(ctx, in)
 }
 
 func (s *CharonServer) Attribute(ctx context.Context, in *proto.AttributeRequest) (*proto.Attribute, error) {
