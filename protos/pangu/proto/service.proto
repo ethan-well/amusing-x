@@ -31,6 +31,13 @@ import "pangu/proto/attribute_delete.proto";
 import "pangu/proto/attribute_list.proto";
 import "pangu/proto/attribute_update.proto";
 
+import "pangu/proto/attribute_mapping.proto";
+import "pangu/proto/attribute_mapping_get.proto";
+import "pangu/proto/attribute_mapping_delete.proto";
+import "pangu/proto/attribute_mapping_list.proto";
+import "pangu/proto/attribute_mapping_update.proto";
+import "protos/pangu/proto/attribute_mapping_create.proto";
+
 package panguservice;
 
 message BlankParams{}
@@ -216,6 +223,44 @@ service PanGuService {
         option(google.api.http) = {
           put: "/v1/pangu/attributes/{id}"
           body: "*"
+        };
+    }
+
+    rpc AttributeMappingCreate(AttributeMappingCreateRequest) returns (comm.response.CommResponse) {
+        option (google.api.http) = {
+            post: "/v1/pangu/attribute_mappings"
+            body: "*"
+        };
+    }
+
+    rpc AttributeMapping(AttributeMappingRequest) returns (comm.response.CommResponse) {
+        option (google.api.http) = {
+            get: "/v1/pangu/attribute_mappings/{id}"
+        };
+    }
+
+    rpc AttributeMappings(AttributeMappingListRequest) returns (comm.response.CommResponse) {
+        option(google.api.http) = {
+            get: "/v1/pangu/attribute_mappings"
+        };
+    }
+
+    rpc AttributeMappingDelete(AttributeMappingDeleteRequest) returns (comm.response.CommResponse) {
+        option(google.api.http) = {
+            delete: "/v1/pangu/attribute_mappings/{id}"
+        };
+    }
+
+    rpc AttributeMappingsDelete(AttributeMappingsDeleteRequest) returns (comm.response.CommResponse) {
+        option(google.api.http) = {
+            delete: "/v1/pangu/attribute_mappings"
+        };
+    }
+
+    rpc AttributeMappingUpdate(AttributeMappingUpdateRequest) returns (comm.response.CommResponse) {
+        option(google.api.http) = {
+            put: "/v1/pangu/attribute_mappings/{id}"
+            body: "*"
         };
     }
 }

@@ -33,6 +33,13 @@ import "pangu/proto/attribute_list.proto";
 import "pangu/proto/attribute_delete.proto";
 import "pangu/proto/attribute_get.proto";
 
+import "pangu/proto/attribute_mapping.proto";
+import "pangu/proto/attribute_mapping_create.proto";
+import "pangu/proto/attribute_mapping_update.proto";
+import "pangu/proto/attribute_mapping_list.proto";
+import "pangu/proto/attribute_mapping_delete.proto";
+import "pangu/proto/attribute_mapping_get.proto";
+
 service CharonServ {
   rpc Pong(BlankParams) returns (PongResponse) {}
 
@@ -63,6 +70,13 @@ service CharonServ {
   rpc Attributes(panguservice.AttributeListRequest) returns (panguservice.AttributeListResponse) {}
   rpc Attribute(panguservice.AttributeRequest) returns (panguservice.Attribute) {}
   rpc AttributeUpdate(panguservice.AttributeUpdateRequest) returns (panguservice.Attribute) {}
+
+  rpc AttributeMappingCreate(panguservice.AttributeMappingCreateRequest) returns (panguservice.AttributeMapping) {}
+  rpc AttributeMappingDelete(panguservice.AttributeMappingDeleteRequest) returns (panguservice.AttributeMappingDeleteResponse) {}
+  rpc AttributeMappingsDelete(panguservice.AttributeMappingsDeleteRequest) returns (panguservice.AttributeMappingsDeleteResponse) {}
+  rpc AttributeMappings(panguservice.AttributeMappingListRequest) returns (panguservice.AttributeMappingListResponse) {}
+  rpc AttributeMapping(panguservice.AttributeMappingRequest) returns (panguservice.AttributeMapping) {}
+  rpc AttributeMappingUpdate(panguservice.AttributeMappingUpdateRequest) returns (panguservice.AttributeMapping) {}
 }
 
 message BlankParams{}

@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+option go_package = "amusingx.fit/amusingx/protos/pangu/service/pangu/proto";
+
+package panguservice;
+
+message AttributeMappingRequest {
+    int64  id = 1;
+}

@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option go_package = "amusingx.fit/amusingx/protos/pangu/service/pangu/proto";
+
+import "pangu/proto/attribute_mapping.proto";
+
+package panguservice;
+
+message AttributeMappingListRequest {
+    string query = 1;
+    int64 page = 2;
+    int64 limit = 3;
+    string sort = 5;
+}
+
+message AttributeMappingListResponse {
+    int64 page = 1;
+    int64 limit = 2;
+    int64 total = 3;
+    bool hasNext = 4;
+    repeated AttributeMapping Data = 6;
+}
