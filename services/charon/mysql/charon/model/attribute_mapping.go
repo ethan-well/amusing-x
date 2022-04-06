@@ -164,3 +164,31 @@ func AttributeMappingUpdate(ctx context.Context, product *charon.AttributeMappin
 
 	return nil
 }
+
+func AttributeMappingSearch(ctx context.Context, query string, offset, limit int64) (int64, []*charon.AttributeMapping, aerror.Error) {
+	formSql := `FROM attribute_mapping `
+	whereSql := `WHERE attr_value LIKE ? `
+	searchSelect := `SELECT id, attr_id, attr_value, sub_product_id `
+	countSelect := `SELECT count(*) `
+	query = query + "%"
+
+	countSelectSql := countSelect + formSql + whereSql
+	var total int64
+	err := charon2.CharonDB.QueryRowx(countSelectSql, query).Scan(&total)
+	if err != nil {
+		return 0, nil, aerror.NewErrorf(err, aerror.Code.BUnexpectedData, "select sub product failed")
+	}
+
+	if total == 0 {
+		return 0, nil, nil
+	}
+
+	searchSelectSql := searchSelect + formSql + whereSql + "limit ?, ?"
+	var products []*charon.AttributeMapping
+	err = charon2.CharonDB.SelectContext(ctx, &products, searchSelectSql, query, offset, limit)
+	if err != nil {
+		return 0, nil, aerror.NewErrorf(err, aerror.Code.BUnexpectedData, "select sub product failed")
+	}
+
+	return total, products, nil
+}

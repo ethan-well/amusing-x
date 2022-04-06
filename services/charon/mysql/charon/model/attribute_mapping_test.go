@@ -201,3 +201,19 @@ func TestAttributeMappingDeleteByAttributeIdWithTx(t *testing.T) {
 		t.Fatal(e)
 	}
 }
+
+func TestAttributeMappingSearch(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip ...")
+	}
+
+	charon.Mock()
+
+	total, attrs, err := AttributeMappingSearch(context.Background(), "", 0, 10)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	t.Logf("total: %d", total)
+	t.Logf("attrs: %s", logger.ToJson(attrs))
+}

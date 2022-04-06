@@ -5,7 +5,7 @@ option go_package = "amusingx.fit/amusingx/protos/pangu/service/pangu/proto";
 package panguservice;
 
 message AttributeMappingCreateRequest {
-    string attr_id = 2;
+    int64 attr_id = 2;
     int64 sub_product_id = 3;
     string attr_value = 4;
 }

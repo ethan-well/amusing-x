@@ -44,6 +44,12 @@ type CharonServClient interface {
 	Attributes(ctx context.Context, in *proto.AttributeListRequest, opts ...grpc.CallOption) (*proto.AttributeListResponse, error)
 	Attribute(ctx context.Context, in *proto.AttributeRequest, opts ...grpc.CallOption) (*proto.Attribute, error)
 	AttributeUpdate(ctx context.Context, in *proto.AttributeUpdateRequest, opts ...grpc.CallOption) (*proto.Attribute, error)
+	AttributeMappingCreate(ctx context.Context, in *proto.AttributeMappingCreateRequest, opts ...grpc.CallOption) (*proto.AttributeMapping, error)
+	AttributeMappingDelete(ctx context.Context, in *proto.AttributeMappingDeleteRequest, opts ...grpc.CallOption) (*proto.AttributeMappingDeleteResponse, error)
+	AttributeMappingsDelete(ctx context.Context, in *proto.AttributeMappingsDeleteRequest, opts ...grpc.CallOption) (*proto.AttributeMappingsDeleteResponse, error)
+	AttributeMappings(ctx context.Context, in *proto.AttributeMappingListRequest, opts ...grpc.CallOption) (*proto.AttributeMappingListResponse, error)
+	AttributeMapping(ctx context.Context, in *proto.AttributeMappingRequest, opts ...grpc.CallOption) (*proto.AttributeMapping, error)
+	AttributeMappingUpdate(ctx context.Context, in *proto.AttributeMappingUpdateRequest, opts ...grpc.CallOption) (*proto.AttributeMapping, error)
 }
 
 type charonServClient struct {
@@ -279,6 +285,60 @@ func (c *charonServClient) AttributeUpdate(ctx context.Context, in *proto.Attrib
 	return out, nil
 }
 
+func (c *charonServClient) AttributeMappingCreate(ctx context.Context, in *proto.AttributeMappingCreateRequest, opts ...grpc.CallOption) (*proto.AttributeMapping, error) {
+	out := new(proto.AttributeMapping)
+	err := c.cc.Invoke(ctx, "/charonservice.CharonServ/AttributeMappingCreate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *charonServClient) AttributeMappingDelete(ctx context.Context, in *proto.AttributeMappingDeleteRequest, opts ...grpc.CallOption) (*proto.AttributeMappingDeleteResponse, error) {
+	out := new(proto.AttributeMappingDeleteResponse)
+	err := c.cc.Invoke(ctx, "/charonservice.CharonServ/AttributeMappingDelete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *charonServClient) AttributeMappingsDelete(ctx context.Context, in *proto.AttributeMappingsDeleteRequest, opts ...grpc.CallOption) (*proto.AttributeMappingsDeleteResponse, error) {
+	out := new(proto.AttributeMappingsDeleteResponse)
+	err := c.cc.Invoke(ctx, "/charonservice.CharonServ/AttributeMappingsDelete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *charonServClient) AttributeMappings(ctx context.Context, in *proto.AttributeMappingListRequest, opts ...grpc.CallOption) (*proto.AttributeMappingListResponse, error) {
+	out := new(proto.AttributeMappingListResponse)
+	err := c.cc.Invoke(ctx, "/charonservice.CharonServ/AttributeMappings", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *charonServClient) AttributeMapping(ctx context.Context, in *proto.AttributeMappingRequest, opts ...grpc.CallOption) (*proto.AttributeMapping, error) {
+	out := new(proto.AttributeMapping)
+	err := c.cc.Invoke(ctx, "/charonservice.CharonServ/AttributeMapping", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *charonServClient) AttributeMappingUpdate(ctx context.Context, in *proto.AttributeMappingUpdateRequest, opts ...grpc.CallOption) (*proto.AttributeMapping, error) {
+	out := new(proto.AttributeMapping)
+	err := c.cc.Invoke(ctx, "/charonservice.CharonServ/AttributeMappingUpdate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CharonServServer is the server API for CharonServ service.
 // All implementations must embed UnimplementedCharonServServer
 // for forward compatibility
@@ -308,6 +368,12 @@ type CharonServServer interface {
 	Attributes(context.Context, *proto.AttributeListRequest) (*proto.AttributeListResponse, error)
 	Attribute(context.Context, *proto.AttributeRequest) (*proto.Attribute, error)
 	AttributeUpdate(context.Context, *proto.AttributeUpdateRequest) (*proto.Attribute, error)
+	AttributeMappingCreate(context.Context, *proto.AttributeMappingCreateRequest) (*proto.AttributeMapping, error)
+	AttributeMappingDelete(context.Context, *proto.AttributeMappingDeleteRequest) (*proto.AttributeMappingDeleteResponse, error)
+	AttributeMappingsDelete(context.Context, *proto.AttributeMappingsDeleteRequest) (*proto.AttributeMappingsDeleteResponse, error)
+	AttributeMappings(context.Context, *proto.AttributeMappingListRequest) (*proto.AttributeMappingListResponse, error)
+	AttributeMapping(context.Context, *proto.AttributeMappingRequest) (*proto.AttributeMapping, error)
+	AttributeMappingUpdate(context.Context, *proto.AttributeMappingUpdateRequest) (*proto.AttributeMapping, error)
 	mustEmbedUnimplementedCharonServServer()
 }
 
@@ -389,6 +455,24 @@ func (UnimplementedCharonServServer) Attribute(context.Context, *proto.Attribute
 }
 func (UnimplementedCharonServServer) AttributeUpdate(context.Context, *proto.AttributeUpdateRequest) (*proto.Attribute, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AttributeUpdate not implemented")
+}
+func (UnimplementedCharonServServer) AttributeMappingCreate(context.Context, *proto.AttributeMappingCreateRequest) (*proto.AttributeMapping, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AttributeMappingCreate not implemented")
+}
+func (UnimplementedCharonServServer) AttributeMappingDelete(context.Context, *proto.AttributeMappingDeleteRequest) (*proto.AttributeMappingDeleteResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AttributeMappingDelete not implemented")
+}
+func (UnimplementedCharonServServer) AttributeMappingsDelete(context.Context, *proto.AttributeMappingsDeleteRequest) (*proto.AttributeMappingsDeleteResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AttributeMappingsDelete not implemented")
+}
+func (UnimplementedCharonServServer) AttributeMappings(context.Context, *proto.AttributeMappingListRequest) (*proto.AttributeMappingListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AttributeMappings not implemented")
+}
+func (UnimplementedCharonServServer) AttributeMapping(context.Context, *proto.AttributeMappingRequest) (*proto.AttributeMapping, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AttributeMapping not implemented")
+}
+func (UnimplementedCharonServServer) AttributeMappingUpdate(context.Context, *proto.AttributeMappingUpdateRequest) (*proto.AttributeMapping, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AttributeMappingUpdate not implemented")
 }
 func (UnimplementedCharonServServer) mustEmbedUnimplementedCharonServServer() {}
 
@@ -853,6 +937,114 @@ func _CharonServ_AttributeUpdate_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CharonServ_AttributeMappingCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(proto.AttributeMappingCreateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CharonServServer).AttributeMappingCreate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/charonservice.CharonServ/AttributeMappingCreate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CharonServServer).AttributeMappingCreate(ctx, req.(*proto.AttributeMappingCreateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CharonServ_AttributeMappingDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(proto.AttributeMappingDeleteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CharonServServer).AttributeMappingDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/charonservice.CharonServ/AttributeMappingDelete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CharonServServer).AttributeMappingDelete(ctx, req.(*proto.AttributeMappingDeleteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CharonServ_AttributeMappingsDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(proto.AttributeMappingsDeleteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CharonServServer).AttributeMappingsDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/charonservice.CharonServ/AttributeMappingsDelete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CharonServServer).AttributeMappingsDelete(ctx, req.(*proto.AttributeMappingsDeleteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CharonServ_AttributeMappings_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(proto.AttributeMappingListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CharonServServer).AttributeMappings(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/charonservice.CharonServ/AttributeMappings",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CharonServServer).AttributeMappings(ctx, req.(*proto.AttributeMappingListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CharonServ_AttributeMapping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(proto.AttributeMappingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CharonServServer).AttributeMapping(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/charonservice.CharonServ/AttributeMapping",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CharonServServer).AttributeMapping(ctx, req.(*proto.AttributeMappingRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CharonServ_AttributeMappingUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(proto.AttributeMappingUpdateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CharonServServer).AttributeMappingUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/charonservice.CharonServ/AttributeMappingUpdate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CharonServServer).AttributeMappingUpdate(ctx, req.(*proto.AttributeMappingUpdateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CharonServ_ServiceDesc is the grpc.ServiceDesc for CharonServ service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -959,6 +1151,30 @@ var CharonServ_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AttributeUpdate",
 			Handler:    _CharonServ_AttributeUpdate_Handler,
+		},
+		{
+			MethodName: "AttributeMappingCreate",
+			Handler:    _CharonServ_AttributeMappingCreate_Handler,
+		},
+		{
+			MethodName: "AttributeMappingDelete",
+			Handler:    _CharonServ_AttributeMappingDelete_Handler,
+		},
+		{
+			MethodName: "AttributeMappingsDelete",
+			Handler:    _CharonServ_AttributeMappingsDelete_Handler,
+		},
+		{
+			MethodName: "AttributeMappings",
+			Handler:    _CharonServ_AttributeMappings_Handler,
+		},
+		{
+			MethodName: "AttributeMapping",
+			Handler:    _CharonServ_AttributeMapping_Handler,
+		},
+		{
+			MethodName: "AttributeMappingUpdate",
+			Handler:    _CharonServ_AttributeMappingUpdate_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

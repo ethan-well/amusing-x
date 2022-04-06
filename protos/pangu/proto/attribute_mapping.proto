@@ -6,7 +6,7 @@ package panguservice;
 
 message AttributeMapping {
     int64 id = 1;
-    string attr_id = 2;
+    int64 attr_id = 2;
     int64 sub_product_id = 3;
     string attr_value = 4;
 }
