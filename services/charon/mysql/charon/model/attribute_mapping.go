@@ -4,8 +4,11 @@ import (
 	"amusingx.fit/amusingx/mysqlstruct/charon"
 	charon2 "amusingx.fit/amusingx/services/charon/mysql/charon"
 	"context"
+	"fmt"
 	"github.com/ItsWewin/superfactory/aerror"
+	"github.com/ItsWewin/superfactory/logger"
 	"github.com/jmoiron/sqlx"
+	"strings"
 )
 
 func AttributeMappingInsert(ctx context.Context, mapping *charon.AttributeMapping) (*charon.AttributeMapping, aerror.Error) {
@@ -25,6 +28,40 @@ func AttributeMappingInsert(ctx context.Context, mapping *charon.AttributeMappin
 	return mapping, nil
 }
 
+func AttributeMappingInsertWithTx(ctx context.Context, tx *sqlx.Tx, mappings []*charon.AttributeMapping) aerror.Error {
+	if len(mappings) == 0 {
+		return nil
+	}
+	placeholder := `{{valuePlaceholder}}`
+	insertSql := fmt.Sprintf(`INSERT INTO attribute_mapping (attr_id, sub_product_id, attr_value)
+				VALUES %s
+				ON DUPLICATE KEY UPDATE attr_value=VALUES(attr_value)`, placeholder)
+
+	var values []string
+	var params []interface{}
+	for _, mapping := range mappings {
+		values = append(values, `(?,?,?)`)
+		params = append(params, mapping.AttrId, mapping.SubProductId, mapping.AttrValue)
+	}
+
+	insertSql = strings.ReplaceAll(insertSql, placeholder, strings.Join(values, ","))
+
+	logger.Errorf("insertSql: %s", insertSql)
+	logger.Errorf("params: %v", params)
+
+	result, err := tx.ExecContext(ctx, insertSql, params...)
+	if err != nil {
+		return aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql execute error")
+	}
+
+	_, err = result.RowsAffected()
+	if err != nil {
+		return aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql execute error")
+	}
+
+	return nil
+}
+
 func AttributeMappingQueryById(ctx context.Context, id int64) (*charon.AttributeMapping, aerror.Error) {
 	querySql := `SELECT id, attr_id, sub_product_id, attr_value FROM attribute_mapping WHERE id = ?`
 	var mappings []*charon.AttributeMapping
@@ -37,6 +74,16 @@ func AttributeMappingQueryById(ctx context.Context, id int64) (*charon.Attribute
 	}
 
 	return mappings[0], nil
+}
+
+func AttributeMappingQueryBySubProductIDWithTx(ctx context.Context, tx *sqlx.Tx, id int64) ([]*charon.AttributeMapping, aerror.Error) {
+	querySql := `SELECT id, attr_id, sub_product_id, attr_value FROM attribute_mapping WHERE sub_product_id = ?`
+	var mappings []*charon.AttributeMapping
+	err := charon2.CharonDB.SelectContext(ctx, &mappings, querySql, id)
+	if err != nil {
+		return nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql execute error")
+	}
+	return mappings, nil
 }
 
 func AttributeMappingDelete(ctx context.Context, ids []int64) aerror.Error {

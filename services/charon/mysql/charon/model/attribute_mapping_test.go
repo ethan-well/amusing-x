@@ -28,6 +28,44 @@ func TestAttributeMappingInsert(t *testing.T) {
 	t.Logf("sub product: %s", logger.ToJson(product))
 }
 
+func TestAttributeMappingInsertWithTx(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip ...")
+	}
+
+	charon.Mock()
+
+	tx, e := charon.CharonDB.Beginx()
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer tx.Rollback()
+
+	var products []*charon2.AttributeMapping
+	product := &charon2.AttributeMapping{
+		AttrId:       1,
+		AttrValue:    "111222200000",
+		SubProductId: 2,
+	}
+	product2 := &charon2.AttributeMapping{
+		AttrId:       2,
+		AttrValue:    "2222220000",
+		SubProductId: 2,
+	}
+	products = append(products, product, product2)
+
+	err := AttributeMappingInsertWithTx(context.Background(), tx, products)
+	if err != nil {
+		t.Fatalf("some err: %s", err)
+	}
+
+	if e := tx.Commit(); e != nil {
+		t.Fatalf("commit err: %s", err)
+	}
+
+	t.Logf("sub product: %s", logger.ToJson(product))
+}
+
 func TestAttributeMappingQueryById(t *testing.T) {
 	if testing.Short() {
 		t.Skip("skip ...")
@@ -35,7 +73,28 @@ func TestAttributeMappingQueryById(t *testing.T) {
 
 	charon.Mock()
 
-	product, err := AttributeMappingQueryById(context.Background(), 3)
+	product, err := AttributeMappingQueryById(context.Background(), 2)
+	if err != nil {
+		t.Fatalf("some err: %s", err)
+	}
+
+	t.Logf("attribute_mapping: %s", logger.ToJson(product))
+}
+
+func TestAttributeMappingQueryBySubProductIDWithTx(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip ...")
+	}
+
+	charon.Mock()
+
+	tx, e := charon.CharonDB.Beginx()
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer tx.Rollback()
+
+	product, err := AttributeMappingQueryBySubProductIDWithTx(context.Background(), tx, 3)
 	if err != nil {
 		t.Fatalf("some err: %s", err)
 	}

@@ -9,7 +9,6 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/ItsWewin/superfactory/aerror"
-	"github.com/ItsWewin/superfactory/logger"
 	"github.com/jmoiron/sqlx"
 	"strings"
 )
@@ -182,8 +181,6 @@ func ProductSearchQuery(ctx context.Context, req *proto.ProductListRequest, filt
 	if err != nil {
 		return 0, nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql in failed")
 	}
-
-	logger.Errorf("countStr: %s, args: %v", countStr, args)
 
 	err = tx.QueryRowx(countStr, args...).Scan(&count)
 	switch {

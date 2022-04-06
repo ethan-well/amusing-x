@@ -12,4 +12,5 @@ message SubProductUpdateRequest {
   string currency = 5;
   int64 price = 6;
   int64 stock = 7;
+  repeated int64 attribute_id = 8;
 }

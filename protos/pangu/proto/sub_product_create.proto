@@ -12,4 +12,5 @@ message SubProductCreateRequest {
   string Currency = 5 [json_name="currency"];
   int64 price = 6 [json_name="price"];
   int64 stock = 7 [json_name="stock"];
+  repeated int64 AttributeId = 8 [json_name="attribute_id"];
 }

@@ -6,6 +6,7 @@ import (
 	"context"
 	"github.com/ItsWewin/superfactory/logger"
 	"testing"
+	"time"
 )
 
 func TestSubProductInsert(t *testing.T) {
@@ -68,6 +69,41 @@ func TestSubProductUpdate(t *testing.T) {
 	}
 
 	t.Logf("sub product: %s", logger.ToJson(product))
+}
+
+func TestSubProductUpdateWithTx(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip ....")
+	}
+
+	charon.Mock()
+
+	tx, err := charon.CharonDB.Beginx()
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer tx.Rollback()
+
+	product := &charon2.SubProduct{
+		ID:         0,
+		Name:       "",
+		Desc:       "",
+		ProductId:  0,
+		Currency:   "",
+		Price:      0,
+		Stock:      0,
+		CreateTime: time.Time{},
+		UpdateTime: time.Time{},
+	}
+
+	err = SubProductUpdateWithTx(context.Background(), tx, product)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if e := tx.Commit(); e != nil {
+		t.Fatal(e)
+	}
 }
 
 func TestSubProductListQuery(t *testing.T) {
