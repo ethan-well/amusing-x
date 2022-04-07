@@ -6,7 +6,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/ItsWewin/superfactory/aerror"
-	"github.com/ItsWewin/superfactory/logger"
 	"github.com/jmoiron/sqlx"
 	"strings"
 )
@@ -46,9 +45,6 @@ func AttributeMappingInsertWithTx(ctx context.Context, tx *sqlx.Tx, mappings []*
 
 	insertSql = strings.ReplaceAll(insertSql, placeholder, strings.Join(values, ","))
 
-	logger.Errorf("insertSql: %s", insertSql)
-	logger.Errorf("params: %v", params)
-
 	result, err := tx.ExecContext(ctx, insertSql, params...)
 	if err != nil {
 		return aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql execute error")
@@ -77,7 +73,10 @@ func AttributeMappingQueryById(ctx context.Context, id int64) (*charon.Attribute
 }
 
 func AttributeMappingQueryBySubProductIDWithTx(ctx context.Context, tx *sqlx.Tx, id int64) ([]*charon.AttributeMapping, aerror.Error) {
-	querySql := `SELECT id, attr_id, sub_product_id, attr_value FROM attribute_mapping WHERE sub_product_id = ?`
+	querySql := `SELECT am.id, am.attr_id, am.sub_product_id, am.attr_value
+		FROM attribute_mapping am
+		LEFT JOIN attribute a ON a.id = am.attr_id
+		WHERE a.id IS NOT NULL AND sub_product_id = ?`
 	var mappings []*charon.AttributeMapping
 	err := charon2.CharonDB.SelectContext(ctx, &mappings, querySql, id)
 	if err != nil {
@@ -119,6 +118,9 @@ func AttributeMappingDeleteWithTx(ctx context.Context, tx *sqlx.Tx, ids []int64)
 }
 
 func AttributeMappingDeleteBySubProductIdWithTx(ctx context.Context, tx *sqlx.Tx, subProductIds []int64) aerror.Error {
+	if len(subProductIds) == 0 {
+		return nil
+	}
 	delSql := `DELETE FROM attribute_mapping WHERE sub_product_id IN (?)`
 
 	delSql, args, err := sqlx.In(delSql, subProductIds)

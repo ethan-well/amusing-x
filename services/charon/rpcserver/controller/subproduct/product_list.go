@@ -8,7 +8,6 @@ import (
 	"encoding/json"
 	"github.com/ItsWewin/superfactory/aerror"
 	"github.com/ItsWewin/superfactory/aregexp"
-	"github.com/ItsWewin/superfactory/logger"
 	"strconv"
 )
 
@@ -22,8 +21,6 @@ func HandlerList(ctx context.Context, in *proto.SubProductListRequest) (*proto.S
 		return nil, err
 	}
 
-	logger.Errorf("filter: %v", filter)
-
 	total, products, err := model.SubProductSearchV2(ctx, in, filter)
 	if err != nil {
 		return nil, err
@@ -32,7 +29,7 @@ func HandlerList(ctx context.Context, in *proto.SubProductListRequest) (*proto.S
 	var productList []*proto.SubProduct
 	for _, p := range products {
 		productList = append(productList, &proto.SubProduct{
-			ID:        p.ID,
+			Id:        p.ID,
 			Name:      p.Name,
 			Desc:      p.Desc,
 			ProductId: p.ProductId,

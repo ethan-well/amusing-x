@@ -58,6 +58,9 @@ func AttributeDelete(ctx context.Context, ids []int64) aerror.Error {
 }
 
 func AttributeDeleteWithTx(ctx context.Context, tx *sqlx.Tx, ids []int64) aerror.Error {
+	if len(ids) == 0 {
+		return nil
+	}
 	delSql := `DELETE FROM attribute WHERE id IN (?)`
 
 	delSql, args, err := sqlx.In(delSql, ids)

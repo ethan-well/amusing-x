@@ -6,7 +6,6 @@ import (
 	"context"
 	"github.com/ItsWewin/superfactory/logger"
 	"testing"
-	"time"
 )
 
 func TestSubProductInsert(t *testing.T) {
@@ -85,15 +84,13 @@ func TestSubProductUpdateWithTx(t *testing.T) {
 	defer tx.Rollback()
 
 	product := &charon2.SubProduct{
-		ID:         0,
-		Name:       "",
-		Desc:       "",
-		ProductId:  0,
-		Currency:   "",
-		Price:      0,
-		Stock:      0,
-		CreateTime: time.Time{},
-		UpdateTime: time.Time{},
+		ID:        9,
+		Name:      "name",
+		Desc:      "desc",
+		ProductId: 101,
+		Currency:  "CNY",
+		Price:     101,
+		Stock:     101,
 	}
 
 	err = SubProductUpdateWithTx(context.Background(), tx, product)

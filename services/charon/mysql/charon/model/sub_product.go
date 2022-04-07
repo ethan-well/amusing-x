@@ -45,6 +45,25 @@ func SubProductQueryById(ctx context.Context, id int64) (*charon.SubProduct, aer
 	return products[0], nil
 }
 
+func SubProductQueryByIdWithTx(ctx context.Context, id int64, tx ...*sqlx.Tx) (*charon.SubProduct, aerror.Error) {
+	querySql := `SELECT id, product_id, name, description, currency, price, stock FROM sub_product WHERE id = ?`
+	var products []*charon.SubProduct
+	var err error
+	if tx == nil {
+		err = charon2.CharonDB.SelectContext(ctx, &products, querySql, id)
+	} else {
+		err = tx[0].SelectContext(ctx, &products, querySql, id)
+	}
+	if err != nil {
+		return nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql execute error")
+	}
+	if len(products) == 0 {
+		return nil, nil
+	}
+
+	return products[0], nil
+}
+
 func SubProductDelete(ctx context.Context, ids []int64) aerror.Error {
 	delSql := `DELETE FROM sub_product WHERE id IN (?)`
 
@@ -104,7 +123,6 @@ func SubProductUpdateWithTx(ctx context.Context, tx *sqlx.Tx, product *charon.Su
 		currency = :currency,
 		price = :price,
 		stock = :stock
-		
 		WHERE id = :id
 `
 	_, err := tx.NamedExecContext(ctx, sqlStr, product)

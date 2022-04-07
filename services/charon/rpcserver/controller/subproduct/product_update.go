@@ -7,13 +7,10 @@ import (
 	"amusingx.fit/amusingx/services/charon/mysql/charon/model"
 	"context"
 	"github.com/ItsWewin/superfactory/aerror"
-	"github.com/ItsWewin/superfactory/logger"
 	"github.com/ItsWewin/superfactory/set/intset"
 )
 
 func HandlerUpdate(ctx context.Context, in *proto.SubProductUpdateRequest) (*proto.SubProduct, aerror.Error) {
-	logger.Errorf("in: %s", logger.ToJson(in))
-
 	if in == nil || in.Id == 0 {
 		return nil, aerror.NewErrorf(nil, aerror.Code.CParamsError, "id in request info is 0")
 	}
@@ -35,7 +32,7 @@ func HandlerUpdate(ctx context.Context, in *proto.SubProductUpdateRequest) (*pro
 		Stock:     in.Stock,
 	})
 	if err != nil {
-		return nil, err
+		return nil, aerror.NewErrorf(err, err.Code(), err.Message())
 	}
 
 	subProduct, err := model.SubProductQueryById(ctx, in.Id)
@@ -83,8 +80,6 @@ func HandlerUpdate(ctx context.Context, in *proto.SubProductUpdateRequest) (*pro
 		newAttrMappings = append(newAttrMappings, attr)
 	}
 
-	logger.Errorf("newAttrMappings: %s", logger.ToJson(newAttrMappings))
-
 	err = model.AttributeMappingInsertWithTx(ctx, tx, newAttrMappings)
 	if err != nil {
 		return nil, err
@@ -95,7 +90,7 @@ func HandlerUpdate(ctx context.Context, in *proto.SubProductUpdateRequest) (*pro
 	}
 
 	return &proto.SubProduct{
-		ID:          subProduct.ID,
+		Id:          subProduct.ID,
 		Name:        subProduct.Name,
 		Desc:        subProduct.Desc,
 		ProductId:   subProduct.ProductId,

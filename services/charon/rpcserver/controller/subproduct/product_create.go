@@ -26,7 +26,7 @@ func HandlerCreate(ctx context.Context, in *proto.SubProductCreateRequest) (*pro
 	}
 
 	return &proto.SubProduct{
-		ID:        product.ID,
+		Id:        product.ID,
 		Name:      product.Name,
 		Desc:      product.Desc,
 		ProductId: product.ProductId,

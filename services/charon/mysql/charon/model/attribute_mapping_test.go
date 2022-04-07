@@ -94,7 +94,7 @@ func TestAttributeMappingQueryBySubProductIDWithTx(t *testing.T) {
 	}
 	defer tx.Rollback()
 
-	product, err := AttributeMappingQueryBySubProductIDWithTx(context.Background(), tx, 3)
+	product, err := AttributeMappingQueryBySubProductIDWithTx(context.Background(), tx, 9)
 	if err != nil {
 		t.Fatalf("some err: %s", err)
 	}
