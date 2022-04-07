@@ -6,14 +6,21 @@ import (
 	charon2 "amusingx.fit/amusingx/services/charon/mysql/charon"
 	"amusingx.fit/amusingx/services/charon/mysql/charon/model"
 	"context"
+	"fmt"
 	"github.com/ItsWewin/superfactory/aerror"
+	"github.com/ItsWewin/superfactory/logger"
 	"github.com/ItsWewin/superfactory/set/intset"
+	"github.com/ItsWewin/superfactory/uploader/localuploader"
+	"strings"
+	"sync"
 )
 
 func HandlerUpdate(ctx context.Context, in *proto.SubProductUpdateRequest) (*proto.SubProduct, aerror.Error) {
 	if in == nil || in.Id == 0 {
 		return nil, aerror.NewErrorf(nil, aerror.Code.CParamsError, "id in request info is 0")
 	}
+
+	logger.Infof("in: %s", logger.ToJson(in))
 
 	tx, e := charon2.CharonDB.Beginx()
 	if e != nil {
@@ -89,6 +96,11 @@ func HandlerUpdate(ctx context.Context, in *proto.SubProductUpdateRequest) (*pro
 		return nil, aerror.NewErrorf(e, aerror.Code.SSqlExecuteErr, "commit error")
 	}
 
+	err = uploadImage(ctx, in.Pictures)
+	if err != nil {
+		return nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "upload image failed")
+	}
+
 	return &proto.SubProduct{
 		Id:          subProduct.ID,
 		Name:        subProduct.Name,
@@ -99,4 +111,49 @@ func HandlerUpdate(ctx context.Context, in *proto.SubProductUpdateRequest) (*pro
 		Stock:       subProduct.Stock,
 		AttributeId: in.AttributeId,
 	}, nil
+}
+
+func uploadImage(ctx context.Context, pictures []*proto.Picture) aerror.Error {
+	if len(pictures) == 0 {
+		return nil
+	}
+
+	w := sync.WaitGroup{}
+	errChan := make(chan aerror.Error, len(pictures))
+	for _, picture := range pictures {
+		w.Add(1)
+
+		go func(w sync.WaitGroup) {
+			defer w.Done()
+			err := updateAndSave(ctx, picture)
+
+			errChan <- err
+		}(w)
+	}
+
+	w.Wait()
+
+	var msg []string
+	for e := range errChan {
+		msg = append(msg, e.Message())
+	}
+
+	if len(msg) != 0 {
+		return aerror.NewError(nil, aerror.Code.SSqlExecuteErr, strings.Join(msg, ","))
+	}
+
+	return nil
+}
+
+func updateAndSave(ctx context.Context, picture *proto.Picture) aerror.Error {
+	uploader := localuploader.NewUploader("/tmp/amusing-x/sub-product")
+	filePath, err := uploader.UploadBase64(ctx, picture.Src, picture.Title)
+	if err != nil {
+		return aerror.NewErrorf(err, err.Code(), "picture upload failed, picture: %s", logger.ToJson(picture))
+	}
+
+	// savef
+	fmt.Sprint(filePath)
+
+	return nil
 }

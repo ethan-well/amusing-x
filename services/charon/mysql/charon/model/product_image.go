@@ -13,9 +13,9 @@ import (
 	"strings"
 )
 
-func SubProductInsert(ctx context.Context, subProduct *charon.SubProduct) (*charon.SubProduct, aerror.Error) {
-	insertSql := `INSERT INTO sub_product (product_id, name, description, currency, price, stock) VALUES (:product_id, :name, :description, :currency, :price, :stock)`
-	result, err := charon2.CharonDB.NamedExecContext(ctx, insertSql, subProduct)
+func ProductImageInsert(ctx context.Context, image *charon.ProductImage) (*charon.ProductImage, aerror.Error) {
+	insertSql := `INSERT INTO product_image (product_id, product_level, uploader_type, url) VALUES (:product_id, :product_level, :uploader_type, :url)`
+	result, err := charon2.CharonDB.NamedExecContext(ctx, insertSql, image)
 	if err != nil {
 		return nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql execute error")
 	}
@@ -25,46 +25,46 @@ func SubProductInsert(ctx context.Context, subProduct *charon.SubProduct) (*char
 		return nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "get last insert id failed")
 	}
 
-	subProduct.ID = id
+	image.Id = id
 
-	return subProduct, nil
+	return image, nil
 }
 
-func SubProductQueryById(ctx context.Context, id int64) (*charon.SubProduct, aerror.Error) {
-	querySql := `SELECT id, product_id, name, description, currency, price, stock FROM sub_product WHERE id = ?`
-	var products []*charon.SubProduct
-	err := charon2.CharonDB.SelectContext(ctx, &products, querySql, id)
+func ProductImageQueryById(ctx context.Context, id int64) (*charon.ProductImage, aerror.Error) {
+	querySql := `SELECT id, product_id, product_level, uploader_type, url FROM product_image WHERE id = ?`
+	var images []*charon.ProductImage
+	err := charon2.CharonDB.SelectContext(ctx, &images, querySql, id)
 	if err != nil {
 		return nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql execute error")
 	}
-	if len(products) == 0 {
+	if len(images) == 0 {
 		return nil, nil
 	}
 
-	return products[0], nil
+	return images[0], nil
 }
 
-func SubProductQueryByIdWithTx(ctx context.Context, id int64, tx ...*sqlx.Tx) (*charon.SubProduct, aerror.Error) {
-	querySql := `SELECT id, product_id, name, description, currency, price, stock FROM sub_product WHERE id = ?`
-	var products []*charon.SubProduct
+func ProductImageQueryByIdWithTx(ctx context.Context, id int64, tx ...*sqlx.Tx) (*charon.ProductImage, aerror.Error) {
+	querySql := `SELECT id, product_id, product_level, uploader_type, url FROM product_image WHERE id = ?`
+	var images []*charon.ProductImage
 	var err error
 	if tx == nil {
-		err = charon2.CharonDB.SelectContext(ctx, &products, querySql, id)
+		err = charon2.CharonDB.SelectContext(ctx, &images, querySql, id)
 	} else {
-		err = tx[0].SelectContext(ctx, &products, querySql, id)
+		err = tx[0].SelectContext(ctx, &images, querySql, id)
 	}
 	if err != nil {
 		return nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql execute error")
 	}
-	if len(products) == 0 {
+	if len(images) == 0 {
 		return nil, nil
 	}
 
-	return products[0], nil
+	return images[0], nil
 }
 
-func SubProductDelete(ctx context.Context, ids []int64) aerror.Error {
-	delSql := `DELETE FROM sub_product WHERE id IN (?)`
+func ProductImageDelete(ctx context.Context, ids []int64) aerror.Error {
+	delSql := `DELETE FROM product_image WHERE id IN (?)`
 
 	delSql, args, err := sqlx.In(delSql, ids)
 	if err != nil {
@@ -73,14 +73,14 @@ func SubProductDelete(ctx context.Context, ids []int64) aerror.Error {
 
 	_, err = charon2.CharonDB.ExecContext(ctx, delSql, args...)
 	if err != nil {
-		return aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "del sub product failed")
+		return aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "del product_image failed")
 	}
 
 	return nil
 }
 
-func SubProductDeleteWithTx(ctx context.Context, tx *sqlx.Tx, ids []int64) aerror.Error {
-	delSql := `DELETE FROM sub_product WHERE id IN (?)`
+func ProductImageDeleteWithTx(ctx context.Context, tx *sqlx.Tx, ids []int64) aerror.Error {
+	delSql := `DELETE FROM product_image WHERE id IN (?)`
 
 	delSql, args, err := sqlx.In(delSql, ids)
 	if err != nil {
@@ -89,21 +89,18 @@ func SubProductDeleteWithTx(ctx context.Context, tx *sqlx.Tx, ids []int64) aerro
 
 	_, err = tx.ExecContext(ctx, delSql, args...)
 	if err != nil {
-		return aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "del sub_product failed")
+		return aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "del product_image failed")
 	}
 
 	return nil
 }
 
-func SubProductUpdate(ctx context.Context, product *charon.SubProduct) aerror.Error {
-	sqlStr := `UPDATE sub_product
-		SET name = :name,
-		description = :description,
-		product_id = :product_id,
-		currency = :currency,
-		price = :price,
-		stock = :stock
-		
+func ProductImageUpdate(ctx context.Context, product *charon.ProductImage) aerror.Error {
+	sqlStr := `UPDATE product_image
+		SET product_id = :product_id,
+		product_level = :product_level,
+		uploader_type = :uploader_type,
+		url = :url
 		WHERE id = :id
 `
 	_, err := charon2.CharonDB.NamedExecContext(ctx, sqlStr, product)
@@ -114,14 +111,12 @@ func SubProductUpdate(ctx context.Context, product *charon.SubProduct) aerror.Er
 	return nil
 }
 
-func SubProductUpdateWithTx(ctx context.Context, tx *sqlx.Tx, product *charon.SubProduct) aerror.Error {
-	sqlStr := `UPDATE sub_product
-		SET name = :name,
-		description = :description,
-		product_id = :product_id,
-		currency = :currency,
-		price = :price,
-		stock = :stock
+func ProductImageUpdateWithTx(ctx context.Context, tx *sqlx.Tx, product *charon.ProductImage) aerror.Error {
+	sqlStr := `UPDATE product_image
+		SET product_id = :product_id,
+		product_level = :product_level,
+		uploader_type = :uploader_type,
+		url = :url
 		WHERE id = :id
 `
 	_, err := tx.NamedExecContext(ctx, sqlStr, product)
@@ -132,10 +127,10 @@ func SubProductUpdateWithTx(ctx context.Context, tx *sqlx.Tx, product *charon.Su
 	return nil
 }
 
-func SubProductSearch(ctx context.Context, query string, offset, limit int64) (int64, []*charon.SubProduct, aerror.Error) {
-	formSql := `FROM sub_product `
-	whereSql := `WHERE name LIKE ? OR description LIKE ? `
-	searchSelect := `SELECT id, name, description, product_id, currency, price, stock `
+func ProductImageSearch(ctx context.Context, query string, offset, limit int64) (int64, []*charon.ProductImage, aerror.Error) {
+	formSql := `FROM product_image `
+	whereSql := `WHERE uploader_type LIKE ? OR url LIKE ? `
+	searchSelect := `SELECT id, product_id, product_level, uploader_type, url `
 	countSelect := `SELECT count(*) `
 	query = query + "%"
 
@@ -143,7 +138,7 @@ func SubProductSearch(ctx context.Context, query string, offset, limit int64) (i
 	var total int64
 	err := charon2.CharonDB.QueryRowx(countSelectSql, query, query).Scan(&total)
 	if err != nil {
-		return 0, nil, aerror.NewErrorf(err, aerror.Code.BUnexpectedData, "select sub product failed")
+		return 0, nil, aerror.NewErrorf(err, aerror.Code.BUnexpectedData, "select product_image failed")
 	}
 
 	if total == 0 {
@@ -151,19 +146,19 @@ func SubProductSearch(ctx context.Context, query string, offset, limit int64) (i
 	}
 
 	searchSelectSql := searchSelect + formSql + whereSql + "limit ?, ?"
-	var products []*charon.SubProduct
-	err = charon2.CharonDB.SelectContext(ctx, &products, searchSelectSql, query, query, offset, limit)
+	var images []*charon.ProductImage
+	err = charon2.CharonDB.SelectContext(ctx, &images, searchSelectSql, query, query, offset, limit)
 	if err != nil {
-		return 0, nil, aerror.NewErrorf(err, aerror.Code.BUnexpectedData, "select sub product failed")
+		return 0, nil, aerror.NewErrorf(err, aerror.Code.BUnexpectedData, "select product_image failed")
 	}
 
-	return total, products, nil
+	return total, images, nil
 }
 
-func SubProductSearchV2(ctx context.Context, in *proto.SubProductListRequest, filter *charonservice.SearchFilter) (int64, []*charon.SubProduct, aerror.Error) {
+func ProductImageSearchV2(ctx context.Context, in *proto.SubProductListRequest, filter *charonservice.SearchFilter) (int64, []*charon.ProductImage, aerror.Error) {
 	wherePlaceholder := `{{whereCondition}}`
-	sqlStr := fmt.Sprintf(`SELECT id, name, description, product_id, currency, price, stock FROM sub_product %s limit ?, ?`, wherePlaceholder)
-	countStr := fmt.Sprintf(`SELECT count(*) FROM sub_product %s`, wherePlaceholder)
+	sqlStr := fmt.Sprintf(`SELECT id, product_id, product_level, uploader_type, url FROM product_image %s limit ?, ?`, wherePlaceholder)
+	countStr := fmt.Sprintf(`SELECT count(*) FROM product_image %s`, wherePlaceholder)
 
 	var whereConditions []string
 	var params []interface{}
@@ -173,12 +168,12 @@ func SubProductSearchV2(ctx context.Context, in *proto.SubProductListRequest, fi
 	}
 
 	if len(filter.Name) > 0 {
-		whereConditions = append(whereConditions, "name in in (?)")
+		whereConditions = append(whereConditions, "name uploader_type in (?)")
 		params = append(params, filter.Name)
 	}
 
 	if len(filter.Desc) != 0 {
-		whereConditions = append(whereConditions, "description in (?)")
+		whereConditions = append(whereConditions, "url in (?)")
 		params = append(params, filter.Desc)
 	}
 
@@ -213,13 +208,13 @@ func SubProductSearchV2(ctx context.Context, in *proto.SubProductListRequest, fi
 		return 0, nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "query count error")
 	}
 
-	var subProducts []*charon.SubProduct
+	var images []*charon.ProductImage
 	sqlStr, args, err = sqlx.In(sqlStr, params...)
 	if err != nil {
 		return 0, nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql in failed")
 	}
 
-	err = tx.SelectContext(ctx, &subProducts, sqlStr, args...)
+	err = tx.SelectContext(ctx, &images, sqlStr, args...)
 	if err != nil {
 		return 0, nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "select total category list failed")
 	}
@@ -228,5 +223,5 @@ func SubProductSearchV2(ctx context.Context, in *proto.SubProductListRequest, fi
 		return 0, nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql commit error")
 	}
 
-	return count, subProducts, nil
+	return count, images, nil
 }
