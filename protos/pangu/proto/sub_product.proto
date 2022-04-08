@@ -13,6 +13,7 @@ message SubProduct {
   int64 price = 6;
   int64 stock = 7;
   repeated int64 attribute_id = 8 [json_name="attribute_id"];
+  repeated Picture pictures = 9;
 }
 
 message RawFile {
@@ -23,4 +24,5 @@ message Picture {
   RawFile rawFile = 1;
   string src = 2;
   string title = 3;
+  int64  id = 4;
 }

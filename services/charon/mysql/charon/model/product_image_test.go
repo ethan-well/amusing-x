@@ -29,6 +29,33 @@ func TestProductImageInsert(t *testing.T) {
 	t.Logf("result: %s", logger.ToJson(product))
 }
 
+func TestProductImagesInsert(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip ...")
+	}
+
+	charon.Mock()
+
+	images := []*charon2.ProductImage{
+		{
+			ProductId:    100,
+			ProductLevel: 2,
+			UploaderType: "local",
+			Url:          "/tmp/amusing-x/pictures/local.png",
+		},
+		{
+			ProductId:    101,
+			ProductLevel: 2,
+			UploaderType: "local",
+			Url:          "/tmp/amusing-x/pictures/local.png",
+		},
+	}
+	err := ProductImagesInsertWithTx(context.Background(), images)
+	if err != nil {
+		t.Fatalf("some err: %s", err)
+	}
+}
+
 func TestProductImageQueryById(t *testing.T) {
 	if testing.Short() {
 		t.Skip("skip ...")
@@ -42,6 +69,30 @@ func TestProductImageQueryById(t *testing.T) {
 	}
 
 	t.Logf("result: %s", logger.ToJson(product))
+}
+
+func TestProductImageQueryByProductIdAndLevelWithTx(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip ...")
+	}
+
+	charon.Mock()
+
+	tx, e := charon.CharonDB.Beginx()
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer tx.Rollback()
+
+	images, err := ProductImageQueryByProductIdAndLevelWithTx(context.Background(), 100, 2, tx)
+	if err != nil {
+		t.Fatalf("some err: %s", err)
+	}
+	if e := tx.Commit(); e != nil {
+		t.Fatal(e)
+	}
+
+	t.Logf("images length: %d", len(images))
 }
 
 func TestProductImageUpdate(t *testing.T) {

@@ -14,7 +14,7 @@ import (
 )
 
 func ProductImageInsert(ctx context.Context, image *charon.ProductImage) (*charon.ProductImage, aerror.Error) {
-	insertSql := `INSERT INTO product_image (product_id, product_level, uploader_type, url) VALUES (:product_id, :product_level, :uploader_type, :url)`
+	insertSql := `INSERT INTO product_image (product_id, product_level, uploader_type, url, title) VALUES (:product_id, :product_level, :uploader_type, :url, :title)`
 	result, err := charon2.CharonDB.NamedExecContext(ctx, insertSql, image)
 	if err != nil {
 		return nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql execute error")
@@ -28,6 +28,32 @@ func ProductImageInsert(ctx context.Context, image *charon.ProductImage) (*charo
 	image.Id = id
 
 	return image, nil
+}
+
+func ProductImagesInsertWithTx(ctx context.Context, images []*charon.ProductImage) aerror.Error {
+	valuesPlaceholder := `{{valuePlaceholder}}`
+	valuePlaceholder := `(?, ?, ?, ?)`
+	insertSql := fmt.Sprintf("INSERT INTO product_image (product_id, product_level, uploader_type, url) VALUES %s", valuesPlaceholder)
+
+	var values []interface{}
+	var valuePlaceholders []string
+	for _, image := range images {
+		values = append(values, image.ProductId, image.ProductLevel, image.UploaderType, image.Url)
+		valuePlaceholders = append(valuePlaceholders, valuePlaceholder)
+	}
+
+	insertSql = strings.Replace(insertSql, valuesPlaceholder, strings.Join(valuePlaceholders, ","), -1)
+	result, err := charon2.CharonDB.ExecContext(ctx, insertSql, values...)
+	if err != nil {
+		return aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql execute error")
+	}
+
+	_, err = result.RowsAffected()
+	if err != nil {
+		return aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql rowsAffected failed")
+	}
+
+	return nil
 }
 
 func ProductImageQueryById(ctx context.Context, id int64) (*charon.ProductImage, aerror.Error) {
@@ -63,6 +89,24 @@ func ProductImageQueryByIdWithTx(ctx context.Context, id int64, tx ...*sqlx.Tx) 
 	return images[0], nil
 }
 
+func ProductImageQueryByProductIdAndLevelWithTx(ctx context.Context, productId int64, productLevel int, tx ...*sqlx.Tx) ([]*charon.ProductImage, aerror.Error) {
+	querySql := `SELECT id, product_id, product_level, uploader_type, url
+				FROM product_image
+				WHERE product_id = ? AND product_level = ?`
+	var images []*charon.ProductImage
+	var err error
+	if tx == nil {
+		err = charon2.CharonDB.SelectContext(ctx, &images, querySql, productId, productLevel)
+	} else {
+		err = tx[0].SelectContext(ctx, &images, querySql, productId, productLevel)
+	}
+	if err != nil {
+		return nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql execute error")
+	}
+
+	return images, nil
+}
+
 func ProductImageDelete(ctx context.Context, ids []int64) aerror.Error {
 	delSql := `DELETE FROM product_image WHERE id IN (?)`
 
@@ -72,6 +116,23 @@ func ProductImageDelete(ctx context.Context, ids []int64) aerror.Error {
 	}
 
 	_, err = charon2.CharonDB.ExecContext(ctx, delSql, args...)
+	if err != nil {
+		return aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "del product_image failed")
+	}
+
+	return nil
+}
+
+func ProductImageDeleteBySubProductIdAndLevelWithTx(ctx context.Context, subProductIds []int64, tx *sqlx.Tx) aerror.Error {
+	delSql := `DELETE FROM product_image
+			WHERE level = 2 AND product_id in (?)`
+
+	delSql, args, err := sqlx.In(delSql, subProductIds)
+	if err != nil {
+		return aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql in failed")
+	}
+
+	_, err = tx.ExecContext(ctx, delSql, args...)
 	if err != nil {
 		return aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "del product_image failed")
 	}

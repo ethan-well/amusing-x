@@ -6,7 +6,6 @@ import (
 	charon2 "amusingx.fit/amusingx/services/charon/mysql/charon"
 	"amusingx.fit/amusingx/services/charon/mysql/charon/model"
 	"context"
-	"fmt"
 	"github.com/ItsWewin/superfactory/aerror"
 	"github.com/ItsWewin/superfactory/logger"
 	"github.com/ItsWewin/superfactory/set/intset"
@@ -92,11 +91,16 @@ func HandlerUpdate(ctx context.Context, in *proto.SubProductUpdateRequest) (*pro
 		return nil, err
 	}
 
+	err = model.ProductImageDeleteBySubProductIdAndLevelWithTx(ctx, []int64{subProduct.ProductId}, tx)
+	if err != nil {
+		return nil, err
+	}
+
 	if e := tx.Commit(); e != nil {
 		return nil, aerror.NewErrorf(e, aerror.Code.SSqlExecuteErr, "commit error")
 	}
 
-	err = uploadImage(ctx, in.Pictures)
+	pictures, err := uploadImage(ctx, subProduct, in.Pictures)
 	if err != nil {
 		return nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "upload image failed")
 	}
@@ -110,24 +114,30 @@ func HandlerUpdate(ctx context.Context, in *proto.SubProductUpdateRequest) (*pro
 		Price:       subProduct.Price,
 		Stock:       subProduct.Stock,
 		AttributeId: in.AttributeId,
+		Pictures:    pictures,
 	}, nil
 }
 
-func uploadImage(ctx context.Context, pictures []*proto.Picture) aerror.Error {
+func uploadImage(ctx context.Context, subProduct *charon.SubProduct, pictures []*proto.Picture) ([]*proto.Picture, aerror.Error) {
 	if len(pictures) == 0 {
-		return nil
+		return nil, nil
 	}
 
 	w := sync.WaitGroup{}
 	errChan := make(chan aerror.Error, len(pictures))
+	imageChan := make(chan *charon.ProductImage, len(pictures))
 	for _, picture := range pictures {
 		w.Add(1)
 
 		go func(w sync.WaitGroup) {
 			defer w.Done()
-			err := updateAndSave(ctx, picture)
+			image, err := uploadImageAndSave(ctx, subProduct, picture)
+			if err != nil {
+				errChan <- err
+				return
+			}
 
-			errChan <- err
+			imageChan <- image
 		}(w)
 	}
 
@@ -139,21 +149,33 @@ func uploadImage(ctx context.Context, pictures []*proto.Picture) aerror.Error {
 	}
 
 	if len(msg) != 0 {
-		return aerror.NewError(nil, aerror.Code.SSqlExecuteErr, strings.Join(msg, ","))
+		return nil, aerror.NewError(nil, aerror.Code.SSqlExecuteErr, strings.Join(msg, ","))
 	}
 
-	return nil
+	var pictureList []*proto.Picture
+	for image := range imageChan {
+		pictureList = append(pictureList, &proto.Picture{
+			Src:   image.Url,
+			Title: image.Title,
+			Id:    image.Id,
+		})
+	}
+
+	return pictures, nil
 }
 
-func updateAndSave(ctx context.Context, picture *proto.Picture) aerror.Error {
+func uploadImageAndSave(ctx context.Context, subProduct *charon.SubProduct, picture *proto.Picture) (*charon.ProductImage, aerror.Error) {
 	uploader := localuploader.NewUploader("/tmp/amusing-x/sub-product")
 	filePath, err := uploader.UploadBase64(ctx, picture.Src, picture.Title)
 	if err != nil {
-		return aerror.NewErrorf(err, err.Code(), "picture upload failed, picture: %s", logger.ToJson(picture))
+		return nil, aerror.NewErrorf(err, err.Code(), "picture upload failed, picture: %s", logger.ToJson(picture))
 	}
 
-	// savef
-	fmt.Sprint(filePath)
-
-	return nil
+	return model.ProductImageInsert(ctx, &charon.ProductImage{
+		ProductId:    subProduct.ID,
+		ProductLevel: 2,
+		Url:          filePath,
+		Title:        picture.Title,
+		UploaderType: "local",
+	})
 }
