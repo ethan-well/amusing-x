@@ -9,11 +9,14 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/ItsWewin/superfactory/aerror"
+	"github.com/ItsWewin/superfactory/logger"
 	"github.com/jmoiron/sqlx"
 	"strings"
 )
 
 func ProductImageInsert(ctx context.Context, image *charon.ProductImage) (*charon.ProductImage, aerror.Error) {
+	logger.Infof("image: %s", logger.ToJson(image))
+
 	insertSql := `INSERT INTO product_image (product_id, product_level, uploader_type, url, title) VALUES (:product_id, :product_level, :uploader_type, :url, :title)`
 	result, err := charon2.CharonDB.NamedExecContext(ctx, insertSql, image)
 	if err != nil {

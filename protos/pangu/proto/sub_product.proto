@@ -25,4 +25,5 @@ message Picture {
   string src = 2;
   string title = 3;
   int64  id = 4;
+  string url = 5;
 }

@@ -124,12 +124,12 @@ func uploadImage(ctx context.Context, subProduct *charon.SubProduct, pictures []
 	}
 
 	w := sync.WaitGroup{}
-	errChan := make(chan aerror.Error, len(pictures))
-	imageChan := make(chan *charon.ProductImage, len(pictures))
+	errChan := make(chan aerror.Error, 10)
+	var pictureList []*proto.Picture
 	for _, picture := range pictures {
 		w.Add(1)
 
-		go func(w sync.WaitGroup) {
+		go func(w *sync.WaitGroup) {
 			defer w.Done()
 			image, err := uploadImageAndSave(ctx, subProduct, picture)
 			if err != nil {
@@ -137,12 +137,19 @@ func uploadImage(ctx context.Context, subProduct *charon.SubProduct, pictures []
 				return
 			}
 
-			imageChan <- image
-		}(w)
+			pictureList = append(pictureList, &proto.Picture{
+				Url:   image.Url,
+				Src:   picture.Src,
+				Title: image.Title,
+				Id:    image.Id,
+			})
+
+		}(&w)
 	}
 
 	w.Wait()
 
+	close(errChan)
 	var msg []string
 	for e := range errChan {
 		msg = append(msg, e.Message())
@@ -152,16 +159,7 @@ func uploadImage(ctx context.Context, subProduct *charon.SubProduct, pictures []
 		return nil, aerror.NewError(nil, aerror.Code.SSqlExecuteErr, strings.Join(msg, ","))
 	}
 
-	var pictureList []*proto.Picture
-	for image := range imageChan {
-		pictureList = append(pictureList, &proto.Picture{
-			Src:   image.Url,
-			Title: image.Title,
-			Id:    image.Id,
-		})
-	}
-
-	return pictures, nil
+	return pictureList, nil
 }
 
 func uploadImageAndSave(ctx context.Context, subProduct *charon.SubProduct, picture *proto.Picture) (*charon.ProductImage, aerror.Error) {
