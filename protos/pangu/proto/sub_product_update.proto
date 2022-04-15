@@ -4,6 +4,8 @@ option go_package = "amusingx.fit/amusingx/protos/pangu/service/pangu/proto";
 
 package panguservice;
 
+import "pangu/proto/sub_product.proto";
+
 message SubProductUpdateRequest {
   int64  id = 1;
   string name = 2;
@@ -13,4 +15,5 @@ message SubProductUpdateRequest {
   int64 price = 6;
   int64 stock = 7;
   repeated int64 attribute_id = 8;
+  repeated Picture pictures = 9;
 }

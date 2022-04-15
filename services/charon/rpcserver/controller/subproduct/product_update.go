@@ -12,8 +12,6 @@ import (
 )
 
 func HandlerUpdate(ctx context.Context, in *proto.SubProductUpdateRequest) (*proto.SubProduct, aerror.Error) {
-	logger.Errorf("in: %s", logger.ToJson(in))
-
 	if in == nil || in.Id == 0 {
 		return nil, aerror.NewErrorf(nil, aerror.Code.CParamsError, "id in request info is 0")
 	}

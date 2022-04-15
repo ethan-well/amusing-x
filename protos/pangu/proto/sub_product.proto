@@ -14,3 +14,14 @@ message SubProduct {
   int64 stock = 7 [json_name="stock"];
   repeated int64 attribute_id = 8;
 }
+
+message Picture {
+  RawFile rawFile = 1;
+  string src = 2;
+  string title = 3;
+}
+
+message RawFile {
+  string path = 1;
+}
+

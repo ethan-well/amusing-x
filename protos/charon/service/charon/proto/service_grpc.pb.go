@@ -12,8 +12,7 @@ import (
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the grpc package it is being compiled against.
-// Requires gRPC-Go v1.32.0 or later.
-const _ = grpc.SupportPackageIsVersion7
+const _ = grpc.SupportPackageIsVersion6
 
 // CharonServClient is the client API for CharonServ service.
 //
@@ -44,6 +43,12 @@ type CharonServClient interface {
 	Attributes(ctx context.Context, in *proto.AttributeListRequest, opts ...grpc.CallOption) (*proto.AttributeListResponse, error)
 	Attribute(ctx context.Context, in *proto.AttributeRequest, opts ...grpc.CallOption) (*proto.Attribute, error)
 	AttributeUpdate(ctx context.Context, in *proto.AttributeUpdateRequest, opts ...grpc.CallOption) (*proto.Attribute, error)
+	AttributeMappingCreate(ctx context.Context, in *proto.AttributeMappingCreateRequest, opts ...grpc.CallOption) (*proto.AttributeMapping, error)
+	AttributeMappingDelete(ctx context.Context, in *proto.AttributeMappingDeleteRequest, opts ...grpc.CallOption) (*proto.AttributeMappingDeleteResponse, error)
+	AttributeMappingsDelete(ctx context.Context, in *proto.AttributeMappingsDeleteRequest, opts ...grpc.CallOption) (*proto.AttributeMappingsDeleteResponse, error)
+	AttributeMappings(ctx context.Context, in *proto.AttributeMappingListRequest, opts ...grpc.CallOption) (*proto.AttributeMappingListResponse, error)
+	AttributeMapping(ctx context.Context, in *proto.AttributeMappingRequest, opts ...grpc.CallOption) (*proto.AttributeMapping, error)
+	AttributeMappingUpdate(ctx context.Context, in *proto.AttributeMappingUpdateRequest, opts ...grpc.CallOption) (*proto.AttributeMapping, error)
 }
 
 type charonServClient struct {
@@ -279,6 +284,60 @@ func (c *charonServClient) AttributeUpdate(ctx context.Context, in *proto.Attrib
 	return out, nil
 }
 
+func (c *charonServClient) AttributeMappingCreate(ctx context.Context, in *proto.AttributeMappingCreateRequest, opts ...grpc.CallOption) (*proto.AttributeMapping, error) {
+	out := new(proto.AttributeMapping)
+	err := c.cc.Invoke(ctx, "/charonservice.CharonServ/AttributeMappingCreate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *charonServClient) AttributeMappingDelete(ctx context.Context, in *proto.AttributeMappingDeleteRequest, opts ...grpc.CallOption) (*proto.AttributeMappingDeleteResponse, error) {
+	out := new(proto.AttributeMappingDeleteResponse)
+	err := c.cc.Invoke(ctx, "/charonservice.CharonServ/AttributeMappingDelete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *charonServClient) AttributeMappingsDelete(ctx context.Context, in *proto.AttributeMappingsDeleteRequest, opts ...grpc.CallOption) (*proto.AttributeMappingsDeleteResponse, error) {
+	out := new(proto.AttributeMappingsDeleteResponse)
+	err := c.cc.Invoke(ctx, "/charonservice.CharonServ/AttributeMappingsDelete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *charonServClient) AttributeMappings(ctx context.Context, in *proto.AttributeMappingListRequest, opts ...grpc.CallOption) (*proto.AttributeMappingListResponse, error) {
+	out := new(proto.AttributeMappingListResponse)
+	err := c.cc.Invoke(ctx, "/charonservice.CharonServ/AttributeMappings", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *charonServClient) AttributeMapping(ctx context.Context, in *proto.AttributeMappingRequest, opts ...grpc.CallOption) (*proto.AttributeMapping, error) {
+	out := new(proto.AttributeMapping)
+	err := c.cc.Invoke(ctx, "/charonservice.CharonServ/AttributeMapping", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *charonServClient) AttributeMappingUpdate(ctx context.Context, in *proto.AttributeMappingUpdateRequest, opts ...grpc.CallOption) (*proto.AttributeMapping, error) {
+	out := new(proto.AttributeMapping)
+	err := c.cc.Invoke(ctx, "/charonservice.CharonServ/AttributeMappingUpdate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CharonServServer is the server API for CharonServ service.
 // All implementations must embed UnimplementedCharonServServer
 // for forward compatibility
@@ -308,6 +367,12 @@ type CharonServServer interface {
 	Attributes(context.Context, *proto.AttributeListRequest) (*proto.AttributeListResponse, error)
 	Attribute(context.Context, *proto.AttributeRequest) (*proto.Attribute, error)
 	AttributeUpdate(context.Context, *proto.AttributeUpdateRequest) (*proto.Attribute, error)
+	AttributeMappingCreate(context.Context, *proto.AttributeMappingCreateRequest) (*proto.AttributeMapping, error)
+	AttributeMappingDelete(context.Context, *proto.AttributeMappingDeleteRequest) (*proto.AttributeMappingDeleteResponse, error)
+	AttributeMappingsDelete(context.Context, *proto.AttributeMappingsDeleteRequest) (*proto.AttributeMappingsDeleteResponse, error)
+	AttributeMappings(context.Context, *proto.AttributeMappingListRequest) (*proto.AttributeMappingListResponse, error)
+	AttributeMapping(context.Context, *proto.AttributeMappingRequest) (*proto.AttributeMapping, error)
+	AttributeMappingUpdate(context.Context, *proto.AttributeMappingUpdateRequest) (*proto.AttributeMapping, error)
 	mustEmbedUnimplementedCharonServServer()
 }
 
@@ -315,92 +380,103 @@ type CharonServServer interface {
 type UnimplementedCharonServServer struct {
 }
 
-func (UnimplementedCharonServServer) Pong(context.Context, *BlankParams) (*PongResponse, error) {
+func (*UnimplementedCharonServServer) Pong(context.Context, *BlankParams) (*PongResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Pong not implemented")
 }
-func (UnimplementedCharonServServer) Create(context.Context, *CategoryCreateRequest) (*CategoryCreateResponse, error) {
+func (*UnimplementedCharonServServer) Create(context.Context, *CategoryCreateRequest) (*CategoryCreateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
 }
-func (UnimplementedCharonServServer) Categories(context.Context, *proto.CategoryListRequest) (*proto.CategoryListResponse, error) {
+func (*UnimplementedCharonServServer) Categories(context.Context, *proto.CategoryListRequest) (*proto.CategoryListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Categories not implemented")
 }
-func (UnimplementedCharonServServer) Delete(context.Context, *CategoryDeleteRequest) (*CategoryDeleteResponse, error) {
+func (*UnimplementedCharonServServer) Delete(context.Context, *CategoryDeleteRequest) (*CategoryDeleteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
 }
-func (UnimplementedCharonServServer) Category(context.Context, *CategoryRequest) (*CategoryResponse, error) {
+func (*UnimplementedCharonServServer) Category(context.Context, *CategoryRequest) (*CategoryResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Category not implemented")
 }
-func (UnimplementedCharonServServer) Update(context.Context, *CategoryUpdateRequest) (*CategoryUpdateResponse, error) {
+func (*UnimplementedCharonServServer) Update(context.Context, *CategoryUpdateRequest) (*CategoryUpdateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
 }
-func (UnimplementedCharonServServer) CategoriesDelete(context.Context, *proto.CategoriesDeleteRequest) (*proto.CategoriesDeleteResponse, error) {
+func (*UnimplementedCharonServServer) CategoriesDelete(context.Context, *proto.CategoriesDeleteRequest) (*proto.CategoriesDeleteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CategoriesDelete not implemented")
 }
-func (UnimplementedCharonServServer) ProductCreate(context.Context, *proto.ProductCreateRequest) (*proto.Product, error) {
+func (*UnimplementedCharonServServer) ProductCreate(context.Context, *proto.ProductCreateRequest) (*proto.Product, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProductCreate not implemented")
 }
-func (UnimplementedCharonServServer) ProductDelete(context.Context, *proto.ProductDeleteRequest) (*proto.ProductDeleteResponse, error) {
+func (*UnimplementedCharonServServer) ProductDelete(context.Context, *proto.ProductDeleteRequest) (*proto.ProductDeleteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProductDelete not implemented")
 }
-func (UnimplementedCharonServServer) ProductsDelete(context.Context, *proto.ProductsDeleteRequest) (*proto.ProductsDeleteResponse, error) {
+func (*UnimplementedCharonServServer) ProductsDelete(context.Context, *proto.ProductsDeleteRequest) (*proto.ProductsDeleteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProductsDelete not implemented")
 }
-func (UnimplementedCharonServServer) Products(context.Context, *proto.ProductListRequest) (*proto.ProductListResponse, error) {
+func (*UnimplementedCharonServServer) Products(context.Context, *proto.ProductListRequest) (*proto.ProductListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Products not implemented")
 }
-func (UnimplementedCharonServServer) Product(context.Context, *proto.ProductRequest) (*proto.Product, error) {
+func (*UnimplementedCharonServServer) Product(context.Context, *proto.ProductRequest) (*proto.Product, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Product not implemented")
 }
-func (UnimplementedCharonServServer) ProductUpdate(context.Context, *proto.ProductUpdateRequest) (*proto.Product, error) {
+func (*UnimplementedCharonServServer) ProductUpdate(context.Context, *proto.ProductUpdateRequest) (*proto.Product, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProductUpdate not implemented")
 }
-func (UnimplementedCharonServServer) SubProductCreate(context.Context, *proto.SubProductCreateRequest) (*proto.SubProduct, error) {
+func (*UnimplementedCharonServServer) SubProductCreate(context.Context, *proto.SubProductCreateRequest) (*proto.SubProduct, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubProductCreate not implemented")
 }
-func (UnimplementedCharonServServer) SubProductDelete(context.Context, *proto.SubProductDeleteRequest) (*proto.SubProductDeleteResponse, error) {
+func (*UnimplementedCharonServServer) SubProductDelete(context.Context, *proto.SubProductDeleteRequest) (*proto.SubProductDeleteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubProductDelete not implemented")
 }
-func (UnimplementedCharonServServer) SubProductsDelete(context.Context, *proto.SubProductsDeleteRequest) (*proto.SubProductsDeleteResponse, error) {
+func (*UnimplementedCharonServServer) SubProductsDelete(context.Context, *proto.SubProductsDeleteRequest) (*proto.SubProductsDeleteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubProductsDelete not implemented")
 }
-func (UnimplementedCharonServServer) SubProducts(context.Context, *proto.SubProductListRequest) (*proto.SubProductListResponse, error) {
+func (*UnimplementedCharonServServer) SubProducts(context.Context, *proto.SubProductListRequest) (*proto.SubProductListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubProducts not implemented")
 }
-func (UnimplementedCharonServServer) SubProduct(context.Context, *proto.SubProductRequest) (*proto.SubProduct, error) {
+func (*UnimplementedCharonServServer) SubProduct(context.Context, *proto.SubProductRequest) (*proto.SubProduct, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubProduct not implemented")
 }
-func (UnimplementedCharonServServer) SubProductUpdate(context.Context, *proto.SubProductUpdateRequest) (*proto.SubProduct, error) {
+func (*UnimplementedCharonServServer) SubProductUpdate(context.Context, *proto.SubProductUpdateRequest) (*proto.SubProduct, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubProductUpdate not implemented")
 }
-func (UnimplementedCharonServServer) AttributeCreate(context.Context, *proto.AttributeCreateRequest) (*proto.Attribute, error) {
+func (*UnimplementedCharonServServer) AttributeCreate(context.Context, *proto.AttributeCreateRequest) (*proto.Attribute, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AttributeCreate not implemented")
 }
-func (UnimplementedCharonServServer) AttributeDelete(context.Context, *proto.AttributeDeleteRequest) (*proto.AttributeDeleteResponse, error) {
+func (*UnimplementedCharonServServer) AttributeDelete(context.Context, *proto.AttributeDeleteRequest) (*proto.AttributeDeleteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AttributeDelete not implemented")
 }
-func (UnimplementedCharonServServer) AttributesDelete(context.Context, *proto.AttributesDeleteRequest) (*proto.AttributesDeleteResponse, error) {
+func (*UnimplementedCharonServServer) AttributesDelete(context.Context, *proto.AttributesDeleteRequest) (*proto.AttributesDeleteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AttributesDelete not implemented")
 }
-func (UnimplementedCharonServServer) Attributes(context.Context, *proto.AttributeListRequest) (*proto.AttributeListResponse, error) {
+func (*UnimplementedCharonServServer) Attributes(context.Context, *proto.AttributeListRequest) (*proto.AttributeListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Attributes not implemented")
 }
-func (UnimplementedCharonServServer) Attribute(context.Context, *proto.AttributeRequest) (*proto.Attribute, error) {
+func (*UnimplementedCharonServServer) Attribute(context.Context, *proto.AttributeRequest) (*proto.Attribute, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Attribute not implemented")
 }
-func (UnimplementedCharonServServer) AttributeUpdate(context.Context, *proto.AttributeUpdateRequest) (*proto.Attribute, error) {
+func (*UnimplementedCharonServServer) AttributeUpdate(context.Context, *proto.AttributeUpdateRequest) (*proto.Attribute, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AttributeUpdate not implemented")
 }
-func (UnimplementedCharonServServer) mustEmbedUnimplementedCharonServServer() {}
-
-// UnsafeCharonServServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to CharonServServer will
-// result in compilation errors.
-type UnsafeCharonServServer interface {
-	mustEmbedUnimplementedCharonServServer()
+func (*UnimplementedCharonServServer) AttributeMappingCreate(context.Context, *proto.AttributeMappingCreateRequest) (*proto.AttributeMapping, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AttributeMappingCreate not implemented")
 }
+func (*UnimplementedCharonServServer) AttributeMappingDelete(context.Context, *proto.AttributeMappingDeleteRequest) (*proto.AttributeMappingDeleteResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AttributeMappingDelete not implemented")
+}
+func (*UnimplementedCharonServServer) AttributeMappingsDelete(context.Context, *proto.AttributeMappingsDeleteRequest) (*proto.AttributeMappingsDeleteResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AttributeMappingsDelete not implemented")
+}
+func (*UnimplementedCharonServServer) AttributeMappings(context.Context, *proto.AttributeMappingListRequest) (*proto.AttributeMappingListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AttributeMappings not implemented")
+}
+func (*UnimplementedCharonServServer) AttributeMapping(context.Context, *proto.AttributeMappingRequest) (*proto.AttributeMapping, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AttributeMapping not implemented")
+}
+func (*UnimplementedCharonServServer) AttributeMappingUpdate(context.Context, *proto.AttributeMappingUpdateRequest) (*proto.AttributeMapping, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AttributeMappingUpdate not implemented")
+}
+func (*UnimplementedCharonServServer) mustEmbedUnimplementedCharonServServer() {}
 
-func RegisterCharonServServer(s grpc.ServiceRegistrar, srv CharonServServer) {
-	s.RegisterService(&CharonServ_ServiceDesc, srv)
+func RegisterCharonServServer(s *grpc.Server, srv CharonServServer) {
+	s.RegisterService(&_CharonServ_serviceDesc, srv)
 }
 
 func _CharonServ_Pong_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -853,10 +929,115 @@ func _CharonServ_AttributeUpdate_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
-// CharonServ_ServiceDesc is the grpc.ServiceDesc for CharonServ service.
-// It's only intended for direct use with grpc.RegisterService,
-// and not to be introspected or modified (even as a copy)
-var CharonServ_ServiceDesc = grpc.ServiceDesc{
+func _CharonServ_AttributeMappingCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(proto.AttributeMappingCreateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CharonServServer).AttributeMappingCreate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/charonservice.CharonServ/AttributeMappingCreate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CharonServServer).AttributeMappingCreate(ctx, req.(*proto.AttributeMappingCreateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CharonServ_AttributeMappingDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(proto.AttributeMappingDeleteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CharonServServer).AttributeMappingDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/charonservice.CharonServ/AttributeMappingDelete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CharonServServer).AttributeMappingDelete(ctx, req.(*proto.AttributeMappingDeleteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CharonServ_AttributeMappingsDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(proto.AttributeMappingsDeleteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CharonServServer).AttributeMappingsDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/charonservice.CharonServ/AttributeMappingsDelete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CharonServServer).AttributeMappingsDelete(ctx, req.(*proto.AttributeMappingsDeleteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CharonServ_AttributeMappings_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(proto.AttributeMappingListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CharonServServer).AttributeMappings(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/charonservice.CharonServ/AttributeMappings",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CharonServServer).AttributeMappings(ctx, req.(*proto.AttributeMappingListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CharonServ_AttributeMapping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(proto.AttributeMappingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CharonServServer).AttributeMapping(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/charonservice.CharonServ/AttributeMapping",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CharonServServer).AttributeMapping(ctx, req.(*proto.AttributeMappingRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CharonServ_AttributeMappingUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(proto.AttributeMappingUpdateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CharonServServer).AttributeMappingUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/charonservice.CharonServ/AttributeMappingUpdate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CharonServServer).AttributeMappingUpdate(ctx, req.(*proto.AttributeMappingUpdateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _CharonServ_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "charonservice.CharonServ",
 	HandlerType: (*CharonServServer)(nil),
 	Methods: []grpc.MethodDesc{
@@ -959,6 +1140,30 @@ var CharonServ_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AttributeUpdate",
 			Handler:    _CharonServ_AttributeUpdate_Handler,
+		},
+		{
+			MethodName: "AttributeMappingCreate",
+			Handler:    _CharonServ_AttributeMappingCreate_Handler,
+		},
+		{
+			MethodName: "AttributeMappingDelete",
+			Handler:    _CharonServ_AttributeMappingDelete_Handler,
+		},
+		{
+			MethodName: "AttributeMappingsDelete",
+			Handler:    _CharonServ_AttributeMappingsDelete_Handler,
+		},
+		{
+			MethodName: "AttributeMappings",
+			Handler:    _CharonServ_AttributeMappings_Handler,
+		},
+		{
+			MethodName: "AttributeMapping",
+			Handler:    _CharonServ_AttributeMapping_Handler,
+		},
+		{
+			MethodName: "AttributeMappingUpdate",
+			Handler:    _CharonServ_AttributeMappingUpdate_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

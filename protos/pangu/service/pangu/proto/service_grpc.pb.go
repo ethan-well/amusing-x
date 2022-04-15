@@ -12,8 +12,7 @@ import (
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the grpc package it is being compiled against.
-// Requires gRPC-Go v1.32.0 or later.
-const _ = grpc.SupportPackageIsVersion7
+const _ = grpc.SupportPackageIsVersion6
 
 // PanGuServiceClient is the client API for PanGuService service.
 //
@@ -47,6 +46,12 @@ type PanGuServiceClient interface {
 	AttributeDelete(ctx context.Context, in *AttributeDeleteRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
 	AttributesDelete(ctx context.Context, in *AttributesDeleteRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
 	AttributeUpdate(ctx context.Context, in *AttributeUpdateRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
+	AttributeMappingCreate(ctx context.Context, in *AttributeMappingCreateRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
+	AttributeMapping(ctx context.Context, in *AttributeMappingRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
+	AttributeMappings(ctx context.Context, in *AttributeMappingListRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
+	AttributeMappingDelete(ctx context.Context, in *AttributeMappingDeleteRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
+	AttributeMappingsDelete(ctx context.Context, in *AttributeMappingsDeleteRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
+	AttributeMappingUpdate(ctx context.Context, in *AttributeMappingUpdateRequest, opts ...grpc.CallOption) (*response.CommResponse, error)
 }
 
 type panGuServiceClient struct {
@@ -309,6 +314,60 @@ func (c *panGuServiceClient) AttributeUpdate(ctx context.Context, in *AttributeU
 	return out, nil
 }
 
+func (c *panGuServiceClient) AttributeMappingCreate(ctx context.Context, in *AttributeMappingCreateRequest, opts ...grpc.CallOption) (*response.CommResponse, error) {
+	out := new(response.CommResponse)
+	err := c.cc.Invoke(ctx, "/panguservice.PanGuService/AttributeMappingCreate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *panGuServiceClient) AttributeMapping(ctx context.Context, in *AttributeMappingRequest, opts ...grpc.CallOption) (*response.CommResponse, error) {
+	out := new(response.CommResponse)
+	err := c.cc.Invoke(ctx, "/panguservice.PanGuService/AttributeMapping", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *panGuServiceClient) AttributeMappings(ctx context.Context, in *AttributeMappingListRequest, opts ...grpc.CallOption) (*response.CommResponse, error) {
+	out := new(response.CommResponse)
+	err := c.cc.Invoke(ctx, "/panguservice.PanGuService/AttributeMappings", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *panGuServiceClient) AttributeMappingDelete(ctx context.Context, in *AttributeMappingDeleteRequest, opts ...grpc.CallOption) (*response.CommResponse, error) {
+	out := new(response.CommResponse)
+	err := c.cc.Invoke(ctx, "/panguservice.PanGuService/AttributeMappingDelete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *panGuServiceClient) AttributeMappingsDelete(ctx context.Context, in *AttributeMappingsDeleteRequest, opts ...grpc.CallOption) (*response.CommResponse, error) {
+	out := new(response.CommResponse)
+	err := c.cc.Invoke(ctx, "/panguservice.PanGuService/AttributeMappingsDelete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *panGuServiceClient) AttributeMappingUpdate(ctx context.Context, in *AttributeMappingUpdateRequest, opts ...grpc.CallOption) (*response.CommResponse, error) {
+	out := new(response.CommResponse)
+	err := c.cc.Invoke(ctx, "/panguservice.PanGuService/AttributeMappingUpdate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PanGuServiceServer is the server API for PanGuService service.
 // All implementations must embed UnimplementedPanGuServiceServer
 // for forward compatibility
@@ -341,6 +400,12 @@ type PanGuServiceServer interface {
 	AttributeDelete(context.Context, *AttributeDeleteRequest) (*response.CommResponse, error)
 	AttributesDelete(context.Context, *AttributesDeleteRequest) (*response.CommResponse, error)
 	AttributeUpdate(context.Context, *AttributeUpdateRequest) (*response.CommResponse, error)
+	AttributeMappingCreate(context.Context, *AttributeMappingCreateRequest) (*response.CommResponse, error)
+	AttributeMapping(context.Context, *AttributeMappingRequest) (*response.CommResponse, error)
+	AttributeMappings(context.Context, *AttributeMappingListRequest) (*response.CommResponse, error)
+	AttributeMappingDelete(context.Context, *AttributeMappingDeleteRequest) (*response.CommResponse, error)
+	AttributeMappingsDelete(context.Context, *AttributeMappingsDeleteRequest) (*response.CommResponse, error)
+	AttributeMappingUpdate(context.Context, *AttributeMappingUpdateRequest) (*response.CommResponse, error)
 	mustEmbedUnimplementedPanGuServiceServer()
 }
 
@@ -348,101 +413,112 @@ type PanGuServiceServer interface {
 type UnimplementedPanGuServiceServer struct {
 }
 
-func (UnimplementedPanGuServiceServer) Pong(context.Context, *BlankParams) (*PongResponse, error) {
+func (*UnimplementedPanGuServiceServer) Pong(context.Context, *BlankParams) (*PongResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Pong not implemented")
 }
-func (UnimplementedPanGuServiceServer) CategoryCreate(context.Context, *CategoryCreateRequest) (*CategoryCreateResponse, error) {
+func (*UnimplementedPanGuServiceServer) CategoryCreate(context.Context, *CategoryCreateRequest) (*CategoryCreateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CategoryCreate not implemented")
 }
-func (UnimplementedPanGuServiceServer) CategoriesDelete(context.Context, *CategoriesDeleteRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) CategoriesDelete(context.Context, *CategoriesDeleteRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CategoriesDelete not implemented")
 }
-func (UnimplementedPanGuServiceServer) Category(context.Context, *CategoryRequest) (*CategoryResponse, error) {
+func (*UnimplementedPanGuServiceServer) Category(context.Context, *CategoryRequest) (*CategoryResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Category not implemented")
 }
-func (UnimplementedPanGuServiceServer) CategoryList(context.Context, *CategoryListRequest) (*CategoryListResponse, error) {
+func (*UnimplementedPanGuServiceServer) CategoryList(context.Context, *CategoryListRequest) (*CategoryListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CategoryList not implemented")
 }
-func (UnimplementedPanGuServiceServer) CategoryDelete(context.Context, *CategoryDeleteRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) CategoryDelete(context.Context, *CategoryDeleteRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CategoryDelete not implemented")
 }
-func (UnimplementedPanGuServiceServer) CategoryUpdate(context.Context, *CategoryUpdateRequest) (*CategoryUpdateResponse, error) {
+func (*UnimplementedPanGuServiceServer) CategoryUpdate(context.Context, *CategoryUpdateRequest) (*CategoryUpdateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CategoryUpdate not implemented")
 }
-func (UnimplementedPanGuServiceServer) OauthLogin(context.Context, *OAuthLoginRequest) (*OAuthLoginResponse, error) {
+func (*UnimplementedPanGuServiceServer) OauthLogin(context.Context, *OAuthLoginRequest) (*OAuthLoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method OauthLogin not implemented")
 }
-func (UnimplementedPanGuServiceServer) OauthProviderInfo(context.Context, *OauthProviderInfoRequest) (*OAuthProviderInfoResponse, error) {
+func (*UnimplementedPanGuServiceServer) OauthProviderInfo(context.Context, *OauthProviderInfoRequest) (*OAuthProviderInfoResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method OauthProviderInfo not implemented")
 }
-func (UnimplementedPanGuServiceServer) Logout(context.Context, *BlankParams) (*LogoutResponse, error) {
+func (*UnimplementedPanGuServiceServer) Logout(context.Context, *BlankParams) (*LogoutResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Logout not implemented")
 }
-func (UnimplementedPanGuServiceServer) ProductCreate(context.Context, *ProductCreateRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) ProductCreate(context.Context, *ProductCreateRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProductCreate not implemented")
 }
-func (UnimplementedPanGuServiceServer) Product(context.Context, *ProductRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) Product(context.Context, *ProductRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Product not implemented")
 }
-func (UnimplementedPanGuServiceServer) Products(context.Context, *ProductListRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) Products(context.Context, *ProductListRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Products not implemented")
 }
-func (UnimplementedPanGuServiceServer) ProductDelete(context.Context, *ProductDeleteRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) ProductDelete(context.Context, *ProductDeleteRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProductDelete not implemented")
 }
-func (UnimplementedPanGuServiceServer) ProductsDelete(context.Context, *ProductsDeleteRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) ProductsDelete(context.Context, *ProductsDeleteRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProductsDelete not implemented")
 }
-func (UnimplementedPanGuServiceServer) ProductUpdate(context.Context, *ProductUpdateRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) ProductUpdate(context.Context, *ProductUpdateRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProductUpdate not implemented")
 }
-func (UnimplementedPanGuServiceServer) SubProductCreate(context.Context, *SubProductCreateRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) SubProductCreate(context.Context, *SubProductCreateRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubProductCreate not implemented")
 }
-func (UnimplementedPanGuServiceServer) SubProduct(context.Context, *SubProductRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) SubProduct(context.Context, *SubProductRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubProduct not implemented")
 }
-func (UnimplementedPanGuServiceServer) SubProducts(context.Context, *SubProductListRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) SubProducts(context.Context, *SubProductListRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubProducts not implemented")
 }
-func (UnimplementedPanGuServiceServer) SubProductDelete(context.Context, *SubProductDeleteRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) SubProductDelete(context.Context, *SubProductDeleteRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubProductDelete not implemented")
 }
-func (UnimplementedPanGuServiceServer) SubProductsDelete(context.Context, *SubProductsDeleteRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) SubProductsDelete(context.Context, *SubProductsDeleteRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubProductsDelete not implemented")
 }
-func (UnimplementedPanGuServiceServer) SubProductUpdate(context.Context, *SubProductUpdateRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) SubProductUpdate(context.Context, *SubProductUpdateRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubProductUpdate not implemented")
 }
-func (UnimplementedPanGuServiceServer) AttributeCreate(context.Context, *AttributeCreateRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) AttributeCreate(context.Context, *AttributeCreateRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AttributeCreate not implemented")
 }
-func (UnimplementedPanGuServiceServer) Attribute(context.Context, *AttributeRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) Attribute(context.Context, *AttributeRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Attribute not implemented")
 }
-func (UnimplementedPanGuServiceServer) Attributes(context.Context, *AttributeListRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) Attributes(context.Context, *AttributeListRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Attributes not implemented")
 }
-func (UnimplementedPanGuServiceServer) AttributeDelete(context.Context, *AttributeDeleteRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) AttributeDelete(context.Context, *AttributeDeleteRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AttributeDelete not implemented")
 }
-func (UnimplementedPanGuServiceServer) AttributesDelete(context.Context, *AttributesDeleteRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) AttributesDelete(context.Context, *AttributesDeleteRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AttributesDelete not implemented")
 }
-func (UnimplementedPanGuServiceServer) AttributeUpdate(context.Context, *AttributeUpdateRequest) (*response.CommResponse, error) {
+func (*UnimplementedPanGuServiceServer) AttributeUpdate(context.Context, *AttributeUpdateRequest) (*response.CommResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AttributeUpdate not implemented")
 }
-func (UnimplementedPanGuServiceServer) mustEmbedUnimplementedPanGuServiceServer() {}
-
-// UnsafePanGuServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to PanGuServiceServer will
-// result in compilation errors.
-type UnsafePanGuServiceServer interface {
-	mustEmbedUnimplementedPanGuServiceServer()
+func (*UnimplementedPanGuServiceServer) AttributeMappingCreate(context.Context, *AttributeMappingCreateRequest) (*response.CommResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AttributeMappingCreate not implemented")
 }
+func (*UnimplementedPanGuServiceServer) AttributeMapping(context.Context, *AttributeMappingRequest) (*response.CommResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AttributeMapping not implemented")
+}
+func (*UnimplementedPanGuServiceServer) AttributeMappings(context.Context, *AttributeMappingListRequest) (*response.CommResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AttributeMappings not implemented")
+}
+func (*UnimplementedPanGuServiceServer) AttributeMappingDelete(context.Context, *AttributeMappingDeleteRequest) (*response.CommResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AttributeMappingDelete not implemented")
+}
+func (*UnimplementedPanGuServiceServer) AttributeMappingsDelete(context.Context, *AttributeMappingsDeleteRequest) (*response.CommResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AttributeMappingsDelete not implemented")
+}
+func (*UnimplementedPanGuServiceServer) AttributeMappingUpdate(context.Context, *AttributeMappingUpdateRequest) (*response.CommResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AttributeMappingUpdate not implemented")
+}
+func (*UnimplementedPanGuServiceServer) mustEmbedUnimplementedPanGuServiceServer() {}
 
-func RegisterPanGuServiceServer(s grpc.ServiceRegistrar, srv PanGuServiceServer) {
-	s.RegisterService(&PanGuService_ServiceDesc, srv)
+func RegisterPanGuServiceServer(s *grpc.Server, srv PanGuServiceServer) {
+	s.RegisterService(&_PanGuService_serviceDesc, srv)
 }
 
 func _PanGuService_Pong_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -949,10 +1025,115 @@ func _PanGuService_AttributeUpdate_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
-// PanGuService_ServiceDesc is the grpc.ServiceDesc for PanGuService service.
-// It's only intended for direct use with grpc.RegisterService,
-// and not to be introspected or modified (even as a copy)
-var PanGuService_ServiceDesc = grpc.ServiceDesc{
+func _PanGuService_AttributeMappingCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AttributeMappingCreateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PanGuServiceServer).AttributeMappingCreate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/panguservice.PanGuService/AttributeMappingCreate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PanGuServiceServer).AttributeMappingCreate(ctx, req.(*AttributeMappingCreateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PanGuService_AttributeMapping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AttributeMappingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PanGuServiceServer).AttributeMapping(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/panguservice.PanGuService/AttributeMapping",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PanGuServiceServer).AttributeMapping(ctx, req.(*AttributeMappingRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PanGuService_AttributeMappings_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AttributeMappingListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PanGuServiceServer).AttributeMappings(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/panguservice.PanGuService/AttributeMappings",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PanGuServiceServer).AttributeMappings(ctx, req.(*AttributeMappingListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PanGuService_AttributeMappingDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AttributeMappingDeleteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PanGuServiceServer).AttributeMappingDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/panguservice.PanGuService/AttributeMappingDelete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PanGuServiceServer).AttributeMappingDelete(ctx, req.(*AttributeMappingDeleteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PanGuService_AttributeMappingsDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AttributeMappingsDeleteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PanGuServiceServer).AttributeMappingsDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/panguservice.PanGuService/AttributeMappingsDelete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PanGuServiceServer).AttributeMappingsDelete(ctx, req.(*AttributeMappingsDeleteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PanGuService_AttributeMappingUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AttributeMappingUpdateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PanGuServiceServer).AttributeMappingUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/panguservice.PanGuService/AttributeMappingUpdate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PanGuServiceServer).AttributeMappingUpdate(ctx, req.(*AttributeMappingUpdateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _PanGuService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "panguservice.PanGuService",
 	HandlerType: (*PanGuServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
@@ -1067,6 +1248,30 @@ var PanGuService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AttributeUpdate",
 			Handler:    _PanGuService_AttributeUpdate_Handler,
+		},
+		{
+			MethodName: "AttributeMappingCreate",
+			Handler:    _PanGuService_AttributeMappingCreate_Handler,
+		},
+		{
+			MethodName: "AttributeMapping",
+			Handler:    _PanGuService_AttributeMapping_Handler,
+		},
+		{
+			MethodName: "AttributeMappings",
+			Handler:    _PanGuService_AttributeMappings_Handler,
+		},
+		{
+			MethodName: "AttributeMappingDelete",
+			Handler:    _PanGuService_AttributeMappingDelete_Handler,
+		},
+		{
+			MethodName: "AttributeMappingsDelete",
+			Handler:    _PanGuService_AttributeMappingsDelete_Handler,
+		},
+		{
+			MethodName: "AttributeMappingUpdate",
+			Handler:    _PanGuService_AttributeMappingUpdate_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

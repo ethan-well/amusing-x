@@ -8,7 +8,6 @@ import (
 	"encoding/json"
 	"github.com/ItsWewin/superfactory/aerror"
 	"github.com/ItsWewin/superfactory/aregexp"
-	"github.com/ItsWewin/superfactory/logger"
 	"strconv"
 )
 
@@ -68,8 +67,6 @@ func getParams(req *proto.CategoryListRequest) (*charonservice.SearchFilter, aer
 		}
 		searchFilter.Id = append(searchFilter.Id, id)
 	}
-
-	logger.Infof("searchFilter: %s", logger.ToJson(searchFilter))
 
 	if req.Limit == 0 {
 		req.Limit = 10

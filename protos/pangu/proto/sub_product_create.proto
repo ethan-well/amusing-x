@@ -4,13 +4,16 @@ option go_package = "amusingx.fit/amusingx/protos/pangu/service/pangu/proto";
 
 package panguservice;
 
+import "pangu/proto/sub_product.proto";
+
 message SubProductCreateRequest {
   int64 ID = 1 [json_name="id"];
   string Name = 2 [json_name="name"];
   string Desc = 3 [json_name="desc"];
   int64 ProductId = 4 [json_name="product_id"];
   string Currency = 5 [json_name="currency"];
-  int64 price = 6 [json_name="price"];
-  int64 stock = 7 [json_name="stock"];
+  int64 price = 6;
+  int64 stock = 7;
   repeated int64 AttributeId = 8 [json_name="attribute_id"];
+  repeated Picture pictures = 9;
 }
