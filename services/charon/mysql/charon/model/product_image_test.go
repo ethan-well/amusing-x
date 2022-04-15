@@ -5,6 +5,7 @@ import (
 	"amusingx.fit/amusingx/services/charon/mysql/charon"
 	"context"
 	"github.com/ItsWewin/superfactory/logger"
+	"github.com/ItsWewin/superfactory/uploader/comm"
 	"testing"
 )
 
@@ -18,7 +19,7 @@ func TestProductImageInsert(t *testing.T) {
 	product := &charon2.ProductImage{
 		ProductId:    100,
 		ProductLevel: 12,
-		UploaderType: "local",
+		UploaderType: comm.UploadTypeLocal,
 		Url:          "/tmp/amusing-x/pictures/local.png",
 	}
 	product, err := ProductImageInsert(context.Background(), product)
@@ -40,13 +41,13 @@ func TestProductImagesInsert(t *testing.T) {
 		{
 			ProductId:    100,
 			ProductLevel: 2,
-			UploaderType: "local",
+			UploaderType: 0,
 			Url:          "/tmp/amusing-x/pictures/local.png",
 		},
 		{
 			ProductId:    101,
 			ProductLevel: 2,
-			UploaderType: "local",
+			UploaderType: 0,
 			Url:          "/tmp/amusing-x/pictures/local.png",
 		},
 	}
@@ -106,7 +107,7 @@ func TestProductImageUpdate(t *testing.T) {
 		Id:           3,
 		ProductId:    10001,
 		ProductLevel: 12,
-		UploaderType: "localhost",
+		UploaderType: 0,
 		Url:          "/tmp/amusing-x/pictures/local2.png",
 	}
 	err := ProductImageUpdate(context.Background(), image)
@@ -134,7 +135,7 @@ func TestProductImageUpdateWithTx(t *testing.T) {
 		Id:           3,
 		ProductId:    10000111,
 		ProductLevel: 12,
-		UploaderType: "dddddddd",
+		UploaderType: 0,
 	}
 
 	err = ProductImageUpdateWithTx(context.Background(), tx, image)

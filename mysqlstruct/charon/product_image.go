@@ -8,7 +8,7 @@ type ProductImage struct {
 	ProductLevel int       `db:"product_level"`
 	Url          string    `db:"url"`
 	Title        string    `db:"title"`
-	UploaderType string    `db:"uploader_type"`
+	UploaderType int       `db:"uploader_type"`
 	CreateTime   time.Time `db:"create_time"`
 	UpdateTime   time.Time `db:"update_time"`
 }

@@ -15,5 +15,4 @@ func TestHGet(t *testing.T) {
 	}
 
 	result = Client.HGet(context.Background(), "pluto:service:promotion:books:inventory:cache:keyddd", "6115dddd")
-
 }

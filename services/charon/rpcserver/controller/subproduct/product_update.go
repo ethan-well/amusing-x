@@ -9,7 +9,8 @@ import (
 	"github.com/ItsWewin/superfactory/aerror"
 	"github.com/ItsWewin/superfactory/logger"
 	"github.com/ItsWewin/superfactory/set/intset"
-	"github.com/ItsWewin/superfactory/uploader/localuploader"
+	uploader2 "github.com/ItsWewin/superfactory/uploader"
+	"github.com/ItsWewin/superfactory/uploader/comm"
 	"strings"
 	"sync"
 )
@@ -163,8 +164,12 @@ func uploadImage(ctx context.Context, subProduct *charon.SubProduct, pictures []
 }
 
 func uploadImageAndSave(ctx context.Context, subProduct *charon.SubProduct, picture *proto.Picture) (*charon.ProductImage, aerror.Error) {
-	uploader := localuploader.NewUploader("/tmp/amusing-x/sub-product")
-	filePath, err := uploader.UploadBase64(ctx, picture.Src, picture.Title)
+	uploader, err := uploader2.NewUploader(comm.UploadTypeMysql)
+	if err != nil {
+		return nil, err
+	}
+
+	info, err := uploader.UploadBase64(ctx, picture.Src, picture.Title)
 	if err != nil {
 		return nil, aerror.NewErrorf(err, err.Code(), "picture upload failed, picture: %s", logger.ToJson(picture))
 	}
@@ -172,8 +177,8 @@ func uploadImageAndSave(ctx context.Context, subProduct *charon.SubProduct, pict
 	return model.ProductImageInsert(ctx, &charon.ProductImage{
 		ProductId:    subProduct.ID,
 		ProductLevel: 2,
-		Url:          filePath,
+		Url:          info.Url,
 		Title:        picture.Title,
-		UploaderType: "local",
+		UploaderType: info.UploadType,
 	})
 }
