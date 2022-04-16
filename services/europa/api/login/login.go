@@ -44,8 +44,6 @@ func getAndValidParams(r *http.Request) (*ganymedeservice.LoginRequest, aerror.E
 		return nil, aerror.NewError(err, aerror.Code.SUnexpectedErr, "Unexpect error. ")
 	}
 
-	logger.Infof("getAndValidParams login: %s", logger.ToJson(login))
-
 	xErr := login.Valid()
 	if err != nil {
 		return nil, xErr

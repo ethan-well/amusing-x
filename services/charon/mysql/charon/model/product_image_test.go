@@ -3,9 +3,9 @@ package model
 import (
 	charon2 "amusingx.fit/amusingx/mysqlstruct/charon"
 	"amusingx.fit/amusingx/services/charon/mysql/charon"
+	"amusingx.fit/amusingx/services/charon/uploader/comm"
 	"context"
 	"github.com/ItsWewin/superfactory/logger"
-	"github.com/ItsWewin/superfactory/uploader/comm"
 	"testing"
 )
 
@@ -37,6 +37,12 @@ func TestProductImagesInsert(t *testing.T) {
 
 	charon.Mock()
 
+	tx, e := charon.CharonDB.Beginx()
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer tx.Rollback()
+
 	images := []*charon2.ProductImage{
 		{
 			ProductId:    100,
@@ -51,8 +57,12 @@ func TestProductImagesInsert(t *testing.T) {
 			Url:          "/tmp/amusing-x/pictures/local.png",
 		},
 	}
-	err := ProductImagesInsertWithTx(context.Background(), images)
+	err := ProductImagesInsertWithTx(context.Background(), tx, images)
 	if err != nil {
+		t.Fatalf("some err: %s", err)
+	}
+
+	if e := tx.Commit(); e != nil {
 		t.Fatalf("some err: %s", err)
 	}
 }
@@ -65,6 +75,21 @@ func TestProductImageQueryById(t *testing.T) {
 	charon.Mock()
 
 	product, err := ProductImageQueryById(context.Background(), 3)
+	if err != nil {
+		t.Fatalf("some err: %s", err)
+	}
+
+	t.Logf("result: %s", logger.ToJson(product))
+}
+
+func TestProductImagesQueryByIds(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip ...")
+	}
+
+	charon.Mock()
+
+	product, err := ProductImagesQueryByIds(context.Background(), []int64{49, 50, 51})
 	if err != nil {
 		t.Fatalf("some err: %s", err)
 	}
@@ -194,6 +219,29 @@ func TestProductImageDeleteWithTx(t *testing.T) {
 	if err != nil {
 		t.Fatalf("some err: %s", err)
 	}
+	if e := tx.Commit(); e != nil {
+		t.Fatal(e)
+	}
+}
+
+func TestProductImageDeleteBySubProductIdAndLevelWithTx(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip ...")
+	}
+
+	charon.Mock()
+
+	tx, e := charon.CharonDB.Beginx()
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer tx.Rollback()
+
+	err := ProductImageDeleteBySubProductIdAndLevelWithTx(context.Background(), []int64{29}, tx)
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	if e := tx.Commit(); e != nil {
 		t.Fatal(e)
 	}

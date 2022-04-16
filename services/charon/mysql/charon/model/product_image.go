@@ -33,7 +33,26 @@ func ProductImageInsert(ctx context.Context, image *charon.ProductImage) (*charo
 	return image, nil
 }
 
-func ProductImagesInsertWithTx(ctx context.Context, images []*charon.ProductImage) aerror.Error {
+func ProductImageInsertWithTx(ctx context.Context, tx *sqlx.Tx, image *charon.ProductImage) (*charon.ProductImage, aerror.Error) {
+	logger.Infof("image: %s", logger.ToJson(image))
+
+	insertSql := `INSERT INTO product_image (product_id, product_level, uploader_type, url, title) VALUES (:product_id, :product_level, :uploader_type, :url, :title)`
+	result, err := tx.NamedExecContext(ctx, insertSql, image)
+	if err != nil {
+		return nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql execute error")
+	}
+
+	id, err := result.LastInsertId()
+	if err != nil {
+		return nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "get last insert id failed")
+	}
+
+	image.Id = id
+
+	return image, nil
+}
+
+func ProductImagesInsertWithTx(ctx context.Context, tx *sqlx.Tx, images []*charon.ProductImage) aerror.Error {
 	valuesPlaceholder := `{{valuePlaceholder}}`
 	valuePlaceholder := `(?, ?, ?, ?)`
 	insertSql := fmt.Sprintf("INSERT INTO product_image (product_id, product_level, uploader_type, url) VALUES %s", valuesPlaceholder)
@@ -46,7 +65,7 @@ func ProductImagesInsertWithTx(ctx context.Context, images []*charon.ProductImag
 	}
 
 	insertSql = strings.Replace(insertSql, valuesPlaceholder, strings.Join(valuePlaceholders, ","), -1)
-	result, err := charon2.CharonDB.ExecContext(ctx, insertSql, values...)
+	result, err := tx.ExecContext(ctx, insertSql, values...)
 	if err != nil {
 		return aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql execute error")
 	}
@@ -71,6 +90,23 @@ func ProductImageQueryById(ctx context.Context, id int64) (*charon.ProductImage,
 	}
 
 	return images[0], nil
+}
+
+func ProductImagesQueryByIds(ctx context.Context, id []int64) ([]*charon.ProductImage, aerror.Error) {
+	querySql := `SELECT id, product_id, product_level, uploader_type, url FROM product_image WHERE id in (?)`
+	var images []*charon.ProductImage
+
+	querySql, arg, e := sqlx.In(querySql, id)
+	if e != nil {
+		return nil, aerror.NewErrorf(e, aerror.Code.SSqlExecuteErr, "sql in failed")
+	}
+
+	err := charon2.CharonDB.SelectContext(ctx, &images, querySql, arg...)
+	if err != nil {
+		return nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql execute error")
+	}
+
+	return images, nil
 }
 
 func ProductImageQueryByIdWithTx(ctx context.Context, id int64, tx ...*sqlx.Tx) (*charon.ProductImage, aerror.Error) {
@@ -127,8 +163,11 @@ func ProductImageDelete(ctx context.Context, ids []int64) aerror.Error {
 }
 
 func ProductImageDeleteBySubProductIdAndLevelWithTx(ctx context.Context, subProductIds []int64, tx *sqlx.Tx) aerror.Error {
+	if len(subProductIds) == 0 {
+		return nil
+	}
 	delSql := `DELETE FROM product_image
-			WHERE level = 2 AND product_id in (?)`
+			WHERE product_level = 2 AND product_id in (?)`
 
 	delSql, args, err := sqlx.In(delSql, subProductIds)
 	if err != nil {

@@ -1,9 +1,11 @@
 package subproduct
 
 import (
+	"amusingx.fit/amusingx/mysqlstruct/charon"
 	"amusingx.fit/amusingx/protos/pangu/service/pangu/proto"
 	charon2 "amusingx.fit/amusingx/services/charon/mysql/charon"
 	"amusingx.fit/amusingx/services/charon/mysql/charon/model"
+	"amusingx.fit/amusingx/services/charon/uploader"
 	"context"
 	"github.com/ItsWewin/superfactory/aerror"
 )
@@ -30,6 +32,36 @@ func HandlerQuery(ctx context.Context, in *proto.SubProductRequest) (*proto.SubP
 		attrIds = append(attrIds, attr.AttrId)
 	}
 
+	pictures, err := model.ProductImageQueryByProductIdAndLevelWithTx(ctx, product.ID, charon.ProductLevelSubProduct, tx)
+	if err != nil {
+		return nil, err
+	}
+	if e := tx.Commit(); e != nil {
+		return nil, aerror.NewErrorf(e, aerror.Code.SSqlExecuteErr, "commit failed")
+	}
+
+	var pictureList []*proto.Picture
+	for _, p := range pictures {
+		uploader, err := uploader.NewUploader(p.UploaderType)
+		if err != nil {
+			return nil, err
+		}
+
+		image, err := uploader.GetPictureInfo(ctx, p.Id)
+		if err != nil {
+			return nil, err
+		}
+
+		pictureList = append(pictureList, &proto.Picture{
+			RawFile:    nil,
+			Src:        image.Url,
+			Title:      p.Title,
+			Id:         p.Id,
+			Url:        image.Url,
+			UploadType: int64(p.UploaderType),
+		})
+	}
+
 	return &proto.SubProduct{
 		Id:          product.ID,
 		Name:        product.Name,
@@ -39,5 +71,6 @@ func HandlerQuery(ctx context.Context, in *proto.SubProductRequest) (*proto.SubP
 		Price:       product.Price,
 		Stock:       product.Stock,
 		AttributeId: attrIds,
+		Pictures:    pictureList,
 	}, nil
 }

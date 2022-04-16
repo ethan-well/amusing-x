@@ -5,12 +5,12 @@ import (
 	"amusingx.fit/amusingx/protos/pangu/service/pangu/proto"
 	charon2 "amusingx.fit/amusingx/services/charon/mysql/charon"
 	"amusingx.fit/amusingx/services/charon/mysql/charon/model"
+	"amusingx.fit/amusingx/services/charon/uploader"
+	"amusingx.fit/amusingx/services/charon/uploader/comm"
 	"context"
 	"github.com/ItsWewin/superfactory/aerror"
 	"github.com/ItsWewin/superfactory/logger"
 	"github.com/ItsWewin/superfactory/set/intset"
-	uploader2 "github.com/ItsWewin/superfactory/uploader"
-	"github.com/ItsWewin/superfactory/uploader/comm"
 	"strings"
 	"sync"
 )
@@ -19,8 +19,6 @@ func HandlerUpdate(ctx context.Context, in *proto.SubProductUpdateRequest) (*pro
 	if in == nil || in.Id == 0 {
 		return nil, aerror.NewErrorf(nil, aerror.Code.CParamsError, "id in request info is 0")
 	}
-
-	logger.Infof("in: %s", logger.ToJson(in))
 
 	tx, e := charon2.CharonDB.Beginx()
 	if e != nil {
@@ -92,11 +90,6 @@ func HandlerUpdate(ctx context.Context, in *proto.SubProductUpdateRequest) (*pro
 		return nil, err
 	}
 
-	err = model.ProductImageDeleteBySubProductIdAndLevelWithTx(ctx, []int64{subProduct.ProductId}, tx)
-	if err != nil {
-		return nil, err
-	}
-
 	if e := tx.Commit(); e != nil {
 		return nil, aerror.NewErrorf(e, aerror.Code.SSqlExecuteErr, "commit error")
 	}
@@ -121,30 +114,30 @@ func HandlerUpdate(ctx context.Context, in *proto.SubProductUpdateRequest) (*pro
 
 func uploadImage(ctx context.Context, subProduct *charon.SubProduct, pictures []*proto.Picture) ([]*proto.Picture, aerror.Error) {
 	if len(pictures) == 0 {
-		return nil, nil
+		return nil, deletePicture(ctx, subProduct.ID)
 	}
 
 	w := sync.WaitGroup{}
 	errChan := make(chan aerror.Error, 10)
-	var pictureList []*proto.Picture
+	pictureListChan := make(chan *proto.Picture, len(pictures))
 	for _, picture := range pictures {
 		w.Add(1)
 
 		go func(w *sync.WaitGroup) {
 			defer w.Done()
-			image, err := uploadImageAndSave(ctx, subProduct, picture)
+			info, err := uploadToStore(ctx, picture)
 			if err != nil {
 				errChan <- err
 				return
 			}
 
-			pictureList = append(pictureList, &proto.Picture{
-				Url:   image.Url,
-				Src:   picture.Src,
-				Title: image.Title,
-				Id:    image.Id,
-			})
-
+			pictureListChan <- &proto.Picture{
+				RawFile:    picture.RawFile,
+				Src:        picture.Src,
+				Title:      picture.Title,
+				Url:        info.Url,
+				UploadType: int64(info.UploadType),
+			}
 		}(&w)
 	}
 
@@ -160,11 +153,22 @@ func uploadImage(ctx context.Context, subProduct *charon.SubProduct, pictures []
 		return nil, aerror.NewError(nil, aerror.Code.SSqlExecuteErr, strings.Join(msg, ","))
 	}
 
+	close(pictureListChan)
+	var pictureList []*proto.Picture
+	for info := range pictureListChan {
+		pictureList = append(pictureList, info)
+	}
+
+	_, err := savePictureInfo(ctx, subProduct, pictureList)
+	if err != nil {
+		return nil, nil
+	}
+
 	return pictureList, nil
 }
 
-func uploadImageAndSave(ctx context.Context, subProduct *charon.SubProduct, picture *proto.Picture) (*charon.ProductImage, aerror.Error) {
-	uploader, err := uploader2.NewUploader(comm.UploadTypeMysql)
+func uploadToStore(ctx context.Context, picture *proto.Picture) (*comm.UploadInfo, aerror.Error) {
+	uploader, err := uploader.NewUploader(comm.UploadTypeMysql)
 	if err != nil {
 		return nil, err
 	}
@@ -174,11 +178,79 @@ func uploadImageAndSave(ctx context.Context, subProduct *charon.SubProduct, pict
 		return nil, aerror.NewErrorf(err, err.Code(), "picture upload failed, picture: %s", logger.ToJson(picture))
 	}
 
-	return model.ProductImageInsert(ctx, &charon.ProductImage{
-		ProductId:    subProduct.ID,
-		ProductLevel: 2,
-		Url:          info.Url,
-		Title:        picture.Title,
-		UploaderType: info.UploadType,
-	})
+	return info, nil
+}
+
+func savePictureInfo(ctx context.Context, subProduct *charon.SubProduct, pictureList []*proto.Picture) ([]*charon.ProductImage, aerror.Error) {
+	tx, e := charon2.CharonDB.Beginx()
+	if e != nil {
+		return nil, aerror.NewErrorf(e, aerror.Code.SSqlExecuteErr, "begin tx failed")
+	}
+	defer tx.Rollback()
+
+	err := model.ProductImageDeleteBySubProductIdAndLevelWithTx(ctx, []int64{subProduct.ID}, tx)
+	if err != nil {
+		return nil, err
+	}
+
+	var images []*charon.ProductImage
+	for _, picture := range pictureList {
+		images = append(images, &charon.ProductImage{
+			ProductId:    subProduct.ID,
+			ProductLevel: charon.ProductLevelSubProduct,
+			Url:          picture.Url,
+			Title:        picture.Title,
+			UploaderType: comm.UploadTypeMysql,
+		})
+	}
+
+	err = model.ProductImagesInsertWithTx(ctx, tx, images)
+	if err != nil {
+		return nil, err
+	}
+
+	if e := tx.Commit(); e != nil {
+		return nil, aerror.NewErrorf(e, aerror.Code.SSqlExecuteErr, "commit failed")
+	}
+
+	return model.ProductImageQueryByProductIdAndLevelWithTx(ctx, subProduct.ID, charon.ProductLevelSubProduct)
+}
+
+func deletePicture(ctx context.Context, subProductId int64) aerror.Error {
+	tx, e := charon2.CharonDB.Beginx()
+	if e != nil {
+		return aerror.NewErrorf(e, aerror.Code.SSqlExecuteErr, "begin tx failed")
+	}
+	defer tx.Rollback()
+
+	pictures, err := model.ProductImageQueryByProductIdAndLevelWithTx(ctx, subProductId, charon.ProductLevelSubProduct, tx)
+	if err != nil || len(pictures) == 0 {
+		return err
+	}
+
+	var ids []int64
+	for _, p := range pictures {
+		ids = append(ids, p.Id)
+	}
+
+	err = model.ProductImageDeleteWithTx(ctx, tx, ids)
+	if err != nil {
+		return err
+	}
+
+	uploader, err := uploader.NewUploader(comm.UploadTypeMysql)
+	if err != nil {
+		return err
+	}
+
+	err = uploader.DeletePictureInfo(ctx, ids)
+	if err != nil {
+		return aerror.NewErrorf(err, aerror.Code.BUnexpectedData, "DeletePictureInfo failed")
+	}
+
+	if e := tx.Commit(); e != nil {
+		return aerror.NewErrorf(e, aerror.Code.SSqlExecuteErr, "tx commit failed")
+	}
+
+	return nil
 }
