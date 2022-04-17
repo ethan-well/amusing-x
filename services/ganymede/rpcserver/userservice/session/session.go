@@ -24,10 +24,13 @@ func (m *Model) SetSession(ctx context.Context, info *Info) (string, aerror.Erro
 	uid := uuid.NewV4().String()
 	sess, err := session.GlobalSessionManager.Store.SessionInit(ctx, uid)
 	if err != nil {
-		return "", aerror.NewError(nil, aerror.Code.SUnexpectedErr, "get session failed")
+		return "", aerror.NewError(err, aerror.Code.SUnexpectedErr, "get session failed")
 	}
 
 	err = sess.Set(ctx, "id", info.UserID)
+	if err != nil {
+		return "", aerror.NewErrorf(err, aerror.Code.SUnexpectedErr, "set id to redis failed")
+	}
 
 	data, err := json.Marshal(info)
 	if err != nil {
@@ -48,6 +51,9 @@ func (m *Model) GetUserID(ctx context.Context, sid string) (int64, aerror.Error)
 	}
 
 	v, err := sess.Get(ctx, "id")
+	if err != nil {
+		return 0, aerror.NewErrorf(nil, aerror.Code.BUnexpectedData, "get id from failed")
+	}
 
 	switch v.(type) {
 	case int64:

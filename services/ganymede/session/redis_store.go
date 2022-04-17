@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/ItsWewin/superfactory/aerror"
+	"github.com/ItsWewin/superfactory/logger"
 	"github.com/go-redis/redis/v8"
 	"time"
 )
@@ -87,6 +88,8 @@ func (r *RedisStore) SessionWrite(ctx context.Context, sid string, value interfa
 	}
 
 	key := fmt.Sprintf("%s:%s", r.KeyPrefix, sid)
+
+	logger.Errorf("key: %s, MaxLifeSecond: %d", key, r.MaxLifeSecond)
 
 	bt, err := json.Marshal(value)
 	if err != nil {

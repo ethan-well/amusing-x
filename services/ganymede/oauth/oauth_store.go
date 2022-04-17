@@ -6,6 +6,7 @@ import (
 	"github.com/ItsWewin/superfactory/aerror"
 	"github.com/go-redis/redis/v8"
 	"math/rand"
+	"sync"
 	"time"
 )
 
@@ -21,6 +22,7 @@ type RedisStore struct {
 }
 
 var StoreIns Store
+var once sync.Once
 
 func InitOAuthRedisStore(addr, password string, db int, prefix string, maxLifeSecond int64) aerror.Error {
 	if len(addr) == 0 {
@@ -33,13 +35,19 @@ func InitOAuthRedisStore(addr, password string, db int, prefix string, maxLifeSe
 		DB:       db,
 	})
 
-	StoreIns = &RedisStore{Client: client, KeyPrefix: prefix, MaxLifeSecond: maxLifeSecond}
+	once.Do(func() {
+		if StoreIns != nil {
+			StoreIns = nil
+			return
+		}
+		StoreIns = &RedisStore{Client: client, KeyPrefix: prefix, MaxLifeSecond: maxLifeSecond}
+	})
 
 	return nil
 }
 
 func (s *RedisStore) key(code string) string {
-	return fmt.Sprintf("oauth:sate:store:%s:%s" + s.KeyPrefix + code)
+	return fmt.Sprintf("oauth:sate:store:%s:%s", s.KeyPrefix, code)
 }
 
 func (s *RedisStore) save(ctx context.Context, code string) aerror.Error {

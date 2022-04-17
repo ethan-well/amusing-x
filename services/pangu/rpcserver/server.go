@@ -31,15 +31,16 @@ func InitRPCServer() aerror.Error {
 	}()
 
 	rpcServ := grpc.NewServer(grpc.StreamInterceptor(grpc_middleware.ChainStreamServer(
-		servermiddleware.StreamServerInterceptorPanicRecover(),
+		servermiddleware.StreamServerInterceptorPanicRecover(), servermiddleware.StreamServerInterceptorAuthentication(),
 	)),
 		grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
-			servermiddleware.UnaryServerInterceptorPanicRecover(),
+			servermiddleware.UnaryServerInterceptorPanicRecover(), servermiddleware.UnaryServerInterceptorAuthentication(),
 		)))
 
 	panguservice.RegisterPanGuServiceServer(rpcServ, new(panguserver.PanguServer))
 
 	rpcConf := conf.Conf.Server.GrpcServer
+
 	logger.Infof("InitRPCServer. network: %s, addr: %s", rpcConf.Network, rpcConf.Address)
 
 	lis, err := net.Listen(rpcConf.Network, rpcConf.Address)

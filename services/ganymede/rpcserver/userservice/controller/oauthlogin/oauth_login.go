@@ -30,8 +30,6 @@ func HandlerOAuthLogin(ctx context.Context, req *ganymedeservice.OAuthLoginReque
 		return &ganymedeservice.OAuthLoginResponse{Result: false}, err
 	}
 
-	model2.InitCurrentUser(loginInfo.UserInfo)
-
 	return &ganymedeservice.OAuthLoginResponse{Result: true, LoginInfo: loginInfo}, nil
 }
 

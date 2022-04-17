@@ -16,3 +16,12 @@ func HandlerLogout(ctx context.Context, sessionID string) (*panguservice.LogoutR
 
 	return &panguservice.LogoutResponse{Succeed: resp.Logout}, nil
 }
+
+func HandlerIsLogin(ctx context.Context, sessionID string) (*ganymedeservice.IsLoginResponse, aerror.Error) {
+	resp, err := ganymede.Client.IsLogin(ctx, &ganymedeservice.IsLoginRequest{SessionID: sessionID})
+	if err != nil {
+		return &ganymedeservice.IsLoginResponse{Login: false}, aerror.NewErrorf(err, aerror.Code.SUnexpectedErr, "use not login")
+	}
+
+	return resp, nil
+}

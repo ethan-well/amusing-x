@@ -8,6 +8,9 @@ import (
 )
 
 func TestModel_SetSession(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip func")
+	}
 	conf.Mock()
 	err := session.InitSessionManager("redis", 120)
 	if err != nil {
@@ -17,22 +20,11 @@ func TestModel_SetSession(t *testing.T) {
 	model := New()
 	ctx := context.Background()
 
-	var userID int64 = 1213131
-	info := Info{UserID: userID}
-
-	sid, xErr := model.SetSession(ctx, &info)
-	if xErr != nil {
-		t.Fatalf("err: %s", xErr)
-	}
-
+	sid := "55ea737d-1888-459d-90fd-2c50e5927233"
 	idCache, xErr := model.GetUserID(ctx, sid)
 	if xErr != nil {
 		t.Fatalf("err: %s", xErr)
 	}
 
-	if idCache != userID {
-		t.Fatalf("is is not expected")
-	}
-
-	t.Logf("sid: %s", sid)
+	t.Logf("idCache: %d", idCache)
 }

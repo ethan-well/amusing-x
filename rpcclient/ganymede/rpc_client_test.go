@@ -19,9 +19,22 @@ func TestInitClient(t *testing.T) {
 	go _ping(ctx, Client, &w)
 	//go _githubOAth(ctx, Client, &w)
 	//go _OAthInfo(ctx, Client, &w)
-	go _Authentication(ctx, Client, &w)
+	//go _Authentication(ctx, Client, &w)
+	go _IsLogin(ctx, Client, &w)
 
 	w.Wait()
+}
+
+func _IsLogin(ctx context.Context, client ganymedeservice.GanymedeServiceClient, w *sync.WaitGroup) {
+	defer w.Done()
+
+	in := &ganymedeservice.IsLoginRequest{SessionID: "5bd9bdc9-d2b3-4efd-9527-ac05938c38f9"}
+	resp, err := client.IsLogin(ctx, in)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Println(resp)
 }
 
 func _ping(ctx context.Context, client ganymedeservice.GanymedeServiceClient, w *sync.WaitGroup) {

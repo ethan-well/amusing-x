@@ -47,7 +47,7 @@ func (s *PanguServer) OauthProviderInfo(ctx context.Context, in *panguservice.Oa
 }
 
 func (s *PanguServer) Logout(ctx context.Context, in *panguservice.BlankParams) (*panguservice.LogoutResponse, error) {
-	sessionID, err := getSessionID(ctx)
+	sessionID, err := GetSessionID(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -73,7 +73,7 @@ func (s *PanguServer) Logout(ctx context.Context, in *panguservice.BlankParams) 
 	return result, nil
 }
 
-func getSessionID(ctx context.Context) (string, aerror.Error) {
+func GetSessionID(ctx context.Context) (string, aerror.Error) {
 	md, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
 		return "", aerror.NewErrorf(nil, aerror.Code.CParamsError, "get session id failed")

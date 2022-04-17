@@ -29,15 +29,22 @@ func InitCurrentUser(info *ganymedeservice.UserInfo) {
 }
 
 func (u *User) GetUserInfoByID(ctx context.Context, id int64) (*ganymede.User, aerror.Error) {
-	tx, err := model.GanymedeDB.BeginTxx(ctx, nil)
-	if err != nil {
-		return nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "query user info failed")
+	tx, e := model.GanymedeDB.Beginx()
+	if e != nil {
+		return nil, aerror.NewErrorf(e, aerror.Code.SSqlExecuteErr, "query user info failed")
 	}
 	defer tx.Rollback()
 
-	tx.Commit()
+	user, err := model.QueryUserByID(ctx, tx, id)
+	if err != nil {
+		return nil, err
+	}
 
-	return model.QueryUserByID(ctx, tx, id)
+	if e := tx.Commit(); e != nil {
+		return nil, aerror.NewErrorf(e, aerror.Code.SRedisExecuteErr, "commit failed")
+	}
+
+	return user, nil
 }
 
 func (u *User) InitUserInfoByID(ctx context.Context, id int64) aerror.Error {

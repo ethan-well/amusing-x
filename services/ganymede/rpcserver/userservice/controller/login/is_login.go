@@ -6,6 +6,7 @@ import (
 	"amusingx.fit/amusingx/services/ganymede/rpcserver/userservice/session"
 	"context"
 	"github.com/ItsWewin/superfactory/aerror"
+	"github.com/ItsWewin/superfactory/logger"
 )
 
 func HandlerIsLogin(ctx context.Context, req *ganymedeservice.IsLoginRequest) (*ganymedeservice.IsLoginResponse, error) {
@@ -21,6 +22,8 @@ func HandlerIsLogin(ctx context.Context, req *ganymedeservice.IsLoginRequest) (*
 		return resp, aerror.NewErrorf(nil, err.Code(), err.Message())
 	}
 
+	logger.Infof("user id: %v", id)
+
 	user, err := model2.NewUserModel().GetUserInfoByID(ctx, id)
 	if err != nil {
 		return nil, err
@@ -35,7 +38,7 @@ func HandlerIsLogin(ctx context.Context, req *ganymedeservice.IsLoginRequest) (*
 		Id:    id,
 		Name:  user.Name,
 		Login: user.Login,
-		Email: "",
+		Email: user.Login,
 	}
 	resp.Login = true
 
