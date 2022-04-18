@@ -9,8 +9,11 @@ import (
 	"google.golang.org/grpc"
 )
 
-var routers = map[string]struct{}{
-	"/panguservice.PanGuService/CategoryList": {},
+var skipAuthMethods = map[string]struct{}{
+	"/panguservice.PanGuService/Pong":              {},
+	"/panguservice.PanGuService/Logout":            {},
+	"/panguservice.PanGuService/OauthLogin":        {},
+	"/panguservice.PanGuService/OauthProviderInfo": {},
 }
 
 func UnaryServerInterceptorAuthentication() grpc.UnaryServerInterceptor {
@@ -21,17 +24,8 @@ func UnaryServerInterceptorAuthentication() grpc.UnaryServerInterceptor {
 			}
 		}()
 
-		logger.Errorf("FullMethod: %s", info.FullMethod)
-
-		sessionId, err := panguserver.GetSessionID(ctx)
-		if err != nil {
-			return nil, err
-		}
-
-		logger.Errorf("sessionId: %s", sessionId)
-
 		// skip authentication
-		if _, ok := routers[info.FullMethod]; !ok {
+		if _, ok := skipAuthMethods[info.FullMethod]; ok {
 			return handler(ctx, req)
 		}
 
@@ -66,15 +60,11 @@ func authenticationFromCookie(ctx context.Context) aerror.Error {
 		return err
 	}
 
-	logger.Infof("sessionId xxx: %s", sessionId)
-
 	resp, err := login.HandlerIsLogin(ctx, sessionId)
 	if err != nil {
 		logger.Errorf("authenticationFromCookie err: %s", err)
 		return err
 	}
-
-	logger.Infof("resp: %s", logger.ToJson(resp))
 
 	if !resp.Login {
 		return aerror.NewErrorf(nil, aerror.Code.CForbidden, "user no login")
