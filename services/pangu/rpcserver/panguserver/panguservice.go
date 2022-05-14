@@ -31,6 +31,7 @@ func (s *PanguServer) Pong(ctx context.Context, in *panguservice.BlankParams) (*
 func (s *PanguServer) OauthLogin(ctx context.Context, in *panguservice.OAuthLoginRequest) (*panguservice.OAuthLoginResponse, error) {
 	login, err := login.HandlerOauthLogin(ctx, in)
 	if err != nil || login == nil || login.Result.UserInfo == nil || login.Result.SessionInfo == nil {
+		logger.Errorf("err: %s", err)
 		return nil, aerror.NewError(err, aerror.Code.BUnexpectedData, "login failed")
 	}
 

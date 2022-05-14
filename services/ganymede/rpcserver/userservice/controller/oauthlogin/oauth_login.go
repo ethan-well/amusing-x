@@ -46,13 +46,10 @@ func oauthLogin(ctx context.Context, req *ganymedeservice.OAuthLoginRequest) (*g
 
 	var loginInfo = &ganymedeservice.LoginInfo{}
 
-	clientID, clientSecret, redirectUrl, accessTokenUrl, refreshTokenUrl, userProfileUrl, grantType, err := getOauthConf(ctx, req.Provider, req.Service)
+	clientID, clientSecret, redirectUrl, accessTokenUrl, _, userProfileUrl, grantType, err := getOauthConf(ctx, req.Provider, req.Service)
 	if err != nil {
 		return loginInfo, err
 	}
-
-	logger.Infof("clientID: %s, clientSecret: %s, redirectUrl: %s, accessTokenUrl: %s, refreshTokenUrl: %s, userProfileUrl: %s",
-		clientID, clientSecret, redirectUrl, accessTokenUrl, refreshTokenUrl, userProfileUrl)
 
 	oAuth, err := oauth.NewOAuth(req.Provider, clientID, clientSecret, redirectUrl, grantType)
 	if err != nil {

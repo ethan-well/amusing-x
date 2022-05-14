@@ -94,6 +94,7 @@ func HandlerUpdate(ctx context.Context, in *proto.SubProductUpdateRequest) (*pro
 		return nil, aerror.NewErrorf(e, aerror.Code.SSqlExecuteErr, "commit error")
 	}
 
+	// Todo: 存在分布式事务问题
 	pictures, err := uploadImage(ctx, subProduct, in.Pictures)
 	if err != nil {
 		return nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "upload image failed")
@@ -113,8 +114,13 @@ func HandlerUpdate(ctx context.Context, in *proto.SubProductUpdateRequest) (*pro
 }
 
 func uploadImage(ctx context.Context, subProduct *charon.SubProduct, pictures []*proto.Picture) ([]*proto.Picture, aerror.Error) {
-	if len(pictures) == 0 {
-		return nil, deletePicture(ctx, subProduct.ID)
+	//if len(pictures) == 0 {
+	//	return nil, deletePicture(ctx, subProduct.ID)
+	//}
+	//
+	err := deletePicture(ctx, subProduct.ID)
+	if err != nil {
+		return nil, err
 	}
 
 	w := sync.WaitGroup{}
@@ -159,7 +165,7 @@ func uploadImage(ctx context.Context, subProduct *charon.SubProduct, pictures []
 		pictureList = append(pictureList, info)
 	}
 
-	_, err := savePictureInfo(ctx, subProduct, pictureList)
+	_, err = savePictureInfo(ctx, subProduct, pictureList)
 	if err != nil {
 		return nil, nil
 	}
