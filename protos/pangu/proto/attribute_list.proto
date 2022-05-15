@@ -13,6 +13,8 @@ message AttributeListRequest {
   string sort = 5;
   string filter = 6;
   int64 offset = 7;
+  repeated int64 ids = 8;
+  repeated int64 subProductIds = 9;
 }
 
 message AttributeListResponse {
@@ -21,4 +23,8 @@ message AttributeListResponse {
   int64 total = 3;
   bool hasNext = 4;
   repeated Attribute data = 6;
+}
+
+message AttributeWithSubProductListResponse {
+  repeated AttributeWithSubProduct data = 6;
 }

@@ -30,3 +30,7 @@ func (s *CharonServer) Attribute(ctx context.Context, in *proto.AttributeRequest
 func (s *CharonServer) AttributeUpdate(ctx context.Context, in *proto.AttributeUpdateRequest) (*proto.Attribute, error) {
 	return attribute.HandlerUpdate(ctx, in)
 }
+
+func (s *CharonServer) AttributesWithSubProduct(ctx context.Context, in *proto.AttributeListRequest) (*proto.AttributeWithSubProductListResponse, error) {
+	return attribute.HandlerAttributeWithSubProducts(ctx, in)
+}

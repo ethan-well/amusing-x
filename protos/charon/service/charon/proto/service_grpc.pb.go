@@ -44,6 +44,7 @@ type CharonServClient interface {
 	Attributes(ctx context.Context, in *proto.AttributeListRequest, opts ...grpc.CallOption) (*proto.AttributeListResponse, error)
 	Attribute(ctx context.Context, in *proto.AttributeRequest, opts ...grpc.CallOption) (*proto.Attribute, error)
 	AttributeUpdate(ctx context.Context, in *proto.AttributeUpdateRequest, opts ...grpc.CallOption) (*proto.Attribute, error)
+	AttributesWithSubProduct(ctx context.Context, in *proto.AttributeListRequest, opts ...grpc.CallOption) (*proto.AttributeWithSubProductListResponse, error)
 	AttributeMappingCreate(ctx context.Context, in *proto.AttributeMappingCreateRequest, opts ...grpc.CallOption) (*proto.AttributeMapping, error)
 	AttributeMappingDelete(ctx context.Context, in *proto.AttributeMappingDeleteRequest, opts ...grpc.CallOption) (*proto.AttributeMappingDeleteResponse, error)
 	AttributeMappingsDelete(ctx context.Context, in *proto.AttributeMappingsDeleteRequest, opts ...grpc.CallOption) (*proto.AttributeMappingsDeleteResponse, error)
@@ -285,6 +286,15 @@ func (c *charonServClient) AttributeUpdate(ctx context.Context, in *proto.Attrib
 	return out, nil
 }
 
+func (c *charonServClient) AttributesWithSubProduct(ctx context.Context, in *proto.AttributeListRequest, opts ...grpc.CallOption) (*proto.AttributeWithSubProductListResponse, error) {
+	out := new(proto.AttributeWithSubProductListResponse)
+	err := c.cc.Invoke(ctx, "/charonservice.CharonServ/AttributesWithSubProduct", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *charonServClient) AttributeMappingCreate(ctx context.Context, in *proto.AttributeMappingCreateRequest, opts ...grpc.CallOption) (*proto.AttributeMapping, error) {
 	out := new(proto.AttributeMapping)
 	err := c.cc.Invoke(ctx, "/charonservice.CharonServ/AttributeMappingCreate", in, out, opts...)
@@ -368,6 +378,7 @@ type CharonServServer interface {
 	Attributes(context.Context, *proto.AttributeListRequest) (*proto.AttributeListResponse, error)
 	Attribute(context.Context, *proto.AttributeRequest) (*proto.Attribute, error)
 	AttributeUpdate(context.Context, *proto.AttributeUpdateRequest) (*proto.Attribute, error)
+	AttributesWithSubProduct(context.Context, *proto.AttributeListRequest) (*proto.AttributeWithSubProductListResponse, error)
 	AttributeMappingCreate(context.Context, *proto.AttributeMappingCreateRequest) (*proto.AttributeMapping, error)
 	AttributeMappingDelete(context.Context, *proto.AttributeMappingDeleteRequest) (*proto.AttributeMappingDeleteResponse, error)
 	AttributeMappingsDelete(context.Context, *proto.AttributeMappingsDeleteRequest) (*proto.AttributeMappingsDeleteResponse, error)
@@ -455,6 +466,9 @@ func (UnimplementedCharonServServer) Attribute(context.Context, *proto.Attribute
 }
 func (UnimplementedCharonServServer) AttributeUpdate(context.Context, *proto.AttributeUpdateRequest) (*proto.Attribute, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AttributeUpdate not implemented")
+}
+func (UnimplementedCharonServServer) AttributesWithSubProduct(context.Context, *proto.AttributeListRequest) (*proto.AttributeWithSubProductListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AttributesWithSubProduct not implemented")
 }
 func (UnimplementedCharonServServer) AttributeMappingCreate(context.Context, *proto.AttributeMappingCreateRequest) (*proto.AttributeMapping, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AttributeMappingCreate not implemented")
@@ -937,6 +951,24 @@ func _CharonServ_AttributeUpdate_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CharonServ_AttributesWithSubProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(proto.AttributeListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CharonServServer).AttributesWithSubProduct(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/charonservice.CharonServ/AttributesWithSubProduct",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CharonServServer).AttributesWithSubProduct(ctx, req.(*proto.AttributeListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _CharonServ_AttributeMappingCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(proto.AttributeMappingCreateRequest)
 	if err := dec(in); err != nil {
@@ -1151,6 +1183,10 @@ var CharonServ_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AttributeUpdate",
 			Handler:    _CharonServ_AttributeUpdate_Handler,
+		},
+		{
+			MethodName: "AttributesWithSubProduct",
+			Handler:    _CharonServ_AttributesWithSubProduct_Handler,
 		},
 		{
 			MethodName: "AttributeMappingCreate",

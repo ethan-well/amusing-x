@@ -114,3 +114,33 @@ func TestAttributeDeleteWithTx(t *testing.T) {
 		t.Fatal(e)
 	}
 }
+
+func TestAttributeQueryByIds(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip ...")
+	}
+
+	charon.Mock()
+
+	products, err := AttributeQueryByIds(context.Background(), []int64{1, 2, 3, 4, 9, 11})
+	if err != nil {
+		t.Fatalf("some err: %s", err)
+	}
+
+	t.Logf("attribute: %s", logger.ToJson(products))
+}
+
+func TestAttributeQueryBySubProductIds(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip ...")
+	}
+
+	charon.Mock()
+
+	products, err := AttributeQueryBySubProductIds(context.Background(), []int64{1, 2, 3, 4, 9, 11})
+	if err != nil {
+		t.Fatalf("some err: %s", err)
+	}
+
+	t.Logf("attribute: %s", logger.ToJson(products))
+}

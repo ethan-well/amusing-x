@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"github.com/ItsWewin/superfactory/aerror"
 	"github.com/ItsWewin/superfactory/aregexp"
+	"github.com/ItsWewin/superfactory/logger"
 	"strconv"
 )
 
@@ -18,6 +19,7 @@ func HandlerList(ctx context.Context, in *proto.SubProductListRequest) (*proto.S
 
 	filter, err := getParams(in)
 	if err != nil {
+		logger.Errorf("[HandlerList] err: %s", err)
 		return nil, err
 	}
 
@@ -46,6 +48,8 @@ func HandlerList(ctx context.Context, in *proto.SubProductListRequest) (*proto.S
 		HasNext: (in.Page-1)*in.Limit+int64(len(productList)) < total,
 		Data:    productList,
 	}
+
+	logger.Errorf("resp: %s", logger.ToJson(resp))
 
 	return resp, nil
 }

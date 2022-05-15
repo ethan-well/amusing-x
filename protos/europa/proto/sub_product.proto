@@ -1,0 +1,12 @@
+syntax="proto3";
+
+option  go_package = "amusingx.fit/amusingx/protos/europa/service/europa/proto";
+
+
+import "pangu/proto/sub_product.proto";
+import "pangu/proto/attribute.proto";
+
+message SubProductDetail {
+  panguservice.SubProduct subProductInfo = 1;
+  repeated panguservice.AttributeWithSubProduct Attribute = 2;
+}

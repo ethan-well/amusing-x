@@ -41,3 +41,11 @@ genreate-comm:
               --go-grpc_out ./ --go-grpc_opt paths=source_relative \
               --grpc-gateway_out ./ --grpc-gateway_opt paths=source_relative \
               ./comm/response/*.proto
+
+genreate-ganymede:
+	protoc -I . \
+              --go_out ./europa/service \
+              --go_opt paths=source_relative \
+              --go-grpc_out ./europa/service --go-grpc_opt paths=source_relative \
+              --grpc-gateway_out ./europa/service --grpc-gateway_opt paths=source_relative \
+              ./europa/proto/*.proto

@@ -70,6 +70,7 @@ service CharonServ {
   rpc Attributes(panguservice.AttributeListRequest) returns (panguservice.AttributeListResponse) {}
   rpc Attribute(panguservice.AttributeRequest) returns (panguservice.Attribute) {}
   rpc AttributeUpdate(panguservice.AttributeUpdateRequest) returns (panguservice.Attribute) {}
+  rpc AttributesWithSubProduct(panguservice.AttributeListRequest) returns (panguservice.AttributeWithSubProductListResponse) {}
 
   rpc AttributeMappingCreate(panguservice.AttributeMappingCreateRequest) returns (panguservice.AttributeMapping) {}
   rpc AttributeMappingDelete(panguservice.AttributeMappingDeleteRequest) returns (panguservice.AttributeMappingDeleteResponse) {}

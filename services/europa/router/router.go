@@ -10,6 +10,7 @@ import (
 	"amusingx.fit/amusingx/services/europa/api/password"
 	"amusingx.fit/amusingx/services/europa/api/pong"
 	"amusingx.fit/amusingx/services/europa/api/regexp"
+	"amusingx.fit/amusingx/services/europa/api/subproduct"
 	"amusingx.fit/amusingx/services/europa/api/verificationcode"
 	"amusingx.fit/amusingx/services/europa/authen"
 	"github.com/gorilla/mux"
@@ -30,6 +31,7 @@ func Register(mux *mux.Router) {
 
 	// 商品服务
 	mux.HandleFunc("/v1/europa/product/categories", oauth.HandlerGetOAuthInfo).Methods(http.MethodGet)
+	mux.HandleFunc("/v1/europa/product/sub_product/list", subproduct.HandlerSubProductsList).Methods(http.MethodGet)
 
 	mux.HandleFunc("/v1/europa/logout", logout.HandlerLogOut).Methods(http.MethodGet)
 }

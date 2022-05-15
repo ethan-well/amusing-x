@@ -41,6 +41,42 @@ func AttributeQueryById(ctx context.Context, id int64) (*charon.Attribute, aerro
 	return products[0], nil
 }
 
+func AttributeQueryByIds(ctx context.Context, ids []int64) ([]*charon.Attribute, aerror.Error) {
+	querySql := `SELECT id, name, description FROM attribute WHERE id in (?)`
+	var products []*charon.Attribute
+
+	querySql, args, err := sqlx.In(querySql, ids)
+	if err != nil {
+		return nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql execute error")
+	}
+
+	err = charon2.CharonDB.SelectContext(ctx, &products, querySql, args...)
+	if err != nil {
+		return nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql execute error")
+	}
+
+	return products, nil
+}
+
+func AttributeQueryBySubProductIds(ctx context.Context, ids []int64) ([]*charon.AttributeWithSubProduct, aerror.Error) {
+	querySql := `SELECT attr.id, attr.name, attr.description, map.attr_value, map.sub_product_id FROM attribute attr
+LEFT JOIN attribute_mapping map ON  attr.id = map.attr_id
+WHERE map.sub_product_id in (?);`
+	var products []*charon.AttributeWithSubProduct
+
+	querySql, args, err := sqlx.In(querySql, ids)
+	if err != nil {
+		return nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql execute error")
+	}
+
+	err = charon2.CharonDB.SelectContext(ctx, &products, querySql, args...)
+	if err != nil {
+		return nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql execute error")
+	}
+
+	return products, nil
+}
+
 func AttributeDelete(ctx context.Context, ids []int64) aerror.Error {
 	delSql := `DELETE FROM attribute WHERE id IN (?)`
 

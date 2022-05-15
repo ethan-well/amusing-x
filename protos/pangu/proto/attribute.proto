@@ -9,3 +9,11 @@ message Attribute {
   string Name = 2 [json_name="name"];
   string Desc = 3 [json_name="desc"];
 }
+
+message AttributeWithSubProduct {
+  int64 ID = 1 [json_name="id"];
+  string Name = 2 [json_name="name"];
+  string Desc = 3 [json_name="desc"];
+  int64 SubProductId = 4 [json_name="sub_product_id"];
+  string AttrValue = 5 [json_name="attr_value"];
+}
