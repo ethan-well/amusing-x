@@ -8,5 +8,5 @@ import "pangu/proto/attribute.proto";
 
 message SubProductDetail {
   panguservice.SubProduct subProductInfo = 1;
-  repeated panguservice.AttributeWithSubProduct Attribute = 2;
+  repeated panguservice.AttributeWithSubProduct Attributes = 2;
 }

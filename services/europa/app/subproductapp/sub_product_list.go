@@ -77,7 +77,7 @@ func (d *Domain) GetSubProducts(ctx context.Context) (*proto.SubProductListRespo
 
 	for _, p := range resp.SubProducts {
 		if attrs, ok := subProductIdAttrsMap[p.SubProductInfo.Id]; ok {
-			p.Attribute = attrs
+			p.Attributes = attrs
 		}
 	}
 
