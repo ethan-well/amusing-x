@@ -22,7 +22,7 @@ func HandlerSubProductPictures(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp, err := subproductapp.NewDomain(request).GetSubProducts(ctx)
+	resp, err := subproductapp.NewSubProductPictureDomain(request).GetSubProducts(ctx)
 	if err != nil {
 		logger.Errorf("GetSubProducts failed: %s", err.Error())
 

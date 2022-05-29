@@ -16,14 +16,25 @@ func TestSubProduct(t *testing.T) {
 	ctx, _ := context.WithTimeout(context.Background(), 100*time.Second)
 
 	w := sync.WaitGroup{}
-	w.Add(2)
+	w.Add(3)
 	go _ping(ctx, Client, &w)
 	go _SubProducts(ctx, Client, &w)
+	go _SubProductPictures(ctx, Client, &w)
 	w.Wait()
 }
 
+func _SubProductPictures(ctx context.Context, client charonservice.CharonServClient, w *sync.WaitGroup) {
+	defer w.Done()
+	pictures, err := client.SubProductPictures(ctx, &proto.SubProductPicturesRequest{SubProductIds: []int64{9}})
+	if err != nil {
+		logger.Errorf("err: %s", err)
+	}
+
+	logger.Infof("pictures: %s", logger.ToJson(pictures))
+}
+
 func _SubProducts(ctx context.Context, client charonservice.CharonServClient, w *sync.WaitGroup) {
-	w.Done()
+	defer w.Done()
 
 	in := &proto.SubProductListRequest{
 		Page:   0,

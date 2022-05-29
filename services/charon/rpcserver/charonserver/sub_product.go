@@ -30,6 +30,6 @@ func (s *CharonServer) SubProductUpdate(ctx context.Context, in *proto.SubProduc
 	return subproduct.HandlerUpdate(ctx, in)
 }
 
-func (s *CharonServer) SubProductPictures(context.Context, *proto.SubProductPicturesRequest) (*proto.SubProductPicturesResponse, error) {
+func (s *CharonServer) SubProductPictures(ctx context.Context, in *proto.SubProductPicturesRequest) (*proto.SubProductPicturesResponse, error) {
 	return subproduct.ProductPictures(ctx, in)
 }

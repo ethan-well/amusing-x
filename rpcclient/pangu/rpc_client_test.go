@@ -27,7 +27,6 @@ func TestInitClient(t *testing.T) {
 	go _category(ctx, Client, &w)
 	//go _update(ctx, Client, &w)
 	//go _oauthProviderInfo(ctx, Client, &w)
-
 	w.Wait()
 }
 
