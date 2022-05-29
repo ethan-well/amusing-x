@@ -25,6 +25,7 @@ import "pangu/proto/sub_product_update.proto";
 import "pangu/proto/sub_product_list.proto";
 import "pangu/proto/sub_product_delete.proto";
 import "pangu/proto/sub_product_get.proto";
+import "pangu/proto/sub_product_pictures.proto";
 
 import "pangu/proto/attribute.proto";
 import "pangu/proto/attribute_create.proto";
@@ -63,6 +64,7 @@ service CharonServ {
   rpc SubProducts(panguservice.SubProductListRequest) returns (panguservice.SubProductListResponse) {}
   rpc SubProduct(panguservice.SubProductRequest) returns (panguservice.SubProduct) {}
   rpc SubProductUpdate(panguservice.SubProductUpdateRequest) returns (panguservice.SubProduct) {}
+  rpc SubProductPictures(panguservice.SubProductPicturesRequest) returns (panguservice.SubProductPicturesResponse) {}
 
   rpc AttributeCreate(panguservice.AttributeCreateRequest) returns (panguservice.Attribute) {}
   rpc AttributeDelete(panguservice.AttributeDeleteRequest) returns (panguservice.AttributeDeleteResponse) {}

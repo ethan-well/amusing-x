@@ -33,5 +33,7 @@ func Register(mux *mux.Router) {
 	mux.HandleFunc("/v1/europa/product/categories", oauth.HandlerGetOAuthInfo).Methods(http.MethodGet)
 	mux.HandleFunc("/v1/europa/product/sub_product/list", subproduct.HandlerSubProductsList).Methods(http.MethodGet)
 
+	mux.HandleFunc("/v1/europa/product/sub_product/pictures", subproduct.HandlerSubProductPictures).Methods(http.MethodGet)
+
 	mux.HandleFunc("/v1/europa/logout", logout.HandlerLogOut).Methods(http.MethodGet)
 }

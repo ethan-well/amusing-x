@@ -38,6 +38,7 @@ type CharonServClient interface {
 	SubProducts(ctx context.Context, in *proto.SubProductListRequest, opts ...grpc.CallOption) (*proto.SubProductListResponse, error)
 	SubProduct(ctx context.Context, in *proto.SubProductRequest, opts ...grpc.CallOption) (*proto.SubProduct, error)
 	SubProductUpdate(ctx context.Context, in *proto.SubProductUpdateRequest, opts ...grpc.CallOption) (*proto.SubProduct, error)
+	SubProductPictures(ctx context.Context, in *proto.SubProductPicturesRequest, opts ...grpc.CallOption) (*proto.SubProductPicturesResponse, error)
 	AttributeCreate(ctx context.Context, in *proto.AttributeCreateRequest, opts ...grpc.CallOption) (*proto.Attribute, error)
 	AttributeDelete(ctx context.Context, in *proto.AttributeDeleteRequest, opts ...grpc.CallOption) (*proto.AttributeDeleteResponse, error)
 	AttributesDelete(ctx context.Context, in *proto.AttributesDeleteRequest, opts ...grpc.CallOption) (*proto.AttributesDeleteResponse, error)
@@ -232,6 +233,15 @@ func (c *charonServClient) SubProductUpdate(ctx context.Context, in *proto.SubPr
 	return out, nil
 }
 
+func (c *charonServClient) SubProductPictures(ctx context.Context, in *proto.SubProductPicturesRequest, opts ...grpc.CallOption) (*proto.SubProductPicturesResponse, error) {
+	out := new(proto.SubProductPicturesResponse)
+	err := c.cc.Invoke(ctx, "/charonservice.CharonServ/SubProductPictures", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *charonServClient) AttributeCreate(ctx context.Context, in *proto.AttributeCreateRequest, opts ...grpc.CallOption) (*proto.Attribute, error) {
 	out := new(proto.Attribute)
 	err := c.cc.Invoke(ctx, "/charonservice.CharonServ/AttributeCreate", in, out, opts...)
@@ -372,6 +382,7 @@ type CharonServServer interface {
 	SubProducts(context.Context, *proto.SubProductListRequest) (*proto.SubProductListResponse, error)
 	SubProduct(context.Context, *proto.SubProductRequest) (*proto.SubProduct, error)
 	SubProductUpdate(context.Context, *proto.SubProductUpdateRequest) (*proto.SubProduct, error)
+	SubProductPictures(context.Context, *proto.SubProductPicturesRequest) (*proto.SubProductPicturesResponse, error)
 	AttributeCreate(context.Context, *proto.AttributeCreateRequest) (*proto.Attribute, error)
 	AttributeDelete(context.Context, *proto.AttributeDeleteRequest) (*proto.AttributeDeleteResponse, error)
 	AttributesDelete(context.Context, *proto.AttributesDeleteRequest) (*proto.AttributesDeleteResponse, error)
@@ -448,6 +459,9 @@ func (UnimplementedCharonServServer) SubProduct(context.Context, *proto.SubProdu
 }
 func (UnimplementedCharonServServer) SubProductUpdate(context.Context, *proto.SubProductUpdateRequest) (*proto.SubProduct, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubProductUpdate not implemented")
+}
+func (UnimplementedCharonServServer) SubProductPictures(context.Context, *proto.SubProductPicturesRequest) (*proto.SubProductPicturesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubProductPictures not implemented")
 }
 func (UnimplementedCharonServServer) AttributeCreate(context.Context, *proto.AttributeCreateRequest) (*proto.Attribute, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AttributeCreate not implemented")
@@ -843,6 +857,24 @@ func _CharonServ_SubProductUpdate_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CharonServ_SubProductPictures_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(proto.SubProductPicturesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CharonServServer).SubProductPictures(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/charonservice.CharonServ/SubProductPictures",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CharonServServer).SubProductPictures(ctx, req.(*proto.SubProductPicturesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _CharonServ_AttributeCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(proto.AttributeCreateRequest)
 	if err := dec(in); err != nil {
@@ -1159,6 +1191,10 @@ var CharonServ_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SubProductUpdate",
 			Handler:    _CharonServ_SubProductUpdate_Handler,
+		},
+		{
+			MethodName: "SubProductPictures",
+			Handler:    _CharonServ_SubProductPictures_Handler,
 		},
 		{
 			MethodName: "AttributeCreate",

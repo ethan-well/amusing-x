@@ -162,7 +162,7 @@ func SubProductSearch(ctx context.Context, query string, offset, limit int64) (i
 
 func SubProductSearchV2(ctx context.Context, in *proto.SubProductListRequest, filter *charonservice.SearchFilter) (int64, []*charon.SubProduct, aerror.Error) {
 	wherePlaceholder := `{{whereCondition}}`
-	sqlStr := fmt.Sprintf(`SELECT id, name, description, product_id, currency, price, stock FROM sub_product %s limit ?, ?`, wherePlaceholder)
+	sqlStr := fmt.Sprintf(`SELECT id, name, description, product_id, currency, price, stock, max_num, min_num FROM sub_product %s limit ?, ?`, wherePlaceholder)
 	countStr := fmt.Sprintf(`SELECT count(*) FROM sub_product %s`, wherePlaceholder)
 
 	var whereConditions []string

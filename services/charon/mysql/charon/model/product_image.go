@@ -146,6 +146,29 @@ func ProductImageQueryByProductIdAndLevelWithTx(ctx context.Context, productId i
 	return images, nil
 }
 
+func ProductImageQueryByProductIdsAndLevelWithTx(ctx context.Context, productIds []int64, productLevel int, tx ...*sqlx.Tx) ([]*charon.ProductImage, aerror.Error) {
+	querySql := `SELECT id, product_id, product_level, uploader_type, url
+				FROM product_image
+				WHERE product_level = ? AND product_id in (?)`
+	var images []*charon.ProductImage
+	var err error
+	querySql, args, err := sqlx.In(querySql, productLevel, productIds)
+	if err != nil {
+		return nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql in generate failed")
+	}
+
+	if tx == nil {
+		err = charon2.CharonDB.SelectContext(ctx, &images, querySql, args...)
+	} else {
+		err = tx[0].SelectContext(ctx, &images, querySql, args...)
+	}
+	if err != nil {
+		return nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql execute error")
+	}
+
+	return images, nil
+}
+
 func ProductImageDelete(ctx context.Context, ids []int64) aerror.Error {
 	delSql := `DELETE FROM product_image WHERE id IN (?)`
 

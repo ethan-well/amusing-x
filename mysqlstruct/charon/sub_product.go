@@ -15,6 +15,8 @@ type SubProduct struct {
 	Currency   string    `db:"currency"`
 	Price      int64     `db:"price"`
 	Stock      int64     `db:"stock"`
+	MinNum     int64     `db:"min_num"`
+	MaxNum     int64     `db:"max_num"`
 	CreateTime time.Time `db:"create_time"`
 	UpdateTime time.Time `db:"update_time"`
 }

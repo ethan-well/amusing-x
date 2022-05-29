@@ -2,6 +2,8 @@ package model
 
 import (
 	charon2 "amusingx.fit/amusingx/mysqlstruct/charon"
+	charonservice "amusingx.fit/amusingx/protos/charon/service/charon/proto"
+	"amusingx.fit/amusingx/protos/pangu/service/pangu/proto"
 	"amusingx.fit/amusingx/services/charon/mysql/charon"
 	"context"
 	"github.com/ItsWewin/superfactory/logger"
@@ -111,6 +113,36 @@ func TestSubProductListQuery(t *testing.T) {
 	charon.Mock()
 
 	total, subProducts, err := SubProductSearch(context.Background(), "name", 0, 10)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	t.Logf("total: %d", total)
+	t.Logf("products: %s", logger.ToJson(subProducts))
+}
+
+func TestSubProductSearchV2(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip ...")
+	}
+
+	charon.Mock()
+
+	in := &proto.SubProductListRequest{
+		Query:  "",
+		Page:   1,
+		Limit:  10,
+		Sort:   "",
+		Filter: "",
+		Offset: 0,
+	}
+	filter := &charonservice.SearchFilter{
+		Id:   nil,
+		Name: nil,
+		Desc: nil,
+	}
+
+	total, subProducts, err := SubProductSearchV2(context.Background(), in, filter)
 	if err != nil {
 		t.Fatal(err)
 	}

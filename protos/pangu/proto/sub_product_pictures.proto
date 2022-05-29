@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option go_package = "amusingx.fit/amusingx/protos/pangu/service/pangu/proto";
+
+package panguservice;
+
+message SubProductPicturesRequest {
+  repeated int64 sub_product_ids = 1;
+}
+
+message SubProductPicture {
+  int64 sub_product_id  = 1;
+  repeated string pictures = 2;
+}
+
+message SubProductPicturesResponse {
+    repeated SubProductPicture sub_product_pictures = 1;
+}
+

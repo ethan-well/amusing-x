@@ -14,6 +14,9 @@ message SubProduct {
   int64 stock = 7;
   repeated int64 attribute_id = 8 [json_name="attribute_id"];
   repeated Picture pictures = 9;
+  string currency_symbol = 10;
+  int64 max_num = 11 [json_name="max_num"];
+  int64 min_num = 12 [json_name="min_num"];
 }
 
 message RawFile {

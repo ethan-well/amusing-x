@@ -29,3 +29,7 @@ func (s *CharonServer) SubProduct(ctx context.Context, in *proto.SubProductReque
 func (s *CharonServer) SubProductUpdate(ctx context.Context, in *proto.SubProductUpdateRequest) (*proto.SubProduct, error) {
 	return subproduct.HandlerUpdate(ctx, in)
 }
+
+func (s *CharonServer) SubProductPictures(context.Context, *proto.SubProductPicturesRequest) (*proto.SubProductPicturesResponse, error) {
+	return subproduct.ProductPictures(ctx, in)
+}

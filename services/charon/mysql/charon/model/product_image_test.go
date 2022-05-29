@@ -121,6 +121,31 @@ func TestProductImageQueryByProductIdAndLevelWithTx(t *testing.T) {
 	t.Logf("images length: %d", len(images))
 }
 
+func TestProductImageQueryByProductIdsAndLevelWithTx(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip ...")
+	}
+
+	charon.Mock()
+
+	tx, e := charon.CharonDB.Beginx()
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer tx.Rollback()
+
+	images, err := ProductImageQueryByProductIdsAndLevelWithTx(context.Background(), []int64{9}, 1, tx)
+	if err != nil {
+		t.Fatalf("some err: %s", err)
+	}
+	if e := tx.Commit(); e != nil {
+		t.Fatal(e)
+	}
+
+	t.Logf("images length: %d", len(images))
+	t.Logf("images: %s", logger.ToJson(images))
+}
+
 func TestProductImageUpdate(t *testing.T) {
 	if testing.Short() {
 		t.Skip("skip ...")

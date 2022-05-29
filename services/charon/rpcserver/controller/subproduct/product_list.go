@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"github.com/ItsWewin/superfactory/aerror"
 	"github.com/ItsWewin/superfactory/aregexp"
+	"github.com/ItsWewin/superfactory/currency"
 	"github.com/ItsWewin/superfactory/logger"
 	"strconv"
 )
@@ -31,13 +32,16 @@ func HandlerList(ctx context.Context, in *proto.SubProductListRequest) (*proto.S
 	var productList []*proto.SubProduct
 	for _, p := range products {
 		productList = append(productList, &proto.SubProduct{
-			Id:        p.ID,
-			Name:      p.Name,
-			Desc:      p.Desc,
-			ProductId: p.ProductId,
-			Currency:  p.Currency,
-			Price:     p.Price,
-			Stock:     p.Stock,
+			Id:             p.ID,
+			Name:           p.Name,
+			Desc:           p.Desc,
+			ProductId:      p.ProductId,
+			Currency:       p.Currency,
+			Price:          p.Price,
+			Stock:          p.Stock,
+			CurrencySymbol: currency.GetSymbol(p.Currency),
+			MinNum:         p.MinNum,
+			MaxNum:         p.MaxNum,
 		})
 	}
 
