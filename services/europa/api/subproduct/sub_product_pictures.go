@@ -22,9 +22,9 @@ func HandlerSubProductPictures(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp, err := subproductapp.NewSubProductPictureDomain(request).GetSubProducts(ctx)
+	resp, err := subproductapp.NewSubProductPictureDomain(request).GetSubProductPictures(ctx)
 	if err != nil {
-		logger.Errorf("GetSubProducts failed: %s", err.Error())
+		logger.Errorf("GetSubProductPictures failed: %s", err.Error())
 
 		rest.FailJsonResponse(w, aerror.Code.CUnexpectRequestDate, err.Message())
 		return
