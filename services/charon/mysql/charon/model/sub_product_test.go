@@ -24,6 +24,8 @@ func TestSubProductInsert(t *testing.T) {
 		Currency:  "CNY",
 		Price:     10000,
 		Stock:     111111,
+		MinNum:    1111,
+		MaxNum:    1111111111,
 	}
 	product, err := SubProductInsert(context.Background(), product)
 	if err != nil {
@@ -40,7 +42,7 @@ func TestSubProductQueryById(t *testing.T) {
 
 	charon.Mock()
 
-	product, err := SubProductQueryById(context.Background(), 3)
+	product, err := SubProductQueryById(context.Background(), 9)
 	if err != nil {
 		t.Fatalf("some err: %s", err)
 	}
@@ -56,13 +58,15 @@ func TestSubProductUpdate(t *testing.T) {
 	charon.Mock()
 
 	product := &charon2.SubProduct{
-		ID:        4,
+		ID:        13,
 		Name:      "name 2",
 		Desc:      "desc 2",
 		ProductId: 222,
 		Currency:  "USD",
-		Price:     100001,
-		Stock:     222222,
+		Price:     11,
+		Stock:     22,
+		MinNum:    111,
+		MaxNum:    222,
 	}
 	err := SubProductUpdate(context.Background(), product)
 	if err != nil {

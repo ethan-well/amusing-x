@@ -12,7 +12,6 @@ import (
 	session2 "amusingx.fit/amusingx/services/ganymede/session"
 	"context"
 	"github.com/ItsWewin/superfactory/aerror"
-	"github.com/ItsWewin/superfactory/logger"
 )
 
 func HandlerOAuthLogin(ctx context.Context, req *ganymedeservice.OAuthLoginRequest) (*ganymedeservice.OAuthLoginResponse, aerror.Error) {
@@ -61,13 +60,10 @@ func oauthLogin(ctx context.Context, req *ganymedeservice.OAuthLoginRequest) (*g
 		return loginInfo, err
 	}
 
-	logger.Infof("token: %s", logger.ToJson(token))
-
 	userProfile, err := oAuth.GetUserProfile(userProfileUrl, token.AccessToken)
 	if err != nil {
 		return loginInfo, err
 	}
-	logger.Infof("userProfile: %s", logger.ToJson(userProfile))
 
 	user, err := saveUserInfo(ctx, req.Provider, req.Code, token, userProfile)
 	if err != nil {

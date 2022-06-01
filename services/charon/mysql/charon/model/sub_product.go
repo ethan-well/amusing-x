@@ -14,7 +14,8 @@ import (
 )
 
 func SubProductInsert(ctx context.Context, subProduct *charon.SubProduct) (*charon.SubProduct, aerror.Error) {
-	insertSql := `INSERT INTO sub_product (product_id, name, description, currency, price, stock) VALUES (:product_id, :name, :description, :currency, :price, :stock)`
+	insertSql := `INSERT INTO sub_product (product_id, name, description, currency, price, stock, max_num, min_num)
+		VALUES (:product_id, :name, :description, :currency, :price, :stock, :max_num, :min_num)`
 	result, err := charon2.CharonDB.NamedExecContext(ctx, insertSql, subProduct)
 	if err != nil {
 		return nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql execute error")
@@ -31,7 +32,7 @@ func SubProductInsert(ctx context.Context, subProduct *charon.SubProduct) (*char
 }
 
 func SubProductQueryById(ctx context.Context, id int64) (*charon.SubProduct, aerror.Error) {
-	querySql := `SELECT id, product_id, name, description, currency, price, stock FROM sub_product WHERE id = ?`
+	querySql := `SELECT id, product_id, name, description, currency, price, stock, max_num, min_num FROM sub_product WHERE id = ?`
 	var products []*charon.SubProduct
 	err := charon2.CharonDB.SelectContext(ctx, &products, querySql, id)
 	if err != nil {
@@ -45,7 +46,7 @@ func SubProductQueryById(ctx context.Context, id int64) (*charon.SubProduct, aer
 }
 
 func SubProductQueryByIdWithTx(ctx context.Context, id int64, tx ...*sqlx.Tx) (*charon.SubProduct, aerror.Error) {
-	querySql := `SELECT id, product_id, name, description, currency, price, stock FROM sub_product WHERE id = ?`
+	querySql := `SELECT id, product_id, name, description, currency, price, stock, max_num, min_num FROM sub_product WHERE id = ?`
 	var products []*charon.SubProduct
 	var err error
 	if tx == nil {
@@ -102,8 +103,9 @@ func SubProductUpdate(ctx context.Context, product *charon.SubProduct) aerror.Er
 		product_id = :product_id,
 		currency = :currency,
 		price = :price,
-		stock = :stock
-		
+		stock = :stock,
+		max_num = :max_num,
+		min_num = :min_num
 		WHERE id = :id
 `
 	_, err := charon2.CharonDB.NamedExecContext(ctx, sqlStr, product)
@@ -121,7 +123,9 @@ func SubProductUpdateWithTx(ctx context.Context, tx *sqlx.Tx, product *charon.Su
 		product_id = :product_id,
 		currency = :currency,
 		price = :price,
-		stock = :stock
+		stock = :stock,
+		max_num = :max_num,
+		min_num = :min_num
 		WHERE id = :id
 `
 	_, err := tx.NamedExecContext(ctx, sqlStr, product)
@@ -135,7 +139,7 @@ func SubProductUpdateWithTx(ctx context.Context, tx *sqlx.Tx, product *charon.Su
 func SubProductSearch(ctx context.Context, query string, offset, limit int64) (int64, []*charon.SubProduct, aerror.Error) {
 	formSql := `FROM sub_product `
 	whereSql := `WHERE name LIKE ? OR description LIKE ? `
-	searchSelect := `SELECT id, name, description, product_id, currency, price, stock `
+	searchSelect := `SELECT id, name, description, product_id, currency, price, stock, max_num, min_num `
 	countSelect := `SELECT count(*) `
 	query = query + "%"
 
