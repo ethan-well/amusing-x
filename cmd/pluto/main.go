@@ -6,7 +6,6 @@ import (
 	"amusingx.fit/amusingx/services/pluto/mysql"
 	"amusingx.fit/amusingx/services/pluto/rpcserver"
 	"amusingx.fit/amusingx/services/pluto/xredis"
-	"fmt"
 	"github.com/ItsWewin/superfactory/logger"
 	"github.com/ItsWewin/superfactory/powertrain"
 	clientv3 "go.etcd.io/etcd/client/v3"
@@ -41,7 +40,6 @@ func InitFunc() {
 	})
 
 	InitRPCServer()
-	ServerInitLog()
 }
 
 // DeferFunc 服务执行完毕时候执行
@@ -61,8 +59,4 @@ func InitRPCServer() {
 		logger.Errorf("init rpc server failed: %s", err)
 		panic(err)
 	}
-}
-
-func ServerInitLog() {
-	fmt.Println("pluto xxxxxxxx")
 }

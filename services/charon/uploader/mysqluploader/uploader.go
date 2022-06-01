@@ -24,7 +24,7 @@ func (u *Uploader) UploadBase64(ctx context.Context, base64str string, fileName 
 
 	info, err := model.ProductImageBase64Insert(ctx, image)
 	if err != nil || info == nil {
-		return nil, aerror.NewErrorf(nil, aerror.Code.SSqlExecuteErr, "product image base64 insert error")
+		return nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "product image base64 insert error")
 	}
 
 	return &comm.UploadInfo{

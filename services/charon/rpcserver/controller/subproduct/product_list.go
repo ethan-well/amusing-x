@@ -53,8 +53,6 @@ func HandlerList(ctx context.Context, in *proto.SubProductListRequest) (*proto.S
 		Data:    productList,
 	}
 
-	logger.Errorf("resp: %s", logger.ToJson(resp))
-
 	return resp, nil
 }
 

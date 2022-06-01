@@ -5,12 +5,9 @@ import (
 	"amusingx.fit/amusingx/services/charon/mysql/charon/model"
 	"context"
 	"github.com/ItsWewin/superfactory/aerror"
-	"github.com/ItsWewin/superfactory/logger"
 )
 
 func HandlerAttributeWithSubProducts(ctx context.Context, in *proto.AttributeListRequest) (*proto.AttributeWithSubProductListResponse, aerror.Error) {
-	logger.Error("come here.")
-
 	if in == nil {
 		return nil, aerror.NewErrorf(nil, aerror.Code.CParamsError, "request is invalid")
 	}

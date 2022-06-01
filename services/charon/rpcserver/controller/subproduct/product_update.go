@@ -167,7 +167,7 @@ func uploadImage(ctx context.Context, subProduct *charon.SubProduct, pictures []
 
 	_, err = savePictureInfo(ctx, subProduct, pictureList)
 	if err != nil {
-		return nil, nil
+		return nil, err
 	}
 
 	return pictureList, nil

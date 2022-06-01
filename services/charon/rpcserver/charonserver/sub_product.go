@@ -4,6 +4,7 @@ import (
 	"amusingx.fit/amusingx/protos/pangu/service/pangu/proto"
 	"amusingx.fit/amusingx/services/charon/rpcserver/controller/subproduct"
 	"context"
+	"github.com/ItsWewin/superfactory/logger"
 )
 
 func (s *CharonServer) SubProductCreate(ctx context.Context, in *proto.SubProductCreateRequest) (*proto.SubProduct, error) {
@@ -27,7 +28,13 @@ func (s *CharonServer) SubProduct(ctx context.Context, in *proto.SubProductReque
 }
 
 func (s *CharonServer) SubProductUpdate(ctx context.Context, in *proto.SubProductUpdateRequest) (*proto.SubProduct, error) {
-	return subproduct.HandlerUpdate(ctx, in)
+	resp, err := subproduct.HandlerUpdate(ctx, in)
+	if err != nil {
+		logger.Errorf("[SubProductUpdate] err: %s", err)
+		return nil, err
+	}
+
+	return resp, nil
 }
 
 func (s *CharonServer) SubProductPictures(ctx context.Context, in *proto.SubProductPicturesRequest) (*proto.SubProductPicturesResponse, error) {
