@@ -35,6 +35,39 @@ func TestSubProductInsert(t *testing.T) {
 	t.Logf("sub product: %s", logger.ToJson(product))
 }
 
+func TestSubProductInsertWithTx(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip ...")
+	}
+
+	charon.Mock()
+
+	tx, err := charon.CharonDB.Beginx()
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer tx.Rollback()
+
+	product := &charon2.SubProduct{
+		Name:      "name",
+		Desc:      "desc",
+		ProductId: 1,
+		Currency:  "CNY",
+		Price:     10000,
+		Stock:     111111,
+		MinNum:    1111,
+		MaxNum:    1111111111,
+	}
+	product, err = SubProductInsertWithTx(context.Background(), product, tx)
+	if err != nil {
+		t.Fatalf("some err: %s", err)
+	}
+
+	tx.Commit()
+
+	t.Logf("sub product: %s", logger.ToJson(product))
+}
+
 func TestSubProductQueryById(t *testing.T) {
 	if testing.Short() {
 		t.Skip("skip ...")
@@ -46,7 +79,6 @@ func TestSubProductQueryById(t *testing.T) {
 	if err != nil {
 		t.Fatalf("some err: %s", err)
 	}
-
 	t.Logf("product: %s", logger.ToJson(product))
 }
 

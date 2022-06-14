@@ -31,6 +31,31 @@ func SubProductInsert(ctx context.Context, subProduct *charon.SubProduct) (*char
 	return subProduct, nil
 }
 
+func SubProductInsertWithTx(ctx context.Context, subProduct *charon.SubProduct, tx ...*sqlx.Tx) (*charon.SubProduct, aerror.Error) {
+	insertSql := `INSERT INTO sub_product (product_id, name, description, currency, price, stock, max_num, min_num)
+		VALUES (:product_id, :name, :description, :currency, :price, :stock, :max_num, :min_num)`
+
+	var result sql.Result
+	var err error
+	if tx == nil {
+		result, err = charon2.CharonDB.NamedExecContext(ctx, insertSql, subProduct)
+	} else {
+		result, err = tx[0].NamedExecContext(ctx, insertSql, subProduct)
+	}
+	if err != nil {
+		return nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql execute error")
+	}
+
+	id, err := result.LastInsertId()
+	if err != nil {
+		return nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "get last insert id failed")
+	}
+
+	subProduct.ID = id
+
+	return subProduct, nil
+}
+
 func SubProductQueryById(ctx context.Context, id int64) (*charon.SubProduct, aerror.Error) {
 	querySql := `SELECT id, product_id, name, description, currency, price, stock, max_num, min_num FROM sub_product WHERE id = ?`
 	var products []*charon.SubProduct
