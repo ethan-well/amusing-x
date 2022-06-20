@@ -23,7 +23,6 @@ func TestSubProductInsert(t *testing.T) {
 		ProductId: 1,
 		Currency:  "CNY",
 		Price:     10000,
-		Stock:     111111,
 		MinNum:    1111,
 		MaxNum:    1111111111,
 	}
@@ -54,7 +53,6 @@ func TestSubProductInsertWithTx(t *testing.T) {
 		ProductId: 1,
 		Currency:  "CNY",
 		Price:     10000,
-		Stock:     111111,
 		MinNum:    1111,
 		MaxNum:    1111111111,
 	}
@@ -96,7 +94,6 @@ func TestSubProductUpdate(t *testing.T) {
 		ProductId: 222,
 		Currency:  "USD",
 		Price:     11,
-		Stock:     22,
 		MinNum:    111,
 		MaxNum:    222,
 	}
@@ -128,7 +125,6 @@ func TestSubProductUpdateWithTx(t *testing.T) {
 		ProductId: 101,
 		Currency:  "CNY",
 		Price:     101,
-		Stock:     101,
 	}
 
 	err = SubProductUpdateWithTx(context.Background(), tx, product)
@@ -139,6 +135,29 @@ func TestSubProductUpdateWithTx(t *testing.T) {
 	if e := tx.Commit(); e != nil {
 		t.Fatal(e)
 	}
+}
+
+func TestSubProductWithStockQueryByIdWithTx(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip ....")
+	}
+
+	charon.Mock()
+
+	tx, err := charon.CharonDB.Beginx()
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer tx.Rollback()
+
+	info, err := SubProductWithStockQueryByIdWithTx(context.Background(), 16, tx)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	t.Logf("info: %s", logger.ToJson(info))
+
+	tx.Commit()
 }
 
 func TestSubProductListQuery(t *testing.T) {

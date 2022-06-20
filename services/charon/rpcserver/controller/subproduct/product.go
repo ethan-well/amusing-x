@@ -17,7 +17,7 @@ func HandlerQuery(ctx context.Context, in *proto.SubProductRequest) (*proto.SubP
 	}
 	defer tx.Rollback()
 
-	product, err := model.SubProductQueryByIdWithTx(ctx, in.Id, tx)
+	product, err := model.SubProductWithStockQueryByIdWithTx(ctx, in.Id, tx)
 	if err != nil {
 		return nil, err
 	}
@@ -63,14 +63,15 @@ func HandlerQuery(ctx context.Context, in *proto.SubProductRequest) (*proto.SubP
 	}
 
 	return &proto.SubProduct{
-		Id:          product.ID,
-		Name:        product.Name,
-		Desc:        product.Desc,
-		ProductId:   product.ProductId,
-		Currency:    product.Currency,
-		Price:       product.Price,
-		Stock:       product.Stock,
-		AttributeId: attrIds,
-		Pictures:    pictureList,
+		Id:                 product.ID,
+		Name:               product.Name,
+		Desc:               product.Desc,
+		ProductId:          product.ProductId,
+		Currency:           product.Currency,
+		Price:              product.Price,
+		AttributeId:        attrIds,
+		Pictures:           pictureList,
+		AvailableInventory: product.AvailableInventory,
+		RealInventory:      product.RealInventory,
 	}, nil
 }

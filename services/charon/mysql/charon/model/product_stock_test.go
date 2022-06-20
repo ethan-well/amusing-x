@@ -78,3 +78,28 @@ func TestQueryProductStockBySubProductIds(t *testing.T) {
 
 	t.Logf("result: %s", logger.ToJson(result))
 }
+
+func TestProductStockUpdateWithTx(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip ...")
+	}
+
+	charon.Mock()
+
+	tx, e := charon.CharonDB.Beginx()
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer tx.Rollback()
+
+	err := ProductStockUpdateWithTx(context.Background(), &charon2.ProductStock{
+		SubProductId:       11,
+		RealInventory:      10001,
+		AvailableInventory: 888,
+	}, tx)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	tx.Commit()
+}

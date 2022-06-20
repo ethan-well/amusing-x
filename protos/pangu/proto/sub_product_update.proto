@@ -16,4 +16,6 @@ message SubProductUpdateRequest {
   int64 stock = 7;
   repeated int64 attribute_id = 8;
   repeated Picture pictures = 9;
+  int64 real_inventory = 10;
+  int64 available_inventory = 11;
 }

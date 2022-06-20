@@ -99,6 +99,28 @@ func SubProductQueryByIdWithTx(ctx context.Context, id int64, tx ...*sqlx.Tx) (*
 	return products[0], nil
 }
 
+func SubProductWithStockQueryByIdWithTx(ctx context.Context, id int64, tx ...*sqlx.Tx) (*charon.SubProductWithProductStock, aerror.Error) {
+	querySql := `SELECT sp.id, sp.product_id, sp.name, sp.description, sp.currency, sp.price, sp.stock, sp.max_num, sp.min_num, ps.real_inventory, ps.available_inventory
+		FROM sub_product sp
+		LEFT JOIN product_stock ps ON sp.id = ps.sub_product_id
+		WHERE sp.id = ?`
+	var products []*charon.SubProductWithProductStock
+	var err error
+	if tx == nil {
+		err = charon2.CharonDB.SelectContext(ctx, &products, querySql, id)
+	} else {
+		err = tx[0].SelectContext(ctx, &products, querySql, id)
+	}
+	if err != nil {
+		return nil, aerror.NewErrorf(err, aerror.Code.SSqlExecuteErr, "sql execute error")
+	}
+	if len(products) == 0 {
+		return nil, nil
+	}
+
+	return products[0], nil
+}
+
 func SubProductDelete(ctx context.Context, ids []int64, tx ...*sqlx.Tx) aerror.Error {
 	delSql := `DELETE FROM sub_product WHERE id IN (?)`
 
@@ -211,7 +233,9 @@ func SubProductSearchWithProductStock(ctx context.Context, in *proto.SubProductL
 		LEFT JOIN product_stock ps on sp.id = ps.sub_product_id
 		%s limit ?, ?`, wherePlaceholder)
 
-	countStr := fmt.Sprintf(`SELECT count(*) FROM sub_product sp %s`, wherePlaceholder)
+	countStr := fmt.Sprintf(`SELECT count(*)
+		FROM sub_product sp
+		LEFT JOIN product_stock ps on sp.id = ps.sub_product_id %s`, wherePlaceholder)
 
 	var whereConditions []string
 	var params []interface{}
@@ -229,6 +253,8 @@ func SubProductSearchWithProductStock(ctx context.Context, in *proto.SubProductL
 		whereConditions = append(whereConditions, "sp.description in (?)")
 		params = append(params, filter.Desc)
 	}
+
+	whereConditions = append(whereConditions, "ps.real_inventory is not null")
 
 	params = append(params, in.Offset, in.Limit)
 

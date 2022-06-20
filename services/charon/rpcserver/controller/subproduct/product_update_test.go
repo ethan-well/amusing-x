@@ -50,7 +50,6 @@ func TestUploadImage(t *testing.T) {
 		ProductId: 1,
 		Currency:  "CNY",
 		Price:     1000,
-		Stock:     10001,
 	}
 	pictures := []*proto.Picture{
 		{

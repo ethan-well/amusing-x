@@ -34,11 +34,16 @@ func HandlerUpdate(ctx context.Context, in *proto.SubProductUpdateRequest) (*pro
 		ProductId: in.ProductId,
 		Currency:  in.Currency,
 		Price:     in.Price,
-		Stock:     in.Stock,
 	})
 	if err != nil {
 		return nil, aerror.NewErrorf(err, err.Code(), err.Message())
 	}
+
+	err = model.ProductStockUpdateWithTx(ctx, &charon.ProductStock{
+		SubProductId:       in.Id,
+		RealInventory:      in.RealInventory,
+		AvailableInventory: in.AvailableInventory,
+	}, tx)
 
 	subProduct, err := model.SubProductQueryById(ctx, in.Id)
 	if err != nil {
@@ -101,15 +106,16 @@ func HandlerUpdate(ctx context.Context, in *proto.SubProductUpdateRequest) (*pro
 	}
 
 	return &proto.SubProduct{
-		Id:          subProduct.ID,
-		Name:        subProduct.Name,
-		Desc:        subProduct.Desc,
-		ProductId:   subProduct.ProductId,
-		Currency:    subProduct.Currency,
-		Price:       subProduct.Price,
-		Stock:       subProduct.Stock,
-		AttributeId: in.AttributeId,
-		Pictures:    pictures,
+		Id:                 subProduct.ID,
+		Name:               subProduct.Name,
+		Desc:               subProduct.Desc,
+		ProductId:          subProduct.ProductId,
+		Currency:           subProduct.Currency,
+		Price:              subProduct.Price,
+		AttributeId:        in.AttributeId,
+		Pictures:           pictures,
+		RealInventory:      100,
+		AvailableInventory: 10,
 	}, nil
 }
 

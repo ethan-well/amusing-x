@@ -79,3 +79,23 @@ func ProductStockDeleteBySubProductIds(ctx context.Context, ids []int64, tx ...*
 
 	return nil
 }
+
+func ProductStockUpdateWithTx(ctx context.Context, productStock *charon.ProductStock, tx ...*sqlx.Tx) aerror.Error {
+	sqlStr := `UPDATE product_stock
+		SET real_inventory = :real_inventory,
+			available_inventory = :available_inventory
+		WHERE sub_product_id = :sub_product_id
+	`
+	var err error
+	if tx != nil {
+		_, err = tx[0].NamedExecContext(ctx, sqlStr, productStock)
+	} else {
+		_, err = charon2.CharonDB.NamedExecContext(ctx, sqlStr, productStock)
+	}
+
+	if err != nil {
+		return aerror.NewErrorf(nil, aerror.Code.BUnexpectedData, "update failed")
+	}
+
+	return nil
+}

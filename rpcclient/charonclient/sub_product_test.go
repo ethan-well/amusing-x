@@ -16,10 +16,11 @@ func TestSubProduct(t *testing.T) {
 	ctx, _ := context.WithTimeout(context.Background(), 100*time.Second)
 
 	w := sync.WaitGroup{}
-	w.Add(3)
+	w.Add(4)
 	go _ping(ctx, Client, &w)
 	go _SubProducts(ctx, Client, &w)
 	go _SubProductPictures(ctx, Client, &w)
+	go _SubProductUpdate(ctx, Client, &w)
 	w.Wait()
 }
 
@@ -45,6 +46,28 @@ func _SubProducts(ctx context.Context, client charonservice.CharonServClient, w 
 	}
 
 	resp, err := client.SubProducts(ctx, in)
+	if err != nil {
+		logger.Errorf("err: %s", err)
+	}
+
+	logger.Infof("\nresp: %s", logger.ToJson(resp))
+}
+
+func _SubProductUpdate(ctx context.Context, client charonservice.CharonServClient, w *sync.WaitGroup) {
+	defer w.Done()
+
+	in := &proto.SubProductUpdateRequest{
+		Id:                 16,
+		Name:               "name new",
+		Desc:               "desc new",
+		Currency:           "CNY",
+		Price:              1111,
+		Stock:              2222,
+		RealInventory:      3333,
+		AvailableInventory: 4444,
+	}
+
+	resp, err := client.SubProductUpdate(ctx, in)
 	if err != nil {
 		logger.Errorf("err: %s", err)
 	}

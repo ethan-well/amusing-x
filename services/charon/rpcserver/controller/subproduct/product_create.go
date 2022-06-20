@@ -25,7 +25,6 @@ func HandlerCreate(ctx context.Context, in *proto.SubProductCreateRequest) (*pro
 		ProductId: in.ProductId,
 		Currency:  in.Currency,
 		Price:     in.Price,
-		Stock:     in.Stock,
 	}, tx)
 
 	if err != nil {
@@ -45,7 +44,6 @@ func HandlerCreate(ctx context.Context, in *proto.SubProductCreateRequest) (*pro
 		ProductId: product.ProductId,
 		Currency:  product.Currency,
 		Price:     product.Price,
-		Stock:     product.Stock,
 	}, nil
 }
 
@@ -66,7 +64,6 @@ func HandlerCreateV2(ctx context.Context, in *proto.SubProductCreateRequest) (*p
 		ProductId: in.ProductId,
 		Currency:  in.Currency,
 		Price:     in.Price,
-		Stock:     in.Stock,
 	}, tx)
 	if err != nil {
 		return nil, err
@@ -81,6 +78,5 @@ func HandlerCreateV2(ctx context.Context, in *proto.SubProductCreateRequest) (*p
 		ProductId: product.ProductId,
 		Currency:  product.Currency,
 		Price:     product.Price,
-		Stock:     product.Stock,
 	}, nil
 }

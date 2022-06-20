@@ -24,26 +24,26 @@ func HandlerList(ctx context.Context, in *proto.SubProductListRequest) (*proto.S
 		return nil, err
 	}
 
-	total, products, err := model.SubProductSearchV2(ctx, in, filter)
+	total, products, err := model.SubProductSearchWithProductStock(ctx, in, filter)
 	if err != nil {
 		return nil, err
 	}
-	
+
 	var productList []*proto.SubProduct
 	for _, p := range products {
 		productList = append(productList, &proto.SubProduct{
-			Id:             p.ID,
-			Name:           p.Name,
-			Desc:           p.Desc,
-			ProductId:      p.ProductId,
-			Currency:       p.Currency,
-			Price:          p.Price,
-			Stock:          p.Stock,
-			CurrencySymbol: currency.GetSymbol(p.Currency),
-			MinNum:         p.MinNum,
-			MaxNum:         p.MaxNum,
-			RealInventory: p.Stock,
-			AvailableInventory:
+			Id:                 p.ID,
+			Name:               p.Name,
+			Desc:               p.Desc,
+			ProductId:          p.ProductId,
+			Currency:           p.Currency,
+			Price:              p.Price,
+			Stock:              p.Stock,
+			CurrencySymbol:     currency.GetSymbol(p.Currency),
+			MinNum:             p.MinNum,
+			MaxNum:             p.MaxNum,
+			RealInventory:      p.RealInventory,
+			AvailableInventory: p.AvailableInventory,
 		})
 	}
 
