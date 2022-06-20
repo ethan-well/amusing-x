@@ -17,6 +17,8 @@ message SubProduct {
   string currency_symbol = 10;
   int64 max_num = 11 [json_name="max_num"];
   int64 min_num = 12 [json_name="min_num"];
+  int64 real_inventory = 13 [json_name="real_inventory"];
+  int64 available_inventory = 14 [json_name="available_inventory"];
 }
 
 message RawFile {

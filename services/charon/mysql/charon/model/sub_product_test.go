@@ -187,6 +187,36 @@ func TestSubProductSearchV2(t *testing.T) {
 	t.Logf("products: %s", logger.ToJson(subProducts))
 }
 
+func TestSubProductSearchWithProductStock(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip ...")
+	}
+
+	charon.Mock()
+
+	in := &proto.SubProductListRequest{
+		Query:  "",
+		Page:   1,
+		Limit:  10,
+		Sort:   "",
+		Filter: "",
+		Offset: 0,
+	}
+	filter := &charonservice.SearchFilter{
+		Id:   nil,
+		Name: nil,
+		Desc: nil,
+	}
+
+	total, subProducts, err := SubProductSearchWithProductStock(context.Background(), in, filter)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	t.Logf("total: %d", total)
+	t.Logf("products: %s", logger.ToJson(subProducts))
+}
+
 func TestSubProductDelete(t *testing.T) {
 	if testing.Short() {
 		t.Skip("skip ...")

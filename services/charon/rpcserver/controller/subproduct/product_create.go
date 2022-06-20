@@ -13,6 +13,11 @@ func HandlerCreate(ctx context.Context, in *proto.SubProductCreateRequest) (*pro
 	if in.Name == "" {
 		return nil, aerror.NewErrorf(nil, aerror.Code.CParamsError, "name is nil")
 	}
+	tx, e := charon2.CharonDB.Beginx()
+	if e != nil {
+		return nil, aerror.NewErrorf(e, aerror.Code.SSqlExecuteErr, "sql Beginx failed")
+	}
+	defer tx.Rollback()
 
 	product, err := model.SubProductInsert(ctx, &charon.SubProduct{
 		Name:      in.Name,
@@ -21,10 +26,17 @@ func HandlerCreate(ctx context.Context, in *proto.SubProductCreateRequest) (*pro
 		Currency:  in.Currency,
 		Price:     in.Price,
 		Stock:     in.Stock,
-	})
+	}, tx)
+
 	if err != nil {
 		return nil, err
 	}
+
+	_, err = model.ProductStockInsert(ctx, &charon.ProductStock{
+		SubProductId:       product.ID,
+		RealInventory:      in.Stock,
+		AvailableInventory: in.Stock,
+	})
 
 	return &proto.SubProduct{
 		Id:        product.ID,

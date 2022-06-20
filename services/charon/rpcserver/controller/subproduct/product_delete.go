@@ -15,9 +15,23 @@ func HandlerDelete(ctx context.Context, in *proto.SubProductDeleteRequest) (*pro
 		return nil, aerror.NewErrorf(nil, aerror.Code.CParamsError, "id is 0")
 	}
 
-	err := model.SubProductDelete(ctx, []int64{in.Id})
+	tx, e := charon.CharonDB.Beginx()
+	if e != nil {
+		return nil, aerror.NewErrorf(e, aerror.Code.SSqlExecuteErr, "sql beginx failed")
+	}
+
+	err := model.SubProductDelete(ctx, []int64{in.Id}, tx)
 	if err != nil {
 		return nil, err
+	}
+
+	err = model.ProductStockDeleteBySubProductIds(ctx, []int64{in.Id}, tx)
+	if err != nil {
+		return nil, err
+	}
+
+	if e := tx.Commit(); e != nil {
+		return nil, aerror.NewErrorf(e, aerror.Code.SSqlExecuteErr, "sql commit failed")
 	}
 
 	return &proto.SubProductDeleteResponse{Result: true}, nil
@@ -56,6 +70,10 @@ func HandlerDeleteMany(ctx context.Context, in *proto.SubProductsDeleteRequest) 
 
 	// delete category_product_mapping
 	if err := model.AttributeMappingDeleteBySubProductIdWithTx(ctx, tx, ids); err != nil {
+		return nil, err
+	}
+
+	if err := model.ProductStockDeleteBySubProductIds(ctx, ids, tx); err != nil {
 		return nil, err
 	}
 

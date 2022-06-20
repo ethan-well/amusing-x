@@ -28,7 +28,7 @@ func HandlerList(ctx context.Context, in *proto.SubProductListRequest) (*proto.S
 	if err != nil {
 		return nil, err
 	}
-
+	
 	var productList []*proto.SubProduct
 	for _, p := range products {
 		productList = append(productList, &proto.SubProduct{
@@ -42,6 +42,8 @@ func HandlerList(ctx context.Context, in *proto.SubProductListRequest) (*proto.S
 			CurrencySymbol: currency.GetSymbol(p.Currency),
 			MinNum:         p.MinNum,
 			MaxNum:         p.MaxNum,
+			RealInventory: p.Stock,
+			AvailableInventory:
 		})
 	}
 
