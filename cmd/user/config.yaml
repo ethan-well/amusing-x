@@ -1,0 +1,45 @@
+server:
+  name: "amusing-x/user"
+  http_server:
+    addr: :10005
+  grpc_server:
+    network: tcp
+    address: :20005
+grpc_client:
+  callisto:
+    addr: 20002
+mysql:
+  plutodb:
+    db: plutodb
+    user: test111
+    password: pass123456
+    host: localhost
+    port: 3306
+    protocol: tcp
+    max_life_time: 3600
+    max_open_conns: 100
+    max_idle_conns: 10
+oauth:
+  store:
+    redis:
+      addr: 127.0.0.1:6379
+      db_no: 1
+  github:
+    for_amusing_x:
+      provider: "GitHub"
+      client_id: ""
+      client_secrets: ""
+      redirect_url: ""
+    for_pan_gu:
+      provider: "GitHub"
+      client_id: ""
+      client_secrets: ""
+      redirect_url: ""
+redis:
+  redis1:
+    addr: 127.0.0.1:6379
+    db_no: 1
+session_store:
+  redis:
+    addr: 127.0.0.1:6379
+    db_no: 2

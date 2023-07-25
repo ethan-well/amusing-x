@@ -30,11 +30,11 @@ func (r *LoginRiskRequest) IsVerificationCodeStrategy() bool {
 
 func (r *LoginRiskRequest) VerificationCodeStrategyRequestValid() aerror.Error {
 	if len(r.Phone) == 0 {
-		return aerror.NewError(nil, aerror.Code.CParamsError, "params 'phone' is expected")
+		return aerror.NewError(nil, aerror.Code.CParamsErr, "params 'phone' is expected")
 	}
 
 	if !r.IsValueAddAction() && !r.IsValueVerifyAction() {
-		return aerror.NewError(nil, aerror.Code.CParamsError, "params 'action' is expected")
+		return aerror.NewError(nil, aerror.Code.CParamsErr, "params 'action' is expected")
 	}
 
 	return nil
@@ -46,7 +46,7 @@ func (r *LoginRiskRequest) Valid() aerror.Error {
 	}
 
 	if !r.ValidStrategyType() {
-		return aerror.NewError(nil, aerror.Code.CParamsError, "strategy_type is invalid")
+		return aerror.NewError(nil, aerror.Code.CParamsErr, "strategy_type is invalid")
 	}
 
 	if r.IsVerificationCodeStrategy() {

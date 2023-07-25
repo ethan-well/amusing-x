@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+option  go_package = "amusing-x.com/user/service";
+
+package user;
+
+message UserInfo {
+  int64 id = 1;
+  string name = 2;
+  string login = 3;
+  string email = 4;
+  repeated string roles = 5;
+}
+
+message SessionInfo {
+  string SessionID = 1;
+  int64 MaxAge = 2; // second
+}
+
+message LoginInfo {
+  string session_id = 1;
+  UserInfo user_info = 2;
+  SessionInfo session_info = 3;
+}
+
+message OAuthLoginRequest {
+  string provider = 1;
+  string code = 2;
+  string service = 3;
+}
+
+message OAuthLoginResponse {
+  bool result = 1;
+  LoginInfo login_info = 2;
+}

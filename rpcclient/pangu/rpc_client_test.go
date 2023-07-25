@@ -2,8 +2,8 @@ package pangu
 
 import (
 	panguservice "amusingx.fit/amusingx/protos/pangu/service/pangu/proto"
-	"amusingx.fit/amusingx/services/pangu/conf"
-	"amusingx.fit/amusingx/services/pangu/mysql/pangu"
+	"amusingx.fit/amusingx/services/admin/conf"
+	"amusingx.fit/amusingx/services/admin/mysql/pangu"
 	"fmt"
 	"golang.org/x/net/context"
 	"sync"

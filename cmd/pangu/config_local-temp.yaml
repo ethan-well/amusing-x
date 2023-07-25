@@ -8,7 +8,7 @@ server:
 grpc_client:
   charon:
     addr: :20004
-  ganymede:
+  user:
     addr: :20005
 mysql:
   pangudb:

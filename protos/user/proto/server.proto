@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+option go_package = "amusing-x.com/user/service";
+
+package user;
+
+import "user/proto/regexp.proto";
+import "user/proto/login.proto";
+import "user/proto/join.proto";
+import "user/proto/country_code.proto";
+import "user/proto/verification_code.proto";
+import "user/proto/verification_code_check.proto";
+import "user/proto/reset_password.proto";
+import "user/proto/oauth_login.proto";
+import "user/proto/oauth_info.proto";
+import "user/proto/is_login.proto";
+import "user/proto/logout.proto";
+import "user/proto/authentication.proto";
+
+service userService {
+  rpc Pong(BlankParams) returns (PongResponse) {}
+  rpc Regexps(BlankParams) returns (RegexpResponse) {}
+  rpc Login(LoginRequest) returns(LoginResponse) {}
+  rpc Join(JoinRequest) returns (JoinResponse) {}
+  rpc CountryCodes(BlankParams) returns (CountryCodeList) {}
+  rpc GetVerificationCode(VerificationCodeRequest) returns (VerificationCodeResponse) {}
+  rpc VerificationCodeCheck(VerificationCodeCheckRequest) returns (VerificationCodeCheckResponse) {}
+  rpc ResetPassword(ResetPasswordRequest) returns (ResetPasswordResponse) {}
+  rpc OAuthLogin(OAuthLoginRequest) returns (OAuthLoginResponse) {}
+  rpc OAuthInfo(OAuthInfoRequest) returns (OAuthInfoResponse) {}
+  rpc IsLogin(IsLoginRequest) returns (IsLoginResponse) {}
+  rpc LogOut(LogoutRequest) returns (LogoutResponse) {}
+  rpc Authentication(AuthenticationRequest) returns (AuthenticationResponse) {}
+}
+
+
+message BlankParams {}

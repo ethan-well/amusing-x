@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option  go_package = "amusing-x.com/user/service";
+
+package user;
+
+message JoinRequest {
+  string nickname = 1;
+  string password = 2;
+  string areaCode = 3;
+  string phone = 4;
+  string verification_code = 5;
+}
+
+message JoinResponse {
+  string nickname = 1;
+  string area_code = 2;
+  string phone = 3;
+}

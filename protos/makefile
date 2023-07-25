@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := all
 
-all: generate-pangu generate-charon genreate-pluto genreate-ganymede genreate-comm
+all: generate-pangu generate-charon generate-pluto generate-user generate-comm
 
 generate-pangu:
 	protoc -I . \
@@ -18,7 +18,7 @@ generate-charon:
               --grpc-gateway_out ./charon/service --grpc-gateway_opt paths=source_relative \
               ./charon/proto/*.proto
 
-genreate-pluto:
+generate-pluto:
 	protoc -I . \
               --go_out ./pluto/service \
               --go_opt paths=source_relative \
@@ -26,15 +26,15 @@ genreate-pluto:
               --grpc-gateway_out ./pluto/service --grpc-gateway_opt paths=source_relative \
               ./pluto/proto/*.proto
 
-genreate-ganymede:
+generate-user:
 	protoc -I . \
-              --go_out ./ganymede/service \
+              --go_out ./user/service \
               --go_opt paths=source_relative \
-              --go-grpc_out ./ganymede/service --go-grpc_opt paths=source_relative \
-              --grpc-gateway_out ./ganymede/service --grpc-gateway_opt paths=source_relative \
-              ./ganymede/proto/*.proto
+              --go-grpc_out ./user/service --go-grpc_opt paths=source_relative \
+              --grpc-gateway_out ./user/service --grpc-gateway_opt paths=source_relative \
+              ./user/proto/*.proto
 
-genreate-comm:
+generate-comm:
 	protoc -I . \
               --go_out ./ \
               --go_opt paths=source_relative \
@@ -42,7 +42,7 @@ genreate-comm:
               --grpc-gateway_out ./ --grpc-gateway_opt paths=source_relative \
               ./comm/response/*.proto
 
-genreate-ganymede:
+generate-europa:
 	protoc -I . \
               --go_out ./europa/service \
               --go_opt paths=source_relative \

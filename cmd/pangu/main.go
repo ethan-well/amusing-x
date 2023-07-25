@@ -2,12 +2,12 @@ package main
 
 import (
 	"amusingx.fit/amusingx/rpcclient/charonclient"
-	"amusingx.fit/amusingx/rpcclient/ganymede"
 	pangu2 "amusingx.fit/amusingx/rpcclient/pangu"
-	"amusingx.fit/amusingx/services/pangu/conf"
-	"amusingx.fit/amusingx/services/pangu/mysql/pangu"
-	"amusingx.fit/amusingx/services/pangu/rpcserver"
-	"amusingx.fit/amusingx/services/pangu/xredis"
+	"amusingx.fit/amusingx/rpcclient/user"
+	"amusingx.fit/amusingx/services/admin/conf"
+	"amusingx.fit/amusingx/services/admin/mysql/pangu"
+	"amusingx.fit/amusingx/services/admin/rpcserver"
+	"amusingx.fit/amusingx/services/admin/xredis"
 	"github.com/ItsWewin/superfactory/powertrain"
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -37,7 +37,7 @@ func InitFunc() {
 		panic(err)
 	}
 
-	err = ganymede.InitClient(conf.Conf.GrpcClient.Ganymede.Addr)
+	err = user.InitClient(conf.Conf.GrpcClient.UserServer.Addr)
 	if err != nil {
 		panic(err)
 	}

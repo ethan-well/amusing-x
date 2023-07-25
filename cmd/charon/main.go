@@ -1,10 +1,10 @@
 package main
 
 import (
-	"amusingx.fit/amusingx/services/charon/conf"
-	"amusingx.fit/amusingx/services/charon/mysql/charon"
-	"amusingx.fit/amusingx/services/charon/rpcserver"
-	"amusingx.fit/amusingx/services/charon/xredis"
+	"amusingx.fit/amusingx/services/product/conf"
+	"amusingx.fit/amusingx/services/product/mysql/charon"
+	"amusingx.fit/amusingx/services/product/rpcserver"
+	"amusingx.fit/amusingx/services/product/xredis"
 	"github.com/ItsWewin/superfactory/powertrain"
 	"github.com/gorilla/mux"
 )

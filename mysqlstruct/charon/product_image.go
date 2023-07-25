@@ -1,7 +1,7 @@
 package charon
 
 import (
-	"amusingx.fit/amusingx/services/charon/uploader/comm"
+	"amusingx.fit/amusingx/services/product/uploader/comm"
 	"fmt"
 	"github.com/ItsWewin/superfactory/aerror"
 	"strconv"

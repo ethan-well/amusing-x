@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option  go_package = "amusing-x.com/user/service";
+
+package user;
+
+message VerificationCodeCheckRequest {
+  string code = 1;
+}
+
+message VerificationCodeCheckResponse {
+  string result = 1;
+}
+
+

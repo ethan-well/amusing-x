@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option  go_package = "amusing-x.com/user/service";
+
+package user;
+
+message LoginRequest {
+  int32 type = 1;
+  string area_code = 2;
+  string password = 3;
+  string verification_code = 4;
+  string phone = 5;
+}
+
+message LoginResponse {
+  string session_id = 1;
+}

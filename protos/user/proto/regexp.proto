@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option  go_package = "amusing-x.com/user/service";
+
+package user;
+
+message RegexpResponse {
+  repeated Regexp regexps = 1;
+}
+
+message Regexp {
+  int64 id = 1;
+  string name = 2;
+  string rules = 3;
+  string desc = 4;
+}
+
+message PongResponse {
+  string serverName = 1;
+}
+
+

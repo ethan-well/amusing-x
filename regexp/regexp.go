@@ -63,7 +63,7 @@ func PhoneNumberValid(phone string) aerror.Error {
 
 	if !matched {
 		msg := fmt.Sprintf("Phone number is invalid, expected regex: %s but get: %s", PhoneRegex, phone)
-		return aerror.NewError(nil, aerror.Code.CParamsError, msg)
+		return aerror.NewError(nil, aerror.Code.CParamsErr, msg)
 	}
 
 	return nil
@@ -77,7 +77,7 @@ func AreaCodeValid(areaCode string) aerror.Error {
 
 	if !matched {
 		msg := fmt.Sprintf("area code is invalid, expected regex: %s but code: %s", AreaRegex, areaCode)
-		return aerror.NewError(err, aerror.Code.CParamsError, msg)
+		return aerror.NewError(err, aerror.Code.CParamsErr, msg)
 	}
 
 	return nil
@@ -90,7 +90,7 @@ func NicknameValid(nickname string) aerror.Error {
 	}
 
 	if !matched {
-		return aerror.NewError(err, aerror.Code.CParamsError, "昵称由 5 到 20 位字母、数字、下划线或者汉子组成")
+		return aerror.NewError(err, aerror.Code.CParamsErr, "昵称由 5 到 20 位字母、数字、下划线或者汉子组成")
 	}
 
 	return nil
@@ -103,7 +103,7 @@ func VerificationCodeValid(code string) aerror.Error {
 	}
 
 	if !matched {
-		return aerror.NewError(err, aerror.Code.CParamsError, "验证码不正确")
+		return aerror.NewError(err, aerror.Code.CParamsErr, "验证码不正确")
 	}
 
 	return nil
@@ -118,7 +118,7 @@ func PasswordValid(str string) aerror.Error {
 	)
 
 	if len(str) < 6 || len(str) > 16 {
-		return aerror.NewError(nil, aerror.Code.CParamsError,
+		return aerror.NewError(nil, aerror.Code.CParamsErr,
 			"密码由 6-16 位字母、数字、特殊字符(~!@#$%^&*)组成，至少包含一个数字和字母")
 	}
 
@@ -140,6 +140,6 @@ func PasswordValid(str string) aerror.Error {
 		return nil
 	}
 
-	return aerror.NewError(nil, aerror.Code.CParamsError,
+	return aerror.NewError(nil, aerror.Code.CParamsErr,
 		"密码由 6-16 位字母、数字、特殊字符(~!@#$%^&*)组成，至少包含一个数字和字母")
 }

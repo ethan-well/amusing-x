@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option go_package = "amusingx.fit/amusingx/protos/pangu/service/pangu/proto";
+
+import "pangu/proto/attribute_mapping.proto";
+
+package panguservice;
+
+message PromotionCreateRequest {
+    string PromotionName = 1;
+    int64 SubProductID = 2;
+    int64 PromotionStock = 3;
+}
+
+message PromotionCreateResponse {
+    bool result = 1;
+}

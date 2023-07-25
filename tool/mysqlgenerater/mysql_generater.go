@@ -27,13 +27,11 @@ func ValidAndExecute(args []string) aerror.Error {
 	object := args[2]
 	objectName := args[3]
 
-	fmt.Println(args)
-
 	switch strings.ToUpper(command) {
 	case CREATE:
 		return dealWith(command, object, objectName)
 	default:
-		return aerror.NewError(nil, aerror.Code.CParamsError, "unkown command")
+		return aerror.NewError(nil, aerror.Code.CParamsErr, "unkown command")
 	}
 }
 

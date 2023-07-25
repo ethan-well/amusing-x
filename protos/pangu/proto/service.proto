@@ -262,4 +262,11 @@ service PanGuService {
             body: "*"
         };
     }
+
+    rpc AttributeMappingUpdate(AttributeMappingUpdateRequest) returns (comm.response.CommResponse) {
+            option(google.api.http) = {
+                put: "/v1/pangu/attribute_mappings/{id}"
+                body: "*"
+            };
+        }
 }

@@ -6,7 +6,7 @@ build-plutos:
 	go build -o ./bin/callisto ./cmd/callisto/main.go
 	go build -o ./bin/charon ./cmd/charon/main.go
 	go build -o ./bin/europa ./cmd/europa/main.go
-	go build -o ./bin/ganymede ./cmd/ganymede/main.go
+	go build -o ./bin/user ./cmd/user/main.go
 	go build -o ./bin/pluto ./cmd/pluto/main.go
 
 docker-build:
